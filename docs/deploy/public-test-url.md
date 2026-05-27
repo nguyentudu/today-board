@@ -15,11 +15,14 @@ Do not use Railway yet. Moon Today Board has no backend, database, worker, queue
 ## Public Test Deployment
 
 - GitHub repo URL: `https://github.com/nguyentudu/today-board.git`
+- Repo visibility: `public`
 - Public test URL: `https://nguyentudu.github.io/today-board/`
 - Deploy provider: `GitHub Pages`
+- Pages source: `gh-pages / root`
+- Status: `active`
 - Build command: `npm run build`
 - Output directory: `dist`
-- Test cohort size: 10 users
+- Test cohort: 10 users
 - Success gate: 3 returns / 3 relief signals
 
 ## Vercel
