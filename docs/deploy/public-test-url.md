@@ -12,6 +12,16 @@ This is not launch, scale, marketing, or ecosystem connection.
 
 Do not use Railway yet. Moon Today Board has no backend, database, worker, queue, sync service, or server process.
 
+## Public Test Deployment
+
+- GitHub repo URL: `https://github.com/nguyentudu/today-board.git`
+- Public test URL: `<PUBLIC_TEST_URL>`
+- Deploy provider: `<DEPLOY_PROVIDER>`
+- Build command: `npm run build`
+- Output directory: `dist`
+- Test cohort size: 10 users
+- Success gate: 3 returns / 3 relief signals
+
 ## Vercel
 
 - Framework preset: Vite
