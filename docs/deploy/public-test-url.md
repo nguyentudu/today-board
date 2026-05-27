@@ -15,8 +15,8 @@ Do not use Railway yet. Moon Today Board has no backend, database, worker, queue
 ## Public Test Deployment
 
 - GitHub repo URL: `https://github.com/nguyentudu/today-board.git`
-- Public test URL: `<PUBLIC_TEST_URL>`
-- Deploy provider: `<DEPLOY_PROVIDER>`
+- Public test URL: `https://nguyentudu.github.io/today-board/`
+- Deploy provider: `GitHub Pages`
 - Build command: `npm run build`
 - Output directory: `dist`
 - Test cohort size: 10 users
