@@ -38,6 +38,46 @@ npm run start
 
 Open the local Vite URL shown in the terminal.
 
+## GitHub Setup
+
+If this repo has no remote yet:
+
+```bash
+git remote add origin <GITHUB_REPO_URL>
+git branch -M main
+git push -u origin main
+```
+
+If a remote already exists:
+
+```bash
+git push
+```
+
+Do not push to GitHub until the intended repository URL is known.
+
+## Deploy Static
+
+Use a static host for controlled public testing:
+
+1. Vercel
+2. Netlify
+3. GitHub Pages
+
+Build command:
+
+```bash
+npm run build
+```
+
+Output directory:
+
+```text
+dist
+```
+
+See [docs/deploy/public-test-url.md](docs/deploy/public-test-url.md).
+
 ## Test With Users
 
 Use the app with one person at a time.
@@ -51,7 +91,21 @@ Ask them to:
 - Reload the page and confirm the board returns.
 - Export their board if they want to keep it outside Moon.
 
+10-user protocol:
+
+- Share the public test URL with only 10 testers.
+- Observe whether they return without being pushed.
+- Log whether the board made return feel lighter or heavier.
+- Count return signals, not engagement.
+- Stop after 10 users and review before adding scope.
+
 Use [docs/validation/manual-ui-checklist.md](docs/validation/manual-ui-checklist.md), [docs/validation/user-log-template.md](docs/validation/user-log-template.md), and [docs/validation/return-interview.md](docs/validation/return-interview.md) during testing.
+
+## Local Save
+
+The board saves in the browser on the user's device through local storage. It exists only so a reload can restore the board.
+
+There is no cloud account, remote database, or cross-device sync. Users can keep a copy outside Moon with Export JSON.
 
 ## Forbidden Scope
 
@@ -70,6 +124,8 @@ Do not add:
 - Railway backend
 
 Local storage is allowed only for product continuity. No tracking, analytics, telemetry, or remote calls are included.
+
+No cloud. No account. No tracking.
 
 ## Static Deploy
 

@@ -4,15 +4,27 @@ import { BOARD_STATES } from "../domain/state";
 import { exportBoard, readImportedBoard } from "../storage/exportBoard";
 import { saveBoard } from "../storage/localStore";
 import { Column } from "./Column";
+import type { Language } from "./copy";
+import { copy } from "./copy";
 
 interface BoardProps {
   board: BoardModel;
+  language: Language;
   selectedImportFileName: string;
   onChange: (board: BoardModel) => void;
   onImportFileSelected: (fileName: string) => void;
+  onLanguageChange: (language: Language) => void;
 }
 
-export function Board({ board, selectedImportFileName, onChange, onImportFileSelected }: BoardProps): HTMLElement {
+export function Board({
+  board,
+  language,
+  selectedImportFileName,
+  onChange,
+  onImportFileSelected,
+  onLanguageChange,
+}: BoardProps): HTMLElement {
+  const text = copy[language];
   const shell = document.createElement("div");
   shell.className = "board-shell";
 
@@ -23,24 +35,37 @@ export function Board({ board, selectedImportFileName, onChange, onImportFileSel
   headingGroup.className = "heading-group";
 
   const title = document.createElement("h1");
-  title.textContent = "Moon Today Board";
+  title.textContent = text.title;
 
   const promise = document.createElement("p");
-  promise.textContent = "Help me return without rebuilding my world.";
+  promise.textContent = text.subtitle;
 
   headingGroup.append(title, promise);
 
   const controls = document.createElement("div");
   controls.className = "board-controls";
 
+  const languageToggle = document.createElement("div");
+  languageToggle.className = "language-toggle";
+  languageToggle.setAttribute("aria-label", "Language");
+
+  for (const option of ["vi", "en"] as const) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = option === language ? "language-button active" : "language-button";
+    button.textContent = option.toUpperCase();
+    button.addEventListener("click", () => onLanguageChange(option));
+    languageToggle.append(button);
+  }
+
   const newCardInput = document.createElement("input");
   newCardInput.type = "text";
-  newCardInput.placeholder = "Name something to hold";
-  newCardInput.ariaLabel = "New card name";
+  newCardInput.placeholder = text.createPlaceholder;
+  newCardInput.ariaLabel = text.createPlaceholder;
 
   const addButton = document.createElement("button");
   addButton.type = "button";
-  addButton.textContent = "Create card";
+  addButton.textContent = text.createButton;
   addButton.addEventListener("click", () => {
     onChange(addCard(board, newCardInput.value));
     newCardInput.value = "";
@@ -54,23 +79,23 @@ export function Board({ board, selectedImportFileName, onChange, onImportFileSel
 
   const exportButton = document.createElement("button");
   exportButton.type = "button";
-  exportButton.textContent = "Export JSON";
+  exportButton.textContent = text.exportButton;
   exportButton.addEventListener("click", () => exportBoard(board));
 
   const importInput = document.createElement("input");
   importInput.type = "file";
   importInput.accept = "application/json,.json";
   importInput.className = "file-input";
-  importInput.ariaLabel = "Import board";
+  importInput.ariaLabel = text.importButton;
 
-  const importLabel = document.createElement("label");
-  importLabel.className = "import-label";
-  importLabel.textContent = "Import board";
-  importLabel.append(importInput);
+  const importButton = document.createElement("button");
+  importButton.type = "button";
+  importButton.textContent = text.importButton;
+  importButton.addEventListener("click", () => importInput.click());
 
   const selectedFile = document.createElement("span");
   selectedFile.className = "selected-file";
-  selectedFile.textContent = selectedImportFileName;
+  selectedFile.textContent = `${text.selectedFile} ${selectedImportFileName}`;
   selectedFile.hidden = selectedImportFileName.length === 0;
 
   importInput.addEventListener("change", async () => {
@@ -86,12 +111,12 @@ export function Board({ board, selectedImportFileName, onChange, onImportFileSel
     importInput.value = "";
   });
 
-  controls.append(newCardInput, addButton, exportButton, importLabel, selectedFile);
+  controls.append(languageToggle, newCardInput, addButton, exportButton, importButton, importInput, selectedFile);
   top.append(headingGroup, controls);
 
   const localNote = document.createElement("p");
   localNote.className = "local-note";
-  localNote.textContent = "Saved locally for continuity. No tracking.";
+  localNote.textContent = text.savedNote;
 
   const columns = document.createElement("div");
   columns.className = "columns";
@@ -106,6 +131,7 @@ export function Board({ board, selectedImportFileName, onChange, onImportFileSel
       Column({
         board,
         state,
+        language,
         onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
         onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
         onNote: (cardId: string, note: string) => commit(updateCardNote(board, cardId, note)),
@@ -118,11 +144,11 @@ export function Board({ board, selectedImportFileName, onChange, onImportFileSel
   testNotes.className = "test-notes";
 
   const testNotesTitle = document.createElement("h2");
-  testNotesTitle.textContent = "Test Notes";
+  testNotesTitle.textContent = text.testNotesTitle;
 
   const testNotesList = document.createElement("ul");
 
-  for (const note of ["Use this quietly.", "You can ignore everything here.", "No correct way to use this."]) {
+  for (const note of text.testNotes) {
     const item = document.createElement("li");
     item.textContent = note;
     testNotesList.append(item);

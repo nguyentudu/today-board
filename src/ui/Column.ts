@@ -1,18 +1,13 @@
 import type { Board } from "../domain/board";
 import type { BoardState } from "../domain/state";
-import { stateCopy, stateLabels } from "../domain/state";
 import { Card } from "./Card";
-
-const emptyCopy: Record<BoardState, string> = {
-  continue: "Nothing needs to return right now.",
-  pause: "Nothing is waiting here.",
-  finished: "Nothing to release.",
-  "leave-alone": "Nothing protected here.",
-};
+import type { Language } from "./copy";
+import { copy } from "./copy";
 
 interface ColumnProps {
   board: Board;
   state: BoardState;
+  language: Language;
   onRename: (cardId: string, title: string) => void;
   onMove: (cardId: string, state: BoardState) => void;
   onNote: (cardId: string, note: string) => void;
@@ -20,6 +15,7 @@ interface ColumnProps {
 }
 
 export function Column(props: ColumnProps): HTMLElement {
+  const text = copy[props.language];
   const section = document.createElement("section");
   section.className = "column";
 
@@ -27,12 +23,12 @@ export function Column(props: ColumnProps): HTMLElement {
   header.className = "column-header";
 
   const title = document.createElement("h2");
-  title.textContent = stateLabels[props.state];
+  title.textContent = text.stateLabels[props.state];
 
-  const copy = document.createElement("p");
-  copy.textContent = stateCopy[props.state];
+  const description = document.createElement("p");
+  description.textContent = text.stateCopy[props.state];
 
-  header.append(title, copy);
+  header.append(title, description);
 
   const list = document.createElement("div");
   list.className = "card-list";
@@ -42,13 +38,14 @@ export function Column(props: ColumnProps): HTMLElement {
   if (cards.length === 0) {
     const empty = document.createElement("p");
     empty.className = "empty-column";
-    empty.textContent = emptyCopy[props.state];
+    empty.textContent = text.emptyCopy[props.state];
     list.append(empty);
   } else {
     for (const card of cards) {
       list.append(
         Card({
           card,
+          language: props.language,
           onRename: props.onRename,
           onMove: props.onMove,
           onNote: props.onNote,

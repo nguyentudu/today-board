@@ -1,22 +1,27 @@
 import type { Card as BoardCard } from "../domain/card";
 import type { BoardState } from "../domain/state";
-import { BOARD_STATES, stateLabels } from "../domain/state";
 import { CardEditor } from "./CardEditor";
+import type { Language } from "./copy";
+import { copy } from "./copy";
+import { BOARD_STATES } from "../domain/state";
 
 interface CardProps {
   card: BoardCard;
+  language: Language;
   onRename: (cardId: string, title: string) => void;
   onMove: (cardId: string, state: BoardState) => void;
   onNote: (cardId: string, note: string) => void;
   onHide: (cardId: string) => void;
 }
 
-export function Card({ card, onRename, onMove, onNote, onHide }: CardProps): HTMLElement {
+export function Card({ card, language, onRename, onMove, onNote, onHide }: CardProps): HTMLElement {
+  const text = copy[language];
   const item = document.createElement("article");
   item.className = "card";
 
   const editor = CardEditor({
     card,
+    language,
     onRename: (title) => onRename(card.id, title),
     onNote: (note) => onNote(card.id, note),
   });
@@ -26,16 +31,16 @@ export function Card({ card, onRename, onMove, onNote, onHide }: CardProps): HTM
 
   const moveLabel = document.createElement("label");
   moveLabel.className = "action-label";
-  moveLabel.textContent = "Change zone";
+  moveLabel.textContent = text.changeZone;
 
   const moveSelect = document.createElement("select");
-  moveSelect.ariaLabel = "Change zone";
+  moveSelect.ariaLabel = text.changeZone;
   moveLabel.append(moveSelect);
 
   for (const state of BOARD_STATES) {
     const option = document.createElement("option");
     option.value = state;
-    option.textContent = stateLabels[state];
+    option.textContent = text.stateLabels[state];
     option.selected = state === card.state;
     moveSelect.append(option);
   }
@@ -45,7 +50,7 @@ export function Card({ card, onRename, onMove, onNote, onHide }: CardProps): HTM
   const hideButton = document.createElement("button");
   hideButton.type = "button";
   hideButton.className = "quiet-button";
-  hideButton.textContent = "Hide card";
+  hideButton.textContent = text.hideCard;
   hideButton.addEventListener("click", () => onHide(card.id));
 
   actions.append(moveLabel, hideButton);
