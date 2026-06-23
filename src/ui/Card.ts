@@ -11,10 +11,21 @@ interface CardProps {
   onRename: (cardId: string, title: string) => void;
   onMove: (cardId: string, state: BoardState) => void;
   onNote: (cardId: string, note: string) => void;
+  onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
+  onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
   onHide: (cardId: string) => void;
 }
 
-export function Card({ card, language, onRename, onMove, onNote, onHide }: CardProps): HTMLElement {
+export function Card({
+  card,
+  language,
+  onRename,
+  onMove,
+  onNote,
+  onWhyStillOpen,
+  onIfYouReturn,
+  onHide,
+}: CardProps): HTMLElement {
   const text = copy[language];
   const item = document.createElement("article");
   item.className = "card";
@@ -24,7 +35,26 @@ export function Card({ card, language, onRename, onMove, onNote, onHide }: CardP
     language,
     onRename: (title) => onRename(card.id, title),
     onNote: (note) => onNote(card.id, note),
+    onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
+    onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
   });
+
+  const snapshot = document.createElement("dl");
+  snapshot.className = "context-snapshot";
+
+  for (const row of [
+    [text.created, formatDate(card.createdAt)],
+    [text.lastTouched, formatDate(card.updatedAt)],
+    [text.currentState, text.stateLabels[card.state]],
+  ]) {
+    const term = document.createElement("dt");
+    term.textContent = row[0];
+
+    const value = document.createElement("dd");
+    value.textContent = row[1];
+
+    snapshot.append(term, value);
+  }
 
   const actions = document.createElement("div");
   actions.className = "card-actions";
@@ -54,7 +84,23 @@ export function Card({ card, language, onRename, onMove, onNote, onHide }: CardP
   hideButton.addEventListener("click", () => onHide(card.id));
 
   actions.append(moveLabel, hideButton);
-  item.append(editor, actions);
+  item.append(editor, snapshot, actions);
 
   return item;
+}
+
+function formatDate(value: string): string {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return date.toLocaleString([], {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }

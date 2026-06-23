@@ -11,6 +11,8 @@ interface ColumnProps {
   onRename: (cardId: string, title: string) => void;
   onMove: (cardId: string, state: BoardState) => void;
   onNote: (cardId: string, note: string) => void;
+  onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
+  onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
   onHide: (cardId: string) => void;
 }
 
@@ -49,6 +51,8 @@ export function Column(props: ColumnProps): HTMLElement {
           onRename: props.onRename,
           onMove: props.onMove,
           onNote: props.onNote,
+          onWhyStillOpen: props.onWhyStillOpen,
+          onIfYouReturn: props.onIfYouReturn,
           onHide: props.onHide,
         }),
       );

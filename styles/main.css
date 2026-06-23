@@ -193,6 +193,34 @@ textarea {
   line-height: 1.35;
 }
 
+.card-reentry-input {
+  min-height: 5.2rem;
+  line-height: 1.35;
+}
+
+.context-snapshot {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 0.7rem;
+  margin: 0;
+  border-top: 1px solid #e3ddcf;
+  border-bottom: 1px solid #e3ddcf;
+  color: #5f5d55;
+  padding: 0.7rem 0;
+  font-size: 0.88rem;
+}
+
+.context-snapshot dt {
+  color: #7a766c;
+  font-weight: 700;
+}
+
+.context-snapshot dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .card-actions {
   display: grid;
   grid-template-columns: 1fr;

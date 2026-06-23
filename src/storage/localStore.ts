@@ -46,6 +46,8 @@ export function sanitizeBoard(value: unknown): Board {
           id: typeof source.id === "string" ? source.id : crypto.randomUUID(),
           title: typeof source.title === "string" && source.title.trim() ? source.title.trim() : "Untitled return",
           note: typeof source.note === "string" ? source.note.slice(0, 280) : "",
+          whyStillOpen: typeof source.whyStillOpen === "string" ? source.whyStillOpen.slice(0, 360) : "",
+          ifYouReturn: typeof source.ifYouReturn === "string" ? source.ifYouReturn.slice(0, 360) : "",
           state,
           hidden: typeof source.hidden === "boolean" ? source.hidden : false,
           createdAt: typeof source.createdAt === "string" ? source.createdAt : now,

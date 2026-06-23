@@ -1,4 +1,12 @@
-import { addCard, hideCard, moveCard, renameCard, updateCardNote, type Board as BoardModel } from "../domain/board";
+import {
+  addCard,
+  hideCard,
+  moveCard,
+  renameCard,
+  updateCardNote,
+  updateCardReentryNotes,
+  type Board as BoardModel,
+} from "../domain/board";
 import type { BoardState } from "../domain/state";
 import { BOARD_STATES } from "../domain/state";
 import { exportBoard, readImportedBoard } from "../storage/exportBoard";
@@ -135,6 +143,10 @@ export function Board({
         onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
         onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
         onNote: (cardId: string, note: string) => commit(updateCardNote(board, cardId, note)),
+        onWhyStillOpen: (cardId: string, whyStillOpen: string) =>
+          commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
+        onIfYouReturn: (cardId: string, ifYouReturn: string) =>
+          commit(updateCardReentryNotes(board, cardId, { ifYouReturn })),
         onHide: (cardId: string) => commit(hideCard(board, cardId)),
       }),
     );

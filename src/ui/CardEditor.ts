@@ -7,9 +7,18 @@ interface CardEditorProps {
   language: Language;
   onRename: (title: string) => void;
   onNote: (note: string) => void;
+  onWhyStillOpen: (whyStillOpen: string) => void;
+  onIfYouReturn: (ifYouReturn: string) => void;
 }
 
-export function CardEditor({ card, language, onRename, onNote }: CardEditorProps): HTMLDivElement {
+export function CardEditor({
+  card,
+  language,
+  onRename,
+  onNote,
+  onWhyStillOpen,
+  onIfYouReturn,
+}: CardEditorProps): HTMLDivElement {
   const text = copy[language];
   const editor = document.createElement("div");
   editor.className = "card-editor";
@@ -30,7 +39,25 @@ export function CardEditor({ card, language, onRename, onNote }: CardEditorProps
   note.ariaLabel = text.tinyNote;
   note.addEventListener("change", () => onNote(note.value));
 
-  editor.append(title, note);
+  const whyStillOpen = document.createElement("textarea");
+  whyStillOpen.className = "card-reentry-input";
+  whyStillOpen.value = card.whyStillOpen;
+  whyStillOpen.maxLength = 360;
+  whyStillOpen.rows = 3;
+  whyStillOpen.placeholder = text.whyStillOpen;
+  whyStillOpen.ariaLabel = text.whyStillOpen;
+  whyStillOpen.addEventListener("change", () => onWhyStillOpen(whyStillOpen.value));
+
+  const ifYouReturn = document.createElement("textarea");
+  ifYouReturn.className = "card-reentry-input";
+  ifYouReturn.value = card.ifYouReturn;
+  ifYouReturn.maxLength = 360;
+  ifYouReturn.rows = 3;
+  ifYouReturn.placeholder = text.ifYouReturn;
+  ifYouReturn.ariaLabel = text.ifYouReturn;
+  ifYouReturn.addEventListener("change", () => onIfYouReturn(ifYouReturn.value));
+
+  editor.append(title, note, whyStillOpen, ifYouReturn);
 
   return editor;
 }

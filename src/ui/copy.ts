@@ -16,6 +16,11 @@ export const copy = {
     hideCard: "Hide card",
     cardName: "Card name",
     tinyNote: "Tiny note",
+    whyStillOpen: "Why is this still open?",
+    ifYouReturn: "If you return later, start here.",
+    created: "Created",
+    lastTouched: "Last touched",
+    currentState: "Current state",
     testNotesTitle: "Test Notes",
     testNotes: ["Use this quietly.", "You can ignore everything here.", "No correct way to use this."],
     stateLabels: {
@@ -50,6 +55,11 @@ export const copy = {
     hideCard: "Ẩn card",
     cardName: "Tên card",
     tinyNote: "Ghi chú nhỏ",
+    whyStillOpen: "Tại sao nó còn mở?",
+    ifYouReturn: "Nếu quay lại, hãy bắt đầu từ đây.",
+    created: "Đã tạo",
+    lastTouched: "Lần cuối chạm",
+    currentState: "Vùng hiện tại",
     testNotesTitle: "Test Notes",
     testNotes: ["Dùng thật nhẹ.", "Bạn có thể bỏ qua mọi thứ ở đây.", "Không có cách dùng đúng."],
     stateLabels: {
@@ -86,6 +96,11 @@ export const copy = {
     hideCard: string;
     cardName: string;
     tinyNote: string;
+    whyStillOpen: string;
+    ifYouReturn: string;
+    created: string;
+    lastTouched: string;
+    currentState: string;
     testNotesTitle: string;
     testNotes: string[];
     stateLabels: Record<BoardState, string>;

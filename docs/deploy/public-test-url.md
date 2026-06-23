@@ -23,7 +23,29 @@ Do not use Railway yet. Moon Today Board has no backend, database, worker, queue
 - Build command: `npm run build`
 - Output directory: `dist`
 - Test cohort: 10 users
-- Success gate: 3 returns / 3 relief signals
+- Validation status: Re-entry Notes v1 active
+- Success gate: 3 successful re-entries
+
+## Re-entry Notes v1
+
+Re-entry Notes v1 tests whether users can recover context quickly after returning.
+
+Successful re-entry means:
+
+- user returns after at least 48 hours
+- user recovers context in under 30 seconds
+- user can continue without opening another tool
+
+Allowed claim:
+
+- REENTRY_SIGNAL
+
+Not allowed:
+
+- PMF
+- Retention proven
+- Commercial validation
+- Product-market fit
 
 ## Vercel
 

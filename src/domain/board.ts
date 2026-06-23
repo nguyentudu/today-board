@@ -41,6 +41,20 @@ export function updateCardNote(board: Board, cardId: string, note: string): Boar
   );
 }
 
+export function updateCardReentryNotes(
+  board: Board,
+  cardId: string,
+  notes: { whyStillOpen?: string; ifYouReturn?: string },
+): Board {
+  return updateCard(board, cardId, (card) =>
+    touchCard({
+      ...card,
+      whyStillOpen: notes.whyStillOpen === undefined ? card.whyStillOpen : notes.whyStillOpen.slice(0, 360),
+      ifYouReturn: notes.ifYouReturn === undefined ? card.ifYouReturn : notes.ifYouReturn.slice(0, 360),
+    }),
+  );
+}
+
 export function moveCard(board: Board, cardId: string, state: BoardState): Board {
   return updateCard(board, cardId, (card) => touchCard({ ...card, state }));
 }
