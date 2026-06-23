@@ -1,7 +1,7 @@
 import type { Board as BoardModel } from "./domain/board";
 import { loadBoard, saveBoard } from "./storage/localStore";
 import { Board as BoardView } from "./ui/Board";
-import type { Language } from "./ui/copy";
+import type { Language } from "./ui/i18n";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 

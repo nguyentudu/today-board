@@ -12,8 +12,8 @@ import { BOARD_STATES } from "../domain/state";
 import { exportBoard, readImportedBoard } from "../storage/exportBoard";
 import { saveBoard } from "../storage/localStore";
 import { Column } from "./Column";
-import type { Language } from "./copy";
-import { copy } from "./copy";
+import type { Language } from "./i18n";
+import { copy } from "./i18n";
 
 interface BoardProps {
   board: BoardModel;

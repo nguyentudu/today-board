@@ -1,8 +1,8 @@
 import type { Board } from "../domain/board";
 import type { BoardState } from "../domain/state";
 import { Card } from "./Card";
-import type { Language } from "./copy";
-import { copy } from "./copy";
+import type { Language } from "./i18n";
+import { copy } from "./i18n";
 
 interface ColumnProps {
   board: Board;

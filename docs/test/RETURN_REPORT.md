@@ -7,8 +7,14 @@ Do not summarize emotionally. Only observations.
 ## Success Gate
 
 - 10 users invited
-- at least 3 returned
-- at least 3 relief signals
+- 3 successful re-entries
+
+Successful re-entry means:
+
+- user returns after time away
+- user reads the card
+- user understands where to resume in under 30 seconds
+- user does not open another tool
 
 ## Stop Conditions
 
@@ -22,12 +28,13 @@ Do not summarize emotionally. Only observations.
 - users invited:
 - users completed:
 - returns:
-- relief signals:
+- successful re-entries:
+- needed another tool:
 - quotes:
 
 ## Observations
 
-| tester_id | returned_yes_no | contexts_opened | lighter_yes_no | wanted_to_keep_yes_no | quote | notes |
+| tester_id | returned_yes_no | under_30_sec | needed_other_tool | successful_reentry | quote | notes |
 | --- | --- | --- | --- | --- | --- | --- |
 
 ## Recommendation

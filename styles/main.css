@@ -184,6 +184,23 @@ textarea {
   gap: 0.55rem;
 }
 
+.card-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field-label {
+  color: #4f4d45;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.reentry-field {
+  border-left: 3px solid #a9b6a2;
+  padding-left: 0.65rem;
+}
+
 .card-title-input {
   font-weight: 700;
 }

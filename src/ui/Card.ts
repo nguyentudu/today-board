@@ -1,8 +1,8 @@
 import type { Card as BoardCard } from "../domain/card";
 import type { BoardState } from "../domain/state";
 import { CardEditor } from "./CardEditor";
-import type { Language } from "./copy";
-import { copy } from "./copy";
+import type { Language } from "./i18n";
+import { copy } from "./i18n";
 import { BOARD_STATES } from "../domain/state";
 
 interface CardProps {
