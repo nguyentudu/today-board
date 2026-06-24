@@ -11,6 +11,7 @@ interface CardProps {
   onRename: (cardId: string, title: string) => void;
   onMove: (cardId: string, state: BoardState) => void;
   onNote: (cardId: string, note: string) => void;
+  onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
   onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
   onHide: (cardId: string) => void;
@@ -22,6 +23,7 @@ export function Card({
   onRename,
   onMove,
   onNote,
+  onContextSnapshot,
   onWhyStillOpen,
   onIfYouReturn,
   onHide,
@@ -35,12 +37,17 @@ export function Card({
     language,
     onRename: (title) => onRename(card.id, title),
     onNote: (note) => onNote(card.id, note),
+    onContextSnapshot: (contextSnapshot) => onContextSnapshot(card.id, contextSnapshot),
     onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
     onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
   });
 
   const snapshot = document.createElement("dl");
   snapshot.className = "context-snapshot";
+
+  const lastTouch = document.createElement("div");
+  lastTouch.className = "last-touch";
+  lastTouch.textContent = `${text.lastTouched}: ${formatRelativeDate(card.updatedAt, language)}`;
 
   for (const row of [
     [text.created, formatDate(card.createdAt)],
@@ -84,9 +91,32 @@ export function Card({
   hideButton.addEventListener("click", () => onHide(card.id));
 
   actions.append(moveLabel, hideButton);
-  item.append(editor, snapshot, actions);
+  item.append(editor, lastTouch, snapshot, actions);
 
   return item;
+}
+
+function formatRelativeDate(value: string, language: Language): string {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  const now = new Date();
+  const elapsedMs = now.getTime() - date.getTime();
+  const elapsedMinutes = Math.floor(elapsedMs / 60000);
+
+  if (elapsedMinutes < 10) {
+    return language === "vi" ? "vừa xong" : "just now";
+  }
+
+  if (date.toDateString() === now.toDateString()) {
+    return language === "vi" ? "hôm nay" : "today";
+  }
+
+  const elapsedDays = Math.max(1, Math.floor(elapsedMs / 86400000));
+  return language === "vi" ? `${elapsedDays} ngày trước` : `${elapsedDays} days ago`;
 }
 
 function formatDate(value: string): string {

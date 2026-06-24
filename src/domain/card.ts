@@ -4,6 +4,7 @@ export interface Card {
   id: string;
   title: string;
   note: string;
+  contextSnapshot: string;
   whyStillOpen: string;
   ifYouReturn: string;
   state: BoardState;
@@ -19,6 +20,7 @@ export function createCard(title: string, state: BoardState = "continue"): Card 
     id: crypto.randomUUID(),
     title: title.trim() || "Untitled return",
     note: "",
+    contextSnapshot: "",
     whyStillOpen: "",
     ifYouReturn: "",
     state,

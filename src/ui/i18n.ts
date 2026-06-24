@@ -14,8 +14,9 @@ export const copy = {
     savedNote: "Saved locally for continuity. No tracking.",
     changeZone: "Change zone",
     hideCard: "Hide card",
-    cardName: "Card name",
-    tinyNote: "Tiny note",
+    cardName: "Card title",
+    tinyNote: "Small note",
+    contextSnapshot: "Snapshot: what is happening?",
     whyStillOpen: "Why is this still open?",
     ifYouReturn: "If I return, start here",
     created: "Created",
@@ -55,6 +56,7 @@ export const copy = {
     hideCard: "Ẩn card",
     cardName: "Tên card",
     tinyNote: "Ghi chú nhỏ",
+    contextSnapshot: "Snapshot: chuyện gì đang diễn ra?",
     whyStillOpen: "Vì sao còn mở?",
     ifYouReturn: "Nếu quay lại, bắt đầu từ đâu?",
     created: "Đã tạo",
@@ -96,6 +98,7 @@ export const copy = {
     hideCard: string;
     cardName: string;
     tinyNote: string;
+    contextSnapshot: string;
     whyStillOpen: string;
     ifYouReturn: string;
     created: string;

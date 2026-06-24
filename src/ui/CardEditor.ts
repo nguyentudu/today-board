@@ -7,6 +7,7 @@ interface CardEditorProps {
   language: Language;
   onRename: (title: string) => void;
   onNote: (note: string) => void;
+  onContextSnapshot: (contextSnapshot: string) => void;
   onWhyStillOpen: (whyStillOpen: string) => void;
   onIfYouReturn: (ifYouReturn: string) => void;
 }
@@ -16,6 +17,7 @@ export function CardEditor({
   language,
   onRename,
   onNote,
+  onContextSnapshot,
   onWhyStillOpen,
   onIfYouReturn,
 }: CardEditorProps): HTMLDivElement {
@@ -57,6 +59,24 @@ export function CardEditor({
 
   noteField.append(noteLabel, note);
 
+  const contextSnapshotField = document.createElement("label");
+  contextSnapshotField.className = "card-field reentry-field";
+
+  const contextSnapshotLabel = document.createElement("span");
+  contextSnapshotLabel.className = "field-label";
+  contextSnapshotLabel.textContent = text.contextSnapshot;
+
+  const contextSnapshot = document.createElement("textarea");
+  contextSnapshot.className = "card-reentry-input";
+  contextSnapshot.value = card.contextSnapshot;
+  contextSnapshot.maxLength = 360;
+  contextSnapshot.rows = 3;
+  contextSnapshot.placeholder = text.contextSnapshot;
+  contextSnapshot.ariaLabel = text.contextSnapshot;
+  contextSnapshot.addEventListener("change", () => onContextSnapshot(contextSnapshot.value));
+
+  contextSnapshotField.append(contextSnapshotLabel, contextSnapshot);
+
   const whyStillOpenField = document.createElement("label");
   whyStillOpenField.className = "card-field reentry-field";
 
@@ -93,7 +113,7 @@ export function CardEditor({
 
   ifYouReturnField.append(ifYouReturnLabel, ifYouReturn);
 
-  editor.append(titleField, noteField, whyStillOpenField, ifYouReturnField);
+  editor.append(titleField, noteField, contextSnapshotField, whyStillOpenField, ifYouReturnField);
 
   return editor;
 }

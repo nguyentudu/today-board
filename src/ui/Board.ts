@@ -143,6 +143,8 @@ export function Board({
         onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
         onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
         onNote: (cardId: string, note: string) => commit(updateCardNote(board, cardId, note)),
+        onContextSnapshot: (cardId: string, contextSnapshot: string) =>
+          commit(updateCardReentryNotes(board, cardId, { contextSnapshot })),
         onWhyStillOpen: (cardId: string, whyStillOpen: string) =>
           commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
         onIfYouReturn: (cardId: string, ifYouReturn: string) =>

@@ -227,6 +227,16 @@ textarea {
   font-size: 0.88rem;
 }
 
+.last-touch {
+  border: 1px solid #b8c5ad;
+  border-radius: 6px;
+  background: #edf3e7;
+  color: #30392d;
+  font-size: 0.92rem;
+  font-weight: 800;
+  padding: 0.55rem 0.65rem;
+}
+
 .context-snapshot dt {
   color: #7a766c;
   font-weight: 700;

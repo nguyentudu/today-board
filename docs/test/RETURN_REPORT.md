@@ -11,9 +11,9 @@ Do not summarize emotionally. Only observations.
 
 Successful re-entry means:
 
-- user returns after time away
-- user reads the card
-- user understands where to resume in under 30 seconds
+- user returns after at least 24 hours
+- user opens or views a card
+- user can explain the context in under 30 seconds
 - user does not open another tool
 
 ## Stop Conditions
@@ -28,6 +28,7 @@ Successful re-entry means:
 - users invited:
 - users completed:
 - returns:
+- relief signals:
 - successful re-entries:
 - needed another tool:
 - quotes:
