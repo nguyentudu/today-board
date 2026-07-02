@@ -1,4 +1,4 @@
-import type { BoardState } from "../domain/state";
+﻿import type { BoardState } from "../domain/state";
 
 export type Language = "vi" | "en";
 
@@ -17,8 +17,11 @@ export const copy = {
     cardName: "Card title",
     tinyNote: "Small note",
     contextSnapshot: "Snapshot: what is happening?",
+    contextSnapshotEmpty: "No snapshot yet.",
     whyStillOpen: "Why is this still open?",
+    whyStillOpenEmpty: "Not clear why this is still open.",
     ifYouReturn: "If I return, start here",
+    ifYouReturnEmpty: "No starting point yet.",
     created: "Created",
     lastTouched: "Last touched",
     currentState: "Current state",
@@ -57,8 +60,11 @@ export const copy = {
     cardName: "Tên card",
     tinyNote: "Ghi chú nhỏ",
     contextSnapshot: "Snapshot: chuyện gì đang diễn ra?",
+    contextSnapshotEmpty: "Chưa ghi snapshot.",
     whyStillOpen: "Vì sao còn mở?",
+    whyStillOpenEmpty: "Chưa rõ vì sao còn mở.",
     ifYouReturn: "Nếu quay lại, bắt đầu từ đâu?",
+    ifYouReturnEmpty: "Chưa có điểm bắt đầu.",
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
     currentState: "Vùng hiện tại",
@@ -99,8 +105,11 @@ export const copy = {
     cardName: string;
     tinyNote: string;
     contextSnapshot: string;
+    contextSnapshotEmpty: string;
     whyStillOpen: string;
+    whyStillOpenEmpty: string;
     ifYouReturn: string;
+    ifYouReturnEmpty: string;
     created: string;
     lastTouched: string;
     currentState: string;

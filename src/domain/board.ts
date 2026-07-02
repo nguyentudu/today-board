@@ -1,5 +1,5 @@
 import type { Card } from "./card";
-import { createCard, touchCard } from "./card";
+import { createCard, normalizeReentryField, touchCard } from "./card";
 import type { BoardState } from "./state";
 
 export interface Board {
@@ -50,9 +50,17 @@ export function updateCardReentryNotes(
     touchCard({
       ...card,
       contextSnapshot:
-        notes.contextSnapshot === undefined ? card.contextSnapshot : notes.contextSnapshot.slice(0, 360),
-      whyStillOpen: notes.whyStillOpen === undefined ? card.whyStillOpen : notes.whyStillOpen.slice(0, 360),
-      ifYouReturn: notes.ifYouReturn === undefined ? card.ifYouReturn : notes.ifYouReturn.slice(0, 360),
+        notes.contextSnapshot === undefined
+          ? card.contextSnapshot
+          : normalizeReentryField(notes.contextSnapshot).slice(0, 360),
+      whyStillOpen:
+        notes.whyStillOpen === undefined
+          ? card.whyStillOpen
+          : normalizeReentryField(notes.whyStillOpen).slice(0, 360),
+      ifYouReturn:
+        notes.ifYouReturn === undefined
+          ? card.ifYouReturn
+          : normalizeReentryField(notes.ifYouReturn).slice(0, 360),
     }),
   );
 }

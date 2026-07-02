@@ -4,6 +4,10 @@
 
 Test whether users can return to a card and recover context in under 30 seconds.
 
+Study status: READY_FOR_10_USER_VALIDATION
+
+Build freeze note: No more feature work until 10-user evidence exists.
+
 ## Process
 
 1. Invite up to 10 users.

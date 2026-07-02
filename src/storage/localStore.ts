@@ -1,4 +1,5 @@
 import { createBoard, type Board } from "../domain/board";
+import { normalizeReentryField } from "../domain/card";
 import { isBoardState } from "../domain/state";
 
 const STORAGE_KEY = "moon.today-board.v1";
@@ -46,9 +47,12 @@ export function sanitizeBoard(value: unknown): Board {
           id: typeof source.id === "string" ? source.id : crypto.randomUUID(),
           title: typeof source.title === "string" && source.title.trim() ? source.title.trim() : "Untitled return",
           note: typeof source.note === "string" ? source.note.slice(0, 280) : "",
-          contextSnapshot: typeof source.contextSnapshot === "string" ? source.contextSnapshot.slice(0, 360) : "",
-          whyStillOpen: typeof source.whyStillOpen === "string" ? source.whyStillOpen.slice(0, 360) : "",
-          ifYouReturn: typeof source.ifYouReturn === "string" ? source.ifYouReturn.slice(0, 360) : "",
+          contextSnapshot:
+            typeof source.contextSnapshot === "string" ? normalizeReentryField(source.contextSnapshot).slice(0, 360) : "",
+          whyStillOpen:
+            typeof source.whyStillOpen === "string" ? normalizeReentryField(source.whyStillOpen).slice(0, 360) : "",
+          ifYouReturn:
+            typeof source.ifYouReturn === "string" ? normalizeReentryField(source.ifYouReturn).slice(0, 360) : "",
           state,
           hidden: typeof source.hidden === "boolean" ? source.hidden : false,
           createdAt: typeof source.createdAt === "string" ? source.createdAt : now,

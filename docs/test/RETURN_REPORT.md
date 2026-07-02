@@ -2,11 +2,17 @@
 
 Status: pending real responses.
 
+Study status: READY_FOR_10_USER_VALIDATION
+
+Build freeze note: No more feature work until 10-user evidence exists.
+
 Do not summarize emotionally. Only observations.
 
 ## Success Gate
 
 - 10 users invited
+- 3 returned
+- 3 relief signals
 - 3 successful re-entries
 
 Successful re-entry means:

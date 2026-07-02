@@ -71,7 +71,7 @@ export function CardEditor({
   contextSnapshot.value = card.contextSnapshot;
   contextSnapshot.maxLength = 360;
   contextSnapshot.rows = 3;
-  contextSnapshot.placeholder = text.contextSnapshot;
+  contextSnapshot.placeholder = text.contextSnapshotEmpty;
   contextSnapshot.ariaLabel = text.contextSnapshot;
   contextSnapshot.addEventListener("change", () => onContextSnapshot(contextSnapshot.value));
 
@@ -89,7 +89,7 @@ export function CardEditor({
   whyStillOpen.value = card.whyStillOpen;
   whyStillOpen.maxLength = 360;
   whyStillOpen.rows = 3;
-  whyStillOpen.placeholder = text.whyStillOpen;
+  whyStillOpen.placeholder = text.whyStillOpenEmpty;
   whyStillOpen.ariaLabel = text.whyStillOpen;
   whyStillOpen.addEventListener("change", () => onWhyStillOpen(whyStillOpen.value));
 
@@ -107,7 +107,7 @@ export function CardEditor({
   ifYouReturn.value = card.ifYouReturn;
   ifYouReturn.maxLength = 360;
   ifYouReturn.rows = 3;
-  ifYouReturn.placeholder = text.ifYouReturn;
+  ifYouReturn.placeholder = text.ifYouReturnEmpty;
   ifYouReturn.ariaLabel = text.ifYouReturn;
   ifYouReturn.addEventListener("change", () => onIfYouReturn(ifYouReturn.value));
 
