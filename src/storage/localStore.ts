@@ -2,10 +2,10 @@ import { createBoard, type Board } from "../domain/board";
 import { normalizeFileRefs, normalizeList, normalizeReentryField } from "../domain/card";
 import { isBoardState } from "../domain/state";
 
-const STORAGE_KEY = "moon.today-board.v1";
+export const BOARD_STORAGE_KEY = "moon.today-board.v1";
 
 export function loadBoard(): Board {
-  const stored = localStorage.getItem(STORAGE_KEY);
+  const stored = localStorage.getItem(BOARD_STORAGE_KEY);
 
   if (!stored) {
     return createBoard();
@@ -19,7 +19,16 @@ export function loadBoard(): Board {
 }
 
 export function saveBoard(board: Board): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(board));
+  localStorage.setItem(BOARD_STORAGE_KEY, JSON.stringify(board));
+}
+
+export function trySaveBoard(board: Board): boolean {
+  try {
+    saveBoard(board);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function sanitizeBoard(value: unknown): Board {

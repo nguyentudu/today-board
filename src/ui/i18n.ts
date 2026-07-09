@@ -49,6 +49,7 @@ export const copy = {
     quickCaptureSave: "Save",
     quickCaptureSaved: "Saved.",
     quickCaptureEmpty: "Add a title, note, link, photo, or voice note before saving.",
+    quickCaptureStorageError: "Could not save. The photo or voice note may be too large for browser storage.",
     quickCaptureBack: "Open board",
     created: "Created",
     lastTouched: "Last touched",
@@ -120,6 +121,7 @@ export const copy = {
     quickCaptureSave: "Lưu",
     quickCaptureSaved: "Đã lưu.",
     quickCaptureEmpty: "Thêm tên, ghi chú, link, ảnh hoặc ghi âm trước khi lưu.",
+    quickCaptureStorageError: "Chưa lưu được. Ảnh hoặc ghi âm có thể quá lớn cho bộ nhớ trình duyệt.",
     quickCaptureBack: "Mở board",
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
@@ -193,6 +195,7 @@ export const copy = {
     quickCaptureSave: string;
     quickCaptureSaved: string;
     quickCaptureEmpty: string;
+    quickCaptureStorageError: string;
     quickCaptureBack: string;
     created: string;
     lastTouched: string;

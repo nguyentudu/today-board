@@ -7,7 +7,7 @@ interface QuickCaptureProps {
   initialNote: string;
   initialLink: string;
   onLanguageChange: (language: Language) => void;
-  onSave: (capture: QuickCapturePayload) => boolean;
+  onSave: (capture: QuickCapturePayload) => QuickCaptureSaveResult;
   onOpenBoard: () => void;
 }
 
@@ -18,6 +18,8 @@ export interface QuickCapturePayload {
   imageRef: string;
   audioRef: string;
 }
+
+export type QuickCaptureSaveResult = "saved" | "empty" | "storage-error";
 
 export function QuickCapture({
   language,
@@ -115,7 +117,13 @@ export function QuickCapture({
       return;
     }
 
-    status.textContent = onSave(capture) ? text.quickCaptureSaved : text.quickCaptureEmpty;
+    const saveResult = onSave(capture);
+    status.textContent =
+      saveResult === "saved"
+        ? text.quickCaptureSaved
+        : saveResult === "storage-error"
+          ? text.quickCaptureStorageError
+          : text.quickCaptureEmpty;
   });
   saveButton.className = "quick-save-button";
 

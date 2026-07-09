@@ -1,9 +1,9 @@
 import type { Board as BoardModel } from "./domain/board";
 import { addCard, updateCardNote, updateCardReentryNotes, updateCardRichContext } from "./domain/board";
-import { loadBoard, saveBoard } from "./storage/localStore";
+import { loadBoard, saveBoard, trySaveBoard } from "./storage/localStore";
 import { Board as BoardView } from "./ui/Board";
 import type { Language } from "./ui/i18n";
-import { QuickCapture, type QuickCapturePayload } from "./ui/QuickCapture";
+import { QuickCapture, type QuickCapturePayload, type QuickCaptureSaveResult } from "./ui/QuickCapture";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -64,16 +64,16 @@ function render(nextBoard: BoardModel = board): void {
 
 render();
 
-function saveQuickCapture(capture: QuickCapturePayload): boolean {
+function saveQuickCapture(capture: QuickCapturePayload): QuickCaptureSaveResult {
   if (!hasQuickCaptureContent(capture)) {
-    return false;
+    return "empty";
   }
 
-  let nextBoard = addCard(board, capture.title);
+  let nextBoard = addCard(loadBoard(), capture.title);
   const cardId = nextBoard.cards[0]?.id;
 
   if (!cardId) {
-    return false;
+    return "empty";
   }
 
   if (capture.note.trim()) {
@@ -88,9 +88,12 @@ function saveQuickCapture(capture: QuickCapturePayload): boolean {
     nextBoard = updateCardRichContext(nextBoard, cardId, { richLinks, imageRefs, audioRefs });
   }
 
+  if (!trySaveBoard(nextBoard)) {
+    return "storage-error";
+  }
+
   board = nextBoard;
-  saveBoard(board);
-  return true;
+  return "saved";
 }
 
 function openBoard(): void {
