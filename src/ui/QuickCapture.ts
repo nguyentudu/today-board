@@ -1,3 +1,12 @@
+import {
+  MAX_AUDIO_BYTES,
+  MAX_IMAGE_BYTES,
+  VOICE_LIMIT_MS,
+  blobToDataUrl,
+  compressImageFile,
+  estimateDataUrlBytes,
+  formatBytes,
+} from "../media/localMedia";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
 
@@ -71,6 +80,7 @@ export function QuickCapture({
   const link = createInput(text.quickCaptureLink, text.richLinksEmpty, initialLink);
   let imageRef = "";
   let audioRef = "";
+  let mediaBlocked = false;
 
   const photoInput = document.createElement("input");
   photoInput.className = "file-input";
@@ -81,7 +91,17 @@ export function QuickCapture({
     const file = photoInput.files?.[0];
 
     if (file) {
-      imageRef = await blobToDataUrl(file);
+      const { dataUrl, beforeBytes, afterBytes } = await compressImageFile(file);
+
+      if (afterBytes > MAX_IMAGE_BYTES) {
+        mediaBlocked = true;
+        imageRef = "";
+        status.textContent = `${text.mediaTooLarge} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+      } else {
+        mediaBlocked = false;
+        imageRef = dataUrl;
+        status.textContent = `${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+      }
     }
   });
 
@@ -97,6 +117,11 @@ export function QuickCapture({
     text,
     (dataUrl) => {
       audioRef = dataUrl;
+      mediaBlocked = false;
+    },
+    () => {
+      mediaBlocked = true;
+      audioRef = "";
     },
     status,
   );
@@ -117,6 +142,11 @@ export function QuickCapture({
       return;
     }
 
+    if (mediaBlocked) {
+      status.textContent = text.mediaTooLarge;
+      return;
+    }
+
     const saveResult = onSave(capture);
     status.textContent =
       saveResult === "saved"
@@ -132,7 +162,7 @@ export function QuickCapture({
 
   const localNote = document.createElement("p");
   localNote.className = "capture-note";
-  localNote.textContent = `${text.imageLocalNote} ${text.audioLocalNote}`;
+  localNote.textContent = `${text.imageLocalNote} ${text.audioLocalNote} ${text.voiceLimit}`;
 
   form.append(cardTitle.field, note.field, link.field, photoInput, captureRow, localNote, saveButton, openBoard, status);
   shell.append(header, form);
@@ -198,16 +228,19 @@ function createButton(label: string, onClick: () => void | Promise<void>): HTMLB
 function createQuickVoiceButton(
   text: (typeof copy)[Language],
   onAudio: (dataUrl: string) => void,
+  onTooLarge: () => void,
   status: HTMLParagraphElement,
 ): HTMLButtonElement {
   let recorder: MediaRecorder | undefined;
   let stream: MediaStream | undefined;
   let chunks: Blob[] = [];
+  let stopTimer: number | undefined;
 
   const button = createButton(text.recordVoice, async () => {
     status.textContent = "";
 
     if (recorder?.state === "recording") {
+      window.clearTimeout(stopTimer);
       recorder.stop();
       button.textContent = text.recordVoice;
       return;
@@ -229,26 +262,35 @@ function createQuickVoiceButton(
     recorder.addEventListener(
       "stop",
       async () => {
-        onAudio(await blobToDataUrl(new Blob(chunks, { type: recorder?.mimeType || "audio/webm" })));
+        const audioBlob = new Blob(chunks, { type: recorder?.mimeType || "audio/webm" });
+        const beforeBytes = audioBlob.size;
+        const dataUrl = await blobToDataUrl(audioBlob);
+        const afterBytes = estimateDataUrlBytes(dataUrl);
+
+        if (afterBytes > MAX_AUDIO_BYTES) {
+          onTooLarge();
+          status.textContent = `${text.mediaTooLarge} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+        } else {
+          onAudio(dataUrl);
+          status.textContent = `${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+        }
 
         for (const track of stream?.getTracks() ?? []) {
           track.stop();
         }
+        window.clearTimeout(stopTimer);
+        button.textContent = text.recordVoice;
       },
       { once: true },
     );
     recorder.start();
     button.textContent = text.stopRecording;
+    stopTimer = window.setTimeout(() => {
+      if (recorder?.state === "recording") {
+        recorder.stop();
+      }
+    }, VOICE_LIMIT_MS);
   });
 
   return button;
-}
-
-function blobToDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => resolve(String(reader.result ?? "")));
-    reader.addEventListener("error", () => reject(reader.error ?? new Error("Could not read capture.")));
-    reader.readAsDataURL(blob);
-  });
 }

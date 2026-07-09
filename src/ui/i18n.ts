@@ -42,6 +42,9 @@ export const copy = {
     attachFile: "Attach file",
     fileLocalNote: "Small files can be saved here. Large files may not persist well in browser storage.",
     fileTooLarge: "Large file saved as a reference only.",
+    mediaCompressed: "Media size:",
+    mediaTooLarge: "This media is too large for browser storage. It was not saved.",
+    voiceLimit: "Voice recording stops after 20 seconds.",
     quickCaptureTitle: "Quick capture",
     quickCaptureButton: "Quick Capture",
     quickCaptureHelper: "Use this when you only want to save something quickly and leave.",
@@ -114,6 +117,9 @@ export const copy = {
     attachFile: "Đính kèm file",
     fileLocalNote: "File nhỏ có thể lưu ở đây. File lớn có thể không giữ tốt trong bộ nhớ trình duyệt.",
     fileTooLarge: "File lớn chỉ được lưu như một dòng tham chiếu.",
+    mediaCompressed: "Dung lượng media:",
+    mediaTooLarge: "Media này quá lớn cho bộ nhớ trình duyệt. Chưa lưu media.",
+    voiceLimit: "Ghi âm tự dừng sau 20 giây.",
     quickCaptureTitle: "Ghi nhanh",
     quickCaptureButton: "Ghi nhanh",
     quickCaptureHelper: "Dùng khi bạn chỉ muốn giữ lại nhanh rồi rời đi.",
@@ -188,6 +194,9 @@ export const copy = {
     attachFile: string;
     fileLocalNote: string;
     fileTooLarge: string;
+    mediaCompressed: string;
+    mediaTooLarge: string;
+    voiceLimit: string;
     quickCaptureTitle: string;
     quickCaptureButton: string;
     quickCaptureHelper: string;

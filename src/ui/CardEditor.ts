@@ -1,4 +1,14 @@
 import type { Card, FileRef } from "../domain/card";
+import {
+  MAX_AUDIO_BYTES,
+  MAX_IMAGE_BYTES,
+  VOICE_LIMIT_MS,
+  blobToDataUrl,
+  compressImageDataUrl,
+  compressImageFile,
+  estimateDataUrlBytes,
+  formatBytes,
+} from "../media/localMedia";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
 
@@ -171,10 +181,28 @@ function createCaptureControls(
   status.className = "capture-status";
   status.setAttribute("role", "status");
 
-  const uploadInput = createImageInput((dataUrl) => onImageRefs([...card.imageRefs, dataUrl]));
+  const reportMediaSize = (beforeBytes: number, afterBytes: number) => {
+    status.textContent = `${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+  };
+
+  const uploadInput = createImageInput(
+    (dataUrl) => onImageRefs([...card.imageRefs, dataUrl]),
+    reportMediaSize,
+    (message) => {
+      status.textContent = message;
+    },
+    text,
+  );
   const uploadButton = createCaptureButton(text.uploadImage, () => uploadInput.click());
 
-  const cameraInput = createImageInput((dataUrl) => onImageRefs([...card.imageRefs, dataUrl]));
+  const cameraInput = createImageInput(
+    (dataUrl) => onImageRefs([...card.imageRefs, dataUrl]),
+    reportMediaSize,
+    (message) => {
+      status.textContent = message;
+    },
+    text,
+  );
   cameraInput.setAttribute("capture", "environment");
   const cameraButton = createCaptureButton(text.capturePhoto, () => cameraInput.click());
 
@@ -182,7 +210,8 @@ function createCaptureControls(
     status.textContent = "";
 
     try {
-      const dataUrl = await captureScreen(text.screenCaptureUnsupported);
+      const { dataUrl, beforeBytes, afterBytes } = await captureScreen(text.screenCaptureUnsupported, text);
+      reportMediaSize(beforeBytes, afterBytes);
       onImageRefs([...card.imageRefs, dataUrl]);
     } catch (error) {
       status.textContent = error instanceof Error ? error.message : text.screenCaptureUnsupported;
@@ -206,7 +235,7 @@ function createCaptureControls(
 
   const audioNote = document.createElement("p");
   audioNote.className = "capture-note";
-  audioNote.textContent = text.audioLocalNote;
+  audioNote.textContent = `${text.audioLocalNote} ${text.voiceLimit}`;
 
   const fileNote = document.createElement("p");
   fileNote.className = "capture-note";
@@ -239,11 +268,13 @@ function createVoiceButton(
   let recorder: MediaRecorder | undefined;
   let stream: MediaStream | undefined;
   let chunks: Blob[] = [];
+  let stopTimer: number | undefined;
 
   const button = createCaptureButton(text.recordVoice, async () => {
     status.textContent = "";
 
     if (recorder?.state === "recording") {
+      window.clearTimeout(stopTimer);
       recorder.stop();
       button.textContent = text.recordVoice;
       return;
@@ -270,17 +301,32 @@ function createVoiceButton(
       "stop",
       async () => {
         const audioBlob = new Blob(chunks, { type: recorder?.mimeType || "audio/webm" });
+        const beforeBytes = audioBlob.size;
         const dataUrl = await blobToDataUrl(audioBlob);
-        onAudioRefs([...card.audioRefs, dataUrl]);
+        const afterBytes = estimateDataUrlBytes(dataUrl);
+
+        if (afterBytes > MAX_AUDIO_BYTES) {
+          status.textContent = `${text.mediaTooLarge} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+        } else {
+          status.textContent = `${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+          onAudioRefs([...card.audioRefs, dataUrl]);
+        }
 
         for (const track of stream?.getTracks() ?? []) {
           track.stop();
         }
+        window.clearTimeout(stopTimer);
+        button.textContent = text.recordVoice;
       },
       { once: true },
     );
     recorder.start();
     button.textContent = text.stopRecording;
+    stopTimer = window.setTimeout(() => {
+      if (recorder?.state === "recording") {
+        recorder.stop();
+      }
+    }, VOICE_LIMIT_MS);
   });
 
   return button;
@@ -321,7 +367,12 @@ function createFileInput(
   return input;
 }
 
-function createImageInput(onImage: (dataUrl: string) => void): HTMLInputElement {
+function createImageInput(
+  onImage: (dataUrl: string) => void,
+  onCompressed: (beforeBytes: number, afterBytes: number) => void,
+  onStatus: (message: string) => void,
+  text: (typeof copy)[Language],
+): HTMLInputElement {
   const input = document.createElement("input");
   input.className = "file-input";
   input.type = "file";
@@ -333,42 +384,25 @@ function createImageInput(onImage: (dataUrl: string) => void): HTMLInputElement 
       return;
     }
 
-    const dataUrl = await readImageFile(file);
-    onImage(dataUrl);
+    const { dataUrl, beforeBytes, afterBytes } = await compressImageFile(file);
+
+    if (afterBytes > MAX_IMAGE_BYTES) {
+      onStatus(`${text.mediaTooLarge} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`);
+    } else {
+      onCompressed(beforeBytes, afterBytes);
+      onImage(dataUrl);
+    }
+
     input.value = "";
   });
 
   return input;
 }
 
-function blobToDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => resolve(String(reader.result ?? "")));
-    reader.addEventListener("error", () => reject(reader.error ?? new Error("Could not read file.")));
-    reader.readAsDataURL(blob);
-  });
-}
-
-function readImageFile(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.addEventListener("load", () => {
-      const result = String(reader.result ?? "");
-
-      if (result.startsWith("data:image/")) {
-        resolve(result);
-      } else {
-        reject(new Error("Selected file is not an image."));
-      }
-    });
-    reader.addEventListener("error", () => reject(reader.error ?? new Error("Could not read image.")));
-    reader.readAsDataURL(file);
-  });
-}
-
-async function captureScreen(unsupportedMessage: string): Promise<string> {
+async function captureScreen(
+  unsupportedMessage: string,
+  text: (typeof copy)[Language],
+): Promise<{ dataUrl: string; beforeBytes: number; afterBytes: number }> {
   const mediaDevices = navigator.mediaDevices as
     | (MediaDevices & { getDisplayMedia?: (constraints?: DisplayMediaStreamOptions) => Promise<MediaStream> })
     | undefined;
@@ -402,7 +436,18 @@ async function captureScreen(unsupportedMessage: string): Promise<string> {
     }
 
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL("image/png");
+
+    const compressed = await compressImageDataUrl(canvas.toDataURL("image/png"));
+
+    if (compressed.afterBytes > MAX_IMAGE_BYTES) {
+      throw new Error(
+        `${text.mediaTooLarge} ${text.mediaCompressed} ${formatBytes(compressed.beforeBytes)} -> ${formatBytes(
+          compressed.afterBytes,
+        )}`,
+      );
+    }
+
+    return compressed;
   } finally {
     for (const track of stream.getTracks()) {
       track.stop();
