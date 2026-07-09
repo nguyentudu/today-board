@@ -14,6 +14,9 @@ interface ColumnProps {
   onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
   onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
+  onRichLinks: (cardId: string, richLinks: string[]) => void;
+  onImageRefs: (cardId: string, imageRefs: string[]) => void;
+  onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
   onHide: (cardId: string) => void;
 }
 
@@ -55,6 +58,9 @@ export function Column(props: ColumnProps): HTMLElement {
           onContextSnapshot: props.onContextSnapshot,
           onWhyStillOpen: props.onWhyStillOpen,
           onIfYouReturn: props.onIfYouReturn,
+          onRichLinks: props.onRichLinks,
+          onImageRefs: props.onImageRefs,
+          onBookmarkReason: props.onBookmarkReason,
           onHide: props.onHide,
         }),
       );

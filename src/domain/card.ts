@@ -18,6 +18,9 @@ export interface Card {
   contextSnapshot: string;
   whyStillOpen: string;
   ifYouReturn: string;
+  richLinks: string[];
+  imageRefs: string[];
+  bookmarkReason: string;
   state: BoardState;
   hidden: boolean;
   createdAt: string;
@@ -34,6 +37,9 @@ export function createCard(title: string, state: BoardState = "continue"): Card 
     contextSnapshot: "",
     whyStillOpen: "",
     ifYouReturn: "",
+    richLinks: [],
+    imageRefs: [],
+    bookmarkReason: "",
     state,
     hidden: false,
     createdAt: now,
@@ -56,4 +62,8 @@ export function normalizeReentryField(value: string): string {
   }
 
   return value;
+}
+
+export function normalizeList(values: string[]): string[] {
+  return values.map((value) => value.trim()).filter(Boolean).slice(0, 12);
 }

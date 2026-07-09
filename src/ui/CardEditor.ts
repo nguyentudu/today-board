@@ -10,6 +10,9 @@ interface CardEditorProps {
   onContextSnapshot: (contextSnapshot: string) => void;
   onWhyStillOpen: (whyStillOpen: string) => void;
   onIfYouReturn: (ifYouReturn: string) => void;
+  onRichLinks: (richLinks: string[]) => void;
+  onImageRefs: (imageRefs: string[]) => void;
+  onBookmarkReason: (bookmarkReason: string) => void;
 }
 
 export function CardEditor({
@@ -20,6 +23,9 @@ export function CardEditor({
   onContextSnapshot,
   onWhyStillOpen,
   onIfYouReturn,
+  onRichLinks,
+  onImageRefs,
+  onBookmarkReason,
 }: CardEditorProps): HTMLDivElement {
   const text = copy[language];
   const editor = document.createElement("div");
@@ -113,7 +119,63 @@ export function CardEditor({
 
   ifYouReturnField.append(ifYouReturnLabel, ifYouReturn);
 
-  editor.append(titleField, noteField, contextSnapshotField, whyStillOpenField, ifYouReturnField);
+  const linksField = createTextareaField(text.richLinks, text.richLinksEmpty, card.richLinks.join("\n"), (value) =>
+    onRichLinks(splitLines(value)),
+  );
+  const imagesField = createTextareaField(text.imageRefs, text.imageRefsEmpty, card.imageRefs.join("\n"), (value) =>
+    onImageRefs(splitLines(value)),
+  );
+  const bookmarkReasonField = createTextareaField(
+    text.bookmarkReason,
+    text.bookmarkReasonEmpty,
+    card.bookmarkReason,
+    onBookmarkReason,
+  );
+
+  editor.append(
+    titleField,
+    noteField,
+    contextSnapshotField,
+    whyStillOpenField,
+    ifYouReturnField,
+    linksField,
+    imagesField,
+    bookmarkReasonField,
+  );
 
   return editor;
+}
+
+function createTextareaField(
+  label: string,
+  placeholder: string,
+  value: string,
+  onChange: (value: string) => void,
+): HTMLLabelElement {
+  const field = document.createElement("label");
+  field.className = "card-field rich-field";
+
+  const fieldLabel = document.createElement("span");
+  fieldLabel.className = "field-label";
+  fieldLabel.textContent = label;
+
+  const textarea = document.createElement("textarea");
+  textarea.className = "card-rich-input";
+  textarea.value = value;
+  textarea.maxLength = 1200;
+  textarea.rows = 3;
+  textarea.placeholder = placeholder;
+  textarea.ariaLabel = label;
+  textarea.addEventListener("change", () => onChange(textarea.value));
+
+  field.append(fieldLabel, textarea);
+
+  return field;
+}
+
+function splitLines(value: string): string[] {
+  return value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
 }

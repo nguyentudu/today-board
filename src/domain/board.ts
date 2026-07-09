@@ -1,5 +1,5 @@
 import type { Card } from "./card";
-import { createCard, normalizeReentryField, touchCard } from "./card";
+import { createCard, normalizeList, normalizeReentryField, touchCard } from "./card";
 import type { BoardState } from "./state";
 
 export interface Board {
@@ -61,6 +61,22 @@ export function updateCardReentryNotes(
         notes.ifYouReturn === undefined
           ? card.ifYouReturn
           : normalizeReentryField(notes.ifYouReturn).slice(0, 360),
+    }),
+  );
+}
+
+export function updateCardRichContext(
+  board: Board,
+  cardId: string,
+  richContext: { richLinks?: string[]; imageRefs?: string[]; bookmarkReason?: string },
+): Board {
+  return updateCard(board, cardId, (card) =>
+    touchCard({
+      ...card,
+      richLinks: richContext.richLinks === undefined ? card.richLinks : normalizeList(richContext.richLinks),
+      imageRefs: richContext.imageRefs === undefined ? card.imageRefs : normalizeList(richContext.imageRefs),
+      bookmarkReason:
+        richContext.bookmarkReason === undefined ? card.bookmarkReason : richContext.bookmarkReason.slice(0, 360),
     }),
   );
 }

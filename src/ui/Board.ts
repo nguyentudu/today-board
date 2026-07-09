@@ -5,6 +5,7 @@ import {
   renameCard,
   updateCardNote,
   updateCardReentryNotes,
+  updateCardRichContext,
   type Board as BoardModel,
 } from "../domain/board";
 import type { BoardState } from "../domain/state";
@@ -149,6 +150,12 @@ export function Board({
           commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
         onIfYouReturn: (cardId: string, ifYouReturn: string) =>
           commit(updateCardReentryNotes(board, cardId, { ifYouReturn })),
+        onRichLinks: (cardId: string, richLinks: string[]) =>
+          commit(updateCardRichContext(board, cardId, { richLinks })),
+        onImageRefs: (cardId: string, imageRefs: string[]) =>
+          commit(updateCardRichContext(board, cardId, { imageRefs })),
+        onBookmarkReason: (cardId: string, bookmarkReason: string) =>
+          commit(updateCardRichContext(board, cardId, { bookmarkReason })),
         onHide: (cardId: string) => commit(hideCard(board, cardId)),
       }),
     );

@@ -22,6 +22,13 @@ export const copy = {
     whyStillOpenEmpty: "Not clear why this is still open.",
     ifYouReturn: "If I return, start here",
     ifYouReturnEmpty: "No starting point yet.",
+    richLinks: "Links",
+    richLinksEmpty: "One link per line.",
+    imageRefs: "Images or screenshots",
+    imageRefsEmpty: "Paste data URLs or local references, one per line.",
+    bookmarkReason: "Why save?",
+    bookmarkReasonEmpty: "Why does this help re-entry?",
+    savedContext: "Saved context",
     created: "Created",
     lastTouched: "Last touched",
     currentState: "Current state",
@@ -65,6 +72,13 @@ export const copy = {
     whyStillOpenEmpty: "Chưa rõ vì sao còn mở.",
     ifYouReturn: "Nếu quay lại, bắt đầu từ đâu?",
     ifYouReturnEmpty: "Chưa có điểm bắt đầu.",
+    richLinks: "Link",
+    richLinksEmpty: "Mỗi dòng một link.",
+    imageRefs: "Ảnh hoặc screenshot",
+    imageRefsEmpty: "Dán data URL hoặc tham chiếu local, mỗi dòng một mục.",
+    bookmarkReason: "Vì sao lưu?",
+    bookmarkReasonEmpty: "Vì sao phần này giúp quay lại?",
+    savedContext: "Ngữ cảnh đã lưu",
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
     currentState: "Vùng hiện tại",
@@ -110,6 +124,13 @@ export const copy = {
     whyStillOpenEmpty: string;
     ifYouReturn: string;
     ifYouReturnEmpty: string;
+    richLinks: string;
+    richLinksEmpty: string;
+    imageRefs: string;
+    imageRefsEmpty: string;
+    bookmarkReason: string;
+    bookmarkReasonEmpty: string;
+    savedContext: string;
     created: string;
     lastTouched: string;
     currentState: string;

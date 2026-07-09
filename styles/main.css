@@ -215,6 +215,67 @@ textarea {
   line-height: 1.35;
 }
 
+.card-rich-input {
+  min-height: 4.6rem;
+  line-height: 1.35;
+}
+
+.rich-field {
+  border-left: 3px solid #c4b7d7;
+  padding-left: 0.65rem;
+}
+
+.rich-context {
+  display: grid;
+  gap: 0.5rem;
+  border: 1px solid #ddd4e8;
+  border-radius: 6px;
+  background: #fbf8ff;
+  padding: 0.7rem;
+}
+
+.rich-context h3 {
+  margin: 0;
+  color: #4f4659;
+  font-size: 0.92rem;
+}
+
+.bookmark-reason {
+  margin: 0;
+  color: #4d4a43;
+  line-height: 1.35;
+}
+
+.rich-link-list {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.rich-link-list a {
+  color: #285f77;
+  overflow-wrap: anywhere;
+}
+
+.image-ref-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.image-ref-list img {
+  width: 100%;
+  max-height: 14rem;
+  border: 1px solid #d7d1c5;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.image-ref-list code {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
 .context-snapshot {
   display: grid;
   grid-template-columns: max-content 1fr;

@@ -14,6 +14,9 @@ interface CardProps {
   onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
   onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
+  onRichLinks: (cardId: string, richLinks: string[]) => void;
+  onImageRefs: (cardId: string, imageRefs: string[]) => void;
+  onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
   onHide: (cardId: string) => void;
 }
 
@@ -26,6 +29,9 @@ export function Card({
   onContextSnapshot,
   onWhyStillOpen,
   onIfYouReturn,
+  onRichLinks,
+  onImageRefs,
+  onBookmarkReason,
   onHide,
 }: CardProps): HTMLElement {
   const text = copy[language];
@@ -40,6 +46,9 @@ export function Card({
     onContextSnapshot: (contextSnapshot) => onContextSnapshot(card.id, contextSnapshot),
     onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
     onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
+    onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
+    onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+    onBookmarkReason: (bookmarkReason) => onBookmarkReason(card.id, bookmarkReason),
   });
 
   const snapshot = document.createElement("dl");
@@ -91,9 +100,77 @@ export function Card({
   hideButton.addEventListener("click", () => onHide(card.id));
 
   actions.append(moveLabel, hideButton);
-  item.append(editor, lastTouch, snapshot, actions);
+  item.append(editor, renderRichContext(card, text), lastTouch, snapshot, actions);
 
   return item;
+}
+
+function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
+  const section = document.createElement("section");
+  section.className = "rich-context";
+
+  const title = document.createElement("h3");
+  title.textContent = text.savedContext;
+  section.append(title);
+
+  if (card.bookmarkReason.trim()) {
+    const reason = document.createElement("p");
+    reason.className = "bookmark-reason";
+    reason.textContent = card.bookmarkReason;
+    section.append(reason);
+  }
+
+  if (card.richLinks.length > 0) {
+    const list = document.createElement("ul");
+    list.className = "rich-link-list";
+
+    for (const link of card.richLinks) {
+      const item = document.createElement("li");
+      const anchor = document.createElement("a");
+      anchor.href = safeHref(link);
+      anchor.textContent = link;
+      anchor.target = "_blank";
+      anchor.rel = "noreferrer";
+      item.append(anchor);
+      list.append(item);
+    }
+
+    section.append(list);
+  }
+
+  if (card.imageRefs.length > 0) {
+    const gallery = document.createElement("div");
+    gallery.className = "image-ref-list";
+
+    for (const ref of card.imageRefs) {
+      if (ref.startsWith("data:image/")) {
+        const image = document.createElement("img");
+        image.src = ref;
+        image.alt = text.imageRefs;
+        gallery.append(image);
+      } else {
+        const reference = document.createElement("code");
+        reference.textContent = ref;
+        gallery.append(reference);
+      }
+    }
+
+    section.append(gallery);
+  }
+
+  if (section.children.length === 1) {
+    section.hidden = true;
+  }
+
+  return section;
+}
+
+function safeHref(value: string): string {
+  if (/^https?:\/\//i.test(value) || /^mailto:/i.test(value)) {
+    return value;
+  }
+
+  return `https://${value}`;
 }
 
 function formatRelativeDate(value: string, language: Language): string {
