@@ -159,7 +159,10 @@ function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTML
   }
 
   if (section.children.length === 1) {
-    section.hidden = true;
+    const empty = document.createElement("p");
+    empty.className = "rich-context-empty";
+    empty.textContent = text.savedContextEmpty;
+    section.append(empty);
   }
 
   return section;

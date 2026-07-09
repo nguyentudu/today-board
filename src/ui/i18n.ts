@@ -22,13 +22,14 @@ export const copy = {
     whyStillOpenEmpty: "Not clear why this is still open.",
     ifYouReturn: "If I return, start here",
     ifYouReturnEmpty: "No starting point yet.",
-    richLinks: "Links",
-    richLinksEmpty: "One link per line.",
+    richLinks: "Link",
+    richLinksEmpty: "Paste link here",
     imageRefs: "Images or screenshots",
-    imageRefsEmpty: "Paste data URLs or local references, one per line.",
+    imageRefsEmpty: "Paste data:image or describe the image/screenshot here",
     bookmarkReason: "Why save?",
-    bookmarkReasonEmpty: "Why does this help re-entry?",
+    bookmarkReasonEmpty: "Why do you want to keep this link/image?",
     savedContext: "Saved context",
+    savedContextEmpty: "No saved link, image, or bookmark yet.",
     created: "Created",
     lastTouched: "Last touched",
     currentState: "Current state",
@@ -73,12 +74,13 @@ export const copy = {
     ifYouReturn: "Nếu quay lại, bắt đầu từ đâu?",
     ifYouReturnEmpty: "Chưa có điểm bắt đầu.",
     richLinks: "Link",
-    richLinksEmpty: "Mỗi dòng một link.",
+    richLinksEmpty: "Dán link ở đây",
     imageRefs: "Ảnh hoặc screenshot",
-    imageRefsEmpty: "Dán data URL hoặc tham chiếu local, mỗi dòng một mục.",
+    imageRefsEmpty: "Dán data:image hoặc mô tả ảnh/screenshot ở đây",
     bookmarkReason: "Vì sao lưu?",
-    bookmarkReasonEmpty: "Vì sao phần này giúp quay lại?",
+    bookmarkReasonEmpty: "Vì sao bạn muốn giữ lại link/ảnh này?",
     savedContext: "Ngữ cảnh đã lưu",
+    savedContextEmpty: "Chưa lưu link, ảnh hoặc bookmark.",
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
     currentState: "Vùng hiện tại",
@@ -131,6 +133,7 @@ export const copy = {
     bookmarkReason: string;
     bookmarkReasonEmpty: string;
     savedContext: string;
+    savedContextEmpty: string;
     created: string;
     lastTouched: string;
     currentState: string;

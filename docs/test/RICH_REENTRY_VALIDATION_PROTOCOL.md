@@ -1,8 +1,16 @@
-# Rich Re-entry Validation Protocol
+﻿# Rich Re-entry Validation Protocol
 
 ## Question
 
 After 7-30 days, does image/link context help users recover faster than text-only cards?
+
+Study status: RICH_CAPTURE_UX_READY
+
+Not yet:
+
+- UPLOAD_READY
+- CAMERA_READY
+- SHARE_TARGET_READY
 
 ## Scope
 

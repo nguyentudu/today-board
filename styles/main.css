@@ -246,6 +246,12 @@ textarea {
   line-height: 1.35;
 }
 
+.rich-context-empty {
+  margin: 0;
+  color: #77746b;
+  line-height: 1.35;
+}
+
 .rich-link-list {
   display: grid;
   gap: 0.25rem;
