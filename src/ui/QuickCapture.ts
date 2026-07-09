@@ -7,7 +7,7 @@ interface QuickCaptureProps {
   initialNote: string;
   initialLink: string;
   onLanguageChange: (language: Language) => void;
-  onSave: (capture: QuickCapturePayload) => void;
+  onSave: (capture: QuickCapturePayload) => boolean;
   onOpenBoard: () => void;
 }
 
@@ -102,14 +102,20 @@ export function QuickCapture({
   captureRow.append(photoButton, voiceButton);
 
   const saveButton = createButton(text.quickCaptureSave, () => {
-    onSave({
+    const capture = {
       title: cardTitle.input.value,
       note: note.textarea.value,
       link: link.input.value,
       imageRef,
       audioRef,
-    });
-    status.textContent = text.quickCaptureSaved;
+    };
+
+    if (!hasCaptureContent(capture)) {
+      status.textContent = text.quickCaptureEmpty;
+      return;
+    }
+
+    status.textContent = onSave(capture) ? text.quickCaptureSaved : text.quickCaptureEmpty;
   });
   saveButton.className = "quick-save-button";
 
@@ -124,6 +130,12 @@ export function QuickCapture({
   shell.append(header, form);
 
   return shell;
+}
+
+function hasCaptureContent(capture: QuickCapturePayload): boolean {
+  return Boolean(
+    capture.title.trim() || capture.note.trim() || capture.link.trim() || capture.imageRef || capture.audioRef,
+  );
 }
 
 function createInput(label: string, placeholder: string, value: string): { field: HTMLLabelElement; input: HTMLInputElement } {

@@ -48,6 +48,7 @@ export const copy = {
     quickCaptureLink: "Link",
     quickCaptureSave: "Save",
     quickCaptureSaved: "Saved.",
+    quickCaptureEmpty: "Add a title, note, link, photo, or voice note before saving.",
     quickCaptureBack: "Open board",
     created: "Created",
     lastTouched: "Last touched",
@@ -118,6 +119,7 @@ export const copy = {
     quickCaptureLink: "Link",
     quickCaptureSave: "Lưu",
     quickCaptureSaved: "Đã lưu.",
+    quickCaptureEmpty: "Thêm tên, ghi chú, link, ảnh hoặc ghi âm trước khi lưu.",
     quickCaptureBack: "Mở board",
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
@@ -190,6 +192,7 @@ export const copy = {
     quickCaptureLink: string;
     quickCaptureSave: string;
     quickCaptureSaved: string;
+    quickCaptureEmpty: string;
     quickCaptureBack: string;
     created: string;
     lastTouched: string;

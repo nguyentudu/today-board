@@ -64,12 +64,16 @@ function render(nextBoard: BoardModel = board): void {
 
 render();
 
-function saveQuickCapture(capture: QuickCapturePayload): void {
+function saveQuickCapture(capture: QuickCapturePayload): boolean {
+  if (!hasQuickCaptureContent(capture)) {
+    return false;
+  }
+
   let nextBoard = addCard(board, capture.title);
   const cardId = nextBoard.cards[0]?.id;
 
   if (!cardId) {
-    return;
+    return false;
   }
 
   if (capture.note.trim()) {
@@ -86,6 +90,7 @@ function saveQuickCapture(capture: QuickCapturePayload): void {
 
   board = nextBoard;
   saveBoard(board);
+  return true;
 }
 
 function openBoard(): void {
@@ -99,6 +104,12 @@ function openBoard(): void {
 function openQuickCapture(): void {
   window.history.pushState(null, "", `${window.location.pathname}?mode=quick-capture`);
   render();
+}
+
+function hasQuickCaptureContent(capture: QuickCapturePayload): boolean {
+  return Boolean(
+    capture.title.trim() || capture.note.trim() || capture.link.trim() || capture.imageRef || capture.audioRef,
+  );
 }
 
 function applySharedLink(currentBoard: BoardModel): BoardModel {
