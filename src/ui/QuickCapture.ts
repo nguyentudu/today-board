@@ -38,6 +38,9 @@ export function QuickCapture({
   const title = document.createElement("h1");
   title.textContent = text.quickCaptureTitle;
 
+  const helper = document.createElement("p");
+  helper.textContent = text.quickCaptureHelper;
+
   const languageToggle = document.createElement("div");
   languageToggle.className = "language-toggle";
   languageToggle.setAttribute("aria-label", "Language");
@@ -51,7 +54,11 @@ export function QuickCapture({
     languageToggle.append(button);
   }
 
-  header.append(title, languageToggle);
+  const heading = document.createElement("div");
+  heading.className = "quick-capture-heading";
+  heading.append(title, helper);
+
+  header.append(heading, languageToggle);
 
   const form = document.createElement("form");
   form.className = "quick-capture-form";

@@ -23,6 +23,7 @@ interface BoardProps {
   onChange: (board: BoardModel) => void;
   onImportFileSelected: (fileName: string) => void;
   onLanguageChange: (language: Language) => void;
+  onQuickCapture: () => void;
 }
 
 export function Board({
@@ -32,6 +33,7 @@ export function Board({
   onChange,
   onImportFileSelected,
   onLanguageChange,
+  onQuickCapture,
 }: BoardProps): HTMLElement {
   const text = copy[language];
   const shell = document.createElement("div");
@@ -91,6 +93,11 @@ export function Board({
   exportButton.textContent = text.exportButton;
   exportButton.addEventListener("click", () => exportBoard(board));
 
+  const quickCaptureButton = document.createElement("button");
+  quickCaptureButton.type = "button";
+  quickCaptureButton.textContent = text.quickCaptureButton;
+  quickCaptureButton.addEventListener("click", onQuickCapture);
+
   const importInput = document.createElement("input");
   importInput.type = "file";
   importInput.accept = "application/json,.json";
@@ -120,7 +127,16 @@ export function Board({
     importInput.value = "";
   });
 
-  controls.append(languageToggle, newCardInput, addButton, exportButton, importButton, importInput, selectedFile);
+  controls.append(
+    languageToggle,
+    newCardInput,
+    addButton,
+    quickCaptureButton,
+    exportButton,
+    importButton,
+    importInput,
+    selectedFile,
+  );
   top.append(headingGroup, controls);
 
   const localNote = document.createElement("p");

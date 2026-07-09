@@ -43,6 +43,8 @@ export const copy = {
     fileLocalNote: "Small files can be saved here. Large files may not persist well in browser storage.",
     fileTooLarge: "Large file saved as a reference only.",
     quickCaptureTitle: "Quick capture",
+    quickCaptureButton: "Quick Capture",
+    quickCaptureHelper: "Use this when you only want to save something quickly and leave.",
     quickCaptureLink: "Link",
     quickCaptureSave: "Save",
     quickCaptureSaved: "Saved.",
@@ -111,6 +113,8 @@ export const copy = {
     fileLocalNote: "File nhỏ có thể lưu ở đây. File lớn có thể không giữ tốt trong bộ nhớ trình duyệt.",
     fileTooLarge: "File lớn chỉ được lưu như một dòng tham chiếu.",
     quickCaptureTitle: "Ghi nhanh",
+    quickCaptureButton: "Ghi nhanh",
+    quickCaptureHelper: "Dùng khi bạn chỉ muốn giữ lại nhanh rồi rời đi.",
     quickCaptureLink: "Link",
     quickCaptureSave: "Lưu",
     quickCaptureSaved: "Đã lưu.",
@@ -181,6 +185,8 @@ export const copy = {
     fileLocalNote: string;
     fileTooLarge: string;
     quickCaptureTitle: string;
+    quickCaptureButton: string;
+    quickCaptureHelper: string;
     quickCaptureLink: string;
     quickCaptureSave: string;
     quickCaptureSaved: string;

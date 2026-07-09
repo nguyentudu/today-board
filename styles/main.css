@@ -89,10 +89,10 @@ textarea {
 
 .board-controls {
   display: grid;
-  grid-template-columns: auto minmax(14rem, 1fr) auto auto auto;
+  grid-template-columns: auto minmax(14rem, 1fr) auto auto auto auto;
   gap: 0.6rem;
   align-items: center;
-  width: min(100%, 58rem);
+  width: min(100%, 68rem);
 }
 
 .file-input {
@@ -437,6 +437,17 @@ textarea {
   margin: 0;
   font-size: clamp(1.8rem, 8vw, 2.8rem);
   line-height: 1;
+}
+
+.quick-capture-heading {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.quick-capture-heading p {
+  margin: 0;
+  color: #626057;
+  line-height: 1.4;
 }
 
 .quick-capture-form {

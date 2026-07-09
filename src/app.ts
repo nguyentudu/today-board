@@ -57,6 +57,7 @@ function render(nextBoard: BoardModel = board): void {
         language = nextLanguage;
         render();
       },
+      onQuickCapture: openQuickCapture,
     }),
   );
 }
@@ -92,6 +93,11 @@ function openBoard(): void {
     ? window.location.pathname.replace(/quick-capture$/, "")
     : window.location.pathname;
   window.history.replaceState(null, "", nextPath || "./");
+  render();
+}
+
+function openQuickCapture(): void {
+  window.history.pushState(null, "", `${window.location.pathname}?mode=quick-capture`);
   render();
 }
 
