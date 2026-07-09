@@ -35,6 +35,18 @@ export const copy = {
     captureScreen: "Capture screen",
     screenCaptureUnsupported: "This browser does not support screen capture.",
     imageLocalNote: "Image is stored only in this browser or exported file.",
+    recordVoice: "Record voice",
+    stopRecording: "Stop recording",
+    voiceUnsupported: "This browser does not support voice recording.",
+    audioLocalNote: "Audio is stored only in this browser or exported file. No transcription.",
+    attachFile: "Attach file",
+    fileLocalNote: "Small files can be saved here. Large files may not persist well in browser storage.",
+    fileTooLarge: "Large file saved as a reference only.",
+    quickCaptureTitle: "Quick capture",
+    quickCaptureLink: "Link",
+    quickCaptureSave: "Save",
+    quickCaptureSaved: "Saved.",
+    quickCaptureBack: "Open board",
     created: "Created",
     lastTouched: "Last touched",
     currentState: "Current state",
@@ -91,6 +103,18 @@ export const copy = {
     captureScreen: "Chụp màn hình",
     screenCaptureUnsupported: "Trình duyệt này chưa hỗ trợ chụp màn hình.",
     imageLocalNote: "Ảnh chỉ lưu trên trình duyệt hoặc file export.",
+    recordVoice: "Ghi âm",
+    stopRecording: "Dừng ghi âm",
+    voiceUnsupported: "Trình duyệt này chưa hỗ trợ ghi âm.",
+    audioLocalNote: "Âm thanh chỉ lưu trên trình duyệt hoặc file export. Không chuyển thành chữ.",
+    attachFile: "Đính kèm file",
+    fileLocalNote: "File nhỏ có thể lưu ở đây. File lớn có thể không giữ tốt trong bộ nhớ trình duyệt.",
+    fileTooLarge: "File lớn chỉ được lưu như một dòng tham chiếu.",
+    quickCaptureTitle: "Ghi nhanh",
+    quickCaptureLink: "Link",
+    quickCaptureSave: "Lưu",
+    quickCaptureSaved: "Đã lưu.",
+    quickCaptureBack: "Mở board",
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
     currentState: "Vùng hiện tại",
@@ -149,6 +173,18 @@ export const copy = {
     captureScreen: string;
     screenCaptureUnsupported: string;
     imageLocalNote: string;
+    recordVoice: string;
+    stopRecording: string;
+    voiceUnsupported: string;
+    audioLocalNote: string;
+    attachFile: string;
+    fileLocalNote: string;
+    fileTooLarge: string;
+    quickCaptureTitle: string;
+    quickCaptureLink: string;
+    quickCaptureSave: string;
+    quickCaptureSaved: string;
+    quickCaptureBack: string;
     created: string;
     lastTouched: string;
     currentState: string;

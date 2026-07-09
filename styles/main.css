@@ -312,6 +312,28 @@ textarea {
   white-space: pre-wrap;
 }
 
+.audio-ref-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.audio-ref-list audio {
+  width: 100%;
+}
+
+.file-ref-list {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.file-ref-list a,
+.file-ref-list li {
+  color: #285f77;
+  overflow-wrap: anywhere;
+}
+
 .context-snapshot {
   display: grid;
   grid-template-columns: max-content 1fr;
@@ -397,6 +419,45 @@ textarea {
   padding-left: 1.1rem;
 }
 
+.quick-capture-shell {
+  width: min(34rem, 100%);
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.quick-capture-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.quick-capture-header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 8vw, 2.8rem);
+  line-height: 1;
+}
+
+.quick-capture-form {
+  display: grid;
+  gap: 0.75rem;
+  border: 1px solid #d7d1c5;
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 0.9rem;
+}
+
+.quick-capture-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.quick-save-button {
+  min-height: 3rem;
+}
+
 @media (max-width: 1100px) {
   .top-panel {
     align-items: stretch;
@@ -430,6 +491,10 @@ textarea {
   }
 
   .capture-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-capture-actions {
     grid-template-columns: 1fr;
   }
 }

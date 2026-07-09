@@ -154,6 +154,9 @@ export function Board({
           commit(updateCardRichContext(board, cardId, { richLinks })),
         onImageRefs: (cardId: string, imageRefs: string[]) =>
           commit(updateCardRichContext(board, cardId, { imageRefs })),
+        onAudioRefs: (cardId: string, audioRefs: string[]) =>
+          commit(updateCardRichContext(board, cardId, { audioRefs })),
+        onFileRefs: (cardId: string, fileRefs) => commit(updateCardRichContext(board, cardId, { fileRefs })),
         onBookmarkReason: (cardId: string, bookmarkReason: string) =>
           commit(updateCardRichContext(board, cardId, { bookmarkReason })),
         onHide: (cardId: string) => commit(hideCard(board, cardId)),

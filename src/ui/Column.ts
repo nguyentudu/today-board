@@ -16,6 +16,8 @@ interface ColumnProps {
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
+  onAudioRefs: (cardId: string, audioRefs: string[]) => void;
+  onFileRefs: (cardId: string, fileRefs: Board["cards"][number]["fileRefs"]) => void;
   onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
   onHide: (cardId: string) => void;
 }
@@ -60,6 +62,8 @@ export function Column(props: ColumnProps): HTMLElement {
           onIfYouReturn: props.onIfYouReturn,
           onRichLinks: props.onRichLinks,
           onImageRefs: props.onImageRefs,
+          onAudioRefs: props.onAudioRefs,
+          onFileRefs: props.onFileRefs,
           onBookmarkReason: props.onBookmarkReason,
           onHide: props.onHide,
         }),

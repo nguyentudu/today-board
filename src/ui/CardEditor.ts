@@ -1,6 +1,8 @@
-import type { Card } from "../domain/card";
+import type { Card, FileRef } from "../domain/card";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
+
+const SAFE_FILE_BYTES = 300_000;
 
 interface CardEditorProps {
   card: Card;
@@ -12,6 +14,8 @@ interface CardEditorProps {
   onIfYouReturn: (ifYouReturn: string) => void;
   onRichLinks: (richLinks: string[]) => void;
   onImageRefs: (imageRefs: string[]) => void;
+  onAudioRefs: (audioRefs: string[]) => void;
+  onFileRefs: (fileRefs: FileRef[]) => void;
   onBookmarkReason: (bookmarkReason: string) => void;
 }
 
@@ -25,6 +29,8 @@ export function CardEditor({
   onIfYouReturn,
   onRichLinks,
   onImageRefs,
+  onAudioRefs,
+  onFileRefs,
   onBookmarkReason,
 }: CardEditorProps): HTMLDivElement {
   const text = copy[language];
@@ -125,7 +131,7 @@ export function CardEditor({
   const imagesField = createTextareaField(text.imageRefs, text.imageRefsEmpty, card.imageRefs.join("\n"), (value) =>
     onImageRefs(splitLines(value)),
   );
-  const captureControls = createCaptureControls(card, text, onImageRefs);
+  const captureControls = createCaptureControls(card, text, onImageRefs, onAudioRefs, onFileRefs);
   const bookmarkReasonField = createTextareaField(
     text.bookmarkReason,
     text.bookmarkReasonEmpty,
@@ -152,6 +158,8 @@ function createCaptureControls(
   card: Card,
   text: (typeof copy)[Language],
   onImageRefs: (imageRefs: string[]) => void,
+  onAudioRefs: (audioRefs: string[]) => void,
+  onFileRefs: (fileRefs: FileRef[]) => void,
 ): HTMLDivElement {
   const controls = document.createElement("div");
   controls.className = "capture-controls";
@@ -181,12 +189,31 @@ function createCaptureControls(
     }
   });
 
+  const voiceButton = createVoiceButton(card, text, onAudioRefs, status);
+
+  const fileInput = createFileInput(
+    (fileRef) => onFileRefs([...card.fileRefs, fileRef]),
+    (message) => {
+      status.textContent = message;
+    },
+    text,
+  );
+  const fileButton = createCaptureButton(text.attachFile, () => fileInput.click());
+
   const note = document.createElement("p");
   note.className = "capture-note";
   note.textContent = text.imageLocalNote;
 
-  actions.append(uploadButton, cameraButton, screenButton);
-  controls.append(uploadInput, cameraInput, actions, note, status);
+  const audioNote = document.createElement("p");
+  audioNote.className = "capture-note";
+  audioNote.textContent = text.audioLocalNote;
+
+  const fileNote = document.createElement("p");
+  fileNote.className = "capture-note";
+  fileNote.textContent = text.fileLocalNote;
+
+  actions.append(uploadButton, cameraButton, screenButton, voiceButton, fileButton);
+  controls.append(uploadInput, cameraInput, fileInput, actions, note, audioNote, fileNote, status);
 
   return controls;
 }
@@ -201,6 +228,97 @@ function createCaptureButton(label: string, onClick: () => void | Promise<void>)
   });
 
   return button;
+}
+
+function createVoiceButton(
+  card: Card,
+  text: (typeof copy)[Language],
+  onAudioRefs: (audioRefs: string[]) => void,
+  status: HTMLParagraphElement,
+): HTMLButtonElement {
+  let recorder: MediaRecorder | undefined;
+  let stream: MediaStream | undefined;
+  let chunks: Blob[] = [];
+
+  const button = createCaptureButton(text.recordVoice, async () => {
+    status.textContent = "";
+
+    if (recorder?.state === "recording") {
+      recorder.stop();
+      button.textContent = text.recordVoice;
+      return;
+    }
+
+    const mediaDevices = navigator.mediaDevices as
+      | (MediaDevices & { getUserMedia?: (constraints: MediaStreamConstraints) => Promise<MediaStream> })
+      | undefined;
+
+    if (!mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
+      status.textContent = text.voiceUnsupported;
+      return;
+    }
+
+    stream = await mediaDevices.getUserMedia({ audio: true });
+    chunks = [];
+    recorder = new MediaRecorder(stream);
+    recorder.addEventListener("dataavailable", (event) => {
+      if (event.data.size > 0) {
+        chunks.push(event.data);
+      }
+    });
+    recorder.addEventListener(
+      "stop",
+      async () => {
+        const audioBlob = new Blob(chunks, { type: recorder?.mimeType || "audio/webm" });
+        const dataUrl = await blobToDataUrl(audioBlob);
+        onAudioRefs([...card.audioRefs, dataUrl]);
+
+        for (const track of stream?.getTracks() ?? []) {
+          track.stop();
+        }
+      },
+      { once: true },
+    );
+    recorder.start();
+    button.textContent = text.stopRecording;
+  });
+
+  return button;
+}
+
+function createFileInput(
+  onFile: (fileRef: FileRef) => void,
+  onStatus: (message: string) => void,
+  text: (typeof copy)[Language],
+): HTMLInputElement {
+  const input = document.createElement("input");
+  input.className = "file-input";
+  input.type = "file";
+  input.addEventListener("change", async () => {
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const fileRef: FileRef = {
+      name: file.name,
+      type: file.type || "application/octet-stream",
+      size: file.size,
+    };
+
+    if (file.size <= SAFE_FILE_BYTES) {
+      fileRef.dataUrl = await blobToDataUrl(file);
+      onStatus("");
+    } else {
+      onStatus(text.fileTooLarge);
+    }
+
+    onFile(fileRef);
+    input.value = "";
+  });
+
+  return input;
 }
 
 function createImageInput(onImage: (dataUrl: string) => void): HTMLInputElement {
@@ -221,6 +339,15 @@ function createImageInput(onImage: (dataUrl: string) => void): HTMLInputElement 
   });
 
   return input;
+}
+
+function blobToDataUrl(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(String(reader.result ?? "")));
+    reader.addEventListener("error", () => reject(reader.error ?? new Error("Could not read file.")));
+    reader.readAsDataURL(blob);
+  });
 }
 
 function readImageFile(file: File): Promise<string> {

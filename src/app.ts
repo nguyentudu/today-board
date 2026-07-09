@@ -1,8 +1,9 @@
 import type { Board as BoardModel } from "./domain/board";
-import { addCard, updateCardReentryNotes, updateCardRichContext } from "./domain/board";
+import { addCard, updateCardNote, updateCardReentryNotes, updateCardRichContext } from "./domain/board";
 import { loadBoard, saveBoard } from "./storage/localStore";
 import { Board as BoardView } from "./ui/Board";
 import type { Language } from "./ui/i18n";
+import { QuickCapture, type QuickCapturePayload } from "./ui/QuickCapture";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -15,13 +16,34 @@ let board = loadBoard();
 let selectedImportFileName = "";
 let language: Language = "vi";
 
-board = applySharedLink(board);
+if (!isQuickCaptureMode()) {
+  board = applySharedLink(board);
+}
 saveBoard(board);
 registerServiceWorker();
 
 function render(nextBoard: BoardModel = board): void {
   board = nextBoard;
   saveBoard(board);
+
+  if (isQuickCaptureMode()) {
+    root.replaceChildren(
+      QuickCapture({
+        language,
+        initialTitle: getShareParam("title") || getShareParam("url"),
+        initialNote: getShareParam("text"),
+        initialLink: getShareParam("url"),
+        onLanguageChange: (nextLanguage: Language) => {
+          language = nextLanguage;
+          render();
+        },
+        onSave: saveQuickCapture,
+        onOpenBoard: openBoard,
+      }),
+    );
+    return;
+  }
+
   root.replaceChildren(
     BoardView({
       board,
@@ -40,6 +62,38 @@ function render(nextBoard: BoardModel = board): void {
 }
 
 render();
+
+function saveQuickCapture(capture: QuickCapturePayload): void {
+  let nextBoard = addCard(board, capture.title);
+  const cardId = nextBoard.cards[0]?.id;
+
+  if (!cardId) {
+    return;
+  }
+
+  if (capture.note.trim()) {
+    nextBoard = updateCardNote(nextBoard, cardId, capture.note);
+  }
+
+  const richLinks = capture.link.trim() ? [capture.link.trim()] : [];
+  const imageRefs = capture.imageRef ? [capture.imageRef] : [];
+  const audioRefs = capture.audioRef ? [capture.audioRef] : [];
+
+  if (richLinks.length > 0 || imageRefs.length > 0 || audioRefs.length > 0) {
+    nextBoard = updateCardRichContext(nextBoard, cardId, { richLinks, imageRefs, audioRefs });
+  }
+
+  board = nextBoard;
+  saveBoard(board);
+}
+
+function openBoard(): void {
+  const nextPath = window.location.pathname.endsWith("/quick-capture")
+    ? window.location.pathname.replace(/quick-capture$/, "")
+    : window.location.pathname;
+  window.history.replaceState(null, "", nextPath || "./");
+  render();
+}
 
 function applySharedLink(currentBoard: BoardModel): BoardModel {
   const params = new URLSearchParams(window.location.search);
@@ -76,6 +130,15 @@ function applySharedLink(currentBoard: BoardModel): BoardModel {
 
   window.history.replaceState(null, "", window.location.pathname);
   return nextBoard;
+}
+
+function isQuickCaptureMode(): boolean {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("mode") === "quick-capture" || window.location.pathname.endsWith("/quick-capture");
+}
+
+function getShareParam(name: "title" | "text" | "url"): string {
+  return new URLSearchParams(window.location.search).get(name)?.trim() ?? "";
 }
 
 function registerServiceWorker(): void {

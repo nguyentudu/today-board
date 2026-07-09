@@ -16,6 +16,8 @@ interface CardProps {
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
+  onAudioRefs: (cardId: string, audioRefs: string[]) => void;
+  onFileRefs: (cardId: string, fileRefs: BoardCard["fileRefs"]) => void;
   onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
   onHide: (cardId: string) => void;
 }
@@ -31,6 +33,8 @@ export function Card({
   onIfYouReturn,
   onRichLinks,
   onImageRefs,
+  onAudioRefs,
+  onFileRefs,
   onBookmarkReason,
   onHide,
 }: CardProps): HTMLElement {
@@ -48,6 +52,8 @@ export function Card({
     onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
     onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
     onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+    onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+    onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
     onBookmarkReason: (bookmarkReason) => onBookmarkReason(card.id, bookmarkReason),
   });
 
@@ -158,6 +164,46 @@ function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTML
     section.append(gallery);
   }
 
+  if (card.audioRefs.length > 0) {
+    const audioList = document.createElement("div");
+    audioList.className = "audio-ref-list";
+
+    for (const ref of card.audioRefs) {
+      if (ref.startsWith("data:audio/")) {
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.src = ref;
+        audioList.append(audio);
+      }
+    }
+
+    section.append(audioList);
+  }
+
+  if (card.fileRefs.length > 0) {
+    const fileList = document.createElement("ul");
+    fileList.className = "file-ref-list";
+
+    for (const fileRef of card.fileRefs) {
+      const item = document.createElement("li");
+      const meta = `${fileRef.name} · ${formatFileSize(fileRef.size)}${fileRef.type ? ` · ${fileRef.type}` : ""}`;
+
+      if (fileRef.dataUrl) {
+        const link = document.createElement("a");
+        link.href = fileRef.dataUrl;
+        link.download = fileRef.name;
+        link.textContent = meta;
+        item.append(link);
+      } else {
+        item.textContent = meta;
+      }
+
+      fileList.append(item);
+    }
+
+    section.append(fileList);
+  }
+
   if (section.children.length === 1) {
     const empty = document.createElement("p");
     empty.className = "rich-context-empty";
@@ -166,6 +212,18 @@ function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTML
   }
 
   return section;
+}
+
+function formatFileSize(size: number): string {
+  if (size < 1024) {
+    return `${size} B`;
+  }
+
+  if (size < 1024 * 1024) {
+    return `${Math.round(size / 1024)} KB`;
+  }
+
+  return `${(size / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function safeHref(value: string): string {
