@@ -6,11 +6,13 @@ After 7-30 days, does image/link context help users recover faster than text-onl
 
 Study status: RICH_CAPTURE_UX_READY
 
-Not yet:
+Status labels:
 
-- UPLOAD_READY
-- CAMERA_READY
-- SHARE_TARGET_READY
+- IMAGE_UPLOAD_READY
+- CAMERA_CAPTURE_READY_IF_SUPPORTED
+- SCREENSHOT_CAPTURE_READY_IF_SUPPORTED
+- SHARE_TARGET_READY_IF_SUPPORTED
+- CLOUD_STORAGE_NOT_ADDED
 
 ## Scope
 
@@ -25,7 +27,7 @@ Do not add:
 - analytics
 - tracking
 - voice
-- file upload
+- cloud upload
 - mobile app
 - search
 - weekly review
@@ -37,12 +39,12 @@ Ask each tester to create 1-3 cards.
 For at least one card, ask them to add:
 
 - one or more links
-- one or more image data URLs or local image references
+- one or more uploaded local images, captured photos, screen captures if supported, image data URLs, or local image references
 - bookmark reason: "Vì sao lưu?"
 
-Do not upload files.
-
 Do not use cloud storage.
+
+Do not claim camera, screen capture, or share target support on browsers that do not expose those capabilities.
 
 Do not remind testers to return.
 

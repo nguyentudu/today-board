@@ -30,6 +30,11 @@ export const copy = {
     bookmarkReasonEmpty: "Why do you want to keep this link/image?",
     savedContext: "Saved context",
     savedContextEmpty: "No saved link, image, or bookmark yet.",
+    uploadImage: "Upload image",
+    capturePhoto: "Capture photo",
+    captureScreen: "Capture screen",
+    screenCaptureUnsupported: "This browser does not support screen capture.",
+    imageLocalNote: "Image is stored only in this browser or exported file.",
     created: "Created",
     lastTouched: "Last touched",
     currentState: "Current state",
@@ -81,6 +86,11 @@ export const copy = {
     bookmarkReasonEmpty: "Vì sao bạn muốn giữ lại link/ảnh này?",
     savedContext: "Ngữ cảnh đã lưu",
     savedContextEmpty: "Chưa lưu link, ảnh hoặc bookmark.",
+    uploadImage: "Tải ảnh lên",
+    capturePhoto: "Chụp ảnh",
+    captureScreen: "Chụp màn hình",
+    screenCaptureUnsupported: "Trình duyệt này chưa hỗ trợ chụp màn hình.",
+    imageLocalNote: "Ảnh chỉ lưu trên trình duyệt hoặc file export.",
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
     currentState: "Vùng hiện tại",
@@ -134,6 +144,11 @@ export const copy = {
     bookmarkReasonEmpty: string;
     savedContext: string;
     savedContextEmpty: string;
+    uploadImage: string;
+    capturePhoto: string;
+    captureScreen: string;
+    screenCaptureUnsupported: string;
+    imageLocalNote: string;
     created: string;
     lastTouched: string;
     currentState: string;
