@@ -10,8 +10,10 @@ import {
 } from "../domain/board";
 import type { BoardState } from "../domain/state";
 import { BOARD_STATES } from "../domain/state";
+import { formatBytes } from "../media/localMedia";
+import { cleanupHiddenCardMedia, getStorageDiagnostics } from "../storage/diagnostics";
 import { exportBoard, readImportedBoard } from "../storage/exportBoard";
-import { saveBoard } from "../storage/localStore";
+import { BOARD_STORAGE_WARNING_BYTES, trySaveBoard } from "../storage/localStore";
 import { Column } from "./Column";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
@@ -56,6 +58,10 @@ export function Board({
   const controls = document.createElement("div");
   controls.className = "board-controls";
 
+  const storageMessage = document.createElement("p");
+  storageMessage.className = "storage-message";
+  storageMessage.setAttribute("role", "status");
+
   const languageToggle = document.createElement("div");
   languageToggle.className = "language-toggle";
   languageToggle.setAttribute("aria-label", "Language");
@@ -78,8 +84,9 @@ export function Board({
   addButton.type = "button";
   addButton.textContent = text.createButton;
   addButton.addEventListener("click", () => {
-    onChange(addCard(board, newCardInput.value));
-    newCardInput.value = "";
+    if (commit(addCard(board, newCardInput.value))) {
+      newCardInput.value = "";
+    }
   });
 
   newCardInput.addEventListener("keydown", (event) => {
@@ -123,7 +130,7 @@ export function Board({
 
     const imported = await readImportedBoard(file);
     onImportFileSelected(file.name);
-    onChange(imported);
+    commit(imported);
     importInput.value = "";
   });
 
@@ -143,13 +150,20 @@ export function Board({
   localNote.className = "local-note";
   localNote.textContent = text.savedNote;
 
+  const storagePanel = createStoragePanel(board, language, storageMessage, (nextBoard) => commit(nextBoard));
+
   const columns = document.createElement("div");
   columns.className = "columns";
 
-  const commit = (nextBoard: BoardModel) => {
-    saveBoard(nextBoard);
+  function commit(nextBoard: BoardModel): boolean {
+    if (!trySaveBoard(nextBoard)) {
+      storageMessage.textContent = `${text.storageNotEnough} ${text.cardNotSaved} ${text.storageAdvice}`;
+      return false;
+    }
+
     onChange(nextBoard);
-  };
+    return true;
+  }
 
   for (const state of BOARD_STATES) {
     columns.append(
@@ -196,7 +210,86 @@ export function Board({
 
   testNotes.append(testNotesTitle, testNotesList);
 
-  shell.append(top, localNote, columns, testNotes);
+  shell.append(top, localNote, storagePanel, columns, testNotes);
 
   return shell;
+}
+
+function createStoragePanel(
+  board: BoardModel,
+  language: Language,
+  storageMessage: HTMLParagraphElement,
+  onCleanup: (board: BoardModel) => boolean,
+): HTMLElement {
+  const text = copy[language];
+  const diagnostics = getStorageDiagnostics(board);
+  const panel = document.createElement("section");
+  panel.className = "storage-panel";
+
+  const title = document.createElement("h2");
+  title.textContent = text.storageIndicator;
+
+  const percent = Math.min(100, Math.round((diagnostics.boardBytes / BOARD_STORAGE_WARNING_BYTES) * 100));
+  const summary = document.createElement("p");
+  summary.textContent = `${text.storageIndicator}: ${formatBytes(diagnostics.boardBytes)}. ${text.storagePercent}: ${percent}%. ${text.storageWarningThreshold}: ${formatBytes(BOARD_STORAGE_WARNING_BYTES)}.`;
+
+  const details = document.createElement("ul");
+  details.className = "storage-details";
+
+  for (const item of [
+    `${text.storageImages}: ${diagnostics.imageCount} / ${formatBytes(diagnostics.imageBytes)}`,
+    `${text.storageAudio}: ${diagnostics.audioCount} / ${formatBytes(diagnostics.audioBytes)}`,
+    `${text.storageFiles}: ${diagnostics.fileCount} / ${formatBytes(diagnostics.fileBytes)}`,
+    `${text.storageCards}: ${diagnostics.cardSizes.length}`,
+  ]) {
+    const row = document.createElement("li");
+    row.textContent = item;
+    details.append(row);
+  }
+
+  const cardSizes = document.createElement("details");
+  const cardSizesSummary = document.createElement("summary");
+  cardSizesSummary.textContent = text.storageCards;
+  const cardSizeList = document.createElement("ul");
+
+  for (const card of diagnostics.cardSizes.slice(0, 12)) {
+    const item = document.createElement("li");
+    item.textContent = `${card.title}: ${formatBytes(card.bytes)}`;
+    cardSizeList.append(item);
+  }
+
+  cardSizes.append(cardSizesSummary, cardSizeList);
+
+  const actions = document.createElement("div");
+  actions.className = "storage-actions";
+
+  const exportBeforeCleanup = document.createElement("button");
+  exportBeforeCleanup.type = "button";
+  exportBeforeCleanup.className = "quiet-button";
+  exportBeforeCleanup.textContent = text.storageExportBeforeCleanup;
+  exportBeforeCleanup.addEventListener("click", () => exportBoard(board));
+
+  const cleanup = document.createElement("button");
+  cleanup.type = "button";
+  cleanup.className = "quiet-button";
+  cleanup.textContent = text.storageCleanup;
+  cleanup.addEventListener("click", () => {
+    const hiddenMediaCount = board.cards
+      .filter((card) => card.hidden)
+      .reduce((total, card) => total + card.imageRefs.length + card.audioRefs.length + card.fileRefs.length, 0);
+
+    if (hiddenMediaCount === 0) {
+      storageMessage.textContent = text.storageCleanupEmpty;
+      return;
+    }
+
+    if (onCleanup(cleanupHiddenCardMedia(board))) {
+      storageMessage.textContent = text.storageCleanupDone;
+    }
+  });
+
+  actions.append(exportBeforeCleanup, cleanup);
+  panel.append(title, summary, details, cardSizes, actions, storageMessage);
+
+  return panel;
 }

@@ -134,6 +134,41 @@ textarea {
   color: #706f65;
 }
 
+.storage-panel {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0 0 1rem;
+  border: 1px solid #d8d2c4;
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.72);
+  padding: 0.8rem;
+}
+
+.storage-panel h2 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.storage-panel p,
+.storage-message {
+  margin: 0;
+  color: #68665d;
+  line-height: 1.35;
+}
+
+.storage-details {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.storage-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .columns {
   display: grid;
   grid-template-columns: repeat(4, minmax(15rem, 1fr));

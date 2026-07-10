@@ -53,6 +53,15 @@ export const copy = {
     storageAdvice: "Remove older media or export the board as a backup.",
     storageIndicator: "Board size",
     storageWarningThreshold: "Warning threshold",
+    storagePercent: "Safe quota used",
+    storageImages: "Images",
+    storageAudio: "Audio",
+    storageFiles: "Files",
+    storageCards: "Cards",
+    storageCleanup: "Clean hidden media",
+    storageExportBeforeCleanup: "Export before cleanup",
+    storageCleanupDone: "Hidden media cleaned.",
+    storageCleanupEmpty: "No hidden media to clean.",
     removeMedia: "Remove",
     voiceLimit: "Voice recording stops after 20 seconds.",
     quickCaptureTitle: "Quick capture",
@@ -138,6 +147,15 @@ export const copy = {
     storageAdvice: "Hãy xóa media cũ hoặc xuất board để sao lưu.",
     storageIndicator: "Dung lượng board",
     storageWarningThreshold: "Ngưỡng cảnh báo",
+    storagePercent: "Đã dùng trong ngưỡng an toàn",
+    storageImages: "Ảnh",
+    storageAudio: "Âm thanh",
+    storageFiles: "File",
+    storageCards: "Card",
+    storageCleanup: "Dọn media đã ẩn",
+    storageExportBeforeCleanup: "Xuất trước khi dọn",
+    storageCleanupDone: "Đã dọn media trong card ẩn.",
+    storageCleanupEmpty: "Không có media ẩn để dọn.",
     removeMedia: "Xóa",
     voiceLimit: "Ghi âm tự dừng sau 20 giây.",
     quickCaptureTitle: "Ghi nhanh",
@@ -225,6 +243,15 @@ export const copy = {
     storageAdvice: string;
     storageIndicator: string;
     storageWarningThreshold: string;
+    storagePercent: string;
+    storageImages: string;
+    storageAudio: string;
+    storageFiles: string;
+    storageCards: string;
+    storageCleanup: string;
+    storageExportBeforeCleanup: string;
+    storageCleanupDone: string;
+    storageCleanupEmpty: string;
     removeMedia: string;
     voiceLimit: string;
     quickCaptureTitle: string;
