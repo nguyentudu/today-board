@@ -19,6 +19,7 @@ interface ColumnProps {
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
   onFileRefs: (cardId: string, fileRefs: Board["cards"][number]["fileRefs"]) => void;
   onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
+  onTags: (cardId: string, tags: string[]) => void;
   onHide: (cardId: string) => void;
 }
 
@@ -65,6 +66,7 @@ export function Column(props: ColumnProps): HTMLElement {
           onAudioRefs: props.onAudioRefs,
           onFileRefs: props.onFileRefs,
           onBookmarkReason: props.onBookmarkReason,
+          onTags: props.onTags,
           onHide: props.onHide,
         }),
       );

@@ -23,6 +23,7 @@ export interface Card {
   audioRefs: string[];
   fileRefs: FileRef[];
   bookmarkReason: string;
+  tags: string[];
   state: BoardState;
   hidden: boolean;
   createdAt: string;
@@ -51,6 +52,7 @@ export function createCard(title: string, state: BoardState = "continue"): Card 
     audioRefs: [],
     fileRefs: [],
     bookmarkReason: "",
+    tags: [],
     state,
     hidden: false,
     createdAt: now,
@@ -77,6 +79,34 @@ export function normalizeReentryField(value: string): string {
 
 export function normalizeList(values: string[]): string[] {
   return values.map((value) => value.trim()).filter(Boolean).slice(0, 12);
+}
+
+export function normalizeTags(values: unknown[]): string[] {
+  const tags: string[] = [];
+
+  for (const value of values) {
+    if (typeof value !== "string") {
+      continue;
+    }
+
+    const tag = value
+      .trim()
+      .replace(/^#+/, "")
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}_-]+/gu, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 32);
+
+    if (tag && !tags.includes(tag)) {
+      tags.push(tag);
+    }
+
+    if (tags.length >= 8) {
+      break;
+    }
+  }
+
+  return tags;
 }
 
 export function normalizeFileRefs(values: unknown[]): FileRef[] {

@@ -19,6 +19,7 @@ interface CardProps {
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
   onFileRefs: (cardId: string, fileRefs: BoardCard["fileRefs"]) => void;
   onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
+  onTags: (cardId: string, tags: string[]) => void;
   onHide: (cardId: string) => void;
 }
 
@@ -36,6 +37,7 @@ export function Card({
   onAudioRefs,
   onFileRefs,
   onBookmarkReason,
+  onTags,
   onHide,
 }: CardProps): HTMLElement {
   const text = copy[language];
@@ -69,6 +71,7 @@ export function Card({
           onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
           onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
           onBookmarkReason: (bookmarkReason) => onBookmarkReason(card.id, bookmarkReason),
+          onTags: (tags) => onTags(card.id, tags),
         }),
       );
     } else {
@@ -121,6 +124,10 @@ export function Card({
     );
 
     summary.append(title, snapshot, meta, actions);
+    const tags = renderTags(card.tags, 3);
+    if (tags) {
+      summary.insertBefore(tags, actions);
+    }
     return summary;
   };
 
@@ -309,6 +316,15 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
   const detail = document.createElement("section");
   detail.className = "readable-detail";
 
+  const tags = renderTags(card.tags);
+  if (tags) {
+    const block = document.createElement("div");
+    const heading = document.createElement("h4");
+    heading.textContent = text.tags;
+    block.append(heading, tags);
+    detail.append(block);
+  }
+
   for (const [label, value, empty] of [
     [text.contextSnapshot, card.contextSnapshot, text.contextSnapshotEmpty],
     [text.whyStillOpen, card.whyStillOpen, text.whyStillOpenEmpty],
@@ -325,6 +341,33 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
   }
 
   return detail;
+}
+
+function renderTags(tags: string[], limit = tags.length): HTMLElement | undefined {
+  const visibleTags = tags.slice(0, limit);
+
+  if (visibleTags.length === 0) {
+    return undefined;
+  }
+
+  const list = document.createElement("div");
+  list.className = "tag-list";
+
+  for (const tag of visibleTags) {
+    const chip = document.createElement("span");
+    chip.className = "tag-chip";
+    chip.textContent = `#${tag}`;
+    list.append(chip);
+  }
+
+  if (tags.length > limit) {
+    const overflow = document.createElement("span");
+    overflow.className = "tag-chip tag-overflow";
+    overflow.textContent = `+${tags.length - limit}`;
+    list.append(overflow);
+  }
+
+  return list;
 }
 
 function renderSnapshot(card: BoardCard, text: (typeof copy)[Language], language: Language): HTMLElement {

@@ -1,5 +1,13 @@
 import type { Card } from "./card";
-import { createCard, normalizeFileRefs, normalizeList, normalizeReentryField, touchCard, type FileRef } from "./card";
+import {
+  createCard,
+  normalizeFileRefs,
+  normalizeList,
+  normalizeReentryField,
+  normalizeTags,
+  touchCard,
+  type FileRef,
+} from "./card";
 import type { BoardState } from "./state";
 
 export interface Board {
@@ -79,6 +87,15 @@ export function updateCardRichContext(
       fileRefs: richContext.fileRefs === undefined ? card.fileRefs : normalizeFileRefs(richContext.fileRefs),
       bookmarkReason:
         richContext.bookmarkReason === undefined ? card.bookmarkReason : richContext.bookmarkReason.slice(0, 360),
+    }),
+  );
+}
+
+export function updateCardTags(board: Board, cardId: string, tags: string[]): Board {
+  return updateCard(board, cardId, (card) =>
+    touchCard({
+      ...card,
+      tags: normalizeTags(tags),
     }),
   );
 }

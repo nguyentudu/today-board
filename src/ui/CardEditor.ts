@@ -1,4 +1,5 @@
 import type { Card, FileRef } from "../domain/card";
+import { normalizeTags } from "../domain/card";
 import {
   MAX_AUDIO_BYTES,
   MAX_IMAGE_BYTES,
@@ -27,6 +28,7 @@ interface CardEditorProps {
   onAudioRefs: (audioRefs: string[]) => void;
   onFileRefs: (fileRefs: FileRef[]) => void;
   onBookmarkReason: (bookmarkReason: string) => void;
+  onTags: (tags: string[]) => void;
 }
 
 export function CardEditor({
@@ -42,6 +44,7 @@ export function CardEditor({
   onAudioRefs,
   onFileRefs,
   onBookmarkReason,
+  onTags,
 }: CardEditorProps): HTMLDivElement {
   const text = copy[language];
   const editor = document.createElement("div");
@@ -145,6 +148,7 @@ export function CardEditor({
     card.bookmarkReason,
     onBookmarkReason,
   );
+  const tagsField = createTagField(card.tags, text, onTags);
 
   editor.append(
     titleField,
@@ -155,9 +159,45 @@ export function CardEditor({
     linksField,
     captureControls,
     bookmarkReasonField,
+    tagsField,
   );
 
   return editor;
+}
+
+function createTagField(
+  tags: string[],
+  text: (typeof copy)[Language],
+  onTags: (tags: string[]) => void,
+): HTMLLabelElement {
+  const field = document.createElement("label");
+  field.className = "card-field tag-field";
+
+  const label = document.createElement("span");
+  label.className = "field-label";
+  label.textContent = text.tags;
+
+  const helper = document.createElement("span");
+  helper.className = "field-helper";
+  helper.textContent = text.tagsHelper;
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = tags.map((tag) => `#${tag}`).join(" ");
+  input.placeholder = text.tagsPlaceholder;
+  input.ariaLabel = text.tags;
+  input.maxLength = 280;
+  const saveTags = () => onTags(normalizeTags(input.value.split(/[,\s]+/)));
+  input.addEventListener("change", saveTags);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      saveTags();
+    }
+  });
+
+  field.append(label, helper, input);
+  return field;
 }
 
 function createCaptureControls(

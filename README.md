@@ -141,10 +141,13 @@ For controlled public testing, use a static host only. See [docs/deploy/static-d
 Re-entry Core                  EARLY PASS
 Quick Capture                  PASS
 Rich Media                     PASS
-Storage Foundation             PASS WITH WARNING
-Raw Base64 Hidden              IN PROGRESS
-Mobile Card Collapse           IN PROGRESS
-Retrieval Surface              NEXT
-IndexedDB Migration            NOT YET
+Storage Foundation             PASS WITH ARCHITECTURAL WARNING
+Card Density                   PASS
+Zone Auto-height               PASS ON ANDROID
+Retrieval Surface              IN PROGRESS
+Mobile Polish                  NEXT
+Install Readiness              LATER
+Cross-device Verification      REQUIRED
+IndexedDB                      LIKELY LATER
 Weekly Review                  DEFERRED
 ```

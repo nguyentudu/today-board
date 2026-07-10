@@ -95,6 +95,31 @@ export const copy = {
     linksLabel: "links",
     filesLabel: "files",
     noSnapshotSummary: "No snapshot yet.",
+    retrievalTitle: "Find again",
+    retrievalHelper: "Find something you saved.",
+    searchCards: "Search cards...",
+    resultCount: "results",
+    noResults: "No matching cards found.",
+    clearSearch: "Clear search",
+    clearAllFilters: "Clear all filters",
+    filtering: "Filtering:",
+    stateFilter: "State",
+    allStates: "All",
+    clearFilter: "Clear",
+    mediaFilters: "Media",
+    hasImage: "Has image",
+    hasVoice: "Has voice",
+    hasFile: "Has file",
+    hasLink: "Has link",
+    lastTouchedFilter: "Last touched",
+    anyTime: "Any time",
+    todayFilter: "Today",
+    last7: "Last 7 days",
+    last30: "Last 30 days",
+    older30: "Older than 30 days",
+    tags: "Tags",
+    tagsHelper: "Use lightweight tags to find this later.",
+    tagsPlaceholder: "moon, research",
     testNotesTitle: "Test Notes",
     testNotes: ["Use this quietly.", "You can ignore everything here.", "No correct way to use this."],
     stateLabels: {
@@ -208,6 +233,31 @@ export const copy = {
     linksLabel: "link",
     filesLabel: "file",
     noSnapshotSummary: "Chưa ghi snapshot.",
+    retrievalTitle: "Tìm lại",
+    retrievalHelper: "Tìm một điều bạn đã giữ lại.",
+    searchCards: "Tìm trong card...",
+    resultCount: "kết quả",
+    noResults: "Không tìm thấy card phù hợp.",
+    clearSearch: "Xóa tìm kiếm",
+    clearAllFilters: "Xóa tất cả bộ lọc",
+    filtering: "Đang lọc:",
+    stateFilter: "Vùng",
+    allStates: "Tất cả",
+    clearFilter: "Xóa",
+    mediaFilters: "Media",
+    hasImage: "Có ảnh",
+    hasVoice: "Có ghi âm",
+    hasFile: "Có file",
+    hasLink: "Có link",
+    lastTouchedFilter: "Lần cuối chạm",
+    anyTime: "Mọi thời điểm",
+    todayFilter: "Hôm nay",
+    last7: "7 ngày gần đây",
+    last30: "30 ngày gần đây",
+    older30: "Lâu hơn 30 ngày",
+    tags: "Thẻ",
+    tagsHelper: "Dùng thẻ nhẹ để tìm lại sau.",
+    tagsPlaceholder: "moon, nghiên cứu",
     testNotesTitle: "Test Notes",
     testNotes: ["Dùng thật nhẹ.", "Bạn có thể bỏ qua mọi thứ ở đây.", "Không có cách dùng đúng."],
     stateLabels: {
@@ -323,6 +373,31 @@ export const copy = {
     linksLabel: string;
     filesLabel: string;
     noSnapshotSummary: string;
+    retrievalTitle: string;
+    retrievalHelper: string;
+    searchCards: string;
+    resultCount: string;
+    noResults: string;
+    clearSearch: string;
+    clearAllFilters: string;
+    filtering: string;
+    stateFilter: string;
+    allStates: string;
+    clearFilter: string;
+    mediaFilters: string;
+    hasImage: string;
+    hasVoice: string;
+    hasFile: string;
+    hasLink: string;
+    lastTouchedFilter: string;
+    anyTime: string;
+    todayFilter: string;
+    last7: string;
+    last30: string;
+    older30: string;
+    tags: string;
+    tagsHelper: string;
+    tagsPlaceholder: string;
     testNotesTitle: string;
     testNotes: string[];
     stateLabels: Record<BoardState, string>;

@@ -6,8 +6,18 @@ import {
   updateCardNote,
   updateCardReentryNotes,
   updateCardRichContext,
+  updateCardTags,
   type Board as BoardModel,
 } from "../domain/board";
+import {
+  collectTags,
+  createDefaultRetrievalQuery,
+  filterCards,
+  isRetrievalActive,
+  type LastTouchedFilter,
+  type MediaFilter,
+  type RetrievalQuery,
+} from "../domain/retrieval";
 import type { BoardState } from "../domain/state";
 import { BOARD_STATES } from "../domain/state";
 import { formatBytes } from "../media/localMedia";
@@ -17,6 +27,9 @@ import { BOARD_STORAGE_WARNING_BYTES, trySaveBoard } from "../storage/localStore
 import { Column } from "./Column";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
+
+let retrievalQuery: RetrievalQuery = createDefaultRetrievalQuery([...BOARD_STATES]);
+let restoreSearchFocus = false;
 
 interface BoardProps {
   board: BoardModel;
@@ -150,6 +163,11 @@ export function Board({
   localNote.className = "local-note";
   localNote.textContent = text.savedNote;
 
+  const retrievalSurface = createRetrievalSurface(board, language, () => onChange(board));
+  const retrievalActive = isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
+  const visibleCards = filterCards(board.cards, retrievalQuery, [...BOARD_STATES]);
+  const visibleBoard = { ...board, cards: visibleCards };
+
   const storagePanel = createStoragePanel(board, language, storageMessage, (nextBoard) => commit(nextBoard));
 
   const columns = document.createElement("div");
@@ -165,10 +183,15 @@ export function Board({
     return true;
   }
 
+  const visibleActiveCards = visibleCards.filter((card) => !card.hidden);
   for (const state of BOARD_STATES) {
+    if (retrievalActive && !visibleActiveCards.some((card) => card.state === state)) {
+      continue;
+    }
+
     columns.append(
       Column({
-        board,
+        board: visibleBoard,
         state,
         language,
         onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
@@ -189,9 +212,17 @@ export function Board({
         onFileRefs: (cardId: string, fileRefs) => commit(updateCardRichContext(board, cardId, { fileRefs })),
         onBookmarkReason: (cardId: string, bookmarkReason: string) =>
           commit(updateCardRichContext(board, cardId, { bookmarkReason })),
+        onTags: (cardId: string, tags: string[]) => commit(updateCardTags(board, cardId, tags)),
         onHide: (cardId: string) => commit(hideCard(board, cardId)),
       }),
     );
+  }
+
+  if (retrievalActive && visibleActiveCards.length === 0) {
+    const noResults = document.createElement("p");
+    noResults.className = "no-results";
+    noResults.textContent = text.noResults;
+    columns.append(noResults);
   }
 
   const testNotes = document.createElement("section");
@@ -210,9 +241,243 @@ export function Board({
 
   testNotes.append(testNotesTitle, testNotesList);
 
-  shell.append(top, localNote, storagePanel, columns, testNotes);
+  shell.append(top, localNote, retrievalSurface, storagePanel, columns, testNotes);
 
   return shell;
+}
+
+function createRetrievalSurface(board: BoardModel, language: Language, onUpdate: () => void): HTMLElement {
+  const text = copy[language];
+  const surface = document.createElement("section");
+  surface.className = "retrieval-surface";
+
+  const heading = document.createElement("div");
+  heading.className = "retrieval-heading";
+  const title = document.createElement("h2");
+  title.textContent = text.retrievalTitle;
+  const helper = document.createElement("p");
+  helper.textContent = text.retrievalHelper;
+  heading.append(title, helper);
+
+  const controls = document.createElement("div");
+  controls.className = "retrieval-controls";
+
+  const search = document.createElement("input");
+  search.type = "search";
+  search.value = retrievalQuery.search;
+  search.placeholder = text.searchCards;
+  search.ariaLabel = text.searchCards;
+  search.addEventListener("input", () => {
+    retrievalQuery = { ...retrievalQuery, search: search.value };
+    restoreSearchFocus = true;
+    onUpdate();
+  });
+
+  const resultCount = document.createElement("p");
+  resultCount.className = "retrieval-result-count";
+  resultCount.setAttribute("role", "status");
+  const activeCards = filterCards(board.cards, retrievalQuery, [...BOARD_STATES]).filter((card) => !card.hidden);
+  resultCount.textContent = `${activeCards.length} ${text.resultCount}`;
+
+  const clearSearch = document.createElement("button");
+  clearSearch.type = "button";
+  clearSearch.className = "quiet-button";
+  clearSearch.textContent = text.clearSearch;
+  clearSearch.addEventListener("click", () => {
+    retrievalQuery = { ...retrievalQuery, search: "" };
+    onUpdate();
+  });
+
+  controls.append(search, resultCount, clearSearch);
+
+  const filterGroups = document.createElement("div");
+  filterGroups.className = "filter-groups";
+  filterGroups.append(
+    createStateFilters(text, onUpdate),
+    createMediaFilters(text, onUpdate),
+    createLastTouchedFilter(text, onUpdate),
+    createTagFilters(board, text, onUpdate),
+  );
+
+  const activeSummary = createActiveFilterSummary(text, language, board);
+  const clearAll = document.createElement("button");
+  clearAll.type = "button";
+  clearAll.className = "quiet-button";
+  clearAll.textContent = text.clearAllFilters;
+  clearAll.hidden = !isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
+  clearAll.addEventListener("click", () => {
+    retrievalQuery = createDefaultRetrievalQuery([...BOARD_STATES]);
+    onUpdate();
+  });
+
+  surface.append(heading, controls, filterGroups, activeSummary, clearAll);
+
+  if (restoreSearchFocus) {
+    restoreSearchFocus = false;
+    window.setTimeout(() => {
+      search.focus();
+      search.setSelectionRange(search.value.length, search.value.length);
+    });
+  }
+
+  return surface;
+}
+
+function createStateFilters(text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+  const group = createFilterGroup(text.stateFilter);
+  const all = createChip(text.allStates, retrievalQuery.states.length === BOARD_STATES.length, () => {
+    retrievalQuery = { ...retrievalQuery, states: [...BOARD_STATES] };
+    onUpdate();
+  });
+  group.append(all);
+
+  group.append(
+    createChip(text.clearFilter, retrievalQuery.states.length === 0, () => {
+      retrievalQuery = { ...retrievalQuery, states: [] };
+      onUpdate();
+    }),
+  );
+
+  for (const state of BOARD_STATES) {
+    group.append(
+      createChip(text.stateLabels[state], retrievalQuery.states.includes(state), () => {
+        const states = toggleValue(retrievalQuery.states, state);
+        retrievalQuery = { ...retrievalQuery, states };
+        onUpdate();
+      }),
+    );
+  }
+
+  return group;
+}
+
+function createMediaFilters(text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+  const group = createFilterGroup(text.mediaFilters);
+  const options: Array<[MediaFilter, string]> = [
+    ["image", text.hasImage],
+    ["voice", text.hasVoice],
+    ["file", text.hasFile],
+    ["link", text.hasLink],
+  ];
+
+  for (const [value, label] of options) {
+    group.append(
+      createChip(label, retrievalQuery.media.includes(value), () => {
+        retrievalQuery = { ...retrievalQuery, media: toggleValue(retrievalQuery.media, value) };
+        onUpdate();
+      }),
+    );
+  }
+
+  return group;
+}
+
+function createLastTouchedFilter(text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+  const field = document.createElement("label");
+  field.className = "retrieval-select";
+  const label = document.createElement("span");
+  label.textContent = text.lastTouchedFilter;
+  const select = document.createElement("select");
+  select.ariaLabel = text.lastTouchedFilter;
+
+  const options: Array<[LastTouchedFilter, string]> = [
+    ["any", text.anyTime],
+    ["today", text.todayFilter],
+    ["last7", text.last7],
+    ["last30", text.last30],
+    ["older30", text.older30],
+  ];
+
+  for (const [value, labelText] of options) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = labelText;
+    option.selected = retrievalQuery.lastTouched === value;
+    select.append(option);
+  }
+
+  select.addEventListener("change", () => {
+    retrievalQuery = { ...retrievalQuery, lastTouched: select.value as LastTouchedFilter };
+    onUpdate();
+  });
+
+  field.append(label, select);
+  return field;
+}
+
+function createTagFilters(board: BoardModel, text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+  const group = createFilterGroup(text.tags);
+  for (const tag of collectTags(board.cards)) {
+    group.append(
+      createChip(`#${tag}`, retrievalQuery.tags.includes(tag), () => {
+        retrievalQuery = { ...retrievalQuery, tags: toggleValue(retrievalQuery.tags, tag) };
+        onUpdate();
+      }),
+    );
+  }
+  return group;
+}
+
+function createActiveFilterSummary(text: (typeof copy)[Language], language: Language, board: BoardModel): HTMLElement {
+  const summary = document.createElement("p");
+  summary.className = "active-filter-summary";
+
+  if (!isRetrievalActive(retrievalQuery, [...BOARD_STATES])) {
+    summary.hidden = true;
+    return summary;
+  }
+
+  const labels = [
+    retrievalQuery.search.trim(),
+    ...(retrievalQuery.states.length === BOARD_STATES.length ? [] : retrievalQuery.states.map((state) => text.stateLabels[state])),
+    ...retrievalQuery.media.map((media) => mediaLabel(media, text)),
+    retrievalQuery.lastTouched === "any" ? "" : lastTouchedLabel(retrievalQuery.lastTouched, text),
+    ...retrievalQuery.tags.map((tag) => `#${tag}`),
+  ].filter(Boolean);
+
+  summary.textContent = `${text.filtering} ${labels.join(" · ")}`;
+  summary.dataset.totalTags = String(collectTags(board.cards).length);
+  summary.lang = language;
+  return summary;
+}
+
+function createFilterGroup(label: string): HTMLElement {
+  const group = document.createElement("fieldset");
+  group.className = "filter-group";
+  const legend = document.createElement("legend");
+  legend.textContent = label;
+  group.append(legend);
+  return group;
+}
+
+function createChip(label: string, selected: boolean, onClick: () => void): HTMLButtonElement {
+  const chip = document.createElement("button");
+  chip.type = "button";
+  chip.className = selected ? "filter-chip selected" : "filter-chip";
+  chip.setAttribute("aria-pressed", String(selected));
+  chip.textContent = label;
+  chip.addEventListener("click", onClick);
+  return chip;
+}
+
+function toggleValue<T>(values: T[], value: T): T[] {
+  return values.includes(value) ? values.filter((item) => item !== value) : [...values, value];
+}
+
+function mediaLabel(media: MediaFilter, text: (typeof copy)[Language]): string {
+  return media === "image" ? text.hasImage : media === "voice" ? text.hasVoice : media === "file" ? text.hasFile : text.hasLink;
+}
+
+function lastTouchedLabel(filter: LastTouchedFilter, text: (typeof copy)[Language]): string {
+  return filter === "today"
+    ? text.todayFilter
+    : filter === "last7"
+      ? text.last7
+      : filter === "last30"
+        ? text.last30
+        : filter === "older30"
+          ? text.older30
+          : text.anyTime;
 }
 
 function createStoragePanel(

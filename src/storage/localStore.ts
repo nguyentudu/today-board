@@ -1,5 +1,5 @@
 import { createBoard, type Board } from "../domain/board";
-import { normalizeFileRefs, normalizeList, normalizeReentryField } from "../domain/card";
+import { normalizeFileRefs, normalizeList, normalizeReentryField, normalizeTags } from "../domain/card";
 import { isBoardState } from "../domain/state";
 
 export const BOARD_STORAGE_KEY = "moon.today-board.v1";
@@ -78,6 +78,7 @@ export function sanitizeBoard(value: unknown): Board {
             : [],
           fileRefs: Array.isArray(source.fileRefs) ? normalizeFileRefs(source.fileRefs) : [],
           bookmarkReason: typeof source.bookmarkReason === "string" ? source.bookmarkReason.slice(0, 360) : "",
+          tags: Array.isArray(source.tags) ? normalizeTags(source.tags) : typeof source.tags === "string" ? normalizeTags([source.tags]) : [],
           state,
           hidden: typeof source.hidden === "boolean" ? source.hidden : false,
           createdAt: typeof source.createdAt === "string" ? source.createdAt : now,
