@@ -183,12 +183,13 @@ textarea {
 .columns {
   display: grid;
   grid-template-columns: repeat(4, minmax(15rem, 1fr));
+  grid-auto-rows: max-content;
   gap: 1rem;
   align-items: start;
 }
 
 .column {
-  min-height: 28rem;
+  align-self: start;
   border: 1px solid #d8d2c4;
   border-radius: 8px;
   background: rgba(255, 253, 248, 0.72);
@@ -196,7 +197,7 @@ textarea {
 }
 
 .column-header {
-  min-height: 6.8rem;
+  margin: 0 0 0.75rem;
 }
 
 .column-header h2 {
