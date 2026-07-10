@@ -181,8 +181,8 @@ function createCaptureControls(
   status.className = "capture-status";
   status.setAttribute("role", "status");
 
-  const reportMediaSize = (beforeBytes: number, afterBytes: number) => {
-    status.textContent = `${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+  const reportMediaSize = (beforeBytes: number, afterBytes: number, width: number, height: number) => {
+    status.textContent = `${text.imageReady} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}, ${width}x${height}`;
   };
 
   const uploadInput = createImageInput(
@@ -210,8 +210,8 @@ function createCaptureControls(
     status.textContent = "";
 
     try {
-      const { dataUrl, beforeBytes, afterBytes } = await captureScreen(text.screenCaptureUnsupported, text);
-      reportMediaSize(beforeBytes, afterBytes);
+      const { dataUrl, beforeBytes, afterBytes, width, height } = await captureScreen(text.screenCaptureUnsupported, text);
+      reportMediaSize(beforeBytes, afterBytes, width, height);
       onImageRefs([...card.imageRefs, dataUrl]);
     } catch (error) {
       status.textContent = error instanceof Error ? error.message : text.screenCaptureUnsupported;
@@ -369,7 +369,7 @@ function createFileInput(
 
 function createImageInput(
   onImage: (dataUrl: string) => void,
-  onCompressed: (beforeBytes: number, afterBytes: number) => void,
+  onCompressed: (beforeBytes: number, afterBytes: number, width: number, height: number) => void,
   onStatus: (message: string) => void,
   text: (typeof copy)[Language],
 ): HTMLInputElement {
@@ -384,13 +384,19 @@ function createImageInput(
       return;
     }
 
-    const { dataUrl, beforeBytes, afterBytes } = await compressImageFile(file);
+    onStatus(text.imageProcessing);
 
-    if (afterBytes > MAX_IMAGE_BYTES) {
-      onStatus(`${text.mediaTooLarge} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`);
-    } else {
-      onCompressed(beforeBytes, afterBytes);
-      onImage(dataUrl);
+    try {
+      const { dataUrl, beforeBytes, afterBytes, width, height } = await compressImageFile(file);
+
+      if (afterBytes > MAX_IMAGE_BYTES) {
+        onStatus(`${text.imageTooLargeDevice} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}, ${width}x${height}`);
+      } else {
+        onCompressed(beforeBytes, afterBytes, width, height);
+        onImage(dataUrl);
+      }
+    } catch {
+      onStatus(text.imageProcessingFailed);
     }
 
     input.value = "";
@@ -402,7 +408,7 @@ function createImageInput(
 async function captureScreen(
   unsupportedMessage: string,
   text: (typeof copy)[Language],
-): Promise<{ dataUrl: string; beforeBytes: number; afterBytes: number }> {
+): Promise<{ dataUrl: string; beforeBytes: number; afterBytes: number; width: number; height: number }> {
   const mediaDevices = navigator.mediaDevices as
     | (MediaDevices & { getDisplayMedia?: (constraints?: DisplayMediaStreamOptions) => Promise<MediaStream> })
     | undefined;

@@ -299,6 +299,17 @@ textarea {
   gap: 0.45rem;
 }
 
+.media-item {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.media-remove-button {
+  justify-self: start;
+  min-height: 2rem;
+  padding: 0.35rem 0.55rem;
+}
+
 .image-ref-list img {
   width: 100%;
   max-height: 14rem;
@@ -318,6 +329,23 @@ textarea {
 }
 
 .audio-ref-list audio {
+  width: 100%;
+}
+
+.quick-media-preview {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.quick-media-preview img {
+  width: 100%;
+  max-height: 16rem;
+  border: 1px solid #d7d1c5;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.quick-media-preview audio {
   width: 100%;
 }
 

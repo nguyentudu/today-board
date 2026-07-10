@@ -1,6 +1,7 @@
 import type { Board as BoardModel } from "./domain/board";
 import { addCard, updateCardNote, updateCardReentryNotes, updateCardRichContext } from "./domain/board";
-import { loadBoard, saveBoard, trySaveBoard } from "./storage/localStore";
+import { formatBytes } from "./media/localMedia";
+import { BOARD_STORAGE_WARNING_BYTES, estimateBoardSize, loadBoard, saveBoard, trySaveBoard } from "./storage/localStore";
 import { Board as BoardView } from "./ui/Board";
 import type { Language } from "./ui/i18n";
 import { QuickCapture, type QuickCapturePayload, type QuickCaptureSaveResult } from "./ui/QuickCapture";
@@ -33,6 +34,7 @@ function render(nextBoard: BoardModel = board): void {
         initialTitle: getShareParam("title") || getShareParam("url"),
         initialNote: getShareParam("text"),
         initialLink: getShareParam("url"),
+        storageEstimate: `${copyStorage(language).storageIndicator}: ${formatBytes(estimateBoardSize(loadBoard()))}. ${copyStorage(language).storageWarningThreshold}: ${formatBytes(BOARD_STORAGE_WARNING_BYTES)}.`,
         onLanguageChange: (nextLanguage: Language) => {
           language = nextLanguage;
           render();
@@ -60,6 +62,12 @@ function render(nextBoard: BoardModel = board): void {
       onQuickCapture: openQuickCapture,
     }),
   );
+}
+
+function copyStorage(nextLanguage: Language): { storageIndicator: string; storageWarningThreshold: string } {
+  return nextLanguage === "vi"
+    ? { storageIndicator: "Dung lượng board", storageWarningThreshold: "Ngưỡng cảnh báo" }
+    : { storageIndicator: "Board size", storageWarningThreshold: "Warning threshold" };
 }
 
 render();

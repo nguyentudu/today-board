@@ -15,6 +15,7 @@ interface QuickCaptureProps {
   initialTitle: string;
   initialNote: string;
   initialLink: string;
+  storageEstimate: string;
   onLanguageChange: (language: Language) => void;
   onSave: (capture: QuickCapturePayload) => QuickCaptureSaveResult;
   onOpenBoard: () => void;
@@ -35,6 +36,7 @@ export function QuickCapture({
   initialTitle,
   initialNote,
   initialLink,
+  storageEstimate,
   onLanguageChange,
   onSave,
   onOpenBoard,
@@ -81,6 +83,7 @@ export function QuickCapture({
   let imageRef = "";
   let audioRef = "";
   let mediaBlocked = false;
+  let mediaProcessing = false;
 
   const photoInput = document.createElement("input");
   photoInput.className = "file-input";
@@ -91,16 +94,31 @@ export function QuickCapture({
     const file = photoInput.files?.[0];
 
     if (file) {
-      const { dataUrl, beforeBytes, afterBytes } = await compressImageFile(file);
+      mediaProcessing = true;
+      saveButton.disabled = true;
+      status.textContent = text.imageProcessing;
 
-      if (afterBytes > MAX_IMAGE_BYTES) {
+      try {
+        const { dataUrl, beforeBytes, afterBytes, width, height } = await compressImageFile(file);
+
+        if (afterBytes > MAX_IMAGE_BYTES) {
+          mediaBlocked = true;
+          imageRef = "";
+          preview.replaceChildren();
+          status.textContent = `${text.imageTooLargeDevice} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}, ${width}x${height}`;
+        } else {
+          mediaBlocked = false;
+          imageRef = dataUrl;
+          renderImagePreview(preview, dataUrl, text.imageRefs);
+          status.textContent = `${text.imageReady} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}, ${width}x${height}`;
+        }
+      } catch {
         mediaBlocked = true;
         imageRef = "";
-        status.textContent = `${text.mediaTooLarge} ${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
-      } else {
-        mediaBlocked = false;
-        imageRef = dataUrl;
-        status.textContent = `${text.mediaCompressed} ${formatBytes(beforeBytes)} -> ${formatBytes(afterBytes)}`;
+        status.textContent = text.imageProcessingFailed;
+      } finally {
+        mediaProcessing = false;
+        saveButton.disabled = false;
       }
     }
   });
@@ -112,12 +130,16 @@ export function QuickCapture({
   const captureRow = document.createElement("div");
   captureRow.className = "quick-capture-actions";
 
+  const preview = document.createElement("div");
+  preview.className = "quick-media-preview";
+
   const photoButton = createButton(text.capturePhoto, () => photoInput.click());
   const voiceButton = createQuickVoiceButton(
     text,
     (dataUrl) => {
       audioRef = dataUrl;
       mediaBlocked = false;
+      renderAudioPreview(preview, dataUrl);
     },
     () => {
       mediaBlocked = true;
@@ -143,7 +165,12 @@ export function QuickCapture({
     }
 
     if (mediaBlocked) {
-      status.textContent = text.mediaTooLarge;
+      status.textContent = `${text.mediaTooLarge} ${text.cardNotSaved}`;
+      return;
+    }
+
+    if (mediaProcessing) {
+      status.textContent = text.imageProcessing;
       return;
     }
 
@@ -152,7 +179,7 @@ export function QuickCapture({
       saveResult === "saved"
         ? text.quickCaptureSaved
         : saveResult === "storage-error"
-          ? text.quickCaptureStorageError
+          ? `${text.storageNotEnough} ${text.cardNotSaved} ${text.storageAdvice}`
           : text.quickCaptureEmpty;
   });
   saveButton.className = "quick-save-button";
@@ -164,7 +191,11 @@ export function QuickCapture({
   localNote.className = "capture-note";
   localNote.textContent = `${text.imageLocalNote} ${text.audioLocalNote} ${text.voiceLimit}`;
 
-  form.append(cardTitle.field, note.field, link.field, photoInput, captureRow, localNote, saveButton, openBoard, status);
+  const storageNote = document.createElement("p");
+  storageNote.className = "capture-note";
+  storageNote.textContent = storageEstimate;
+
+  form.append(cardTitle.field, note.field, link.field, photoInput, captureRow, preview, localNote, storageNote, saveButton, openBoard, status);
   shell.append(header, form);
 
   return shell;
@@ -191,6 +222,20 @@ function createInput(label: string, placeholder: string, value: string): { field
 
   field.append(fieldLabel, input);
   return { field, input };
+}
+
+function renderImagePreview(preview: HTMLElement, dataUrl: string, alt: string): void {
+  const image = document.createElement("img");
+  image.src = dataUrl;
+  image.alt = alt;
+  preview.append(image);
+}
+
+function renderAudioPreview(preview: HTMLElement, dataUrl: string): void {
+  const audio = document.createElement("audio");
+  audio.controls = true;
+  audio.src = dataUrl;
+  preview.append(audio);
 }
 
 function createTextarea(

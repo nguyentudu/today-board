@@ -106,12 +106,30 @@ export function Card({
   hideButton.addEventListener("click", () => onHide(card.id));
 
   actions.append(moveLabel, hideButton);
-  item.append(editor, renderRichContext(card, text), lastTouch, snapshot, actions);
+  item.append(
+    editor,
+    renderRichContext(card, text, {
+      onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+      onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+      onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+    }),
+    lastTouch,
+    snapshot,
+    actions,
+  );
 
   return item;
 }
 
-function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
+function renderRichContext(
+  card: BoardCard,
+  text: (typeof copy)[Language],
+  actions: {
+    onImageRefs: (imageRefs: string[]) => void;
+    onAudioRefs: (audioRefs: string[]) => void;
+    onFileRefs: (fileRefs: BoardCard["fileRefs"]) => void;
+  },
+): HTMLElement {
   const section = document.createElement("section");
   section.className = "rich-context";
 
@@ -148,18 +166,24 @@ function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTML
     const gallery = document.createElement("div");
     gallery.className = "image-ref-list";
 
-    for (const ref of card.imageRefs) {
+    card.imageRefs.forEach((ref, index) => {
+      const mediaItem = document.createElement("div");
+      mediaItem.className = "media-item";
+
       if (ref.startsWith("data:image/")) {
         const image = document.createElement("img");
         image.src = ref;
         image.alt = text.imageRefs;
-        gallery.append(image);
+        mediaItem.append(image);
       } else {
         const reference = document.createElement("code");
         reference.textContent = ref;
-        gallery.append(reference);
+        mediaItem.append(reference);
       }
-    }
+
+      mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onImageRefs(removeAt(card.imageRefs, index))));
+      gallery.append(mediaItem);
+    });
 
     section.append(gallery);
   }
@@ -168,14 +192,20 @@ function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTML
     const audioList = document.createElement("div");
     audioList.className = "audio-ref-list";
 
-    for (const ref of card.audioRefs) {
+    card.audioRefs.forEach((ref, index) => {
+      const mediaItem = document.createElement("div");
+      mediaItem.className = "media-item";
+
       if (ref.startsWith("data:audio/")) {
         const audio = document.createElement("audio");
         audio.controls = true;
         audio.src = ref;
-        audioList.append(audio);
+        mediaItem.append(audio);
       }
-    }
+
+      mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onAudioRefs(removeAt(card.audioRefs, index))));
+      audioList.append(mediaItem);
+    });
 
     section.append(audioList);
   }
@@ -184,7 +214,7 @@ function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTML
     const fileList = document.createElement("ul");
     fileList.className = "file-ref-list";
 
-    for (const fileRef of card.fileRefs) {
+    card.fileRefs.forEach((fileRef, index) => {
       const item = document.createElement("li");
       const meta = `${fileRef.name} · ${formatFileSize(fileRef.size)}${fileRef.type ? ` · ${fileRef.type}` : ""}`;
 
@@ -198,8 +228,9 @@ function renderRichContext(card: BoardCard, text: (typeof copy)[Language]): HTML
         item.textContent = meta;
       }
 
+      item.append(createRemoveButton(text.removeMedia, () => actions.onFileRefs(removeAt(card.fileRefs, index))));
       fileList.append(item);
-    }
+    });
 
     section.append(fileList);
   }
@@ -224,6 +255,20 @@ function formatFileSize(size: number): string {
   }
 
   return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function createRemoveButton(label: string, onClick: () => void): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "quiet-button media-remove-button";
+  button.textContent = label;
+  button.addEventListener("click", onClick);
+
+  return button;
+}
+
+function removeAt<T>(items: T[], index: number): T[] {
+  return items.filter((_, itemIndex) => itemIndex !== index);
 }
 
 function safeHref(value: string): string {

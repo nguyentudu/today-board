@@ -1,6 +1,9 @@
 # Media Capture Size Preview Fix
 
-Study status: MEDIA_CAPTURE_SIZE_PREVIEW_READY
+Study status:
+
+- MEDIA_IMPLEMENTED
+- REAL_DEVICE_PROOF_PENDING
 
 ## Scope
 

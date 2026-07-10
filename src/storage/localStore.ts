@@ -3,6 +3,7 @@ import { normalizeFileRefs, normalizeList, normalizeReentryField } from "../doma
 import { isBoardState } from "../domain/state";
 
 export const BOARD_STORAGE_KEY = "moon.today-board.v1";
+export const BOARD_STORAGE_WARNING_BYTES = 4_000_000;
 
 export function loadBoard(): Board {
   const stored = localStorage.getItem(BOARD_STORAGE_KEY);
@@ -29,6 +30,10 @@ export function trySaveBoard(board: Board): boolean {
   } catch {
     return false;
   }
+}
+
+export function estimateBoardSize(board: Board): number {
+  return new Blob([JSON.stringify(board)]).size;
 }
 
 export function sanitizeBoard(value: unknown): Board {

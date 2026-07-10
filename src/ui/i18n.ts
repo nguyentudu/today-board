@@ -44,6 +44,16 @@ export const copy = {
     fileTooLarge: "Large file saved as a reference only.",
     mediaCompressed: "Media size:",
     mediaTooLarge: "This media is too large for browser storage. It was not saved.",
+    imageProcessing: "Processing image...",
+    imageReady: "Image is ready to save.",
+    imageProcessingFailed: "This image could not be processed.",
+    imageTooLargeDevice: "This image is too large to store on this device.",
+    storageNotEnough: "There is not enough browser storage for this media.",
+    cardNotSaved: "The card was not saved.",
+    storageAdvice: "Remove older media or export the board as a backup.",
+    storageIndicator: "Board size",
+    storageWarningThreshold: "Warning threshold",
+    removeMedia: "Remove",
     voiceLimit: "Voice recording stops after 20 seconds.",
     quickCaptureTitle: "Quick capture",
     quickCaptureButton: "Quick Capture",
@@ -119,6 +129,16 @@ export const copy = {
     fileTooLarge: "File lớn chỉ được lưu như một dòng tham chiếu.",
     mediaCompressed: "Dung lượng media:",
     mediaTooLarge: "Media này quá lớn cho bộ nhớ trình duyệt. Chưa lưu media.",
+    imageProcessing: "Đang xử lý ảnh...",
+    imageReady: "Ảnh đã sẵn sàng để lưu.",
+    imageProcessingFailed: "Không thể xử lý ảnh này.",
+    imageTooLargeDevice: "Ảnh quá lớn để lưu trên thiết bị này.",
+    storageNotEnough: "Không đủ bộ nhớ trình duyệt để lưu media này.",
+    cardNotSaved: "Card chưa được lưu.",
+    storageAdvice: "Hãy xóa media cũ hoặc xuất board để sao lưu.",
+    storageIndicator: "Dung lượng board",
+    storageWarningThreshold: "Ngưỡng cảnh báo",
+    removeMedia: "Xóa",
     voiceLimit: "Ghi âm tự dừng sau 20 giây.",
     quickCaptureTitle: "Ghi nhanh",
     quickCaptureButton: "Ghi nhanh",
@@ -196,6 +216,16 @@ export const copy = {
     fileTooLarge: string;
     mediaCompressed: string;
     mediaTooLarge: string;
+    imageProcessing: string;
+    imageReady: string;
+    imageProcessingFailed: string;
+    imageTooLargeDevice: string;
+    storageNotEnough: string;
+    cardNotSaved: string;
+    storageAdvice: string;
+    storageIndicator: string;
+    storageWarningThreshold: string;
+    removeMedia: string;
     voiceLimit: string;
     quickCaptureTitle: string;
     quickCaptureButton: string;

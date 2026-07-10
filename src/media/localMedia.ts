@@ -7,6 +7,8 @@ export interface CompressedImage {
   dataUrl: string;
   beforeBytes: number;
   afterBytes: number;
+  width: number;
+  height: number;
 }
 
 export function formatBytes(bytes: number): string {
@@ -50,6 +52,8 @@ export async function compressImageDataUrl(dataUrl: string, beforeBytes = estima
     dataUrl: compressed,
     beforeBytes,
     afterBytes: estimateDataUrlBytes(compressed),
+    width,
+    height,
   };
 }
 
