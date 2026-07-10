@@ -138,9 +138,6 @@ export function CardEditor({
   const linksField = createTextareaField(text.richLinks, text.richLinksEmpty, card.richLinks.join("\n"), (value) =>
     onRichLinks(splitLines(value)),
   );
-  const imagesField = createTextareaField(text.imageRefs, text.imageRefsEmpty, card.imageRefs.join("\n"), (value) =>
-    onImageRefs(splitLines(value)),
-  );
   const captureControls = createCaptureControls(card, text, onImageRefs, onAudioRefs, onFileRefs);
   const bookmarkReasonField = createTextareaField(
     text.bookmarkReason,
@@ -156,7 +153,6 @@ export function CardEditor({
     whyStillOpenField,
     ifYouReturnField,
     linksField,
-    imagesField,
     captureControls,
     bookmarkReasonField,
   );

@@ -62,6 +62,17 @@ export const copy = {
     storageExportBeforeCleanup: "Export before cleanup",
     storageCleanupDone: "Hidden media cleaned.",
     storageCleanupEmpty: "No hidden media to clean.",
+    storageHealthy: "Storage looks healthy.",
+    storageMediaHeavy: "Images and audio use most of the space.",
+    storageNearLimit: "Approaching the safe limit.",
+    storageNeedsCleanup: "Clean up or export before adding more media.",
+    storageViewDetails: "View storage details",
+    storageCleanupConsequence: "This will remove media from hidden cards. It cannot be undone unless you exported the board first.",
+    cancelAction: "Cancel",
+    confirmAction: "Confirm",
+    hiddenCardsAffected: "hidden cards affected",
+    mediaItemsAffected: "media items",
+    estimatedRecover: "estimated space to recover",
     removeMedia: "Remove",
     voiceLimit: "Voice recording stops after 20 seconds.",
     quickCaptureTitle: "Quick capture",
@@ -76,6 +87,14 @@ export const copy = {
     created: "Created",
     lastTouched: "Last touched",
     currentState: "Current state",
+    openCard: "Open",
+    editCard: "Edit",
+    collapseCard: "Collapse",
+    imageLabel: "Image",
+    voiceLabel: "voice note",
+    linksLabel: "links",
+    filesLabel: "files",
+    noSnapshotSummary: "No snapshot yet.",
     testNotesTitle: "Test Notes",
     testNotes: ["Use this quietly.", "You can ignore everything here.", "No correct way to use this."],
     stateLabels: {
@@ -156,6 +175,17 @@ export const copy = {
     storageExportBeforeCleanup: "Xuất trước khi dọn",
     storageCleanupDone: "Đã dọn media trong card ẩn.",
     storageCleanupEmpty: "Không có media ẩn để dọn.",
+    storageHealthy: "Dung lượng còn ổn.",
+    storageMediaHeavy: "Ảnh và âm thanh đang dùng phần lớn bộ nhớ.",
+    storageNearLimit: "Sắp chạm ngưỡng an toàn.",
+    storageNeedsCleanup: "Cần dọn hoặc xuất board trước khi lưu thêm media.",
+    storageViewDetails: "Xem chi tiết dung lượng",
+    storageCleanupConsequence: "Thao tác này sẽ xóa media khỏi các card đã ẩn. Không thể hoàn tác nếu bạn chưa xuất board.",
+    cancelAction: "Hủy",
+    confirmAction: "Xác nhận",
+    hiddenCardsAffected: "card ẩn bị ảnh hưởng",
+    mediaItemsAffected: "media",
+    estimatedRecover: "ước tính dung lượng thu lại",
     removeMedia: "Xóa",
     voiceLimit: "Ghi âm tự dừng sau 20 giây.",
     quickCaptureTitle: "Ghi nhanh",
@@ -170,6 +200,14 @@ export const copy = {
     created: "Đã tạo",
     lastTouched: "Lần cuối chạm",
     currentState: "Vùng hiện tại",
+    openCard: "Mở",
+    editCard: "Chỉnh sửa",
+    collapseCard: "Thu gọn",
+    imageLabel: "Ảnh",
+    voiceLabel: "ghi âm",
+    linksLabel: "link",
+    filesLabel: "file",
+    noSnapshotSummary: "Chưa ghi snapshot.",
     testNotesTitle: "Test Notes",
     testNotes: ["Dùng thật nhẹ.", "Bạn có thể bỏ qua mọi thứ ở đây.", "Không có cách dùng đúng."],
     stateLabels: {
@@ -252,6 +290,17 @@ export const copy = {
     storageExportBeforeCleanup: string;
     storageCleanupDone: string;
     storageCleanupEmpty: string;
+    storageHealthy: string;
+    storageMediaHeavy: string;
+    storageNearLimit: string;
+    storageNeedsCleanup: string;
+    storageViewDetails: string;
+    storageCleanupConsequence: string;
+    cancelAction: string;
+    confirmAction: string;
+    hiddenCardsAffected: string;
+    mediaItemsAffected: string;
+    estimatedRecover: string;
     removeMedia: string;
     voiceLimit: string;
     quickCaptureTitle: string;
@@ -266,6 +315,14 @@ export const copy = {
     created: string;
     lastTouched: string;
     currentState: string;
+    openCard: string;
+    editCard: string;
+    collapseCard: string;
+    imageLabel: string;
+    voiceLabel: string;
+    linksLabel: string;
+    filesLabel: string;
+    noSnapshotSummary: string;
     testNotesTitle: string;
     testNotes: string[];
     stateLabels: Record<BoardState, string>;

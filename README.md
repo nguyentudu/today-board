@@ -134,3 +134,17 @@ For controlled public testing, use a static host only. See [docs/deploy/static-d
 ## Next Milestone
 
 10 users / 3 returns / 3 relief signals
+
+## Current Status
+
+```text
+Re-entry Core                  EARLY PASS
+Quick Capture                  PASS
+Rich Media                     PASS
+Storage Foundation             PASS WITH WARNING
+Raw Base64 Hidden              IN PROGRESS
+Mobile Card Collapse           IN PROGRESS
+Retrieval Surface              NEXT
+IndexedDB Migration            NOT YET
+Weekly Review                  DEFERRED
+```

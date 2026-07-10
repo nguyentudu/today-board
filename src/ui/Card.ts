@@ -41,82 +41,131 @@ export function Card({
   const text = copy[language];
   const item = document.createElement("article");
   item.className = "card";
+  let mode: "summary" | "open" | "edit" = "summary";
 
-  const editor = CardEditor({
-    card,
-    language,
-    onRename: (title) => onRename(card.id, title),
-    onNote: (note) => onNote(card.id, note),
-    onContextSnapshot: (contextSnapshot) => onContextSnapshot(card.id, contextSnapshot),
-    onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
-    onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
-    onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
-    onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
-    onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
-    onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
-    onBookmarkReason: (bookmarkReason) => onBookmarkReason(card.id, bookmarkReason),
-  });
+  const render = () => {
+    item.className = `card card-${mode}`;
+    item.replaceChildren();
 
-  const snapshot = document.createElement("dl");
-  snapshot.className = "context-snapshot";
+    if (mode === "summary") {
+      item.append(renderSummary());
+      return;
+    }
 
-  const lastTouch = document.createElement("div");
-  lastTouch.className = "last-touch";
-  lastTouch.textContent = `${text.lastTouched}: ${formatRelativeDate(card.updatedAt, language)}`;
+    item.append(renderHeaderActions());
 
-  for (const row of [
-    [text.created, formatDate(card.createdAt)],
-    [text.lastTouched, formatDate(card.updatedAt)],
-    [text.currentState, text.stateLabels[card.state]],
-  ]) {
-    const term = document.createElement("dt");
-    term.textContent = row[0];
+    if (mode === "edit") {
+      item.append(
+        CardEditor({
+          card,
+          language,
+          onRename: (title) => onRename(card.id, title),
+          onNote: (note) => onNote(card.id, note),
+          onContextSnapshot: (contextSnapshot) => onContextSnapshot(card.id, contextSnapshot),
+          onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
+          onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
+          onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
+          onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+          onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+          onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+          onBookmarkReason: (bookmarkReason) => onBookmarkReason(card.id, bookmarkReason),
+        }),
+      );
+    } else {
+      item.append(renderReadableDetail(card, text));
+    }
 
-    const value = document.createElement("dd");
-    value.textContent = row[1];
+    item.append(
+      renderRichContext(card, text, {
+        onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+        onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+        onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+      }),
+      renderSnapshot(card, text, language),
+    );
 
-    snapshot.append(term, value);
-  }
+    if (mode === "edit") {
+      item.append(renderEditActions());
+    }
+  };
 
-  const actions = document.createElement("div");
-  actions.className = "card-actions";
+  const setMode = (nextMode: typeof mode) => {
+    mode = nextMode;
+    render();
+  };
 
-  const moveLabel = document.createElement("label");
-  moveLabel.className = "action-label";
-  moveLabel.textContent = text.changeZone;
+  const renderSummary = (): HTMLElement => {
+    const summary = document.createElement("div");
+    summary.className = "card-summary";
 
-  const moveSelect = document.createElement("select");
-  moveSelect.ariaLabel = text.changeZone;
-  moveLabel.append(moveSelect);
+    const title = document.createElement("h3");
+    title.textContent = card.title;
 
-  for (const state of BOARD_STATES) {
-    const option = document.createElement("option");
-    option.value = state;
-    option.textContent = text.stateLabels[state];
-    option.selected = state === card.state;
-    moveSelect.append(option);
-  }
+    const snapshot = document.createElement("p");
+    snapshot.className = "summary-snapshot";
+    snapshot.textContent = card.contextSnapshot.trim() || text.noSnapshotSummary;
 
-  moveSelect.addEventListener("change", () => onMove(card.id, moveSelect.value as BoardState));
+    const meta = document.createElement("div");
+    meta.className = "summary-meta";
+    meta.append(
+      createPill(`${text.lastTouched}: ${formatRelativeDate(card.updatedAt, language)}`),
+      createPill(text.stateLabels[card.state]),
+      ...renderMediaIndicators(card, text, language),
+    );
 
-  const hideButton = document.createElement("button");
-  hideButton.type = "button";
-  hideButton.className = "quiet-button";
-  hideButton.textContent = text.hideCard;
-  hideButton.addEventListener("click", () => onHide(card.id));
+    const actions = document.createElement("div");
+    actions.className = "summary-actions";
+    actions.append(
+      createModeButton(text.openCard, () => setMode("open")),
+      createModeButton(text.editCard, () => setMode("edit")),
+    );
 
-  actions.append(moveLabel, hideButton);
-  item.append(
-    editor,
-    renderRichContext(card, text, {
-      onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
-      onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
-      onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
-    }),
-    lastTouch,
-    snapshot,
-    actions,
-  );
+    summary.append(title, snapshot, meta, actions);
+    return summary;
+  };
+
+  const renderHeaderActions = (): HTMLElement => {
+    const header = document.createElement("div");
+    header.className = "card-mode-header";
+    const title = document.createElement("h3");
+    title.textContent = card.title;
+    header.append(title, createModeButton(text.collapseCard, () => setMode("summary")));
+    return header;
+  };
+
+  const renderEditActions = (): HTMLElement => {
+    const actions = document.createElement("div");
+    actions.className = "card-actions";
+
+    const moveLabel = document.createElement("label");
+    moveLabel.className = "action-label";
+    moveLabel.textContent = text.changeZone;
+
+    const moveSelect = document.createElement("select");
+    moveSelect.ariaLabel = text.changeZone;
+    moveLabel.append(moveSelect);
+
+    for (const state of BOARD_STATES) {
+      const option = document.createElement("option");
+      option.value = state;
+      option.textContent = text.stateLabels[state];
+      option.selected = state === card.state;
+      moveSelect.append(option);
+    }
+
+    moveSelect.addEventListener("change", () => onMove(card.id, moveSelect.value as BoardState));
+
+    const hideButton = document.createElement("button");
+    hideButton.type = "button";
+    hideButton.className = "quiet-button";
+    hideButton.textContent = text.hideCard;
+    hideButton.addEventListener("click", () => onHide(card.id));
+
+    actions.append(moveLabel, hideButton);
+    return actions;
+  };
+
+  render();
 
   return item;
 }
@@ -171,10 +220,13 @@ function renderRichContext(
       mediaItem.className = "media-item";
 
       if (ref.startsWith("data:image/")) {
+        const label = document.createElement("p");
+        label.className = "media-label";
+        label.textContent = `${text.imageLabel} ${index + 1} · ${formatFileSize(estimateDataUrlBytes(ref))}`;
         const image = document.createElement("img");
         image.src = ref;
         image.alt = text.imageRefs;
-        mediaItem.append(image);
+        mediaItem.append(label, image);
       } else {
         const reference = document.createElement("code");
         reference.textContent = ref;
@@ -197,10 +249,13 @@ function renderRichContext(
       mediaItem.className = "media-item";
 
       if (ref.startsWith("data:audio/")) {
+        const label = document.createElement("p");
+        label.className = "media-label";
+        label.textContent = `${index + 1} ${text.voiceLabel} · ${formatFileSize(estimateDataUrlBytes(ref))}`;
         const audio = document.createElement("audio");
         audio.controls = true;
         audio.src = ref;
-        mediaItem.append(audio);
+        mediaItem.append(label, audio);
       }
 
       mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onAudioRefs(removeAt(card.audioRefs, index))));
@@ -243,6 +298,105 @@ function renderRichContext(
   }
 
   return section;
+}
+
+function estimateDataUrlBytes(value: string): number {
+  const base64 = value.split(",")[1] ?? "";
+  return Math.floor((base64.length * 3) / 4);
+}
+
+function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
+  const detail = document.createElement("section");
+  detail.className = "readable-detail";
+
+  for (const [label, value, empty] of [
+    [text.contextSnapshot, card.contextSnapshot, text.contextSnapshotEmpty],
+    [text.whyStillOpen, card.whyStillOpen, text.whyStillOpenEmpty],
+    [text.ifYouReturn, card.ifYouReturn, text.ifYouReturnEmpty],
+    [text.tinyNote, card.note, ""],
+  ]) {
+    const block = document.createElement("div");
+    const heading = document.createElement("h4");
+    heading.textContent = label;
+    const body = document.createElement("p");
+    body.textContent = value.trim() || empty;
+    block.append(heading, body);
+    detail.append(block);
+  }
+
+  return detail;
+}
+
+function renderSnapshot(card: BoardCard, text: (typeof copy)[Language], language: Language): HTMLElement {
+  const snapshot = document.createElement("dl");
+  snapshot.className = "context-snapshot";
+
+  for (const row of [
+    [text.created, formatDate(card.createdAt)],
+    [text.lastTouched, formatDate(card.updatedAt)],
+    [text.currentState, text.stateLabels[card.state]],
+  ]) {
+    const term = document.createElement("dt");
+    term.textContent = row[0];
+
+    const value = document.createElement("dd");
+    value.textContent = row[1];
+
+    snapshot.append(term, value);
+  }
+
+  const relative = document.createElement("dd");
+  relative.className = "relative-touch";
+  relative.textContent = `${text.lastTouched}: ${formatRelativeDate(card.updatedAt, language)}`;
+  snapshot.append(document.createElement("dt"), relative);
+
+  return snapshot;
+}
+
+function renderMediaIndicators(card: BoardCard, text: (typeof copy)[Language], language: Language): HTMLElement[] {
+  const indicators: HTMLElement[] = [];
+
+  if (card.imageRefs.length > 0) {
+    indicators.push(createPill(countLabel(card.imageRefs.length, text.imageLabel.toLowerCase(), "images", language)));
+  }
+
+  if (card.audioRefs.length > 0) {
+    indicators.push(createPill(countLabel(card.audioRefs.length, text.voiceLabel, "voice notes", language)));
+  }
+
+  if (card.fileRefs.length > 0) {
+    indicators.push(createPill(countLabel(card.fileRefs.length, text.filesLabel, "files", language)));
+  }
+
+  if (card.richLinks.length > 0) {
+    indicators.push(createPill(countLabel(card.richLinks.length, text.linksLabel, "links", language)));
+  }
+
+  return indicators;
+}
+
+function countLabel(count: number, label: string, englishPlural: string, language: Language): string {
+  if (language === "en" && count !== 1) {
+    return `${count} ${englishPlural}`;
+  }
+
+  return `${count} ${label}`;
+}
+
+function createPill(label: string): HTMLElement {
+  const pill = document.createElement("span");
+  pill.className = "summary-pill";
+  pill.textContent = label;
+  return pill;
+}
+
+function createModeButton(label: string, onClick: () => void): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "quiet-button mode-button";
+  button.textContent = label;
+  button.addEventListener("click", onClick);
+  return button;
 }
 
 function formatFileSize(size: number): string {

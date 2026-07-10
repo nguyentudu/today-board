@@ -169,6 +169,17 @@ textarea {
   gap: 0.5rem;
 }
 
+.cleanup-confirmation {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 1px solid #d8d2c4;
+  padding-top: 0.65rem;
+}
+
+.cleanup-confirmation p {
+  margin: 0;
+}
+
 .columns {
   display: grid;
   grid-template-columns: repeat(4, minmax(15rem, 1fr));
@@ -212,6 +223,68 @@ textarea {
   background: #fffdf8;
   padding: 0.8rem;
   box-shadow: 0 6px 18px rgba(45, 41, 32, 0.06);
+}
+
+.card-summary,
+.card-mode-header,
+.readable-detail {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.card-summary h3,
+.card-mode-header h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+}
+
+.summary-snapshot {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: #5f5d55;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.summary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.summary-pill {
+  border: 1px solid #d8d2c4;
+  border-radius: 999px;
+  background: #f7f5ef;
+  color: #56564d;
+  font-size: 0.82rem;
+  padding: 0.25rem 0.45rem;
+}
+
+.summary-actions,
+.card-mode-header {
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+}
+
+.mode-button {
+  min-height: 2.75rem;
+}
+
+.readable-detail h4 {
+  margin: 0 0 0.2rem;
+  color: #4f4d45;
+  font-size: 0.88rem;
+}
+
+.readable-detail p {
+  margin: 0;
+  color: #5f5d55;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
 }
 
 .card-editor {
@@ -341,8 +414,14 @@ textarea {
 
 .media-remove-button {
   justify-self: start;
-  min-height: 2rem;
-  padding: 0.35rem 0.55rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.65rem;
+}
+
+.media-label {
+  margin: 0;
+  color: #5f5d55;
+  font-size: 0.88rem;
 }
 
 .image-ref-list img {
@@ -570,5 +649,17 @@ textarea {
 
   .quick-capture-actions {
     grid-template-columns: 1fr;
+  }
+
+  .summary-actions,
+  .card-mode-header {
+    grid-template-columns: 1fr;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    min-height: 2.75rem;
   }
 }

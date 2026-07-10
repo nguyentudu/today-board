@@ -231,12 +231,19 @@ function createStoragePanel(
 
   const percent = Math.min(100, Math.round((diagnostics.boardBytes / BOARD_STORAGE_WARNING_BYTES) * 100));
   const summary = document.createElement("p");
-  summary.textContent = `${text.storageIndicator}: ${formatBytes(diagnostics.boardBytes)}. ${text.storagePercent}: ${percent}%. ${text.storageWarningThreshold}: ${formatBytes(BOARD_STORAGE_WARNING_BYTES)}.`;
+  summary.textContent = getStorageSummary(percent, diagnostics.imageBytes, diagnostics.audioBytes, diagnostics.boardBytes, text);
+
+  const detailBlock = document.createElement("details");
+  const detailSummary = document.createElement("summary");
+  detailSummary.textContent = text.storageViewDetails;
 
   const details = document.createElement("ul");
   details.className = "storage-details";
 
   for (const item of [
+    `${text.storageIndicator}: ${formatBytes(diagnostics.boardBytes)}`,
+    `${text.storagePercent}: ${percent}%`,
+    `${text.storageWarningThreshold}: ${formatBytes(BOARD_STORAGE_WARNING_BYTES)}`,
     `${text.storageImages}: ${diagnostics.imageCount} / ${formatBytes(diagnostics.imageBytes)}`,
     `${text.storageAudio}: ${diagnostics.audioCount} / ${formatBytes(diagnostics.audioBytes)}`,
     `${text.storageFiles}: ${diagnostics.fileCount} / ${formatBytes(diagnostics.fileBytes)}`,
@@ -259,6 +266,7 @@ function createStoragePanel(
   }
 
   cardSizes.append(cardSizesSummary, cardSizeList);
+  detailBlock.append(detailSummary, details, cardSizes);
 
   const actions = document.createElement("div");
   actions.className = "storage-actions";
@@ -274,22 +282,109 @@ function createStoragePanel(
   cleanup.className = "quiet-button";
   cleanup.textContent = text.storageCleanup;
   cleanup.addEventListener("click", () => {
-    const hiddenMediaCount = board.cards
-      .filter((card) => card.hidden)
-      .reduce((total, card) => total + card.imageRefs.length + card.audioRefs.length + card.fileRefs.length, 0);
+    const hiddenCards = board.cards.filter((card) => card.hidden);
+    const hiddenMediaCount = hiddenCards.reduce(
+      (total, card) => total + card.imageRefs.length + card.audioRefs.length + card.fileRefs.length,
+      0,
+    );
+    const hiddenMediaBytes = hiddenCards.reduce(
+      (total, card) =>
+        total +
+        card.imageRefs.reduce((sum, item) => sum + item.length, 0) +
+        card.audioRefs.reduce((sum, item) => sum + item.length, 0) +
+        card.fileRefs.reduce((sum, item) => sum + JSON.stringify(item).length, 0),
+      0,
+    );
 
     if (hiddenMediaCount === 0) {
       storageMessage.textContent = text.storageCleanupEmpty;
       return;
     }
 
-    if (onCleanup(cleanupHiddenCardMedia(board))) {
-      storageMessage.textContent = text.storageCleanupDone;
-    }
+    showCleanupConfirmation({
+      container: panel,
+      text,
+      hiddenCardCount: hiddenCards.length,
+      hiddenMediaCount,
+      hiddenMediaBytes,
+      onConfirm: () => {
+        if (onCleanup(cleanupHiddenCardMedia(board))) {
+          storageMessage.textContent = text.storageCleanupDone;
+        }
+      },
+    });
   });
 
   actions.append(exportBeforeCleanup, cleanup);
-  panel.append(title, summary, details, cardSizes, actions, storageMessage);
+  panel.append(title, summary, detailBlock, actions, storageMessage);
 
   return panel;
+}
+
+function getStorageSummary(
+  percent: number,
+  imageBytes: number,
+  audioBytes: number,
+  boardBytes: number,
+  text: (typeof copy)[Language],
+): string {
+  if (percent >= 95) {
+    return text.storageNeedsCleanup;
+  }
+
+  if (percent >= 80) {
+    return text.storageNearLimit;
+  }
+
+  if (imageBytes + audioBytes > boardBytes * 0.6 && boardBytes > 0) {
+    return text.storageMediaHeavy;
+  }
+
+  return text.storageHealthy;
+}
+
+function showCleanupConfirmation({
+  container,
+  text,
+  hiddenCardCount,
+  hiddenMediaCount,
+  hiddenMediaBytes,
+  onConfirm,
+}: {
+  container: HTMLElement;
+  text: (typeof copy)[Language];
+  hiddenCardCount: number;
+  hiddenMediaCount: number;
+  hiddenMediaBytes: number;
+  onConfirm: () => void;
+}): void {
+  const existing = container.querySelector(".cleanup-confirmation");
+  existing?.remove();
+
+  const confirmation = document.createElement("div");
+  confirmation.className = "cleanup-confirmation";
+
+  const message = document.createElement("p");
+  message.textContent = text.storageCleanupConsequence;
+
+  const summary = document.createElement("p");
+  summary.textContent = `${hiddenCardCount} ${text.hiddenCardsAffected}. ${hiddenMediaCount} ${text.mediaItemsAffected}. ${text.estimatedRecover}: ${formatBytes(hiddenMediaBytes)}.`;
+
+  const actions = document.createElement("div");
+  actions.className = "storage-actions";
+
+  const cancel = document.createElement("button");
+  cancel.type = "button";
+  cancel.className = "quiet-button";
+  cancel.textContent = text.cancelAction;
+  cancel.addEventListener("click", () => confirmation.remove());
+
+  const confirm = document.createElement("button");
+  confirm.type = "button";
+  confirm.textContent = text.confirmAction;
+  confirm.addEventListener("click", onConfirm);
+
+  actions.append(cancel, confirm);
+  confirmation.append(message, summary, actions);
+  container.append(confirmation);
 }
