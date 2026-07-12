@@ -99,6 +99,9 @@ export const copy = {
     retrievalTitle: "Find again",
     retrievalHelper: "Find something you saved.",
     searchCards: "Search cards...",
+    cardCountSingular: "card",
+    cardCount: "cards",
+    resultCountSingular: "result",
     resultCount: "results",
     noResults: "No matching cards found.",
     clearSearch: "Clear search",
@@ -106,7 +109,11 @@ export const copy = {
     filtering: "Filtering:",
     stateFilter: "State",
     allStates: "All",
-    clearFilter: "Clear",
+    clearFilter: "Reset states",
+    filtersToggle: "Filters",
+    activeFiltersToggle: "Active filters",
+    showFilters: "Show filters",
+    hideFilters: "Hide filters",
     mediaFilters: "Media",
     hasImage: "Has image",
     hasVoice: "Has voice",
@@ -121,7 +128,7 @@ export const copy = {
     tags: "Tags",
     tagsHelper: "Use lightweight tags to find this later.",
     tagsPlaceholder: "moon, research",
-    testNotesTitle: "Test Notes",
+    testNotesTitle: "Gentle notes",
     testNotes: ["Use this quietly.", "You can ignore everything here.", "No correct way to use this."],
     stateLabels: {
       continue: "Continue",
@@ -238,6 +245,9 @@ export const copy = {
     retrievalTitle: "Tìm lại",
     retrievalHelper: "Tìm một điều bạn đã giữ lại.",
     searchCards: "Tìm trong card...",
+    cardCountSingular: "card",
+    cardCount: "card",
+    resultCountSingular: "kết quả",
     resultCount: "kết quả",
     noResults: "Không tìm thấy card phù hợp.",
     clearSearch: "Xóa tìm kiếm",
@@ -245,7 +255,11 @@ export const copy = {
     filtering: "Đang lọc:",
     stateFilter: "Vùng",
     allStates: "Tất cả",
-    clearFilter: "Xóa",
+    clearFilter: "Đặt lại vùng",
+    filtersToggle: "Bộ lọc",
+    activeFiltersToggle: "Bộ lọc đang dùng",
+    showFilters: "Hiện bộ lọc",
+    hideFilters: "Ẩn bộ lọc",
     mediaFilters: "Media",
     hasImage: "Có ảnh",
     hasVoice: "Có ghi âm",
@@ -260,7 +274,7 @@ export const copy = {
     tags: "Thẻ",
     tagsHelper: "Dùng thẻ nhẹ để tìm lại sau.",
     tagsPlaceholder: "moon, nghiên cứu",
-    testNotesTitle: "Test Notes",
+    testNotesTitle: "Gợi ý nhẹ",
     testNotes: ["Dùng thật nhẹ.", "Bạn có thể bỏ qua mọi thứ ở đây.", "Không có cách dùng đúng."],
     stateLabels: {
       continue: "Quay lại",
@@ -379,6 +393,9 @@ export const copy = {
     retrievalTitle: string;
     retrievalHelper: string;
     searchCards: string;
+    cardCountSingular: string;
+    cardCount: string;
+    resultCountSingular: string;
     resultCount: string;
     noResults: string;
     clearSearch: string;
@@ -387,6 +404,10 @@ export const copy = {
     stateFilter: string;
     allStates: string;
     clearFilter: string;
+    filtersToggle: string;
+    activeFiltersToggle: string;
+    showFilters: string;
+    hideFilters: string;
     mediaFilters: string;
     hasImage: string;
     hasVoice: string;

@@ -144,13 +144,12 @@ Rich Media                     PASS
 Storage Foundation             PASS WITH ARCHITECTURAL WARNING
 Card Density                   PASS
 Zone Auto-height               PASS ON ANDROID
-Retrieval Text Search          PASS ON ANDROID
-Search Stability               PASS ON ANDROID
-Retrieval Metadata Integrity   IN PROGRESS
-Retrieval Surface              BORDERLINE
-Mobile Layout Polish           BLOCKED UNTIL METADATA PASS
-Install Readiness              LATER
-Cross-device Verification      REQUIRED
+Retrieval Surface              PASS ON ANDROID
+Retrieval Metadata Integrity   PASS ON ANDROID
+Responsive Surface Polish      IN PROGRESS
+Install Readiness              NEXT
+Desktop/iPhone/PWA Verification REQUIRED
 IndexedDB                      LIKELY LATER
+Tester Evidence System         LATER
 Weekly Review                  DEFERRED
 ```

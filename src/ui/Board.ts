@@ -29,6 +29,7 @@ import type { Language } from "./i18n";
 import { copy } from "./i18n";
 
 let retrievalQuery: RetrievalQuery = createDefaultRetrievalQuery([...BOARD_STATES]);
+let advancedFiltersOpen = !window.matchMedia("(max-width: 640px)").matches;
 
 interface BoardProps {
   board: BoardModel;
@@ -259,9 +260,11 @@ function createRetrievalSurface(board: BoardModel, language: Language, onResults
 
   const updateResults = () => {
     const activeCards = filterCards(board.cards, retrievalQuery, [...BOARD_STATES]).filter((card) => !card.hidden);
-    resultCount.textContent = `${activeCards.length} ${text.resultCount}`;
+    const active = isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
+    resultCount.textContent = formatRetrievalCount(activeCards.length, active, text);
     updateActiveFilterSummary(activeSummary, text, language, board);
     clearAll.hidden = !isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
+    updateFilterToggle();
     for (const updateSelected of selectedUpdaters) {
       updateSelected();
     }
@@ -324,8 +327,21 @@ function createRetrievalSurface(board: BoardModel, language: Language, onResults
 
   controls.append(search, resultCount, clearSearch);
 
+  const filterToggle = document.createElement("button");
+  filterToggle.type = "button";
+  filterToggle.className = "quiet-button filter-toggle";
+  filterToggle.setAttribute("aria-controls", "advanced-filters");
+  filterToggle.addEventListener("mousedown", (event) => event.preventDefault());
+  filterToggle.addEventListener("click", () => {
+    advancedFiltersOpen = !advancedFiltersOpen;
+    updateFilterToggle();
+    filterGroups.hidden = !advancedFiltersOpen;
+  });
+
   const filterGroups = document.createElement("div");
   filterGroups.className = "filter-groups";
+  filterGroups.id = "advanced-filters";
+  filterGroups.hidden = !advancedFiltersOpen;
   filterGroups.append(
     createStateFilters(text, updateResults, selectedUpdaters),
     createMediaFilters(text, updateResults, selectedUpdaters),
@@ -347,7 +363,14 @@ function createRetrievalSurface(board: BoardModel, language: Language, onResults
     search.focus();
   });
 
-  surface.append(heading, controls, filterGroups, activeSummary, clearAll);
+  const updateFilterToggle = () => {
+    const activeFilterCount = countActiveAdvancedFilters();
+    const label = activeFilterCount > 0 ? `${text.activeFiltersToggle} · ${activeFilterCount}` : text.filtersToggle;
+    filterToggle.textContent = `${label} · ${advancedFiltersOpen ? text.hideFilters : text.showFilters}`;
+    filterToggle.setAttribute("aria-expanded", String(advancedFiltersOpen));
+  };
+
+  surface.append(heading, controls, filterToggle, activeSummary, clearAll, filterGroups);
   updateResults();
 
   return surface;
@@ -489,16 +512,47 @@ function updateActiveFilterSummary(
   }
 
   const labels = [
-    retrievalQuery.search.trim(),
     ...(retrievalQuery.states.length === BOARD_STATES.length ? [] : retrievalQuery.states.map((state) => text.stateLabels[state])),
     ...retrievalQuery.media.map((media) => mediaLabel(media, text)),
     retrievalQuery.lastTouched === "any" ? "" : lastTouchedLabel(retrievalQuery.lastTouched, text),
     ...retrievalQuery.tags.map((tag) => `#${tag}`),
   ].filter(Boolean);
 
+  if (labels.length === 0) {
+    summary.hidden = true;
+    summary.textContent = "";
+    return;
+  }
+
   summary.textContent = `${text.filtering} ${labels.join(" · ")}`;
   summary.dataset.totalTags = String(collectTags(board.cards).length);
   summary.lang = language;
+}
+
+function countActiveAdvancedFilters(): number {
+  let count = 0;
+
+  if (retrievalQuery.states.length !== BOARD_STATES.length) {
+    count += 1;
+  }
+
+  count += retrievalQuery.media.length;
+
+  if (retrievalQuery.lastTouched !== "any") {
+    count += 1;
+  }
+
+  count += retrievalQuery.tags.length;
+
+  return count;
+}
+
+function formatRetrievalCount(count: number, active: boolean, text: (typeof copy)[Language]): string {
+  if (active) {
+    return `${count} ${count === 1 ? text.resultCountSingular : text.resultCount}`;
+  }
+
+  return `${count} ${count === 1 ? text.cardCountSingular : text.cardCount}`;
 }
 
 function createFilterGroup(label: string): HTMLElement {

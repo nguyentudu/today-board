@@ -164,9 +164,17 @@ textarea {
   align-items: center;
 }
 
+.filter-toggle {
+  justify-self: start;
+}
+
 .filter-groups {
   display: grid;
   gap: 0.6rem;
+}
+
+.filter-groups[hidden] {
+  display: none;
 }
 
 .filter-group {
@@ -266,6 +274,7 @@ textarea {
   grid-auto-rows: max-content;
   gap: 1rem;
   align-items: start;
+  overflow-anchor: none;
 }
 
 .column {
@@ -304,6 +313,10 @@ textarea {
   background: #fffdf8;
   padding: 0.8rem;
   box-shadow: 0 6px 18px rgba(45, 41, 32, 0.06);
+}
+
+.card-expanded {
+  width: 100%;
 }
 
 .card-summary,
@@ -507,6 +520,11 @@ textarea {
 
 .rich-link-list a {
   color: #285f77;
+  overflow-wrap: anywhere;
+}
+
+.plain-link-text {
+  color: #68665d;
   overflow-wrap: anywhere;
 }
 
@@ -741,6 +759,34 @@ textarea {
   }
 }
 
+@media (min-width: 900px) {
+  .column:has(.card-expanded) {
+    grid-column: 1 / -1;
+  }
+
+  .column:has(.card-expanded) .card-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card-expanded {
+    padding: 1rem;
+  }
+
+  .card-expanded .card-editor,
+  .card-expanded .readable-detail,
+  .card-expanded .rich-context {
+    max-width: 58rem;
+  }
+
+  .card-expanded .image-ref-list {
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  }
+
+  .card-expanded .capture-actions {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 640px) {
   .board-shell {
     padding: 1rem;
@@ -750,6 +796,15 @@ textarea {
   .columns,
   .retrieval-controls {
     grid-template-columns: 1fr;
+  }
+
+  .retrieval-surface {
+    gap: 0.55rem;
+    padding: 0.7rem;
+  }
+
+  .filter-toggle {
+    width: 100%;
   }
 
   .capture-actions {

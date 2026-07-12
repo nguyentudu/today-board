@@ -55,6 +55,7 @@ export function Card({
       return;
     }
 
+    item.classList.add("card-expanded");
     item.append(renderHeaderActions());
 
     if (mode === "edit") {
