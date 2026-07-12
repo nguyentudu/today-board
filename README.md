@@ -146,9 +146,10 @@ Card Density                   PASS
 Zone Auto-height               PASS ON ANDROID
 Retrieval Surface              PASS ON ANDROID
 Retrieval Metadata Integrity   PASS ON ANDROID
-Responsive Surface Polish      IN PROGRESS
-Install Readiness              NEXT
-Desktop/iPhone/PWA Verification REQUIRED
+Responsive Surface Polish      PASS ON ANDROID + DESKTOP
+Install Readiness              IN PROGRESS
+Installed PWA Verification     PART OF CURRENT MILESTONE
+iPhone Safari Verification     REQUIRED
 IndexedDB                      LIKELY LATER
 Tester Evidence System         LATER
 Weekly Review                  DEFERRED

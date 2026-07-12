@@ -16,11 +16,15 @@ const root = app;
 let board = loadBoard();
 let selectedImportFileName = "";
 let language: Language = "vi";
+let waitingServiceWorker: ServiceWorker | undefined;
+let updateMessage: HTMLElement | undefined;
+let offlineMessage: HTMLElement | undefined;
 
 if (!isQuickCaptureMode()) {
   board = applySharedLink(board);
 }
 saveBoard(board);
+setupNetworkStatus();
 registerServiceWorker();
 
 function render(nextBoard: BoardModel = board): void {
@@ -170,11 +174,96 @@ function getShareParam(name: "title" | "text" | "url"): string {
 }
 
 function registerServiceWorker(): void {
-  if (!("serviceWorker" in navigator)) {
+  if (!import.meta.env.PROD || !("serviceWorker" in navigator)) {
     return;
   }
 
-  navigator.serviceWorker.register("./sw.js").catch(() => undefined);
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./sw.js", { scope: "./" })
+      .then((registration) => {
+        if (registration.waiting) {
+          showUpdateAvailable(registration.waiting);
+        }
+
+        registration.addEventListener("updatefound", () => {
+          const worker = registration.installing;
+
+          if (!worker) {
+            return;
+          }
+
+          worker.addEventListener("statechange", () => {
+            if (worker.state === "installed" && navigator.serviceWorker.controller) {
+              showUpdateAvailable(worker);
+            }
+          });
+        });
+      })
+      .catch((error) => {
+        if (import.meta.env.DEV) {
+          console.warn("Today Board service worker registration failed.", error);
+        }
+      });
+  });
+
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    window.location.reload();
+  });
+}
+
+function showUpdateAvailable(worker: ServiceWorker): void {
+  waitingServiceWorker = worker;
+
+  if (updateMessage) {
+    updateMessage.hidden = false;
+    return;
+  }
+
+  updateMessage = document.createElement("aside");
+  updateMessage.className = "app-status app-update";
+  updateMessage.setAttribute("role", "status");
+
+  const message = document.createElement("span");
+  message.textContent =
+    language === "vi" ? "Có bản mới của Today Board." : "A new version of Today Board is available.";
+
+  const reload = document.createElement("button");
+  reload.type = "button";
+  reload.className = "quiet-button";
+  reload.textContent = language === "vi" ? "Tải lại khi sẵn sàng" : "Reload when ready";
+  reload.addEventListener("click", () => {
+    waitingServiceWorker?.postMessage({ type: "TODAY_BOARD_SKIP_WAITING" });
+  });
+
+  updateMessage.append(message, reload);
+  document.body.append(updateMessage);
+}
+
+function setupNetworkStatus(): void {
+  const updateStatus = () => {
+    if (navigator.onLine) {
+      offlineMessage?.remove();
+      offlineMessage = undefined;
+      return;
+    }
+
+    if (!offlineMessage) {
+      offlineMessage = document.createElement("aside");
+      offlineMessage.className = "app-status offline-status";
+      offlineMessage.setAttribute("role", "status");
+      document.body.append(offlineMessage);
+    }
+
+    offlineMessage.textContent =
+      language === "vi"
+        ? "Đang ngoại tuyến. Board trên thiết bị này vẫn dùng được."
+        : "Offline. The board saved on this device is still available.";
+  };
+
+  window.addEventListener("online", updateStatus);
+  window.addEventListener("offline", updateStatus);
+  updateStatus();
 }
 
 function hasHandledShare(shareKey: string): boolean {
