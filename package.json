@@ -12,6 +12,7 @@
     "test:layout": "node scripts/verify-zone-layout.mjs",
     "test:retrieval": "node scripts/verify-retrieval.mjs",
     "test:search-stability": "node scripts/verify-search-stability.mjs",
+    "test:metadata-integrity": "node scripts/verify-metadata-integrity.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {

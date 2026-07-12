@@ -1,5 +1,6 @@
 import type { Card } from "./card";
 import type { BoardState } from "./state";
+import { extractValidHttpUrls } from "../lib/links";
 
 export type MediaFilter = "image" | "voice" | "file" | "link";
 export type LastTouchedFilter = "any" | "today" | "last7" | "last30" | "older30";
@@ -83,7 +84,8 @@ export function buildSearchText(card: Card): string {
       card.whyStillOpen,
       card.ifYouReturn,
       card.bookmarkReason,
-      ...card.richLinks.filter(isReadableLink),
+      ...extractValidHttpUrls(card.richLinks),
+      ...card.richLinks.filter(isSearchableHumanLinkText),
       ...card.fileRefs.map((file) => file.name),
       ...card.tags,
       ...card.tags.map((tag) => `#${tag}`),
@@ -132,7 +134,7 @@ export function hasMedia(card: Card, media: MediaFilter): boolean {
     case "file":
       return card.fileRefs.some((file) => file.name.trim().length > 0);
     case "link":
-      return card.richLinks.some(isReadableLink);
+      return extractValidHttpUrls(card.richLinks).length > 0;
   }
 }
 
@@ -170,7 +172,12 @@ export function matchesLastTouched(card: Card, filter: LastTouchedFilter, now = 
   return ageMs > 30 * dayMs;
 }
 
-function isReadableLink(value: string): boolean {
+function isSearchableHumanLinkText(value: string): boolean {
   const trimmed = value.trim();
-  return Boolean(trimmed) && !trimmed.startsWith("data:") && !trimmed.startsWith("blob:");
+  return (
+    Boolean(trimmed) &&
+    !trimmed.startsWith("data:") &&
+    !trimmed.startsWith("blob:") &&
+    !trimmed.startsWith("javascript:")
+  );
 }

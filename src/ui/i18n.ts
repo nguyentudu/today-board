@@ -24,6 +24,7 @@ export const copy = {
     ifYouReturnEmpty: "No starting point yet.",
     richLinks: "Link",
     richLinksEmpty: "Paste link here",
+    richLinksHelper: "Only lines beginning with http:// or https:// are counted as links.",
     imageRefs: "Images or screenshots",
     imageRefsEmpty: "Paste data:image or describe the image/screenshot here",
     bookmarkReason: "Why save?",
@@ -162,6 +163,7 @@ export const copy = {
     ifYouReturnEmpty: "Chưa có điểm bắt đầu.",
     richLinks: "Link",
     richLinksEmpty: "Dán link ở đây",
+    richLinksHelper: "Chỉ các dòng bắt đầu bằng http:// hoặc https:// được tính là link.",
     imageRefs: "Ảnh hoặc screenshot",
     imageRefsEmpty: "Dán data:image hoặc mô tả ảnh/screenshot ở đây",
     bookmarkReason: "Vì sao lưu?",
@@ -302,6 +304,7 @@ export const copy = {
     ifYouReturnEmpty: string;
     richLinks: string;
     richLinksEmpty: string;
+    richLinksHelper: string;
     imageRefs: string;
     imageRefsEmpty: string;
     bookmarkReason: string;

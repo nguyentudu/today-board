@@ -140,6 +140,7 @@ export function CardEditor({
 
   const linksField = createTextareaField(text.richLinks, text.richLinksEmpty, card.richLinks.join("\n"), (value) =>
     onRichLinks(splitLines(value)),
+    text.richLinksHelper,
   );
   const captureControls = createCaptureControls(card, text, onImageRefs, onAudioRefs, onFileRefs);
   const bookmarkReasonField = createTextareaField(
@@ -502,6 +503,7 @@ function createTextareaField(
   placeholder: string,
   value: string,
   onChange: (value: string) => void,
+  helper?: string,
 ): HTMLLabelElement {
   const field = document.createElement("label");
   field.className = "card-field rich-field";
@@ -519,7 +521,16 @@ function createTextareaField(
   textarea.ariaLabel = label;
   textarea.addEventListener("change", () => onChange(textarea.value));
 
-  field.append(fieldLabel, textarea);
+  field.append(fieldLabel);
+
+  if (helper) {
+    const helperText = document.createElement("span");
+    helperText.className = "field-helper";
+    helperText.textContent = helper;
+    field.append(helperText);
+  }
+
+  field.append(textarea);
 
   return field;
 }

@@ -2,10 +2,14 @@ import { readFileSync } from "node:fs";
 import ts from "typescript";
 
 const source = readFileSync("src/domain/retrieval.ts", "utf8").replace(/^import type .*$/gm, "");
-const js = ts.transpileModule(source, {
+const linkSource = readFileSync("src/lib/links.ts", "utf8");
+const js = ts.transpileModule(source.replace('import { extractValidHttpUrls } from "../lib/links";', ""), {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020 },
 }).outputText;
-const mod = await import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
+const linkJs = ts.transpileModule(linkSource, {
+  compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020 },
+}).outputText;
+const mod = await import(`data:text/javascript;base64,${Buffer.from(`${linkJs}\n${js}`).toString("base64")}`);
 
 const {
   buildSearchText,
@@ -13,6 +17,8 @@ const {
   filterCards,
   normalizeSearchText,
   normalizeTagInput,
+  extractValidHttpUrls,
+  isValidHttpUrl,
 } = mod;
 
 const states = ["continue", "pause", "finished", "leave-alone"];
@@ -53,6 +59,19 @@ const cards = [
   card("pause", { state: "pause", tags: ["moon"], audioRefs: ["data:audio/webm;base64,AAAA"], richLinks: [] }),
   card("image-link", { imageRefs: ["data:image/png;base64,AAAA"], richLinks: ["https://example.com/asset"], tags: ["asset"] }),
   card("file-old", { state: "finished", fileRefs: [{ name: "old.pdf", type: "application/pdf", size: 12 }], updatedAt: "2026-05-01T00:00:00.000Z", tags: ["old"] }),
+  card("snapshot-hashtag", { title: "Different", contextSnapshot: "#research", tags: [], richLinks: [] }),
+  card("link-hashtag", { title: "Different", contextSnapshot: "", tags: [], richLinks: ["#research"] }),
+  card("tag-proof", {
+    title: "Different",
+    note: "",
+    contextSnapshot: "",
+    whyStillOpen: "",
+    ifYouReturn: "",
+    bookmarkReason: "",
+    richLinks: ["https://example.com/not-proof"],
+    fileRefs: [{ name: "plain.pdf", type: "application/pdf", size: 1 }],
+    tags: ["retrieval-proof-742"],
+  }),
   card("hidden", { hidden: true, title: "hidden-token" }),
 ];
 
@@ -107,3 +126,29 @@ assert("tag filter AND", ids(filterCards(cards, query({ tags: ["moon", "research
 assert("tag normalization", normalizeTagInput("#Moon, research research WAYTOOLONGWAYTOOLONGWAYTOOLONGWAYTOOLONG")[0] === "moon");
 assert("tag collection", collectTags(cards).includes("finance"));
 assert("raw media not searched", !buildSearchText(card("raw", { imageRefs: ["data:image/png;base64,SECRET"] })).includes("secret"));
+assert("valid https URL", isValidHttpUrl("https://example.com"));
+assert("valid http URL", isValidHttpUrl("http://example.com/path"));
+assert("URL with query", isValidHttpUrl("https://example.com?q=test"));
+assert("hashtag rejected as URL", !isValidHttpUrl("#research"));
+assert("plain text rejected as URL", !isValidHttpUrl("research"));
+assert("empty URL rejected", !isValidHttpUrl(""));
+assert("whitespace URL rejected", !isValidHttpUrl("   "));
+assert("data URL rejected", !isValidHttpUrl("data:image/jpeg;base64,AAAA"));
+assert("blob URL rejected", !isValidHttpUrl("blob:https://example.com/id"));
+assert("javascript URL rejected", !isValidHttpUrl("javascript:alert(1)"));
+assert("malformed URL rejected", !isValidHttpUrl("malformed://value"));
+assert("object URL rejected", !isValidHttpUrl({ href: "https://example.com" }));
+assert("array URL rejected", !isValidHttpUrl(["https://example.com"]));
+assert("two valid URLs plus hashtag count 2", extractValidHttpUrls(["https://example.com/a", "https://example.com/b", "#research"]).length === 2);
+assert("one valid URL plus plain line count 1", extractValidHttpUrls(["plain text", "https://example.com"]).length === 1);
+assert("hashtag only count 0", extractValidHttpUrls(["#research"]).length === 0);
+assert("plain text only count 0", extractValidHttpUrls(["plain text"]).length === 0);
+assert("data URL only count 0", extractValidHttpUrls(["data:image/jpeg;base64,AAAA"]).length === 0);
+assert("has-link false for hashtag only", !ids(filterCards(cards, query({ media: ["link"], search: "#research" }), states, now)).includes("link-hashtag"));
+assert("has-link true for mixed valid invalid", ids(filterCards([card("mixed", { richLinks: ["https://example.com", "#research"] })], query({ media: ["link"] }), states, now))[0] === "mixed");
+assert("snapshot hashtag generic search match", ids(filterCards(cards, query({ search: "#research" }), states, now)).includes("snapshot-hashtag"));
+assert("snapshot hashtag does not create tag filter match", !ids(filterCards(cards, query({ tags: ["research"] }), states, now)).includes("snapshot-hashtag"));
+assert("link hashtag does not create tag filter match", !ids(filterCards(cards, query({ tags: ["research"] }), states, now)).includes("link-hashtag"));
+assert("tag filter reads only tags array", ids(filterCards(cards, query({ tags: ["retrieval-proof-742"] }), states, now))[0] === "tag-proof");
+assert("unique tag token search match", ids(filterCards(cards, query({ search: "retrieval-proof-742" }), states, now))[0] === "tag-proof");
+assert("unique hashtag token search match", ids(filterCards(cards, query({ search: "#retrieval-proof-742" }), states, now))[0] === "tag-proof");

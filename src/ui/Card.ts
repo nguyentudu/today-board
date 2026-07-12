@@ -4,6 +4,7 @@ import { CardEditor } from "./CardEditor";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
 import { BOARD_STATES } from "../domain/state";
+import { extractValidHttpUrls, normalizeReadableHttpUrl } from "../lib/links";
 
 interface CardProps {
   card: BoardCard;
@@ -200,18 +201,28 @@ function renderRichContext(
     section.append(reason);
   }
 
-  if (card.richLinks.length > 0) {
+  const validLinks = extractValidHttpUrls(card.richLinks);
+  const invalidLinkText = card.richLinks.filter((link) => link.trim() && normalizeReadableHttpUrl(link) === null);
+
+  if (validLinks.length > 0 || invalidLinkText.length > 0) {
     const list = document.createElement("ul");
     list.className = "rich-link-list";
 
-    for (const link of card.richLinks) {
+    for (const link of validLinks) {
       const item = document.createElement("li");
       const anchor = document.createElement("a");
-      anchor.href = safeHref(link);
+      anchor.href = link;
       anchor.textContent = link;
       anchor.target = "_blank";
       anchor.rel = "noreferrer";
       item.append(anchor);
+      list.append(item);
+    }
+
+    for (const linkText of invalidLinkText) {
+      const item = document.createElement("li");
+      item.className = "plain-link-text";
+      item.textContent = linkText;
       list.append(item);
     }
 
@@ -411,8 +422,9 @@ function renderMediaIndicators(card: BoardCard, text: (typeof copy)[Language], l
     indicators.push(createPill(countLabel(card.fileRefs.length, text.filesLabel, "files", language)));
   }
 
-  if (card.richLinks.length > 0) {
-    indicators.push(createPill(countLabel(card.richLinks.length, text.linksLabel, "links", language)));
+  const validLinks = extractValidHttpUrls(card.richLinks);
+  if (validLinks.length > 0) {
+    indicators.push(createPill(countLabel(validLinks.length, text.linksLabel, "links", language)));
   }
 
   return indicators;
@@ -466,14 +478,6 @@ function createRemoveButton(label: string, onClick: () => void): HTMLButtonEleme
 
 function removeAt<T>(items: T[], index: number): T[] {
   return items.filter((_, itemIndex) => itemIndex !== index);
-}
-
-function safeHref(value: string): string {
-  if (/^https?:\/\//i.test(value) || /^mailto:/i.test(value)) {
-    return value;
-  }
-
-  return `https://${value}`;
 }
 
 function formatRelativeDate(value: string, language: Language): string {
