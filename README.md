@@ -143,11 +143,15 @@ Quick Capture                  PASS
 Rich Media                     PASS
 Storage Foundation             PASS WITH ARCHITECTURAL WARNING
 Card Density                   PASS
-Zone Auto-height               PASS ON ANDROID
-Retrieval Surface              IN PROGRESS
-Mobile Polish                  NEXT
+Attention Zone Auto-height     PASS ON ANDROID
+Retrieval Core                 PASS ON ANDROID
+Search Result Correctness      PASS ON ANDROID
+Search Input Stability         IN PROGRESS
+Retrieval Acceptance           PENDING
+Mobile Layout Polish           AFTER RETRIEVAL ACCEPTANCE
 Install Readiness              LATER
-Cross-device Verification      REQUIRED
-IndexedDB                      LIKELY LATER
+Desktop Chrome                 RETEST REQUIRED
+iPhone Safari                  RETEST REQUIRED
+Installed PWA                  RETEST REQUIRED
 Weekly Review                  DEFERRED
 ```

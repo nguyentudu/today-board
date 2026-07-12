@@ -11,6 +11,7 @@
     "test:density": "node scripts/verify-density.mjs",
     "test:layout": "node scripts/verify-zone-layout.mjs",
     "test:retrieval": "node scripts/verify-retrieval.mjs",
+    "test:search-stability": "node scripts/verify-search-stability.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {

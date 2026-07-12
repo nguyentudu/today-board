@@ -29,7 +29,6 @@ import type { Language } from "./i18n";
 import { copy } from "./i18n";
 
 let retrievalQuery: RetrievalQuery = createDefaultRetrievalQuery([...BOARD_STATES]);
-let restoreSearchFocus = false;
 
 interface BoardProps {
   board: BoardModel;
@@ -163,15 +162,10 @@ export function Board({
   localNote.className = "local-note";
   localNote.textContent = text.savedNote;
 
-  const retrievalSurface = createRetrievalSurface(board, language, () => onChange(board));
-  const retrievalActive = isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
-  const visibleCards = filterCards(board.cards, retrievalQuery, [...BOARD_STATES]);
-  const visibleBoard = { ...board, cards: visibleCards };
-
-  const storagePanel = createStoragePanel(board, language, storageMessage, (nextBoard) => commit(nextBoard));
-
   const columns = document.createElement("div");
   columns.className = "columns";
+  const retrievalSurface = createRetrievalSurface(board, language, renderColumns);
+  const storagePanel = createStoragePanel(board, language, storageMessage, (nextBoard) => commit(nextBoard));
 
   function commit(nextBoard: BoardModel): boolean {
     if (!trySaveBoard(nextBoard)) {
@@ -183,47 +177,56 @@ export function Board({
     return true;
   }
 
-  const visibleActiveCards = visibleCards.filter((card) => !card.hidden);
-  for (const state of BOARD_STATES) {
-    if (retrievalActive && !visibleActiveCards.some((card) => card.state === state)) {
-      continue;
+  function renderColumns(): void {
+    columns.replaceChildren();
+    const retrievalActive = isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
+    const visibleCards = filterCards(board.cards, retrievalQuery, [...BOARD_STATES]);
+    const visibleBoard = { ...board, cards: visibleCards };
+    const visibleActiveCards = visibleCards.filter((card) => !card.hidden);
+
+    for (const state of BOARD_STATES) {
+      if (retrievalActive && !visibleActiveCards.some((card) => card.state === state)) {
+        continue;
+      }
+
+      columns.append(
+        Column({
+          board: visibleBoard,
+          state,
+          language,
+          onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
+          onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
+          onNote: (cardId: string, note: string) => commit(updateCardNote(board, cardId, note)),
+          onContextSnapshot: (cardId: string, contextSnapshot: string) =>
+            commit(updateCardReentryNotes(board, cardId, { contextSnapshot })),
+          onWhyStillOpen: (cardId: string, whyStillOpen: string) =>
+            commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
+          onIfYouReturn: (cardId: string, ifYouReturn: string) =>
+            commit(updateCardReentryNotes(board, cardId, { ifYouReturn })),
+          onRichLinks: (cardId: string, richLinks: string[]) =>
+            commit(updateCardRichContext(board, cardId, { richLinks })),
+          onImageRefs: (cardId: string, imageRefs: string[]) =>
+            commit(updateCardRichContext(board, cardId, { imageRefs })),
+          onAudioRefs: (cardId: string, audioRefs: string[]) =>
+            commit(updateCardRichContext(board, cardId, { audioRefs })),
+          onFileRefs: (cardId: string, fileRefs) => commit(updateCardRichContext(board, cardId, { fileRefs })),
+          onBookmarkReason: (cardId: string, bookmarkReason: string) =>
+            commit(updateCardRichContext(board, cardId, { bookmarkReason })),
+          onTags: (cardId: string, tags: string[]) => commit(updateCardTags(board, cardId, tags)),
+          onHide: (cardId: string) => commit(hideCard(board, cardId)),
+        }),
+      );
     }
 
-    columns.append(
-      Column({
-        board: visibleBoard,
-        state,
-        language,
-        onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
-        onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
-        onNote: (cardId: string, note: string) => commit(updateCardNote(board, cardId, note)),
-        onContextSnapshot: (cardId: string, contextSnapshot: string) =>
-          commit(updateCardReentryNotes(board, cardId, { contextSnapshot })),
-        onWhyStillOpen: (cardId: string, whyStillOpen: string) =>
-          commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
-        onIfYouReturn: (cardId: string, ifYouReturn: string) =>
-          commit(updateCardReentryNotes(board, cardId, { ifYouReturn })),
-        onRichLinks: (cardId: string, richLinks: string[]) =>
-          commit(updateCardRichContext(board, cardId, { richLinks })),
-        onImageRefs: (cardId: string, imageRefs: string[]) =>
-          commit(updateCardRichContext(board, cardId, { imageRefs })),
-        onAudioRefs: (cardId: string, audioRefs: string[]) =>
-          commit(updateCardRichContext(board, cardId, { audioRefs })),
-        onFileRefs: (cardId: string, fileRefs) => commit(updateCardRichContext(board, cardId, { fileRefs })),
-        onBookmarkReason: (cardId: string, bookmarkReason: string) =>
-          commit(updateCardRichContext(board, cardId, { bookmarkReason })),
-        onTags: (cardId: string, tags: string[]) => commit(updateCardTags(board, cardId, tags)),
-        onHide: (cardId: string) => commit(hideCard(board, cardId)),
-      }),
-    );
+    if (retrievalActive && visibleActiveCards.length === 0) {
+      const noResults = document.createElement("p");
+      noResults.className = "no-results";
+      noResults.textContent = text.noResults;
+      columns.append(noResults);
+    }
   }
 
-  if (retrievalActive && visibleActiveCards.length === 0) {
-    const noResults = document.createElement("p");
-    noResults.className = "no-results";
-    noResults.textContent = text.noResults;
-    columns.append(noResults);
-  }
+  renderColumns();
 
   const testNotes = document.createElement("section");
   testNotes.className = "test-notes";
@@ -246,10 +249,29 @@ export function Board({
   return shell;
 }
 
-function createRetrievalSurface(board: BoardModel, language: Language, onUpdate: () => void): HTMLElement {
+function createRetrievalSurface(board: BoardModel, language: Language, onResultsChange: () => void): HTMLElement {
   const text = copy[language];
   const surface = document.createElement("section");
   surface.className = "retrieval-surface";
+  let searchTimer: number | undefined;
+  let composing = false;
+  const selectedUpdaters: Array<() => void> = [];
+
+  const updateResults = () => {
+    const activeCards = filterCards(board.cards, retrievalQuery, [...BOARD_STATES]).filter((card) => !card.hidden);
+    resultCount.textContent = `${activeCards.length} ${text.resultCount}`;
+    updateActiveFilterSummary(activeSummary, text, language, board);
+    clearAll.hidden = !isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
+    for (const updateSelected of selectedUpdaters) {
+      updateSelected();
+    }
+    onResultsChange();
+  };
+
+  const scheduleSearchUpdate = () => {
+    window.clearTimeout(searchTimer);
+    searchTimer = window.setTimeout(updateResults, 120);
+  };
 
   const heading = document.createElement("div");
   heading.className = "retrieval-heading";
@@ -267,25 +289,37 @@ function createRetrievalSurface(board: BoardModel, language: Language, onUpdate:
   search.value = retrievalQuery.search;
   search.placeholder = text.searchCards;
   search.ariaLabel = text.searchCards;
+  search.addEventListener("compositionstart", () => {
+    composing = true;
+    window.clearTimeout(searchTimer);
+  });
+  search.addEventListener("compositionend", () => {
+    composing = false;
+    retrievalQuery = { ...retrievalQuery, search: search.value };
+    updateResults();
+  });
   search.addEventListener("input", () => {
     retrievalQuery = { ...retrievalQuery, search: search.value };
-    restoreSearchFocus = true;
-    onUpdate();
+    if (!composing) {
+      scheduleSearchUpdate();
+    }
   });
 
   const resultCount = document.createElement("p");
   resultCount.className = "retrieval-result-count";
   resultCount.setAttribute("role", "status");
-  const activeCards = filterCards(board.cards, retrievalQuery, [...BOARD_STATES]).filter((card) => !card.hidden);
-  resultCount.textContent = `${activeCards.length} ${text.resultCount}`;
+  resultCount.textContent = "";
 
   const clearSearch = document.createElement("button");
   clearSearch.type = "button";
   clearSearch.className = "quiet-button";
   clearSearch.textContent = text.clearSearch;
+  clearSearch.addEventListener("mousedown", (event) => event.preventDefault());
   clearSearch.addEventListener("click", () => {
     retrievalQuery = { ...retrievalQuery, search: "" };
-    onUpdate();
+    search.value = "";
+    updateResults();
+    search.focus();
   });
 
   controls.append(search, resultCount, clearSearch);
@@ -293,10 +327,10 @@ function createRetrievalSurface(board: BoardModel, language: Language, onUpdate:
   const filterGroups = document.createElement("div");
   filterGroups.className = "filter-groups";
   filterGroups.append(
-    createStateFilters(text, onUpdate),
-    createMediaFilters(text, onUpdate),
-    createLastTouchedFilter(text, onUpdate),
-    createTagFilters(board, text, onUpdate),
+    createStateFilters(text, updateResults, selectedUpdaters),
+    createMediaFilters(text, updateResults, selectedUpdaters),
+    createLastTouchedFilter(text, updateResults, selectedUpdaters),
+    createTagFilters(board, text, updateResults, selectedUpdaters),
   );
 
   const activeSummary = createActiveFilterSummary(text, language, board);
@@ -305,53 +339,58 @@ function createRetrievalSurface(board: BoardModel, language: Language, onUpdate:
   clearAll.className = "quiet-button";
   clearAll.textContent = text.clearAllFilters;
   clearAll.hidden = !isRetrievalActive(retrievalQuery, [...BOARD_STATES]);
+  clearAll.addEventListener("mousedown", (event) => event.preventDefault());
   clearAll.addEventListener("click", () => {
     retrievalQuery = createDefaultRetrievalQuery([...BOARD_STATES]);
-    onUpdate();
+    search.value = "";
+    updateResults();
+    search.focus();
   });
 
   surface.append(heading, controls, filterGroups, activeSummary, clearAll);
-
-  if (restoreSearchFocus) {
-    restoreSearchFocus = false;
-    window.setTimeout(() => {
-      search.focus();
-      search.setSelectionRange(search.value.length, search.value.length);
-    });
-  }
+  updateResults();
 
   return surface;
 }
 
-function createStateFilters(text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+function createStateFilters(
+  text: (typeof copy)[Language],
+  onUpdate: () => void,
+  selectedUpdaters: Array<() => void>,
+): HTMLElement {
   const group = createFilterGroup(text.stateFilter);
   const all = createChip(text.allStates, retrievalQuery.states.length === BOARD_STATES.length, () => {
     retrievalQuery = { ...retrievalQuery, states: [...BOARD_STATES] };
     onUpdate();
   });
+  selectedUpdaters.push(() => setChipSelected(all, retrievalQuery.states.length === BOARD_STATES.length));
   group.append(all);
 
-  group.append(
-    createChip(text.clearFilter, retrievalQuery.states.length === 0, () => {
-      retrievalQuery = { ...retrievalQuery, states: [] };
-      onUpdate();
-    }),
-  );
+  const clear = createChip(text.clearFilter, retrievalQuery.states.length === 0, () => {
+    retrievalQuery = { ...retrievalQuery, states: [] };
+    onUpdate();
+  });
+  selectedUpdaters.push(() => setChipSelected(clear, retrievalQuery.states.length === 0));
+  group.append(clear);
 
   for (const state of BOARD_STATES) {
-    group.append(
-      createChip(text.stateLabels[state], retrievalQuery.states.includes(state), () => {
-        const states = toggleValue(retrievalQuery.states, state);
-        retrievalQuery = { ...retrievalQuery, states };
-        onUpdate();
-      }),
-    );
+    const chip = createChip(text.stateLabels[state], retrievalQuery.states.includes(state), () => {
+      const states = toggleValue(retrievalQuery.states, state);
+      retrievalQuery = { ...retrievalQuery, states };
+      onUpdate();
+    });
+    selectedUpdaters.push(() => setChipSelected(chip, retrievalQuery.states.includes(state)));
+    group.append(chip);
   }
 
   return group;
 }
 
-function createMediaFilters(text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+function createMediaFilters(
+  text: (typeof copy)[Language],
+  onUpdate: () => void,
+  selectedUpdaters: Array<() => void>,
+): HTMLElement {
   const group = createFilterGroup(text.mediaFilters);
   const options: Array<[MediaFilter, string]> = [
     ["image", text.hasImage],
@@ -361,18 +400,22 @@ function createMediaFilters(text: (typeof copy)[Language], onUpdate: () => void)
   ];
 
   for (const [value, label] of options) {
-    group.append(
-      createChip(label, retrievalQuery.media.includes(value), () => {
-        retrievalQuery = { ...retrievalQuery, media: toggleValue(retrievalQuery.media, value) };
-        onUpdate();
-      }),
-    );
+    const chip = createChip(label, retrievalQuery.media.includes(value), () => {
+      retrievalQuery = { ...retrievalQuery, media: toggleValue(retrievalQuery.media, value) };
+      onUpdate();
+    });
+    selectedUpdaters.push(() => setChipSelected(chip, retrievalQuery.media.includes(value)));
+    group.append(chip);
   }
 
   return group;
 }
 
-function createLastTouchedFilter(text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+function createLastTouchedFilter(
+  text: (typeof copy)[Language],
+  onUpdate: () => void,
+  selectedUpdaters: Array<() => void>,
+): HTMLElement {
   const field = document.createElement("label");
   field.className = "retrieval-select";
   const label = document.createElement("span");
@@ -400,20 +443,28 @@ function createLastTouchedFilter(text: (typeof copy)[Language], onUpdate: () => 
     retrievalQuery = { ...retrievalQuery, lastTouched: select.value as LastTouchedFilter };
     onUpdate();
   });
+  selectedUpdaters.push(() => {
+    select.value = retrievalQuery.lastTouched;
+  });
 
   field.append(label, select);
   return field;
 }
 
-function createTagFilters(board: BoardModel, text: (typeof copy)[Language], onUpdate: () => void): HTMLElement {
+function createTagFilters(
+  board: BoardModel,
+  text: (typeof copy)[Language],
+  onUpdate: () => void,
+  selectedUpdaters: Array<() => void>,
+): HTMLElement {
   const group = createFilterGroup(text.tags);
   for (const tag of collectTags(board.cards)) {
-    group.append(
-      createChip(`#${tag}`, retrievalQuery.tags.includes(tag), () => {
-        retrievalQuery = { ...retrievalQuery, tags: toggleValue(retrievalQuery.tags, tag) };
-        onUpdate();
-      }),
-    );
+    const chip = createChip(`#${tag}`, retrievalQuery.tags.includes(tag), () => {
+      retrievalQuery = { ...retrievalQuery, tags: toggleValue(retrievalQuery.tags, tag) };
+      onUpdate();
+    });
+    selectedUpdaters.push(() => setChipSelected(chip, retrievalQuery.tags.includes(tag)));
+    group.append(chip);
   }
   return group;
 }
@@ -421,10 +472,20 @@ function createTagFilters(board: BoardModel, text: (typeof copy)[Language], onUp
 function createActiveFilterSummary(text: (typeof copy)[Language], language: Language, board: BoardModel): HTMLElement {
   const summary = document.createElement("p");
   summary.className = "active-filter-summary";
+  updateActiveFilterSummary(summary, text, language, board);
+  return summary;
+}
 
+function updateActiveFilterSummary(
+  summary: HTMLElement,
+  text: (typeof copy)[Language],
+  language: Language,
+  board: BoardModel,
+): void {
   if (!isRetrievalActive(retrievalQuery, [...BOARD_STATES])) {
     summary.hidden = true;
-    return summary;
+    summary.textContent = "";
+    return;
   }
 
   const labels = [
@@ -438,7 +499,6 @@ function createActiveFilterSummary(text: (typeof copy)[Language], language: Lang
   summary.textContent = `${text.filtering} ${labels.join(" · ")}`;
   summary.dataset.totalTags = String(collectTags(board.cards).length);
   summary.lang = language;
-  return summary;
 }
 
 function createFilterGroup(label: string): HTMLElement {
@@ -453,11 +513,16 @@ function createFilterGroup(label: string): HTMLElement {
 function createChip(label: string, selected: boolean, onClick: () => void): HTMLButtonElement {
   const chip = document.createElement("button");
   chip.type = "button";
-  chip.className = selected ? "filter-chip selected" : "filter-chip";
-  chip.setAttribute("aria-pressed", String(selected));
+  setChipSelected(chip, selected);
   chip.textContent = label;
+  chip.addEventListener("mousedown", (event) => event.preventDefault());
   chip.addEventListener("click", onClick);
   return chip;
+}
+
+function setChipSelected(chip: HTMLButtonElement, selected: boolean): void {
+  chip.className = selected ? "filter-chip selected" : "filter-chip";
+  chip.setAttribute("aria-pressed", String(selected));
 }
 
 function toggleValue<T>(values: T[], value: T): T[] {
