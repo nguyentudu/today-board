@@ -28,7 +28,7 @@ Build B installs and waits. The running app shows a polite inline update notice 
 
 ## 6. Build Marker Strategy
 
-The running bundle exposes `window.__TODAY_BOARD_BUILD_ID__`. A subtle marker is rendered only with `?debug-build=1`. Build B is `2026.07.13-b`; the preceding deployed bundle is identified by commit `f41e7fb` and asset `index-qL8JD1qv.js`.
+The running bundle exposes `window.__TODAY_BOARD_BUILD_ID__`. A subtle marker is rendered only with `?debug-build=1`. The guarded acceptance baseline is Build A `2026.07.13-b` at commit `6c160c1`; the successor acceptance deployment is Build B `2026.07.13-c`.
 
 ## 7. Waiting-Worker Handling
 
@@ -44,7 +44,7 @@ Reload is guarded while Edit mode is open, Quick Capture contains unsaved conten
 
 ## 10. Cache Versioning
 
-Current app-shell cache: `today-board-shell-2026-07-13-b`. Future shell releases must change the version while retaining the `today-board-shell` prefix.
+Current app-shell cache: `today-board-shell-2026-07-13-c`. Future shell releases must change the version while retaining the `today-board-shell` prefix.
 
 ## 11. Old-Cache Cleanup
 
