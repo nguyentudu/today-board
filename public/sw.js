@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "today-board-shell";
-const CACHE_VERSION = "v1-install-readiness";
+const CACHE_VERSION = "2026-07-13-b";
 const SHELL_CACHE = `${CACHE_PREFIX}-${CACHE_VERSION}`;
 const APP_SCOPE = new URL(self.registration.scope).pathname;
 const CRITICAL_ASSETS = ["./manifest.webmanifest", "./icon.svg"];
@@ -24,12 +24,23 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== SHELL_CACHE).map((key) => caches.delete(key))),
-      )
-      .then(() => self.clients.claim()),
+    caches.keys().then(async (keys) => {
+      const obsoleteTodayBoardCaches = keys.filter((key) => key.startsWith(CACHE_PREFIX) && key !== SHELL_CACHE);
+      const preservedCaches = keys.filter((key) => !key.startsWith(CACHE_PREFIX));
+
+      await Promise.all(obsoleteTodayBoardCaches.map((key) => caches.delete(key)));
+
+      if (isDevelopmentHost()) {
+        console.info("Today Board service worker activated.", {
+          version: CACHE_VERSION,
+          cache: SHELL_CACHE,
+          deleted: obsoleteTodayBoardCaches,
+          preserved: preservedCaches,
+        });
+      }
+
+      await self.clients.claim();
+    }),
   );
 });
 
@@ -133,4 +144,8 @@ async function cacheDiscoveredShellAssets(cache, response) {
   const uniqueAssets = [...new Set(assets)];
 
   await cache.addAll(uniqueAssets);
+}
+
+function isDevelopmentHost() {
+  return self.location.hostname === "localhost" || self.location.hostname === "127.0.0.1";
 }

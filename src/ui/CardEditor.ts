@@ -354,10 +354,12 @@ function createVoiceButton(
         }
         window.clearTimeout(stopTimer);
         button.textContent = text.recordVoice;
+        delete button.dataset.recording;
       },
       { once: true },
     );
     recorder.start();
+    button.dataset.recording = "true";
     button.textContent = text.stopRecording;
     stopTimer = window.setTimeout(() => {
       if (recorder?.state === "recording") {

@@ -70,26 +70,51 @@ textarea {
   padding: 2rem;
 }
 
+.app-status-region {
+  display: grid;
+  width: min(1440px, 100%);
+  gap: 0.5rem;
+  margin: 0 auto;
+  padding: 0.75rem 2rem 0;
+}
+
+.app-status-region:empty {
+  display: none;
+}
+
 .app-status {
-  position: fixed;
-  right: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
-  z-index: 10;
   display: flex;
   align-items: center;
-  max-width: min(34rem, calc(100vw - 2rem));
+  width: fit-content;
+  max-width: 100%;
   gap: 0.65rem;
   border: 1px solid #c8c2b3;
   border-radius: 8px;
   background: #fffdf8;
-  box-shadow: 0 10px 28px rgba(45, 41, 32, 0.12);
   color: #3f403a;
   padding: 0.7rem;
+  overflow-wrap: anywhere;
 }
 
 .offline-status {
-  left: max(1rem, env(safe-area-inset-left));
-  right: auto;
+  border-color: #b8c5ad;
+  background: #edf3e7;
+}
+
+.app-update {
+  flex-wrap: wrap;
+}
+
+.update-warning {
+  flex-basis: 100%;
+  color: #7a4e26;
+  font-size: 0.9rem;
+}
+
+.build-marker {
+  justify-self: end;
+  color: #77746b;
+  font-size: 0.75rem;
 }
 
 .top-panel {
@@ -814,6 +839,15 @@ textarea {
 }
 
 @media (max-width: 640px) {
+  .app-status-region {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+
+  .app-status {
+    width: 100%;
+  }
+
   .board-shell {
     padding: 1rem;
   }

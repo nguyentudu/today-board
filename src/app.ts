@@ -13,12 +13,22 @@ if (!app) {
 }
 
 const root = app;
+const BUILD_ID = "2026.07.13-b";
+const statusRegion = document.createElement("div");
+statusRegion.className = "app-status-region";
+statusRegion.setAttribute("aria-label", "Application status");
 let board = loadBoard();
 let selectedImportFileName = "";
 let language: Language = "vi";
 let waitingServiceWorker: ServiceWorker | undefined;
 let updateMessage: HTMLElement | undefined;
 let offlineMessage: HTMLElement | undefined;
+let updateActivationRequested = false;
+let hasReloadedForUpdate = false;
+let networkStatusTimer: number | undefined;
+
+window.__TODAY_BOARD_BUILD_ID__ = BUILD_ID;
+renderBuildMarker();
 
 if (!isQuickCaptureMode()) {
   board = applySharedLink(board);
@@ -30,9 +40,12 @@ registerServiceWorker();
 function render(nextBoard: BoardModel = board): void {
   board = nextBoard;
   saveBoard(board);
+  renderNetworkStatus();
+  renderUpdateMessage();
 
   if (isQuickCaptureMode()) {
     root.replaceChildren(
+      statusRegion,
       QuickCapture({
         language,
         initialTitle: getShareParam("title") || getShareParam("url"),
@@ -51,6 +64,7 @@ function render(nextBoard: BoardModel = board): void {
   }
 
   root.replaceChildren(
+    statusRegion,
     BoardView({
       board,
       language,
@@ -182,6 +196,10 @@ function registerServiceWorker(): void {
     navigator.serviceWorker
       .register("./sw.js", { scope: "./" })
       .then((registration) => {
+        if (import.meta.env.DEV) {
+          console.info("Today Board service worker registered.", registration.scope, BUILD_ID);
+        }
+
         if (registration.waiting) {
           showUpdateAvailable(registration.waiting);
         }
@@ -208,6 +226,11 @@ function registerServiceWorker(): void {
   });
 
   navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!updateActivationRequested || hasReloadedForUpdate) {
+      return;
+    }
+
+    hasReloadedForUpdate = true;
     window.location.reload();
   });
 }
@@ -215,33 +238,30 @@ function registerServiceWorker(): void {
 function showUpdateAvailable(worker: ServiceWorker): void {
   waitingServiceWorker = worker;
 
-  if (updateMessage) {
-    updateMessage.hidden = false;
-    return;
+  if (!updateMessage) {
+    updateMessage = document.createElement("aside");
+    updateMessage.className = "app-status app-update";
+    updateMessage.setAttribute("role", "status");
+    updateMessage.setAttribute("aria-live", "polite");
+    statusRegion.append(updateMessage);
   }
 
-  updateMessage = document.createElement("aside");
-  updateMessage.className = "app-status app-update";
-  updateMessage.setAttribute("role", "status");
-
-  const message = document.createElement("span");
-  message.textContent =
-    language === "vi" ? "Có bản mới của Today Board." : "A new version of Today Board is available.";
-
-  const reload = document.createElement("button");
-  reload.type = "button";
-  reload.className = "quiet-button";
-  reload.textContent = language === "vi" ? "Tải lại khi sẵn sàng" : "Reload when ready";
-  reload.addEventListener("click", () => {
-    waitingServiceWorker?.postMessage({ type: "TODAY_BOARD_SKIP_WAITING" });
-  });
-
-  updateMessage.append(message, reload);
-  document.body.append(updateMessage);
+  updateMessage.hidden = false;
+  renderUpdateMessage();
 }
 
 function setupNetworkStatus(): void {
   const updateStatus = () => {
+    window.clearTimeout(networkStatusTimer);
+    networkStatusTimer = window.setTimeout(renderNetworkStatus, 150);
+  };
+
+  window.addEventListener("online", updateStatus);
+  window.addEventListener("offline", updateStatus);
+  renderNetworkStatus();
+}
+
+function renderNetworkStatus(): void {
     if (navigator.onLine) {
       offlineMessage?.remove();
       offlineMessage = undefined;
@@ -252,18 +272,101 @@ function setupNetworkStatus(): void {
       offlineMessage = document.createElement("aside");
       offlineMessage.className = "app-status offline-status";
       offlineMessage.setAttribute("role", "status");
-      document.body.append(offlineMessage);
+      offlineMessage.setAttribute("aria-live", "polite");
+      statusRegion.prepend(offlineMessage);
     }
 
     offlineMessage.textContent =
       language === "vi"
         ? "Đang ngoại tuyến. Board trên thiết bị này vẫn dùng được."
         : "Offline. The board saved on this device is still available.";
-  };
+}
 
-  window.addEventListener("online", updateStatus);
-  window.addEventListener("offline", updateStatus);
-  updateStatus();
+function renderUpdateMessage(): void {
+  if (!updateMessage) {
+    return;
+  }
+
+  const message = document.createElement("span");
+  message.textContent =
+    language === "vi" ? "Có bản mới của Today Board." : "A new version of Today Board is available.";
+
+  const warning = document.createElement("span");
+  warning.className = "update-warning";
+  warning.hidden = true;
+
+  const reload = document.createElement("button");
+  reload.type = "button";
+  reload.className = "quiet-button";
+  reload.textContent = language === "vi" ? "Tải lại khi sẵn sàng" : "Reload when ready";
+  reload.addEventListener("click", () => {
+    const blockedReason = getUpdateBlockReason();
+
+    if (blockedReason) {
+      warning.textContent = blockedReason;
+      warning.hidden = false;
+      return;
+    }
+
+    warning.hidden = true;
+    updateActivationRequested = true;
+    waitingServiceWorker?.postMessage({ type: "TODAY_BOARD_SKIP_WAITING" });
+  });
+
+  updateMessage.replaceChildren(message, reload, warning);
+}
+
+function getUpdateBlockReason(): string | null {
+  if (document.querySelector(".card-editor")) {
+    return language === "vi"
+      ? "Bạn đang chỉnh sửa. Hãy lưu hoặc thoát trước khi tải lại."
+      : "You are editing. Save or exit before reloading.";
+  }
+
+  if (hasUnsavedQuickCapture()) {
+    return language === "vi"
+      ? "Bạn đang ghi nhanh. Hãy lưu hoặc mở board trước khi tải lại."
+      : "Quick Capture has unsaved content. Save it or open the board before reloading.";
+  }
+
+  if (document.querySelector('[data-recording="true"]')) {
+    return language === "vi"
+      ? "Đang ghi âm. Hãy dừng trước khi tải lại."
+      : "Voice recording is active. Stop it before reloading.";
+  }
+
+  if (document.documentElement.dataset.pwaBusy === "true") {
+    return language === "vi"
+      ? "Đang xử lý file. Hãy đợi trước khi tải lại."
+      : "A file is being processed. Wait before reloading.";
+  }
+
+  return null;
+}
+
+function hasUnsavedQuickCapture(): boolean {
+  const form = document.querySelector<HTMLFormElement>(".quick-capture-form");
+
+  if (!form || form.dataset.saved === "true") {
+    return false;
+  }
+
+  const hasText = Array.from(
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[type="text"], textarea'),
+  ).some((field) => field.value.trim().length > 0);
+  const hasMedia = Boolean(form.querySelector(".quick-media-preview img, .quick-media-preview audio"));
+  return hasText || hasMedia;
+}
+
+function renderBuildMarker(): void {
+  if (new URLSearchParams(window.location.search).get("debug-build") !== "1") {
+    return;
+  }
+
+  const marker = document.createElement("small");
+  marker.className = "build-marker";
+  marker.textContent = `Build: ${BUILD_ID}`;
+  statusRegion.append(marker);
 }
 
 function hasHandledShare(shareKey: string): boolean {

@@ -15,6 +15,7 @@
     "test:metadata-integrity": "node scripts/verify-metadata-integrity.mjs",
     "test:responsive-surface": "node scripts/verify-responsive-surface.mjs",
     "test:install-readiness": "node scripts/verify-install-readiness.mjs",
+    "test:pwa-finalization": "node scripts/verify-pwa-finalization.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {

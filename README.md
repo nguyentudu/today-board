@@ -147,9 +147,14 @@ Zone Auto-height               PASS ON ANDROID
 Retrieval Surface              PASS ON ANDROID
 Retrieval Metadata Integrity   PASS ON ANDROID
 Responsive Surface Polish      PASS ON ANDROID + DESKTOP
-Install Readiness              IN PROGRESS
-Installed PWA Verification     PART OF CURRENT MILESTONE
-iPhone Safari Verification     REQUIRED
+PWA Foundation                 PASS
+Install Recognition            PASS ON ANDROID
+Android Standalone Core        PASS
+Android Offline Core           PASS
+Installed PWA Finalization     IN PROGRESS
+Install Readiness              PASS CORE / FINAL UPDATE PROOF PENDING
+Desktop Installed Verification NEXT AFTER ANDROID FINALIZATION
+iPhone Add to Home Screen      AFTER DESKTOP
 IndexedDB                      LIKELY LATER
 Tester Evidence System         LATER
 Weekly Review                  DEFERRED

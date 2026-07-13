@@ -75,11 +75,18 @@ export function QuickCapture({
 
   const form = document.createElement("form");
   form.className = "quick-capture-form";
+  form.dataset.saved = "false";
   form.addEventListener("submit", (event) => event.preventDefault());
 
   const cardTitle = createInput(text.cardName, text.cardName, initialTitle);
   const note = createTextarea(text.tinyNote, text.tinyNote, initialNote);
   const link = createInput(text.quickCaptureLink, text.richLinksEmpty, initialLink);
+  const markUnsaved = () => {
+    form.dataset.saved = "false";
+  };
+  cardTitle.input.addEventListener("input", markUnsaved);
+  note.textarea.addEventListener("input", markUnsaved);
+  link.input.addEventListener("input", markUnsaved);
   let imageRef = "";
   let audioRef = "";
   let mediaBlocked = false;
@@ -94,6 +101,7 @@ export function QuickCapture({
     const file = photoInput.files?.[0];
 
     if (file) {
+      markUnsaved();
       mediaProcessing = true;
       saveButton.disabled = true;
       status.textContent = text.imageProcessing;
@@ -137,11 +145,13 @@ export function QuickCapture({
   const voiceButton = createQuickVoiceButton(
     text,
     (dataUrl) => {
+      markUnsaved();
       audioRef = dataUrl;
       mediaBlocked = false;
       renderAudioPreview(preview, dataUrl);
     },
     () => {
+      markUnsaved();
       mediaBlocked = true;
       audioRef = "";
     },
@@ -175,6 +185,9 @@ export function QuickCapture({
     }
 
     const saveResult = onSave(capture);
+    if (saveResult === "saved") {
+      form.dataset.saved = "true";
+    }
     status.textContent =
       saveResult === "saved"
         ? text.quickCaptureSaved
@@ -325,10 +338,12 @@ function createQuickVoiceButton(
         }
         window.clearTimeout(stopTimer);
         button.textContent = text.recordVoice;
+        delete button.dataset.recording;
       },
       { once: true },
     );
     recorder.start();
+    button.dataset.recording = "true";
     button.textContent = text.stopRecording;
     stopTimer = window.setTimeout(() => {
       if (recorder?.state === "recording") {

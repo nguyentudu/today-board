@@ -111,7 +111,14 @@ export function Board({
   const exportButton = document.createElement("button");
   exportButton.type = "button";
   exportButton.textContent = text.exportButton;
-  exportButton.addEventListener("click", () => exportBoard(board));
+  exportButton.addEventListener("click", () => {
+    document.documentElement.dataset.pwaBusy = "true";
+    try {
+      exportBoard(board);
+    } finally {
+      delete document.documentElement.dataset.pwaBusy;
+    }
+  });
 
   const quickCaptureButton = document.createElement("button");
   quickCaptureButton.type = "button";
@@ -141,10 +148,15 @@ export function Board({
       return;
     }
 
-    const imported = await readImportedBoard(file);
-    onImportFileSelected(file.name);
-    commit(imported);
-    importInput.value = "";
+    document.documentElement.dataset.pwaBusy = "true";
+    try {
+      const imported = await readImportedBoard(file);
+      onImportFileSelected(file.name);
+      commit(imported);
+      importInput.value = "";
+    } finally {
+      delete document.documentElement.dataset.pwaBusy;
+    }
   });
 
   controls.append(
@@ -165,7 +177,8 @@ export function Board({
 
   const columns = document.createElement("div");
   columns.className = "columns";
-  const retrievalSurface = createRetrievalSurface(board, language, renderColumns);
+  const retrievalView = createRetrievalSurface(board, language, renderColumns);
+  const retrievalSurface = retrievalView.element;
   const storagePanel = createStoragePanel(board, language, storageMessage, (nextBoard) => commit(nextBoard));
 
   function commit(nextBoard: BoardModel): boolean {
@@ -246,11 +259,22 @@ export function Board({
   testNotes.append(testNotesTitle, testNotesList);
 
   shell.append(top, localNote, retrievalSurface, storagePanel, columns, testNotes);
+  setupSearchKeyboardDismissal(shell, retrievalView.searchInput, retrievalView.isComposing);
 
   return shell;
 }
 
-function createRetrievalSurface(board: BoardModel, language: Language, onResultsChange: () => void): HTMLElement {
+interface RetrievalSurfaceView {
+  element: HTMLElement;
+  searchInput: HTMLInputElement;
+  isComposing: () => boolean;
+}
+
+function createRetrievalSurface(
+  board: BoardModel,
+  language: Language,
+  onResultsChange: () => void,
+): RetrievalSurfaceView {
   const text = copy[language];
   const surface = document.createElement("section");
   surface.className = "retrieval-surface";
@@ -373,7 +397,81 @@ function createRetrievalSurface(board: BoardModel, language: Language, onResults
   surface.append(heading, controls, filterToggle, activeSummary, clearAll, filterGroups);
   updateResults();
 
-  return surface;
+  return {
+    element: surface,
+    searchInput: search,
+    isComposing: () => composing,
+  };
+}
+
+const INTERACTIVE_DISMISS_SELECTOR = [
+  "button",
+  "a",
+  "input",
+  "textarea",
+  "select",
+  "label",
+  "audio",
+  "video",
+  '[contenteditable="true"]',
+  '[role="button"]',
+  "[data-keep-keyboard]",
+  "[data-interactive]",
+].join(",");
+
+function setupSearchKeyboardDismissal(
+  shell: HTMLElement,
+  search: HTMLInputElement,
+  isComposing: () => boolean,
+): void {
+  let touchStartY: number | undefined;
+  let blurredForGesture = false;
+
+  shell.addEventListener("pointerdown", (event) => {
+    if (document.activeElement !== search || isComposing()) {
+      return;
+    }
+
+    if (event.pointerType === "touch") {
+      touchStartY = event.clientY;
+      blurredForGesture = false;
+    }
+
+    const target = event.target instanceof Element ? event.target : null;
+
+    if (!target?.closest(INTERACTIVE_DISMISS_SELECTOR)) {
+      search.blur();
+    }
+  });
+
+  shell.addEventListener(
+    "pointermove",
+    (event) => {
+      if (
+        event.pointerType !== "touch" ||
+        touchStartY === undefined ||
+        blurredForGesture ||
+        document.activeElement !== search ||
+        isComposing()
+      ) {
+        return;
+      }
+
+      if (Math.abs(event.clientY - touchStartY) >= 14) {
+        blurredForGesture = true;
+        search.blur();
+      }
+    },
+    { passive: true },
+  );
+
+  const endGesture = () => {
+    touchStartY = undefined;
+    blurredForGesture = false;
+  };
+
+  shell.addEventListener("pointerup", endGesture);
+  shell.addEventListener("pointercancel", endGesture);
 }
 
 function createStateFilters(
