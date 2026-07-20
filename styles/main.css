@@ -394,6 +394,23 @@ textarea {
   -webkit-line-clamp: 3;
 }
 
+.summary-return-point {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  border-left: 3px solid #a9b6a2;
+  color: #3f4b3b;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  padding-left: 0.55rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.summary-return-point[hidden] {
+  display: none;
+}
+
 .summary-meta {
   display: flex;
   flex-wrap: wrap;
@@ -446,6 +463,12 @@ textarea {
   font-size: 0.88rem;
 }
 
+.reentry-heading {
+  margin: 0 0 0.2rem;
+  color: #31362f;
+  font-size: 1rem;
+}
+
 .readable-detail p {
   margin: 0;
   color: #5f5d55;
@@ -479,6 +502,10 @@ textarea {
 .reentry-field {
   border-left: 3px solid #a9b6a2;
   padding-left: 0.65rem;
+}
+
+.next-step-kind-field select {
+  width: 100%;
 }
 
 .card-title-input {

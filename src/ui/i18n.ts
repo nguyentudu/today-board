@@ -14,14 +14,30 @@ export const copy = {
     savedNote: "Saved locally for continuity. No tracking.",
     changeZone: "Change zone",
     hideCard: "Hide card",
-    cardName: "Card title",
+    cardName: "Situation name",
+    situationTitleHelper: "Name the situation so you can recognize it without reopening everything.",
     tinyNote: "Small note",
-    contextSnapshot: "Snapshot: what is happening?",
+    contextSnapshot: "What is happening now?",
     contextSnapshotEmpty: "No snapshot yet.",
     whyStillOpen: "Why is this still open?",
     whyStillOpenEmpty: "Not clear why this is still open.",
-    ifYouReturn: "If I return, start here",
+    waitingOn: "What is this waiting for?",
+    waitingOnEmpty: "Not waiting for anything, or not clear yet.",
+    waitingPill: "Waiting",
+    ifYouReturn: "Return point",
     ifYouReturnEmpty: "No starting point yet.",
+    returnPointShort: "Return here",
+    reentryViewTitle: "When you return",
+    nextStepKind: "What comes next?",
+    nextStepKindLabels: {
+      none: "Not clear yet",
+      action: "An action I can take",
+      trigger: "Wait for a trigger",
+    },
+    nextStep: "Next action or trigger",
+    nextStepEmpty: "No next action or trigger yet.",
+    nextAction: "Next action",
+    nextTrigger: "Next trigger",
     richLinks: "Link",
     richLinksEmpty: "Paste link here",
     richLinksHelper: "Only lines beginning with http:// or https:// are counted as links.",
@@ -160,14 +176,30 @@ export const copy = {
     savedNote: "Đã lưu trên máy này. Không theo dõi.",
     changeZone: "Đổi vùng",
     hideCard: "Ẩn card",
-    cardName: "Tên card",
+    cardName: "Tên tình huống",
+    situationTitleHelper: "Đặt tên đủ rõ để sau này nhận ra mà không phải đọc lại mọi thứ.",
     tinyNote: "Ghi chú nhỏ",
-    contextSnapshot: "Snapshot: chuyện gì đang diễn ra?",
+    contextSnapshot: "Hiện đang có chuyện gì?",
     contextSnapshotEmpty: "Chưa ghi snapshot.",
     whyStillOpen: "Vì sao còn mở?",
     whyStillOpenEmpty: "Chưa rõ vì sao còn mở.",
-    ifYouReturn: "Nếu quay lại, bắt đầu từ đâu?",
+    waitingOn: "Đang chờ ai hoặc chờ gì?",
+    waitingOnEmpty: "Không chờ gì, hoặc chưa rõ.",
+    waitingPill: "Đang chờ",
+    ifYouReturn: "Điểm quay lại",
     ifYouReturnEmpty: "Chưa có điểm bắt đầu.",
+    returnPointShort: "Quay lại từ đây",
+    reentryViewTitle: "Khi quay lại",
+    nextStepKind: "Điều gì xảy ra tiếp theo?",
+    nextStepKindLabels: {
+      none: "Chưa rõ",
+      action: "Có hành động có thể làm",
+      trigger: "Chờ một điều kiện xảy ra",
+    },
+    nextStep: "Hành động hoặc điều kiện tiếp theo",
+    nextStepEmpty: "Chưa có hành động hoặc điều kiện tiếp theo.",
+    nextAction: "Hành động tiếp theo",
+    nextTrigger: "Điều kiện tiếp theo",
     richLinks: "Link",
     richLinksEmpty: "Dán link ở đây",
     richLinksHelper: "Chỉ các dòng bắt đầu bằng http:// hoặc https:// được tính là link.",
@@ -309,13 +341,25 @@ export const copy = {
     changeZone: string;
     hideCard: string;
     cardName: string;
+    situationTitleHelper: string;
     tinyNote: string;
     contextSnapshot: string;
     contextSnapshotEmpty: string;
     whyStillOpen: string;
     whyStillOpenEmpty: string;
+    waitingOn: string;
+    waitingOnEmpty: string;
+    waitingPill: string;
     ifYouReturn: string;
     ifYouReturnEmpty: string;
+    returnPointShort: string;
+    reentryViewTitle: string;
+    nextStepKind: string;
+    nextStepKindLabels: Record<"none" | "action" | "trigger", string>;
+    nextStep: string;
+    nextStepEmpty: string;
+    nextAction: string;
+    nextTrigger: string;
     richLinks: string;
     richLinksEmpty: string;
     richLinksHelper: string;

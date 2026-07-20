@@ -1,5 +1,11 @@
 import { createBoard, type Board } from "../domain/board";
-import { normalizeFileRefs, normalizeList, normalizeReentryField, normalizeTags } from "../domain/card";
+import {
+  normalizeFileRefs,
+  normalizeList,
+  normalizeNextStepKind,
+  normalizeReentryField,
+  normalizeTags,
+} from "../domain/card";
 import { isBoardState } from "../domain/state";
 
 export const BOARD_STORAGE_KEY = "moon.today-board.v1";
@@ -65,8 +71,15 @@ export function sanitizeBoard(value: unknown): Board {
             typeof source.contextSnapshot === "string" ? normalizeReentryField(source.contextSnapshot).slice(0, 360) : "",
           whyStillOpen:
             typeof source.whyStillOpen === "string" ? normalizeReentryField(source.whyStillOpen).slice(0, 360) : "",
+          waitingOn:
+            typeof source.waitingOn === "string" ? normalizeReentryField(source.waitingOn).slice(0, 360) : "",
           ifYouReturn:
             typeof source.ifYouReturn === "string" ? normalizeReentryField(source.ifYouReturn).slice(0, 360) : "",
+          nextStepKind: normalizeNextStepKind(
+            source.nextStepKind,
+            typeof source.nextStep === "string" ? source.nextStep : "",
+          ),
+          nextStep: typeof source.nextStep === "string" ? normalizeReentryField(source.nextStep).slice(0, 360) : "",
           richLinks: Array.isArray(source.richLinks)
             ? normalizeList(source.richLinks.filter((value): value is string => typeof value === "string"))
             : [],

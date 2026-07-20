@@ -14,7 +14,10 @@ interface CardProps {
   onNote: (cardId: string, note: string) => void;
   onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
   onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
+  onWaitingOn: (cardId: string, waitingOn: string) => void;
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
+  onNextStepKind: (cardId: string, nextStepKind: BoardCard["nextStepKind"]) => void;
+  onNextStep: (cardId: string, nextStep: string) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
@@ -32,7 +35,10 @@ export function Card({
   onNote,
   onContextSnapshot,
   onWhyStillOpen,
+  onWaitingOn,
   onIfYouReturn,
+  onNextStepKind,
+  onNextStep,
   onRichLinks,
   onImageRefs,
   onAudioRefs,
@@ -67,7 +73,10 @@ export function Card({
           onNote: (note) => onNote(card.id, note),
           onContextSnapshot: (contextSnapshot) => onContextSnapshot(card.id, contextSnapshot),
           onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
+          onWaitingOn: (waitingOn) => onWaitingOn(card.id, waitingOn),
           onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
+          onNextStepKind: (nextStepKind) => onNextStepKind(card.id, nextStepKind),
+          onNextStep: (nextStep) => onNextStep(card.id, nextStep),
           onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
           onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
           onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
@@ -118,6 +127,17 @@ export function Card({
       ...renderMediaIndicators(card, text, language),
     );
 
+    if (card.waitingOn.trim()) {
+      meta.append(createPill(text.waitingPill));
+    }
+
+    const returnPoint = document.createElement("p");
+    returnPoint.className = "summary-return-point";
+    returnPoint.hidden = !card.ifYouReturn.trim();
+    returnPoint.textContent = card.ifYouReturn.trim()
+      ? `${text.returnPointShort}: ${card.ifYouReturn.trim()}`
+      : "";
+
     const actions = document.createElement("div");
     actions.className = "summary-actions";
     actions.append(
@@ -125,7 +145,7 @@ export function Card({
       createModeButton(text.editCard, () => setMode("edit")),
     );
 
-    summary.append(title, snapshot, meta, actions);
+    summary.append(title, snapshot, returnPoint, meta, actions);
     const tags = renderTags(card.tags, 3);
     if (tags) {
       summary.insertBefore(tags, actions);
@@ -328,6 +348,11 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
   const detail = document.createElement("section");
   detail.className = "readable-detail";
 
+  const heading = document.createElement("h3");
+  heading.className = "reentry-heading";
+  heading.textContent = text.reentryViewTitle;
+  detail.append(heading);
+
   const tags = renderTags(card.tags);
   if (tags) {
     const block = document.createElement("div");
@@ -340,7 +365,9 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
   for (const [label, value, empty] of [
     [text.contextSnapshot, card.contextSnapshot, text.contextSnapshotEmpty],
     [text.whyStillOpen, card.whyStillOpen, text.whyStillOpenEmpty],
+    [text.waitingOn, card.waitingOn, text.waitingOnEmpty],
     [text.ifYouReturn, card.ifYouReturn, text.ifYouReturnEmpty],
+    [nextStepLabel(card, text), card.nextStep, text.nextStepEmpty],
     [text.tinyNote, card.note, ""],
   ]) {
     const block = document.createElement("div");
@@ -353,6 +380,18 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
   }
 
   return detail;
+}
+
+function nextStepLabel(card: BoardCard, text: (typeof copy)[Language]): string {
+  if (card.nextStepKind === "action") {
+    return text.nextAction;
+  }
+
+  if (card.nextStepKind === "trigger") {
+    return text.nextTrigger;
+  }
+
+  return text.nextStep;
 }
 
 function renderTags(tags: string[], limit = tags.length): HTMLElement | undefined {

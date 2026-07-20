@@ -13,7 +13,10 @@ interface ColumnProps {
   onNote: (cardId: string, note: string) => void;
   onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
   onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
+  onWaitingOn: (cardId: string, waitingOn: string) => void;
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
+  onNextStepKind: (cardId: string, nextStepKind: Board["cards"][number]["nextStepKind"]) => void;
+  onNextStep: (cardId: string, nextStep: string) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
@@ -60,7 +63,10 @@ export function Column(props: ColumnProps): HTMLElement {
           onNote: props.onNote,
           onContextSnapshot: props.onContextSnapshot,
           onWhyStillOpen: props.onWhyStillOpen,
+          onWaitingOn: props.onWaitingOn,
           onIfYouReturn: props.onIfYouReturn,
+          onNextStepKind: props.onNextStepKind,
+          onNextStep: props.onNextStep,
           onRichLinks: props.onRichLinks,
           onImageRefs: props.onImageRefs,
           onAudioRefs: props.onAudioRefs,

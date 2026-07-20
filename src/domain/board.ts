@@ -3,6 +3,7 @@ import {
   createCard,
   normalizeFileRefs,
   normalizeList,
+  normalizeNextStepKind,
   normalizeReentryField,
   normalizeTags,
   touchCard,
@@ -52,7 +53,14 @@ export function updateCardNote(board: Board, cardId: string, note: string): Boar
 export function updateCardReentryNotes(
   board: Board,
   cardId: string,
-  notes: { contextSnapshot?: string; whyStillOpen?: string; ifYouReturn?: string },
+  notes: {
+    contextSnapshot?: string;
+    whyStillOpen?: string;
+    waitingOn?: string;
+    ifYouReturn?: string;
+    nextStepKind?: Card["nextStepKind"];
+    nextStep?: string;
+  },
 ): Board {
   return updateCard(board, cardId, (card) =>
     touchCard({
@@ -65,10 +73,18 @@ export function updateCardReentryNotes(
         notes.whyStillOpen === undefined
           ? card.whyStillOpen
           : normalizeReentryField(notes.whyStillOpen).slice(0, 360),
+      waitingOn:
+        notes.waitingOn === undefined ? card.waitingOn : normalizeReentryField(notes.waitingOn).slice(0, 360),
       ifYouReturn:
         notes.ifYouReturn === undefined
           ? card.ifYouReturn
           : normalizeReentryField(notes.ifYouReturn).slice(0, 360),
+      nextStepKind:
+        notes.nextStepKind === undefined
+          ? card.nextStepKind
+          : normalizeNextStepKind(notes.nextStepKind, notes.nextStep ?? card.nextStep),
+      nextStep:
+        notes.nextStep === undefined ? card.nextStep : normalizeReentryField(notes.nextStep).slice(0, 360),
     }),
   );
 }

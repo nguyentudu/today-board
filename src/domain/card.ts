@@ -17,7 +17,10 @@ export interface Card {
   note: string;
   contextSnapshot: string;
   whyStillOpen: string;
+  waitingOn: string;
   ifYouReturn: string;
+  nextStepKind: NextStepKind;
+  nextStep: string;
   richLinks: string[];
   imageRefs: string[];
   audioRefs: string[];
@@ -29,6 +32,8 @@ export interface Card {
   createdAt: string;
   updatedAt: string;
 }
+
+export type NextStepKind = "none" | "action" | "trigger";
 
 export interface FileRef {
   name: string;
@@ -46,7 +51,10 @@ export function createCard(title: string, state: BoardState = "continue"): Card 
     note: "",
     contextSnapshot: "",
     whyStillOpen: "",
+    waitingOn: "",
     ifYouReturn: "",
+    nextStepKind: "none",
+    nextStep: "",
     richLinks: [],
     imageRefs: [],
     audioRefs: [],
@@ -58,6 +66,14 @@ export function createCard(title: string, state: BoardState = "continue"): Card 
     createdAt: now,
     updatedAt: now,
   };
+}
+
+export function normalizeNextStepKind(value: unknown, nextStep = ""): NextStepKind {
+  if (value === "action" || value === "trigger" || value === "none") {
+    return value;
+  }
+
+  return nextStep.trim() ? "action" : "none";
 }
 
 export function touchCard(card: Card): Card {

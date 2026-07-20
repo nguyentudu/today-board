@@ -22,7 +22,10 @@ interface CardEditorProps {
   onNote: (note: string) => void;
   onContextSnapshot: (contextSnapshot: string) => void;
   onWhyStillOpen: (whyStillOpen: string) => void;
+  onWaitingOn: (waitingOn: string) => void;
   onIfYouReturn: (ifYouReturn: string) => void;
+  onNextStepKind: (nextStepKind: Card["nextStepKind"]) => void;
+  onNextStep: (nextStep: string) => void;
   onRichLinks: (richLinks: string[]) => void;
   onImageRefs: (imageRefs: string[]) => void;
   onAudioRefs: (audioRefs: string[]) => void;
@@ -38,7 +41,10 @@ export function CardEditor({
   onNote,
   onContextSnapshot,
   onWhyStillOpen,
+  onWaitingOn,
   onIfYouReturn,
+  onNextStepKind,
+  onNextStep,
   onRichLinks,
   onImageRefs,
   onAudioRefs,
@@ -64,7 +70,11 @@ export function CardEditor({
   title.ariaLabel = text.cardName;
   title.addEventListener("change", () => onRename(title.value));
 
-  titleField.append(titleLabel, title);
+  const titleHelper = document.createElement("span");
+  titleHelper.className = "field-helper";
+  titleHelper.textContent = text.situationTitleHelper;
+
+  titleField.append(titleLabel, titleHelper, title);
 
   const noteField = document.createElement("label");
   noteField.className = "card-field";
@@ -120,6 +130,24 @@ export function CardEditor({
 
   whyStillOpenField.append(whyStillOpenLabel, whyStillOpen);
 
+  const waitingOnField = document.createElement("label");
+  waitingOnField.className = "card-field reentry-field";
+
+  const waitingOnLabel = document.createElement("span");
+  waitingOnLabel.className = "field-label";
+  waitingOnLabel.textContent = text.waitingOn;
+
+  const waitingOn = document.createElement("textarea");
+  waitingOn.className = "card-reentry-input";
+  waitingOn.value = card.waitingOn;
+  waitingOn.maxLength = 360;
+  waitingOn.rows = 2;
+  waitingOn.placeholder = text.waitingOnEmpty;
+  waitingOn.ariaLabel = text.waitingOn;
+  waitingOn.addEventListener("change", () => onWaitingOn(waitingOn.value));
+
+  waitingOnField.append(waitingOnLabel, waitingOn);
+
   const ifYouReturnField = document.createElement("label");
   ifYouReturnField.className = "card-field reentry-field";
 
@@ -137,6 +165,44 @@ export function CardEditor({
   ifYouReturn.addEventListener("change", () => onIfYouReturn(ifYouReturn.value));
 
   ifYouReturnField.append(ifYouReturnLabel, ifYouReturn);
+
+  const nextStepKindField = document.createElement("label");
+  nextStepKindField.className = "card-field reentry-field next-step-kind-field";
+
+  const nextStepKindLabel = document.createElement("span");
+  nextStepKindLabel.className = "field-label";
+  nextStepKindLabel.textContent = text.nextStepKind;
+
+  const nextStepKind = document.createElement("select");
+  nextStepKind.ariaLabel = text.nextStepKind;
+  for (const kind of ["none", "action", "trigger"] as const) {
+    const option = document.createElement("option");
+    option.value = kind;
+    option.textContent = text.nextStepKindLabels[kind];
+    option.selected = card.nextStepKind === kind;
+    nextStepKind.append(option);
+  }
+  nextStepKind.addEventListener("change", () => onNextStepKind(nextStepKind.value as Card["nextStepKind"]));
+
+  nextStepKindField.append(nextStepKindLabel, nextStepKind);
+
+  const nextStepField = document.createElement("label");
+  nextStepField.className = "card-field reentry-field";
+
+  const nextStepLabel = document.createElement("span");
+  nextStepLabel.className = "field-label";
+  nextStepLabel.textContent = text.nextStep;
+
+  const nextStep = document.createElement("textarea");
+  nextStep.className = "card-reentry-input";
+  nextStep.value = card.nextStep;
+  nextStep.maxLength = 360;
+  nextStep.rows = 2;
+  nextStep.placeholder = text.nextStepEmpty;
+  nextStep.ariaLabel = text.nextStep;
+  nextStep.addEventListener("change", () => onNextStep(nextStep.value));
+
+  nextStepField.append(nextStepLabel, nextStep);
 
   const linksField = createTextareaField(text.richLinks, text.richLinksEmpty, card.richLinks.join("\n"), (value) =>
     onRichLinks(splitLines(value)),
@@ -156,7 +222,10 @@ export function CardEditor({
     noteField,
     contextSnapshotField,
     whyStillOpenField,
+    waitingOnField,
     ifYouReturnField,
+    nextStepKindField,
+    nextStepField,
     linksField,
     captureControls,
     bookmarkReasonField,

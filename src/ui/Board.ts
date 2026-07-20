@@ -215,8 +215,14 @@ export function Board({
             commit(updateCardReentryNotes(board, cardId, { contextSnapshot })),
           onWhyStillOpen: (cardId: string, whyStillOpen: string) =>
             commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
+          onWaitingOn: (cardId: string, waitingOn: string) =>
+            commit(updateCardReentryNotes(board, cardId, { waitingOn })),
           onIfYouReturn: (cardId: string, ifYouReturn: string) =>
             commit(updateCardReentryNotes(board, cardId, { ifYouReturn })),
+          onNextStepKind: (cardId: string, nextStepKind) =>
+            commit(updateCardReentryNotes(board, cardId, { nextStepKind })),
+          onNextStep: (cardId: string, nextStep: string) =>
+            commit(updateCardReentryNotes(board, cardId, { nextStep })),
           onRichLinks: (cardId: string, richLinks: string[]) =>
             commit(updateCardRichContext(board, cardId, { richLinks })),
           onImageRefs: (cardId: string, imageRefs: string[]) =>

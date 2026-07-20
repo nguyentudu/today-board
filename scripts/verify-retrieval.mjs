@@ -72,6 +72,8 @@ const cards = [
     fileRefs: [{ name: "plain.pdf", type: "application/pdf", size: 1 }],
     tags: ["retrieval-proof-742"],
   }),
+  card("waiting", { title: "Different", waitingOn: "client-feedback-token", richLinks: [], tags: [] }),
+  card("next-step", { title: "Different", nextStep: "open-figma-token", richLinks: [], tags: [] }),
   card("hidden", { hidden: true, title: "hidden-token" }),
 ];
 
@@ -152,3 +154,5 @@ assert("link hashtag does not create tag filter match", !ids(filterCards(cards, 
 assert("tag filter reads only tags array", ids(filterCards(cards, query({ tags: ["retrieval-proof-742"] }), states, now))[0] === "tag-proof");
 assert("unique tag token search match", ids(filterCards(cards, query({ search: "retrieval-proof-742" }), states, now))[0] === "tag-proof");
 assert("unique hashtag token search match", ids(filterCards(cards, query({ search: "#retrieval-proof-742" }), states, now))[0] === "tag-proof");
+assert("waiting context search match", ids(filterCards(cards, query({ search: "client-feedback-token" }), states, now))[0] === "waiting");
+assert("next step search match", ids(filterCards(cards, query({ search: "open-figma-token" }), states, now))[0] === "next-step");
