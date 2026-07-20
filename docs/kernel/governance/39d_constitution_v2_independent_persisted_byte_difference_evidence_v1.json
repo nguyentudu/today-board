@@ -1,0 +1,33 @@
+{
+  "task": 39,
+  "artifact": "INDEPENDENT_PERSISTED_BYTE_DIFFERENCE_EVIDENCE",
+  "observed_at": "2026-07-20T00:40:48+07:00",
+  "approved_preimage": {
+    "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "byte_length": 23764,
+    "full_bytes_available": false,
+    "git_object_available": false,
+    "frozen_full_source_artifact_available": false
+  },
+  "current_postimage": {
+    "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length": 23722
+  },
+  "task_rule": "Do not reconstruct the preimage from current canonical bytes.",
+  "reverse_reconstruction_performed": false,
+  "independent_full_byte_comparison_performed": false,
+  "local_operation_preimages_available": 6,
+  "current_operation_postimages_verified": 6,
+  "declared_byte_length_delta": -42,
+  "observed_length_difference_against_declared_preimage_length": -42,
+  "per_operation_expected_delta": -7,
+  "changed_replacement_events": "NOT_INDEPENDENTLY_VERIFIABLE_WITHOUT_FULL_PREIMAGE",
+  "explained_changed_ranges": "NOT_INDEPENDENTLY_VERIFIABLE_WITHOUT_FULL_PREIMAGE",
+  "unexplained_changed_ranges": "NOT_INDEPENDENTLY_VERIFIABLE_WITHOUT_FULL_PREIMAGE",
+  "unrelated_byte_changes": "NOT_INDEPENDENTLY_VERIFIABLE_WITHOUT_FULL_PREIMAGE",
+  "whitespace_normalization": "NOT_INDEPENDENTLY_VERIFIABLE_WITHOUT_FULL_PREIMAGE",
+  "schema_changes": "NOT_INDEPENDENTLY_VERIFIABLE_WITHOUT_FULL_PREIMAGE",
+  "blocking_condition": "APPROVED_FULL_PREIMAGE_BYTES_UNAVAILABLE",
+  "verdict": "BLOCKED",
+  "creation_order": 2
+}

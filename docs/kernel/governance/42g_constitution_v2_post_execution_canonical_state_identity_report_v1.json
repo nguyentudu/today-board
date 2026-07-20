@@ -1,0 +1,36 @@
+{
+  "task_id": 42,
+  "artifact": "POST_EXECUTION_CANONICAL_STATE_IDENTITY_REPORT",
+  "execution_performed": false,
+  "observation_phase": "POST_DECISION_ZERO_MUTATION",
+  "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+  "pre_task": {
+    "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length": 23722,
+    "git_status": "UNTRACKED_AUTHORIZED_TASK_38_RESULT",
+    "overview_resolved": 3,
+    "detailed_resolved": 3
+  },
+  "post_task": {
+    "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length": 23722,
+    "utf8_valid": true,
+    "bom_absent": true,
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0,
+    "final_newline": true,
+    "overview_resolved": 3,
+    "detailed_resolved": 3
+  },
+  "bytes_identical": true,
+  "observed_mutations": 0,
+  "unrelated_mutations": 0,
+  "gate_before": "CLOSED",
+  "gate_after": "CLOSED",
+  "retry_authorized_before": false,
+  "retry_authorized_after": false,
+  "execution_retry_performed": false,
+  "governance_effective_resolved_before": 0,
+  "governance_effective_resolved_after": 0,
+  "verdict": "CANONICAL_STATE_UNCHANGED_AFTER_ZERO_MUTATION_AUTHORITY_DECISION"
+}

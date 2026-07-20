@@ -1,0 +1,68 @@
+{
+  "task_id": 43,
+  "artifact": "FOUNDER_AUTHORITY_EVIDENCE_MANIFEST",
+  "manifest_version": 1,
+  "decision_date": "2026-07-20",
+  "primary_outcome": "RECOVERY_VERIFICATION_EFFECTIVENESS_AUTHORIZED",
+  "repository": {
+    "root": "D:/today-board",
+    "branch": "main",
+    "head": "54b5c57ff39d0cd3f8bb3043b0b81650f8d893fd",
+    "tree": "abb6a7c8940012e12a2dcd2e5cd895ce88622553",
+    "working_tree_status": "UNTRACKED_DOCS_KERNEL_TREE_PRESENT"
+  },
+  "authority_inputs": [
+    {"path":"docs/kernel/governance/41_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.md","sha256":"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6","byte_length":8960},
+    {"path":"docs/kernel/governance/41a_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.json","sha256":"1F50D76CAEB47753745C86B5231027E64107A4B8DB68671688ECCBA132841A61","byte_length":4772},
+    {"path":"docs/kernel/governance/41g_constitution_v2_independent_verification_recovery_determination_v1.json","sha256":"9082EC9EB13B4249CCE6DCC77D2BBA0088F6F0E74A4F2C4017FB0FFA2A113DD3","byte_length":3032},
+    {"path":"docs/kernel/governance/41h_constitution_v2_verification_evidence_manifest_v1.json","sha256":"52DDF7CC100B56ECE71F5072C86F650AD644E09D8A23153270FF14B4A20234DF","byte_length":14324},
+    {"path":"docs/kernel/governance/42_constitution_v2_governance_effective_issue_status_verification_state_synchronization_authority_decision_v1.md","sha256":"46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C","byte_length":5862},
+    {"path":"docs/kernel/governance/42a_constitution_v2_governance_effective_issue_status_verification_state_synchronization_authority_decision_v1.json","sha256":"41D0AA59CCDDCB7E238478396F8939B24596A652BB55DFB9A29730934A20CD76","byte_length":6521},
+    {"path":"docs/kernel/governance/42c_constitution_v2_canonical_governance_authority_chain_inventory_v1.md","sha256":"1FEF51F5F1A18746A30590ABF1D463A00BBBB667F4F49F7D0AB5156D23DD0C2A","byte_length":5139},
+    {"path":"docs/kernel/governance/42d_constitution_v2_issue_status_synchronization_eligibility_matrix_v1.json","sha256":"73F905B63DC3027905311C9F8CE4DD283A408285D6BD19A403B0167FAA5A82AC","byte_length":2684},
+    {"path":"docs/kernel/governance/42e_constitution_v2_planned_and_observed_canonical_mutation_inventory_v1.json","sha256":"610D4527AAE3DEC141E2EFC3D86C0E26D4D40AF0C24200418612CEA579682222","byte_length":1690},
+    {"path":"docs/kernel/governance/42h_constitution_v2_governance_synchronization_evidence_manifest_v1.json","sha256":"8DFDE49621D85E46498CDE503A8AA4343C6A0103C8DC056258092CD6B9A4E31A","byte_length":29819},
+    {"path":"docs/kernel/governance/01_constitution_issues_v1.md","sha256":"01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886","byte_length":23722},
+    {"path":"docs/kernel/governance/evidence/41_constitution_v2_historical_preimage_exact.bin","sha256":"7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6","byte_length":23764}
+  ],
+  "protected_evidence_inventory": {
+    "task_range": "38-42",
+    "file_count": 40,
+    "total_bytes": 224533,
+    "canonical_inventory_sha256_before": "0DA4D17FB4427140756D305B7447E49302778A583EFFD911B97CF98ECCFEDA9C",
+    "canonical_inventory_sha256_after": "0DA4D17FB4427140756D305B7447E49302778A583EFFD911B97CF98ECCFEDA9C",
+    "changed": false
+  },
+  "created_artifacts": [
+    {"path":"docs/kernel/governance/43_constitution_v2_founder_recovery_verification_effectiveness_authority_clarification_v1.md","sha256":"AD583ED9050423664D919822A14D3537F657C5CD44BCD54F855EA9C8B95AF5A7","byte_length":6537},
+    {"path":"docs/kernel/governance/43a_constitution_v2_founder_recovery_verification_effectiveness_authority_clarification_v1.json","sha256":"05C102077EE475489421BEF7D8B361F7859E9D23737575743152F44B4DD3CA6A","byte_length":5695},
+    {"path":"docs/kernel/governance/43b_constitution_v2_task41_task42_input_identity_and_consistency_report_v1.json","sha256":"403764C5CAC0C8A58FFE9D872DABA4DF92EFE6F3FB40BD5CFD82ECBB6945B971","byte_length":3766},
+    {"path":"docs/kernel/governance/43c_constitution_v2_one_time_recovery_verification_effectiveness_authority_instrument_v1.md","sha256":"06B082EE4C782A7BF29DB7258B00AC88E7B29ECD5D6DC19C061E43320FCE148B","byte_length":2494},
+    {"path":"docs/kernel/governance/43d_constitution_v2_authorized_issue_status_synchronization_target_matrix_v1.json","sha256":"C47A3A6C850000A5836124A78BFF132D0E6C1AB6D008291EE506CB15E809B7B5","byte_length":9309},
+    {"path":"docs/kernel/governance/43e_constitution_v2_authority_precondition_and_prohibition_matrix_v1.md","sha256":"B6A856592B32509FA11ADA4A6F0855557F790CB35820BF35143FC6F6B93D2795","byte_length":3685},
+    {"path":"docs/kernel/governance/43f_constitution_v2_authority_consumption_and_invalidation_rules_v1.json","sha256":"1CF84E78B239F8EB401BCAA680619FBB8F8C631AE7ED071A0889EC63E54B3BD5","byte_length":1823},
+    {"path":"docs/kernel/governance/43g_constitution_v2_non_mutation_compliance_report_v1.json","sha256":"9F8338F8D3B213EDDCBB2083DF8F583022878DF395FCFA0AC8CC685E7F464A28","byte_length":1313},
+    {"path":"docs/kernel/governance/43h_constitution_v2_founder_authority_evidence_manifest_v1.json","identity_rule":"SHA-256 computed from final persisted raw bytes and reported by Task 43 completion; self-hash is not embedded to avoid recursion."}
+  ],
+  "artifact_invariants": {
+    "encoding": "UTF-8",
+    "bom": "ABSENT",
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0,
+    "final_newline_required": true,
+    "duplicate_json_keys": 0
+  },
+  "authority_summary": {
+    "authority_class": "FOUNDER_ONE_TIME_RECOVERY_VERIFICATION_EFFECTIVENESS_DELEGATION",
+    "incident_scope": "TASK_38_TO_TASK_42_INCIDENT_ONLY",
+    "authorized_executor": "TASK_44_ONLY",
+    "issues_authorized": 3,
+    "exact_existing_field_mutations_authorized": 15,
+    "protected_status_assertions": 6,
+    "schema_extension_authorized": false,
+    "gate": "CLOSED",
+    "retry_authorized": false,
+    "canonical_mutation_by_task_43": 0
+  },
+  "verdict": "PASS — FOUNDER ONE-TIME RECOVERY-VERIFICATION EFFECTIVENESS AUTHORITY ISSUED FOR TASK 44; NO CANONICAL MUTATION PERFORMED"
+}

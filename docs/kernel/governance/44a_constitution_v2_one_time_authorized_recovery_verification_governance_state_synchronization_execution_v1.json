@@ -1,0 +1,89 @@
+{
+  "task_id": 44,
+  "task_title": "Moon Constitution v2 One-Time Authorized Recovery-Verification Governance-State Synchronization Execution v1",
+  "primary_outcome": "SYNCHRONIZATION_APPLIED",
+  "inputs": {
+    "task_41": {"expected_sha256":"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6","observed_sha256":"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6","identity_exact":true},
+    "task_42": {"expected_sha256":"46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C","observed_sha256":"46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C","identity_exact":true},
+    "task_43": {"expected_sha256":"AD583ED9050423664D919822A14D3537F657C5CD44BCD54F855EA9C8B95AF5A7","observed_sha256":"AD583ED9050423664D919822A14D3537F657C5CD44BCD54F855EA9C8B95AF5A7","identity_exact":true}
+  },
+  "authority": {
+    "valid": true,
+    "founder_issuance_confirmed": true,
+    "authority_class": "FOUNDER_ONE_TIME_RECOVERY_VERIFICATION_EFFECTIVENESS_DELEGATION",
+    "authorized_executor": "TASK_44_ONLY",
+    "incident_scope": "TASK_38_TO_TASK_42_INCIDENT_ONLY",
+    "reusable": false,
+    "consumed": true,
+    "second_attempt_authorized": false
+  },
+  "canonical_state": {
+    "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "expected_preimage_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "observed_preimage_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "preimage_byte_length": 23722,
+    "precondition_exact": true,
+    "expected_post_execution_sha256": "D36F3CAC43800AB7581B49035ED19F51DEF68EB55A1AEAB1B1BBFBBD9D329244",
+    "post_execution_sha256": "D36F3CAC43800AB7581B49035ED19F51DEF68EB55A1AEAB1B1BBFBBD9D329244",
+    "post_execution_byte_length": 26282,
+    "changed": true,
+    "atomic_replacement_count": 1
+  },
+  "issues": {
+    "examined": 3,
+    "ready_for_synchronization": 3,
+    "already_synchronized": 0,
+    "precondition_failed": 0,
+    "synchronized": 3,
+    "governance_effective_resolved_before": 0,
+    "governance_effective_resolved_after": 3,
+    "items": [
+      {"issue_id":"CONST-ISSUE-001","pre_execution_classification":"READY_FOR_SYNCHRONIZATION","resolution_criteria_satisfied":true,"authorized_mutations":5,"observed_mutations":5,"result":"SYNCHRONIZED"},
+      {"issue_id":"CONST-ISSUE-002","pre_execution_classification":"READY_FOR_SYNCHRONIZATION","resolution_criteria_satisfied":true,"authorized_mutations":5,"observed_mutations":5,"result":"SYNCHRONIZED"},
+      {"issue_id":"CONST-ISSUE-003","pre_execution_classification":"READY_FOR_SYNCHRONIZATION","resolution_criteria_satisfied":true,"authorized_mutations":5,"observed_mutations":5,"result":"SYNCHRONIZED"}
+    ]
+  },
+  "mutations": {
+    "task_38_verified_execution_mutations": 6,
+    "task_44_authorized_governance_mutations": 15,
+    "planned": 15,
+    "observed": 15,
+    "authorized": 15,
+    "missing": 0,
+    "unauthorized": 0
+  },
+  "schema_extension_performed": false,
+  "resolution_semantics": "RESOLVED_NOT_CLOSED",
+  "closed_issues": 0,
+  "gate_before": "CLOSED",
+  "gate_after": "CLOSED",
+  "retry_authorized": false,
+  "retry_performed": false,
+  "protected_evidence_changed": false,
+  "rollback_performed": false,
+  "governance_chain_closed": true,
+  "repository": {
+    "branch": "main",
+    "head_before": "54b5c57ff39d0cd3f8bb3043b0b81650f8d893fd",
+    "head_after": "54b5c57ff39d0cd3f8bb3043b0b81650f8d893fd",
+    "tree_before": "abb6a7c8940012e12a2dcd2e5cd895ce88622553",
+    "tree_after": "abb6a7c8940012e12a2dcd2e5cd895ce88622553",
+    "working_tree_before": "UNTRACKED_DOCS_KERNEL_TREE_PRESENT",
+    "working_tree_after": "UNTRACKED_DOCS_KERNEL_TREE_PRESENT"
+  },
+  "artifacts_created": [
+    "docs/kernel/governance/44_constitution_v2_one_time_authorized_recovery_verification_governance_state_synchronization_execution_v1.md",
+    "docs/kernel/governance/44a_constitution_v2_one_time_authorized_recovery_verification_governance_state_synchronization_execution_v1.json",
+    "docs/kernel/governance/44b_constitution_v2_task41_task42_task43_input_identity_and_authority_validation_v1.json",
+    "docs/kernel/governance/44c_constitution_v2_pre_execution_canonical_state_identity_report_v1.json",
+    "docs/kernel/governance/44d_constitution_v2_authorized_governance_synchronization_execution_plan_v1.json",
+    "docs/kernel/governance/44e_constitution_v2_observed_canonical_mutation_inventory_v1.json",
+    "docs/kernel/governance/44f_constitution_v2_authorized_transition_compliance_matrix_v1.md",
+    "docs/kernel/governance/44g_constitution_v2_post_execution_canonical_state_identity_report_v1.json",
+    "docs/kernel/governance/44h_constitution_v2_one_time_authority_consumption_report_v1.json",
+    "docs/kernel/governance/44i_constitution_v2_governance_synchronization_evidence_manifest_v1.json"
+  ],
+  "blocking_findings": [],
+  "recommended_next_work": {"type":"PRODUCT_DIRECTION_LOCK","title":"Moon Product Direction Lock v1"},
+  "verdict": "PASS — ONE-TIME AUTHORIZED GOVERNANCE-STATE SYNCHRONIZATION APPLIED WITH EXACT TARGET COMPLIANCE; AUTHORITY CONSUMED; GOVERNANCE CHAIN CLOSED"
+}

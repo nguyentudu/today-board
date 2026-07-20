@@ -1,0 +1,236 @@
+{
+  "task": 38,
+  "task_name": "Moon Constitution v2 Atomic Issue-Status Canonical Synchronization v1",
+  "execution_mode": "AUTHORIZED_ATOMIC_CANONICAL_SYNCHRONIZATION",
+  "governance_posture": "EXACT_BYTE_ONE_ATTEMPT_FAIL_CLOSED",
+  "executed_at": "2026-07-20T00:19:09+07:00",
+  "task_33_chain_verified": true,
+  "task_34_chain_verified": true,
+  "task_35_chain_verified": true,
+  "task_36_chain_verified": true,
+  "task_37_chain_verified": true,
+  "initial_gate_state": "RECORDED_OPEN",
+  "attempt_limit": 1,
+  "prior_attempt": false,
+  "preflight_passed": true,
+  "attempt_begun": true,
+  "attempt_sequence": 1,
+  "authorization_consumed": true,
+  "canonical_preimage_verified": true,
+  "source_preimage_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+  "source_preimage_byte_length": 23764,
+  "candidate_reconstructed": true,
+  "candidate_sha256_verified": true,
+  "candidate_byte_length_verified": true,
+  "candidate_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "candidate_byte_length": 23722,
+  "authorized_operations_applied": 6,
+  "missing_operations": 0,
+  "unauthorized_operations": 0,
+  "unexplained_byte_differences": 0,
+  "temporary_candidate_verified": true,
+  "atomic_replacement_attempted": true,
+  "atomic_replacement_observed_successful": true,
+  "atomic_replacement_count": 1,
+  "atomic_replacement_primitive": "MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH)",
+  "file_durability_requested": true,
+  "file_durability_succeeded": true,
+  "directory_durability_requested": true,
+  "directory_durability_mechanism": "MOVEFILE_WRITE_THROUGH",
+  "direct_directory_handle_flush_supported": false,
+  "persisted_canonical_reread_performed": true,
+  "observed_canonical_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "observed_canonical_byte_length": 23722,
+  "gate_consumption_outcome": "CONSUMED_SUCCESS",
+  "final_gate_state": "CLOSED",
+  "retry_authorized": false,
+  "resolution_semantics": "RESOLVED_NOT_CLOSED",
+  "closure_authorized": false,
+  "independent_persisted_verification_completed": false,
+  "governance_effective_resolved_issues": 0,
+  "operation_results": [
+    {
+      "operation_id": "ISSUE-SYNC-OP-001",
+      "issue_id": "CONST-ISSUE-001",
+      "representation": "overview",
+      "source_preimage": "TRIAGE REQUIRED",
+      "target_postimage": "RESOLVED",
+      "authorized_source_range": [
+        4368,
+        4383
+      ],
+      "occurrence_verified": true,
+      "candidate_verified": true,
+      "temporary_verified": true,
+      "persisted_candidate_range": [
+        4368,
+        4376
+      ],
+      "persisted_observed_hex": "5245534F4C564544",
+      "persisted_observed_value": "RESOLVED",
+      "persisted_observation_matched": true,
+      "operation_result": "APPLIED"
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-002",
+      "issue_id": "CONST-ISSUE-001",
+      "representation": "detailed_record",
+      "source_preimage": "TRIAGE REQUIRED",
+      "target_postimage": "RESOLVED",
+      "authorized_source_range": [
+        8428,
+        8443
+      ],
+      "occurrence_verified": true,
+      "candidate_verified": true,
+      "temporary_verified": true,
+      "persisted_candidate_range": [
+        8407,
+        8415
+      ],
+      "persisted_observed_hex": "5245534F4C564544",
+      "persisted_observed_value": "RESOLVED",
+      "persisted_observation_matched": true,
+      "operation_result": "APPLIED"
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-003",
+      "issue_id": "CONST-ISSUE-002",
+      "representation": "overview",
+      "source_preimage": "TRIAGE REQUIRED",
+      "target_postimage": "RESOLVED",
+      "authorized_source_range": [
+        4632,
+        4647
+      ],
+      "occurrence_verified": true,
+      "candidate_verified": true,
+      "temporary_verified": true,
+      "persisted_candidate_range": [
+        4625,
+        4633
+      ],
+      "persisted_observed_hex": "5245534F4C564544",
+      "persisted_observed_value": "RESOLVED",
+      "persisted_observation_matched": true,
+      "operation_result": "APPLIED"
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-004",
+      "issue_id": "CONST-ISSUE-002",
+      "representation": "detailed_record",
+      "source_preimage": "TRIAGE REQUIRED",
+      "target_postimage": "RESOLVED",
+      "authorized_source_range": [
+        13050,
+        13065
+      ],
+      "occurrence_verified": true,
+      "candidate_verified": true,
+      "temporary_verified": true,
+      "persisted_candidate_range": [
+        13022,
+        13030
+      ],
+      "persisted_observed_hex": "5245534F4C564544",
+      "persisted_observed_value": "RESOLVED",
+      "persisted_observation_matched": true,
+      "operation_result": "APPLIED"
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-005",
+      "issue_id": "CONST-ISSUE-003",
+      "representation": "overview",
+      "source_preimage": "TRIAGE REQUIRED",
+      "target_postimage": "RESOLVED",
+      "authorized_source_range": [
+        4922,
+        4937
+      ],
+      "occurrence_verified": true,
+      "candidate_verified": true,
+      "temporary_verified": true,
+      "persisted_candidate_range": [
+        4908,
+        4916
+      ],
+      "persisted_observed_hex": "5245534F4C564544",
+      "persisted_observed_value": "RESOLVED",
+      "persisted_observation_matched": true,
+      "operation_result": "APPLIED"
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-006",
+      "issue_id": "CONST-ISSUE-003",
+      "representation": "detailed_record",
+      "source_preimage": "TRIAGE REQUIRED",
+      "target_postimage": "RESOLVED",
+      "authorized_source_range": [
+        18144,
+        18159
+      ],
+      "occurrence_verified": true,
+      "candidate_verified": true,
+      "temporary_verified": true,
+      "persisted_candidate_range": [
+        18109,
+        18117
+      ],
+      "persisted_observed_hex": "5245534F4C564544",
+      "persisted_observed_value": "RESOLVED",
+      "persisted_observation_matched": true,
+      "operation_result": "APPLIED"
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "path": "docs/kernel/governance/38c_constitution_v2_atomic_issue_status_pre_execution_verification_evidence_v1.json",
+      "sha256": "068787D8542DFCA5ED2B7AE02243BE8373D4A422AC22B95F81DF8201826BB185",
+      "byte_length": 6955,
+      "creation_order": 1
+    },
+    {
+      "path": "docs/kernel/governance/38d_constitution_v2_begin_authorized_execution_attempt_v1.json",
+      "sha256": "81575704D525B119D2DC0E9E6AC7137E5B71BD5F76D86B257EAC813A88E95C65",
+      "byte_length": 4476,
+      "creation_order": 2
+    },
+    {
+      "path": "docs/kernel/governance/38e_constitution_v2_temporary_candidate_verification_evidence_v1.json",
+      "sha256": "119279D0D8FE50833AA4EBC4B8D83D933095D572423DAA772F62D1AE2AEAB9BE",
+      "byte_length": 1001,
+      "creation_order": 3
+    },
+    {
+      "path": "docs/kernel/governance/38f_constitution_v2_atomic_replacement_evidence_v1.json",
+      "sha256": "27001A890A15B885C399DA06E9C9A0F531650EFE908E316B55EC4E09ED8E9432",
+      "byte_length": 1243,
+      "creation_order": 4
+    },
+    {
+      "path": "docs/kernel/governance/38g_constitution_v2_persisted_canonical_observation_evidence_v1.json",
+      "sha256": "2418135F535EC31F4A48BD08C04EB9AA5FD801A74A185A4A44B593C8D0A4982D",
+      "byte_length": 4936,
+      "creation_order": 5
+    },
+    {
+      "path": "docs/kernel/governance/38h_constitution_v2_execution_gate_consumption_record_v1.json",
+      "sha256": "D82606776B7F2387C860098943D07DA274D3645231BD9280403699D54FF3BF1B",
+      "byte_length": 730,
+      "creation_order": 6
+    },
+    {
+      "path": "docs/kernel/governance/38b_constitution_v2_atomic_issue_status_canonical_synchronization_matrix_v1.md",
+      "sha256": "F39B6E366579B5938D5435033AFD0CF002175A1E1A73BE9A76BF5DEA8462F99C",
+      "byte_length": 2079,
+      "creation_order": 7
+    }
+  ],
+  "human_execution_record": {
+    "path": "docs/kernel/governance/38_constitution_v2_atomic_issue_status_canonical_synchronization_v1.md",
+    "identity_recorded_externally_after_persistence": true
+  },
+  "recommended_next_task": 39,
+  "recommended_next_task_name": "Moon Constitution v2 Independent Persisted Issue-Status Synchronization Result Verification v1 — Task 39",
+  "verdict": "PASS — EXACT APPROVED ISSUE-STATUS CANDIDATE ATOMICALLY PERSISTED; ONE-ATTEMPT EXECUTION AUTHORIZATION CONSUMED; EXECUTION GATE CLOSED; INDEPENDENT PERSISTED-RESULT VERIFICATION REQUIRED"
+}

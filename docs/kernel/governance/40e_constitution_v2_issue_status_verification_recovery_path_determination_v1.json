@@ -1,0 +1,33 @@
+{
+  "task": 40,
+  "artifact": "ISSUE_STATUS_VERIFICATION_RECOVERY_PATH_DETERMINATION",
+  "generated_at": "2026-07-20",
+  "task_39_outcome_preserved": "BLOCKED",
+  "primary_outcome": "OUTCOME_A",
+  "outcome_name": "EXACT_ADMISSIBLE_PREIMAGE_RECOVERED",
+  "exact_full_preimage_bytes_found": true,
+  "required_sha256_matched": true,
+  "required_byte_length_matched": true,
+  "independent_provenance_established": true,
+  "existing_governance_admissibility_established": true,
+  "founder_evidence_qualification_required": false,
+  "repository_wide_mutation_baseline_conclusive": false,
+  "repository_wide_mutation_baseline_note": "The recovered canonical preimage enables exact canonical delta recovery. Task 41 must separately evaluate the remaining repository-wide mutation-baseline limitation and may not invent a conclusive result.",
+  "task_40_effectiveness_determination_authorized": false,
+  "governance_effective_resolved_issues": 0,
+  "gate_state": "CLOSED",
+  "retry_authorized": false,
+  "canonical_modified": false,
+  "recommended_next_task": "Task 41 — Moon Constitution v2 Independent Persisted-Result Verification Recovery Using Qualified Historical Preimage Evidence v1",
+  "next_task_requirements": [
+    "Remain read-only",
+    "Re-read and verify Git blob 2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "Re-read and verify path-binding tree 88bf090fdff14f630ae1405e9a92fd9c0ed1d821",
+    "Verify the Task 33-37 artifact bindings in the pre-execution tree",
+    "Independently compare the recovered preimage with the current canonical bytes",
+    "Prove six authorized changes and zero unexplained canonical byte differences",
+    "Address the repository-wide mutation-baseline limitation separately",
+    "Do not re-execute, repair, rollback, retry, reopen the gate, or infer closure"
+  ],
+  "verdict": "PASS — EXACT INDEPENDENT HISTORICAL PREIMAGE EVIDENCE RECOVERED AND QUALIFIED; CURRENT CANONICAL REGISTER UNCHANGED; EXECUTION GATE REMAINS CLOSED; RECOVERY VERIFICATION REQUIRED"
+}

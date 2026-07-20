@@ -1,0 +1,153 @@
+{
+  "task": 40,
+  "task_name": "Moon Constitution v2 Issue-Status Synchronization Post-Execution Evidence Recovery Assessment v1",
+  "assessment_mode": "POST_EXECUTION_EVIDENCE_RECOVERY_ASSESSMENT",
+  "governance_posture": "READ_ONLY_FAIL_CLOSED",
+  "assessed_at": "2026-07-20",
+  "task_39": {
+    "outcome": "BLOCKED",
+    "required_artifacts_verified": 6,
+    "required_artifacts_total": 6,
+    "current_candidate_identity_verified": true,
+    "current_drift_detected": false,
+    "complete_independent_historical_delta_proof": "BLOCKED",
+    "governance_effective_resolved_issues": 0,
+    "artifact_identities": {
+      "39": "50A77263B420F031D9F7857583EFCEFF45A26847D83AFF907A51F13F517D1003",
+      "39a": "020DF41076D4FE0ED49EFFC7DA90E6EEF5BC5BD7EE0937DA8E947E83CDD1161E",
+      "39b": "58F9B43FC161DC037652116FF31BD2158E82D34D25A86CAB3EC291A68556D909",
+      "39c": "CAE42AE01090BA3101EEE5B76A508A064DE1AE9717AE9AFBA6E7120A8B75351B",
+      "39d": "CC642C3FCE14484B902C5667C788643DA7783FE4C62689FBC481352612511CF1",
+      "39e": "C075F3A58E32C386FD26FACE4294C3B3A1C10A732BBCE8DAE62D10151C0618E7"
+    }
+  },
+  "current_canonical": {
+    "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length": 23722,
+    "utf8_valid": true,
+    "bom_absent": true,
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0,
+    "visible_authorized_representations_resolved": 6,
+    "unchanged_during_assessment": true
+  },
+  "required_preimage": {
+    "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "byte_length": 23764,
+    "encoding": "UTF-8",
+    "bom": "absent",
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0
+  },
+  "search_scope": {
+    "ordinary_repository_files_examined": true,
+    "prior_governance_artifacts_examined": true,
+    "execution_evidence_examined": true,
+    "temporary_and_backup_locations_examined": true,
+    "repository_archives_examined": true,
+    "git_objects_examined": true,
+    "git_reachable_objects_examined": true,
+    "git_unreachable_and_dangling_objects_examined": true,
+    "git_index_examined": true,
+    "git_refs_examined": true,
+    "git_reflogs_examined": true,
+    "git_stashes_examined": true,
+    "git_history_modified": false,
+    "git_garbage_collection_run": false,
+    "out_of_scope_personal_or_system_locations_examined": false
+  },
+  "evidence_summary": {
+    "exact_preimage_candidates_found": 1,
+    "exact_admissible_preimage_found": true,
+    "content_addressed_path_bindings_found": 2,
+    "equivalent_lossless_evidence_found": true,
+    "supporting_evidence_found": true,
+    "founder_qualification_required": false,
+    "founder_governance_decision_required_before_recovery_verification": false,
+    "circular_evidence_rejected": true,
+    "synthetic_preimage_created": false,
+    "reverse_reconstruction_performed": false
+  },
+  "qualified_evidence": [
+    {
+      "evidence_id": "EVID-40-001",
+      "category": "CATEGORY_A_EXACT_FULL_PREIMAGE_BYTES",
+      "git_object_type": "blob",
+      "git_object_id_sha1": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+      "reachability": "UNREACHABLE_BUT_RETRIEVABLE",
+      "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+      "byte_length": 23764,
+      "complete_bytes_available": true,
+      "independent_from_current_candidate": true,
+      "classification": "ADMISSIBLE_EXACT"
+    },
+    {
+      "evidence_id": "EVID-40-002",
+      "category": "CATEGORY_B_TRUSTED_CONTENT_ADDRESSED_PREIMAGE_OBJECT",
+      "root_tree_sha1": "88bf090fdff14f630ae1405e9a92fd9c0ed1d821",
+      "bound_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "bound_blob_sha1": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+      "task_33_through_37_artifact_hashes_matched": 19,
+      "task_38_artifacts_present": 0,
+      "independent_from_current_candidate": true,
+      "classification": "ADMISSIBLE_EXACT"
+    },
+    {
+      "evidence_id": "EVID-40-003",
+      "category": "CATEGORY_B_TRUSTED_CONTENT_ADDRESSED_PREIMAGE_OBJECT",
+      "root_tree_sha1": "59ff025f959ab8c64f5c297a9236f4ae183cfd03",
+      "bound_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "bound_blob_sha1": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+      "independent_from_current_candidate": true,
+      "classification": "ADMISSIBLE_EXACT"
+    }
+  ],
+  "supporting_or_rejected_evidence": [
+    {
+      "evidence_id": "EVID-40-004",
+      "category": "CATEGORY_D_PARTIAL_EVIDENCE",
+      "description": "Task 33 and 35 operation-local preimage slices, anchors, offsets, and source identities",
+      "classification": "SUPPORTING_ONLY"
+    },
+    {
+      "evidence_id": "EVID-40-005",
+      "category": "CATEGORY_D_PARTIAL_EVIDENCE",
+      "description": "Task 36 source-read and reconstruction assertions without complete source bytes",
+      "classification": "SUPPORTING_ONLY"
+    },
+    {
+      "evidence_id": "EVID-40-006",
+      "category": "CATEGORY_D_PARTIAL_EVIDENCE",
+      "description": "Task 38 preflight and begin-event source identity records",
+      "classification": "SUPPORTING_ONLY"
+    },
+    {
+      "evidence_id": "EVID-40-007",
+      "category": "CATEGORY_D_PARTIAL_EVIDENCE",
+      "description": "Current exact candidate bytes, decisive only for current state",
+      "classification": "SUPPORTING_ONLY"
+    },
+    {
+      "evidence_id": "EVID-40-008",
+      "category": "CATEGORY_E_DERIVED_OR_CIRCULAR_EVIDENCE",
+      "description": "Hypothetical reversal of current candidate using approved operations; not performed",
+      "classification": "INADMISSIBLE_CIRCULAR"
+    }
+  ],
+  "repository_mutation_baseline": {
+    "canonical_file_baseline_recovered": true,
+    "repository_wide_baseline_conclusive": false,
+    "limitation_preserved_for_task_41": true
+  },
+  "gate_state": "CLOSED",
+  "gate_consumption_outcome": "CONSUMED_SUCCESS",
+  "retry_authorized": false,
+  "gate_reopening_authorized": false,
+  "canonical_modified": false,
+  "task_39_artifacts_modified": false,
+  "governance_effective_resolved_issues": 0,
+  "primary_outcome": "OUTCOME_A",
+  "recommended_next_task": "Task 41 — Moon Constitution v2 Independent Persisted-Result Verification Recovery Using Qualified Historical Preimage Evidence v1",
+  "verdict": "PASS — EXACT INDEPENDENT HISTORICAL PREIMAGE EVIDENCE RECOVERED AND QUALIFIED; CURRENT CANONICAL REGISTER UNCHANGED; EXECUTION GATE REMAINS CLOSED; RECOVERY VERIFICATION REQUIRED"
+}

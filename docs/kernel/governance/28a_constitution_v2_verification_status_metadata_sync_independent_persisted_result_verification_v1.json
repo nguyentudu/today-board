@@ -1,0 +1,190 @@
+{
+  "verification_id": "CONST-V2-VERIFY-META-SYNC-INDEPENDENT-PERSISTED-VERIFICATION-001",
+  "version": "v1",
+  "status": "INDEPENDENT_PERSISTED_VERIFICATION_COMPLETE",
+  "verification_timestamp": "2026-07-18T00:51:16.9151105+07:00",
+  "mode": "READ_ONLY",
+  "persisted_constitution": {
+    "path": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+    "expected_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "first_observed_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "second_observed_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "identity_matched": true,
+    "identity_stable": true,
+    "byte_for_byte_equal_between_reads": true,
+    "byte_length": 61065,
+    "encoding": "UTF-8",
+    "bom_present": false,
+    "crlf_count": 0,
+    "lf_count": 674,
+    "final_newline": true
+  },
+  "artifact_identities": {
+    "founder_approval_24": {
+      "path": "docs/kernel/governance/24_constitution_v2_founder_exact_verification_status_metadata_sync_approval_v1.md",
+      "expected_sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B",
+      "observed_sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B",
+      "matched": true
+    },
+    "manifest_25": {
+      "path": "docs/kernel/governance/25_constitution_v2_verification_status_metadata_sync_execution_manifest_v1.json",
+      "expected_sha256": "7B20DC1B2E0D41B56EC2E5B7189733D36A808931753E7B31ADD9745DA35E2791",
+      "observed_sha256": "7B20DC1B2E0D41B56EC2E5B7189733D36A808931753E7B31ADD9745DA35E2791",
+      "matched": true,
+      "duplicate_json_keys": 0
+    },
+    "verification_26": {
+      "path": "docs/kernel/governance/26_constitution_v2_verification_status_metadata_sync_independent_manifest_verification_v1.md",
+      "expected_sha256": "9939AAE83127C45180CBB90381041F5B7D805723D473E0B7C53A7F4315643BA1",
+      "observed_sha256": "9939AAE83127C45180CBB90381041F5B7D805723D473E0B7C53A7F4315643BA1",
+      "matched": true
+    },
+    "verification_26a": {
+      "path": "docs/kernel/governance/26a_constitution_v2_verification_status_metadata_sync_independent_manifest_verification_v1.json",
+      "expected_sha256": "A27E789F0A4BEAB4CCCE46EEB673A7625392577850ED169E95E652425330DDAB",
+      "observed_sha256": "A27E789F0A4BEAB4CCCE46EEB673A7625392577850ED169E95E652425330DDAB",
+      "matched": true,
+      "duplicate_json_keys": 0
+    },
+    "execution_27": {
+      "path": "docs/kernel/governance/27_constitution_v2_verification_status_metadata_sync_atomic_execution_v1.md",
+      "expected_sha256": "9948AED3B558E9D6F02B37CD2F5AB843D128641A21448ABEEC69E86415D629A1",
+      "observed_sha256": "9948AED3B558E9D6F02B37CD2F5AB843D128641A21448ABEEC69E86415D629A1",
+      "matched": true
+    },
+    "execution_27a": {
+      "path": "docs/kernel/governance/27a_constitution_v2_verification_status_metadata_sync_atomic_execution_v1.json",
+      "expected_sha256": "C34DC6AC1536C26B1E61D7599BFC7295261A096F46B51DE2AB9CCAE0BE02AA8D",
+      "observed_sha256": "C34DC6AC1536C26B1E61D7599BFC7295261A096F46B51DE2AB9CCAE0BE02AA8D",
+      "matched": true,
+      "duplicate_json_keys": 0
+    },
+    "execution_27b": {
+      "path": "docs/kernel/governance/27b_constitution_v2_verification_status_metadata_sync_atomic_execution_diff_v1.md",
+      "expected_sha256": "CC34A49026BDE42695D4A2EE54167C78B2AAF57758400F8635AD0F9E88D09812",
+      "observed_sha256": "CC34A49026BDE42695D4A2EE54167C78B2AAF57758400F8635AD0F9E88D09812",
+      "matched": true
+    },
+    "authority_artifacts_matched": "7/7",
+    "upstream_authority_identity_chain": "PASS",
+    "execution_evidence_identity_chain": "PASS"
+  },
+  "reconstruction": {
+    "separately_preserved_preexecution_file_available": false,
+    "limitation": "No separately preserved 61071-byte pre-execution file was found in repository history, workspace, Codex attachments, Codex temporary storage, or user temporary storage.",
+    "method": "Reverse only the two exact selected A postimages from persisted bytes, verify the recovered full source against the authoritative pre-execution SHA-256, then apply manifest operations forward.",
+    "recovered_source_byte_length": 61071,
+    "expected_preexecution_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+    "recovered_source_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+    "recovered_source_identity_matched": true,
+    "operations_applied": "2/2",
+    "result_byte_length": 61065,
+    "expected_result_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "observed_result_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "persisted_bytes_equal_reconstruction": true,
+    "first_differing_byte": "NONE"
+  },
+  "operation_closure": {
+    "authorized_package": "SYNC-PACKAGE-AA",
+    "required_operations": 2,
+    "authorized_postimages_present": "2/2",
+    "stale_preimages_remaining": 0,
+    "unexpected_option_b_postimages_at_corresponding_locations": 0,
+    "operations": [
+      {
+        "operation_id": "VERIFY-META-SYNC-OP-001",
+        "selected_option_id": "VERIFY-META-SYNC-001-A",
+        "persisted_byte_range": [153, 182],
+        "selected_postimage_present": true,
+        "selected_postimage_occurrence_count": 1,
+        "postimage_sha256": "12307FB5804F9C046825C7B6696F955CC1C7AE03DB8663AD5BB1D43147A43741",
+        "postimage_sha256_matched": true,
+        "stale_preimage_absent_at_authorized_location": true
+      },
+      {
+        "operation_id": "VERIFY-META-SYNC-OP-002",
+        "selected_option_id": "VERIFY-META-SYNC-002-A",
+        "persisted_byte_range": [335, 386],
+        "selected_postimage_present": true,
+        "selected_postimage_occurrence_count": 1,
+        "postimage_sha256": "162B008A7143A6AD926CDD409800C705FED2DDA44330385F6C7E90BA2370B4DF",
+        "postimage_sha256_matched": true,
+        "stale_preimage_absent_at_authorized_location": true
+      }
+    ]
+  },
+  "diff_audit": {
+    "authorized_logical_operations": 2,
+    "missing_authorized_operations": 0,
+    "unauthorized_logical_operations": 0,
+    "unauthorized_changed_byte_ranges": 0,
+    "unauthorized_whitespace_changes": 0,
+    "unauthorized_unicode_changes": 0,
+    "unauthorized_line_ending_changes": 0,
+    "renderer": "Python difflib.unified_diff with three context lines",
+    "rendered_diff_hunks": 1,
+    "unauthorized_rendered_diff_hunks": 0,
+    "unrelated_today_board_release_note_occurrences": 0
+  },
+  "frozen_payload": {
+    "expected_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "persisted_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "persisted_byte_offset": 37897,
+    "occurrence_count": 1,
+    "unchanged": true
+  },
+  "governance_boundaries": {
+    "candidate_posture_preserved": true,
+    "constitutional_meaning_changed": false,
+    "normative_force_changed": false,
+    "constitutional_protection_removed": false,
+    "normative_obligation_introduced": false,
+    "new_defined_term_introduced": false,
+    "implicit_alias_introduced": false,
+    "structural_findings_reopened": false,
+    "issue_resolution_implied": false,
+    "issue_closure_implied": false,
+    "ratification_implied": false,
+    "official_status_implied": false,
+    "constitution_v1_supersession_implied": false
+  },
+  "executor_claim_comparison": {
+    "performed_after_independent_checks": true,
+    "source_identity": "CONFIRMED",
+    "manifest_identity": "CONFIRMED",
+    "operation_commit": "CONFIRMED",
+    "candidate_identity": "CONFIRMED",
+    "temporary_identity": "NOT_INDEPENDENTLY_VERIFIABLE",
+    "persisted_identity": "CONFIRMED",
+    "frozen_payload": "CONFIRMED",
+    "unauthorized_changes": "CONFIRMED",
+    "candidate_posture": "CONFIRMED",
+    "mutation_committed": "CONFIRMED"
+  },
+  "artifact_mutations_by_this_task": {
+    "constitution_v1": false,
+    "constitution_v2": false,
+    "founder_approval": false,
+    "manifest": false,
+    "verification_records_26": false,
+    "execution_records_27": false,
+    "issue_artifacts": false,
+    "application_code": false
+  },
+  "lifecycle": {
+    "founder_exact_byte_approval": "COMPLETE",
+    "immutable_manifest": "COMPLETE",
+    "independent_manifest_verification": "COMPLETE",
+    "atomic_execution": "COMPLETE",
+    "independent_persisted_verification": "COMPLETE",
+    "metadata_synchronization_lifecycle": "COMPLETE"
+  },
+  "result": {
+    "atomic_mutation_committed": true,
+    "persisted_result_independently_verified": true,
+    "mutation_performed_by_this_task": false,
+    "recommended_next_task": "Moon Constitution v2 Structural Findings and Issue Mapping Determination v1",
+    "verdict": "PASS — PERSISTED METADATA SYNCHRONIZATION RESULT INDEPENDENTLY VERIFIED"
+  },
+  "artifact_identity_publication": "Raw final verification-artifact SHA-256 identities are published in the completion report after atomic materialization."
+}

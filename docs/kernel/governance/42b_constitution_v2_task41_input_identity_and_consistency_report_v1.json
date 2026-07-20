@@ -1,0 +1,52 @@
+{
+  "task_id": 42,
+  "artifact": "TASK_41_INPUT_IDENTITY_AND_CONSISTENCY_REPORT",
+  "observed_at": "2026-07-20",
+  "main_report": {
+    "path": "docs/kernel/governance/41_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.md",
+    "expected_sha256": "07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6",
+    "observed_sha256": "07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6",
+    "byte_length": 8960,
+    "identity_exact": true
+  },
+  "required_task_41_artifacts_present": 10,
+  "required_task_41_artifacts_total": 10,
+  "evidence_manifest": {
+    "path": "docs/kernel/governance/41h_constitution_v2_verification_evidence_manifest_v1.json",
+    "sha256": "52DDF7CC100B56ECE71F5072C86F650AD644E09D8A23153270FF14B4A20234DF",
+    "task_41_artifact_entries": 9,
+    "manifest_self_entry_present": true,
+    "required_paths_covered": 10,
+    "source_entries": 42,
+    "missing_entries": 0,
+    "duplicate_logical_evidence_identities": 0,
+    "digest_mismatches": 0,
+    "post_task_41_replacement_detected": false,
+    "closure_verified": true,
+    "self_hash_note": "The manifest records its self-path and defers its impossible self-referential digest; Task 42 independently binds the persisted manifest digest above."
+  },
+  "determination_consistency": {
+    "primary_outcome": "VERIFICATION_SATISFIED",
+    "task_39_blocker_resolved": true,
+    "required_mutations": 6,
+    "observed_mutations": 6,
+    "authorized_mutations": 6,
+    "missing_mutations": 0,
+    "unauthorized_mutations": 0,
+    "canonical_register_changed": false,
+    "gate": "CLOSED",
+    "retry_authorized": false,
+    "governance_effective_resolved_issues": "0/3",
+    "material_contradictions": 0,
+    "consistent": true
+  },
+  "historical_evidence": {
+    "path": "docs/kernel/governance/evidence/41_constitution_v2_historical_preimage_exact.bin",
+    "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "byte_length": 23764,
+    "git_blob_id": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "unchanged": true
+  },
+  "input_valid": true,
+  "verdict": "TASK_41_VERIFICATION_INPUT_VALID_AND_INTERNALLY_CONSISTENT"
+}

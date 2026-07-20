@@ -1,0 +1,57 @@
+{
+  "task": 41,
+  "artifact": "HISTORICAL_PREIMAGE_IDENTITY_VERIFICATION",
+  "verified_at": "2026-07-20",
+  "repository": {
+    "root": "D:/today-board",
+    "head": "54b5c57ff39d0cd3f8bb3043b0b81650f8d893fd",
+    "branch": "main",
+    "git_version": "git version 2.51.2.windows.1",
+    "object_format": "sha1",
+    "core_autocrlf": "input",
+    "path_attributes": [],
+    "alternates_present": false,
+    "replace_refs_active": false,
+    "grafts_present": false,
+    "shallow_repository": false,
+    "partial_clone_or_promisor": false,
+    "object_resolution_redirected": false
+  },
+  "source_object": {
+    "object_id": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "exists": true,
+    "git_reported_type": "blob",
+    "git_reported_size": 23764,
+    "raw_export_byte_length": 23764,
+    "expected_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "actual_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "git_object_id_recomputed_from_header_and_bytes": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "git_object_identity_recomputed": true,
+    "identity_exact": true,
+    "utf8_valid": true,
+    "bom_absent": true,
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0,
+    "lf_count": 216,
+    "final_newline": true,
+    "reachability": "UNREACHABLE_BUT_RETRIEVABLE"
+  },
+  "preserved_export": {
+    "path": "docs/kernel/governance/evidence/41_constitution_v2_historical_preimage_exact.bin",
+    "creation_method": "binary subprocess capture followed by exclusive unbuffered binary write, fsync, atomic rename, and reread",
+    "transformation_applied": false,
+    "byte_length": 23764,
+    "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "recomputed_git_object_id": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "exact_copy": true
+  },
+  "commands": [
+    {"command": "git cat-file -e 2f617624d30b5ab84cf85a9a4aabe74ee10543a3", "exit_code": 0},
+    {"command": "git cat-file -t 2f617624d30b5ab84cf85a9a4aabe74ee10543a3", "exit_code": 0, "stdout": "blob"},
+    {"command": "git cat-file -s 2f617624d30b5ab84cf85a9a4aabe74ee10543a3", "exit_code": 0, "stdout": "23764"},
+    {"command": "git replace -l", "exit_code": 0, "stdout": ""},
+    {"command": "git check-attr -a -- docs/kernel/governance/01_constitution_issues_v1.md", "exit_code": 0, "stdout": ""}
+  ],
+  "stderr_observed": "",
+  "verdict": "IDENTITY_EXACT_AND_PRESERVED"
+}

@@ -1,0 +1,21 @@
+{
+  "task_id": 44,
+  "artifact": "OBSERVED_CANONICAL_MUTATION_INVENTORY",
+  "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+  "preimage_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "postimage_sha256": "D36F3CAC43800AB7581B49035ED19F51DEF68EB55A1AEAB1B1BBFBBD9D329244",
+  "observed_operations": [
+    {"target_id":"AUTH-43-TARGET-001","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-002","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-003","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-004","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-005","result":"APPLIED_EXACT"},
+    {"target_id":"AUTH-43-TARGET-006","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-007","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-008","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-009","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-010","result":"APPLIED_EXACT"},
+    {"target_id":"AUTH-43-TARGET-011","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-012","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-013","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-014","result":"APPLIED_EXACT"},{"target_id":"AUTH-43-TARGET-015","result":"APPLIED_EXACT"}
+  ],
+  "accounting": {"planned":15,"observed":15,"authorized":15,"missing":0,"unauthorized":0},
+  "changed_markdown_lines": [87,88,115,116,145,146,199,200,201],
+  "changed_line_count": 9,
+  "protected_status_fields_changed": 0,
+  "unrelated_fields_changed": 0,
+  "schema_changes": 0,
+  "atomic_replacement_count": 1,
+  "rollback_performed": false,
+  "result": "EXACT_TARGET_COMPLIANCE"
+}

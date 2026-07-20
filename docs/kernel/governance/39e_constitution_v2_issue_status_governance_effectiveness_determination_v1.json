@@ -1,0 +1,36 @@
+{
+  "task": 39,
+  "artifact": "ISSUE_STATUS_GOVERNANCE_EFFECTIVENESS_DETERMINATION",
+  "determined_at": "2026-07-20T00:40:48+07:00",
+  "governance_model": "ALL-OR-ZERO",
+  "positive_conditions": {
+    "task_33_38_artifact_chain_verified": true,
+    "current_canonical_candidate_identity_verified": true,
+    "current_canonical_identity_stable": true,
+    "post_execution_drift_detected": false,
+    "six_current_postimages_verified": true,
+    "overview_detail_consistent": true,
+    "resolution_semantics_observed": "RESOLVED_NOT_CLOSED",
+    "closed_issues_observed": 0,
+    "gate_consumption_outcome": "CONSUMED_SUCCESS",
+    "final_gate_state": "CLOSED",
+    "retry_authorized": false
+  },
+  "material_unverified_conditions": {
+    "approved_full_preimage_bytes_available": false,
+    "independent_exact_delta_proof_completed": false,
+    "repository_mutation_scan_conclusive": false,
+    "schema_change_absence_independently_proven_against_preimage": false
+  },
+  "effectiveness_condition_satisfied": false,
+  "governance_effective_resolved_issues": 0,
+  "governance_effective_semantics": "NOT_ESTABLISHED",
+  "closed_issues": 0,
+  "canonical_repair_authorized": false,
+  "rollback_authorized": false,
+  "gate_reopening_authorized": false,
+  "retry_authorized": false,
+  "recommended_recovery_task": "Moon Constitution v2 Issue-Status Synchronization Post-Execution Recovery Assessment v1",
+  "verdict": "BLOCKED — INDEPENDENT PERSISTED-RESULT VERIFICATION COULD NOT BE COMPLETED; GOVERNANCE-EFFECTIVE RESOLVED ISSUES REMAIN 0/3",
+  "creation_order": 3
+}

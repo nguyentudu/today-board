@@ -1,0 +1,310 @@
+{
+  "task": 37,
+  "task_name": "Moon Constitution v2 Founder Execution-Gate Authorization Recording for Verified Issue-Status Synchronization Manifest v1",
+  "version": 1,
+  "decision_date": "2026-07-19",
+  "founder_verdict": "AUTHORIZE_EXECUTION_OF_THE_EXACT_INDEPENDENTLY_VERIFIED_ISSUE_STATUS_SYNCHRONIZATION_MANIFEST",
+  "governance_posture": "FAIL_CLOSED",
+  "bound_artifacts": {
+    "task_33_human": {
+      "path": "docs/kernel/governance/33_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.md",
+      "sha256": "F9A01E4083183BA91812A17FE0671452407733E94DC47E2A4C9656A2FB77F61D"
+    },
+    "task_33_machine": {
+      "path": "docs/kernel/governance/33a_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.json",
+      "sha256": "55AAD7598BD661AB0480423634B1AD51948AAE78D418C9425ECD02DFAD010C70"
+    },
+    "task_33_matrix": {
+      "path": "docs/kernel/governance/33b_constitution_v2_exact_issue_status_synchronization_operation_matrix_v1.md",
+      "sha256": "AADE4C5C0F2F3F43D16594A9CEDDBB6D4AFAA27695027085CF28A983BBF991D4"
+    },
+    "task_33_frozen_artifact": {
+      "path": "docs/kernel/governance/33c_constitution_v2_exact_issue_status_synchronization_frozen_approval_payload_v1.json",
+      "sha256": "1E711922212FB0AA824E00C080A156827BB6DB55E946BF0EB0A53786EE8C9068"
+    },
+    "task_33_canonical_frozen_payload": {
+      "path": "canonicalized payload within Task 33c",
+      "sha256": "73F54918847D7A63E695753E86D3AF17B2A1A98EC2A2FFD884CFFA65C3D1D0D4"
+    },
+    "task_34_human": {
+      "path": "docs/kernel/governance/34_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.md",
+      "sha256": "C2082404492C4CD040DA500A5918DCE2DCA7A1875EF1D51A8B403759916219DE"
+    },
+    "task_34_machine": {
+      "path": "docs/kernel/governance/34a_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.json",
+      "sha256": "2E5E31A7269AEBC4D93555F230B3AA7F5820C989D2D0290287DF8CD933384FAB"
+    },
+    "task_34_matrix": {
+      "path": "docs/kernel/governance/34b_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_matrix_v1.md",
+      "sha256": "49A9835DB313B625117200BEE186597E928BB5A3AFF350ECB4FE301980E66A61"
+    },
+    "task_35_human": {
+      "path": "docs/kernel/governance/35_constitution_v2_immutable_issue_status_synchronization_execution_manifest_v1.md",
+      "sha256": "A60BE91726696401251586420046571D0B370E9DCFFE4B7CDBD4F1551E350B2F"
+    },
+    "task_35_machine": {
+      "path": "docs/kernel/governance/35a_constitution_v2_immutable_issue_status_synchronization_execution_manifest_v1.json",
+      "sha256": "57601D53BFF753C20B6DAEC2982B1E0BA7D13A1A8BBDC99F7499C072314534D4"
+    },
+    "task_35_matrix": {
+      "path": "docs/kernel/governance/35b_constitution_v2_immutable_issue_status_synchronization_execution_manifest_matrix_v1.md",
+      "sha256": "652EA3032B6D3F474FCFFFD42E3D18ED28DBCEFA1799D777FCDBD6B9D0496E84"
+    },
+    "task_35_payload_artifact": {
+      "path": "docs/kernel/governance/35c_constitution_v2_immutable_issue_status_synchronization_execution_manifest_payload_v1.json",
+      "sha256": "3BDB5A429792896CADB50D43A10AD0961DBD060CE782F0A64811B5B9DE5D08B4"
+    },
+    "task_35_canonical_payload": {
+      "path": "canonicalized payload within Task 35c",
+      "sha256": "D65395FB7185F7091C158E11B9FFE969AD373DAA70F8D2F41388194E1D46D0A1"
+    },
+    "task_36_human": {
+      "path": "docs/kernel/governance/36_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_v1.md",
+      "sha256": "CCDD8C2A64EE90C16ED79EF7FA066C358D71F12F7D3C06D6570AB16596A5D772"
+    },
+    "task_36_machine": {
+      "path": "docs/kernel/governance/36a_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_v1.json",
+      "sha256": "290DCEB18EF2D9B0640F06307F6A29A5575C7D02BA35E231D45CC8A46829663C"
+    },
+    "task_36_matrix": {
+      "path": "docs/kernel/governance/36b_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_matrix_v1.md",
+      "sha256": "05E9C175A1A3FBCCDE1FF4587472EA1131DE6281BBEF3C0B472CC7612542F743"
+    },
+    "task_36_reconstruction": {
+      "path": "docs/kernel/governance/36c_constitution_v2_independent_candidate_reconstruction_evidence_v1.json",
+      "sha256": "2E143891CF07E446AC71E11D9ED064361DBB67FC4F4FEF1F41B0DBF18795530E"
+    }
+  },
+  "task_33_chain_bound": true,
+  "task_34_chain_bound": true,
+  "task_35_chain_bound": true,
+  "task_36_chain_bound": true,
+  "task_36_verdict": "PASS",
+  "canonical_source_bound": true,
+  "candidate_bound": true,
+  "canonical_source": {
+    "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "byte_length": 23764,
+    "encoding": "UTF-8",
+    "bom": false,
+    "line_endings": "LF",
+    "crlf_count": 0,
+    "must_match_immediately_before_execution": true,
+    "mismatch_behavior": "BLOCKED_CANONICAL_PREIMAGE_DOES_NOT_MATCH_FOUNDER_AUTHORIZED_SOURCE",
+    "rebase_authorized": false,
+    "repair_authorized": false,
+    "offset_adjustment_authorized": false,
+    "regeneration_authorized": false,
+    "substitution_authorized": false
+  },
+  "candidate": {
+    "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length": 23722,
+    "byte_length_delta": -42,
+    "encoding": "UTF-8",
+    "bom": false,
+    "line_endings": "LF",
+    "crlf_count": 0,
+    "authorized_explained_changes": 6,
+    "unexplained_differences": 0,
+    "semantic_equivalence_sufficient": false
+  },
+  "operations": [
+    {
+      "operation_id": "ISSUE-SYNC-OP-001",
+      "issue_id": "CONST-ISSUE-001",
+      "representation": "overview",
+      "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "source_value": "TRIAGE REQUIRED",
+      "target_value": "RESOLVED",
+      "source_byte_start": 4368,
+      "source_byte_end_exclusive": 4383,
+      "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+      "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+      "authorized": true
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-002",
+      "issue_id": "CONST-ISSUE-001",
+      "representation": "detailed_record",
+      "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "source_value": "TRIAGE REQUIRED",
+      "target_value": "RESOLVED",
+      "source_byte_start": 8428,
+      "source_byte_end_exclusive": 8443,
+      "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+      "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+      "authorized": true
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-003",
+      "issue_id": "CONST-ISSUE-002",
+      "representation": "overview",
+      "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "source_value": "TRIAGE REQUIRED",
+      "target_value": "RESOLVED",
+      "source_byte_start": 4632,
+      "source_byte_end_exclusive": 4647,
+      "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+      "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+      "authorized": true
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-004",
+      "issue_id": "CONST-ISSUE-002",
+      "representation": "detailed_record",
+      "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "source_value": "TRIAGE REQUIRED",
+      "target_value": "RESOLVED",
+      "source_byte_start": 13050,
+      "source_byte_end_exclusive": 13065,
+      "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+      "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+      "authorized": true
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-005",
+      "issue_id": "CONST-ISSUE-003",
+      "representation": "overview",
+      "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "source_value": "TRIAGE REQUIRED",
+      "target_value": "RESOLVED",
+      "source_byte_start": 4922,
+      "source_byte_end_exclusive": 4937,
+      "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+      "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+      "authorized": true
+    },
+    {
+      "operation_id": "ISSUE-SYNC-OP-006",
+      "issue_id": "CONST-ISSUE-003",
+      "representation": "detailed_record",
+      "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "source_value": "TRIAGE REQUIRED",
+      "target_value": "RESOLVED",
+      "source_byte_start": 18144,
+      "source_byte_end_exclusive": 18159,
+      "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+      "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+      "authorized": true
+    }
+  ],
+  "operation_order_binding": {
+    "basis": "descending original-source byte offsets",
+    "ordered_operation_ids": [
+      "ISSUE-SYNC-OP-006",
+      "ISSUE-SYNC-OP-004",
+      "ISSUE-SYNC-OP-002",
+      "ISSUE-SYNC-OP-005",
+      "ISSUE-SYNC-OP-003",
+      "ISSUE-SYNC-OP-001"
+    ],
+    "offsets_reference_original_preimage": true,
+    "overlap_count": 0,
+    "collision_count": 0,
+    "deterministic": true
+  },
+  "exact_operations_authorized": 6,
+  "covered_issues": 3,
+  "authorized_representations": 6,
+  "atomicity_model": "ALL-OR-ZERO",
+  "subset_execution_authorized": false,
+  "partial_execution_authorized": false,
+  "resolution_semantics": "RESOLVED_NOT_CLOSED",
+  "closure_authorized": false,
+  "gate_authority_recorded": true,
+  "gate_authorization": "OPEN_FOR_ONE_EXACT_AUTHORIZED_ATTEMPT",
+  "gate_state": "RECORDED_OPEN",
+  "attempt_limit": 1,
+  "attempt_begun": false,
+  "authorization_consumed": false,
+  "retry_authorized": false,
+  "canonical_execution_performed": false,
+  "canonical_modified": false,
+  "issue_statuses_modified": false,
+  "execution_attempt_event_created": false,
+  "execution_record_created": false,
+  "attempt_begin_rule": {
+    "event": "BEGIN_AUTHORIZED_EXECUTION_ATTEMPT",
+    "recorded_by_task": 38,
+    "preconditions": [
+      "verify every Task 33-37 artifact",
+      "verify canonical preimage",
+      "verify execution environment atomicity and durability requirements",
+      "record immutable BEGIN_AUTHORIZED_EXECUTION_ATTEMPT event"
+    ],
+    "non_mutating_preflight_consumes_attempt": false
+  },
+  "consumption_rule": {
+    "terminal_after_begin_consumes_authorization": true,
+    "success": [
+      "CONSUMED_SUCCESS",
+      "CLOSED"
+    ],
+    "blocked": [
+      "CONSUMED_BLOCKED",
+      "CLOSED"
+    ],
+    "failed": [
+      "CONSUMED_FAILED",
+      "CLOSED"
+    ],
+    "retry_after_consumption_authorized": false
+  },
+  "failure_behavior": {
+    "before_begin_preflight_failure": {
+      "canonical_mutation": 0,
+      "gate_state": "RECORDED_OPEN"
+    },
+    "after_begin_before_atomic_replacement_failure": {
+      "canonical_mutation": 0,
+      "terminal_gate_state": "CONSUMED_FAILED_OR_CONSUMED_BLOCKED_THEN_CLOSED"
+    },
+    "after_atomic_replacement_before_independent_verification": "EXECUTION_RESULT_NOT_YET_GOVERNANCE_EFFECTIVE",
+    "evidence_preservation_required": true,
+    "repair_without_new_authority": false
+  },
+  "execution_procedure_binding": {
+    "manifest_task": 35,
+    "executor_task": 38,
+    "steps": 17,
+    "exact_manifest_procedure_only": true,
+    "task_37_executes_steps": false
+  },
+  "effective_point": "EFFECTIVE_ON_INDEPENDENT_PERSISTED_VERIFICATION",
+  "governance_effective_resolved_issues": 0,
+  "prohibited_authority_expansion": [
+    "additional issues",
+    "future issues",
+    "wildcard scope",
+    "new fields",
+    "new wording",
+    "new status values",
+    "CLOSED",
+    "closure dates",
+    "issue deletion",
+    "issue archival",
+    "Constitution modification",
+    "source rebasing",
+    "candidate regeneration",
+    "manifest regeneration",
+    "operation recompilation",
+    "partial execution",
+    "multiple attempts",
+    "implicit retries",
+    "continuing gate authority",
+    "best-effort mutation",
+    "post-failure repair without new authority",
+    "effectiveness declaration before Task 39"
+  ],
+  "canonical_gate_authorization_payload": {
+    "path": "docs/kernel/governance/37c_constitution_v2_founder_execution_gate_authorization_payload_v1.json",
+    "artifact_file_sha256": "968426137C0EBA16E01D48B6CFA3DF504C7072BB4E6029946DF397FD5C6E899B",
+    "canonical_payload_sha256": "AE7EBC26BBFDACB25ED197F4E82223608867319DD43A285CA6645E9E427FAC34",
+    "identities_distinct": true
+  },
+  "recommended_next_task": 38,
+  "recommended_next_task_name": "Moon Constitution v2 Atomic Issue-Status Canonical Synchronization v1 — Task 38",
+  "verdict": "PASS — FOUNDER EXECUTION-GATE AUTHORIZATION RECORDED FOR ONE EXACT ATTEMPT OF THE INDEPENDENTLY VERIFIED ISSUE-STATUS SYNCHRONIZATION MANIFEST; NO CANONICAL EXECUTION PERFORMED"
+}

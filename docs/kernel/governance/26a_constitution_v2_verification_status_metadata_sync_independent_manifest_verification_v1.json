@@ -1,0 +1,222 @@
+{
+  "verification_id": "CONST-V2-VERIFY-META-SYNC-INDEPENDENT-MANIFEST-VERIFICATION-001",
+  "version": "v1",
+  "status": "INDEPENDENT_VERIFICATION_COMPLETE",
+  "verification_date": "2026-07-17",
+  "independence": {
+    "compiler_record_used_as_evidence": false,
+    "compiler_record_compared_after_independent_calculation": true,
+    "mutation_performed": false
+  },
+  "manifest": {
+    "path": "docs/kernel/governance/25_constitution_v2_verification_status_metadata_sync_execution_manifest_v1.json",
+    "expected_sha256": "7B20DC1B2E0D41B56EC2E5B7189733D36A808931753E7B31ADD9745DA35E2791",
+    "first_observed_sha256": "7B20DC1B2E0D41B56EC2E5B7189733D36A808931753E7B31ADD9745DA35E2791",
+    "second_observed_sha256": "7B20DC1B2E0D41B56EC2E5B7189733D36A808931753E7B31ADD9745DA35E2791",
+    "identity_matched": true,
+    "byte_for_byte_equal_between_reads": true,
+    "identity_stable_during_independent_verification": true,
+    "byte_length": 6654,
+    "encoding": "UTF-8",
+    "bom_present": false,
+    "line_endings": "LF",
+    "final_newline": "PRESENT",
+    "json_parse": "PASS",
+    "duplicate_json_keys": 0,
+    "missing_required_fields": 0,
+    "unknown_executable_fields": 0,
+    "unknown_operation_fields": 0
+  },
+  "authority_chain": {
+    "status": "PASS",
+    "constitution": {
+      "path": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+      "expected_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+      "observed_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+      "identity_matched": true,
+      "byte_length": 61071,
+      "encoding": "UTF-8",
+      "bom_present": false,
+      "line_endings": "LF"
+    },
+    "founder_approval": {
+      "path": "docs/kernel/governance/24_constitution_v2_founder_exact_verification_status_metadata_sync_approval_v1.md",
+      "expected_sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B",
+      "observed_sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B",
+      "identity_matched": true,
+      "manifest_binding_matched": true
+    },
+    "decision_packet": {
+      "path": "docs/kernel/governance/23_constitution_v2_founder_exact_verification_status_metadata_sync_decision_packet_v1.md",
+      "expected_sha256": "19D6F287418140C5188653FBF577DE6899EC6F8502685C543ED17122A8E00F73",
+      "observed_sha256": "19D6F287418140C5188653FBF577DE6899EC6F8502685C543ED17122A8E00F73",
+      "identity_matched": true
+    },
+    "machine_decision_packet": {
+      "path": "docs/kernel/governance/23a_constitution_v2_founder_exact_verification_status_metadata_sync_decision_packet_v1.json",
+      "expected_sha256": "E3D59518FE9587BA398BC6120241FA75731720327BB7BB80EA5A19E1F4D55D31",
+      "observed_sha256": "E3D59518FE9587BA398BC6120241FA75731720327BB7BB80EA5A19E1F4D55D31",
+      "identity_matched": true
+    },
+    "operations_evidence": {
+      "path": "docs/kernel/governance/22a_constitution_v2_verification_status_metadata_sync_operations_v1.json",
+      "expected_sha256": "356A8CE946DFCE45393D7B70137478F8C1B86AED5CAB0D9095D42CECBAC0E3A5",
+      "observed_sha256": "356A8CE946DFCE45393D7B70137478F8C1B86AED5CAB0D9095D42CECBAC0E3A5",
+      "identity_matched": true
+    },
+    "founder_exact_operation_bindings": "2/2",
+    "authorized_package": "SYNC-PACKAGE-AA",
+    "alternative_package_authority": "NONE"
+  },
+  "operation_inventory": {
+    "required_operations": 2,
+    "operations_represented": "2/2",
+    "operation_ids_unique": "2/2",
+    "missing_operations": 0,
+    "unexpected_operations": 0,
+    "unauthorized_executable_alternatives": 0,
+    "fallback_fields": 0,
+    "partial_execution_fields": 0,
+    "automatic_repair_fields": 0
+  },
+  "operations": [
+    {
+      "operation_id": "VERIFY-META-SYNC-OP-001",
+      "selected_option_id": "VERIFY-META-SYNC-001-A",
+      "source_range_matched": true,
+      "preimage_matched_source": true,
+      "preimage_sha256_matched": true,
+      "anchor_matched": true,
+      "anchor_occurrence_count": 1,
+      "postimage_matched_authority": true,
+      "postimage_sha256_matched": true,
+      "frozen_payload_overlap": "NONE",
+      "unauthorized_field_divergences": 0
+    },
+    {
+      "operation_id": "VERIFY-META-SYNC-OP-002",
+      "selected_option_id": "VERIFY-META-SYNC-002-A",
+      "source_range_matched": true,
+      "preimage_matched_source": true,
+      "preimage_sha256_matched": true,
+      "anchor_matched": true,
+      "anchor_occurrence_count": 1,
+      "postimage_matched_authority": true,
+      "postimage_sha256_matched": true,
+      "frozen_payload_overlap": "NONE",
+      "unauthorized_field_divergences": 0
+    }
+  ],
+  "package_and_order": {
+    "package_aa_mapping": "PASS",
+    "package_mapping_alternatives": 0,
+    "package_identity_ambiguity": 0,
+    "source_range_overlaps": 0,
+    "source_range_conflicts": 0,
+    "declared_operation_order": [
+      "VERIFY-META-SYNC-OP-002",
+      "VERIFY-META-SYNC-OP-001"
+    ],
+    "declared_operation_order_valid": true,
+    "offset_strategy": "descending original-source UTF-8 byte ranges",
+    "independent_operation_order_determinism": "PASS",
+    "declared_order_result_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "safe_order_result_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "declared_and_safe_results_byte_equal": true
+  },
+  "reconstruction": {
+    "operations_attempted": 2,
+    "operations_applied": 2,
+    "operations_skipped": 0,
+    "preimage_mismatches": 0,
+    "source_byte_length": 61071,
+    "expected_result_byte_length": 61065,
+    "observed_result_byte_length": 61065,
+    "expected_total_byte_delta": -6,
+    "observed_total_byte_delta": -6,
+    "expected_result_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "manifest_reconstruction_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "authority_reference_reconstruction_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "manifest_and_authority_reference_byte_equal": true,
+    "first_differing_byte": "NONE",
+    "four_way_expected_result_identity_agreement": "PASS"
+  },
+  "frozen_payload": {
+    "expected_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "authoritative_payload_byte_length": 877,
+    "source_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "manifest_reconstruction_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "authority_reference_reconstruction_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "source_occurrences": 1,
+    "manifest_result_occurrences": 1,
+    "authority_result_occurrences": 1,
+    "unchanged": true,
+    "operation_overlaps": 0
+  },
+  "diff_audit": {
+    "authorized_logical_operations": 2,
+    "missing_authorized_operations": 0,
+    "unauthorized_logical_operations": 0,
+    "unauthorized_changed_byte_ranges": 0,
+    "unauthorized_whitespace_changes": 0,
+    "unauthorized_unicode_changes": 0,
+    "unauthorized_line_ending_changes": 0,
+    "renderer": "Python difflib.unified_diff, three context lines",
+    "rendered_diff_hunks": 1,
+    "unauthorized_rendered_diff_hunks": 0
+  },
+  "atomicity": {
+    "atomic_execution_required": true,
+    "subset_execution_permitted": false,
+    "failure_behavior": "APPLY_ZERO_OPERATIONS",
+    "partial_execution_permitted": false,
+    "automatic_mismatch_repair_permitted": false,
+    "contract": "PASS"
+  },
+  "governance_boundaries": {
+    "constitutional_meaning_changed": false,
+    "normative_force_changed": false,
+    "constitutional_protection_removed": false,
+    "normative_obligation_introduced": false,
+    "new_defined_term_introduced": false,
+    "implicit_alias_introduced": false,
+    "structural_findings_reopened": false,
+    "issue_resolution_implied": false,
+    "issue_closure_implied": false,
+    "ratification_implied": false,
+    "official_status_implied": false,
+    "constitution_v1_supersession_implied": false,
+    "candidate_posture_preserved": true
+  },
+  "compiler_comparison": {
+    "performed_after_independent_calculation": true,
+    "manifest_identity_claim": "CONFIRMED",
+    "source_identity_claim": "CONFIRMED",
+    "approval_identity_claim": "CONFIRMED",
+    "operation_count_claim": "CONFIRMED",
+    "selected_options_claim": "CONFIRMED",
+    "result_identity_claim": "CONFIRMED",
+    "frozen_payload_claim": "CONFIRMED",
+    "unauthorized_operation_claim": "CONFIRMED",
+    "governance_boundary_claims": "CONFIRMED"
+  },
+  "artifact_mutations": {
+    "constitution_v1": false,
+    "constitution_v2": false,
+    "amendment": false,
+    "founder_approval": false,
+    "decision_packet": false,
+    "manifest": false,
+    "issue_artifacts": false,
+    "application_code": false
+  },
+  "result": {
+    "manifest_independently_verified": true,
+    "execution_gate": "OPEN",
+    "atomic_synchronization_authorized": "AUTHORIZED_FOR_SEPARATE_EXECUTION_TASK",
+    "mutation_performed": false,
+    "recommended_next_task": "Moon Constitution v2 Verification-Status Metadata Synchronization Atomic Execution v1",
+    "verdict": "PASS — IMMUTABLE METADATA SYNCHRONIZATION MANIFEST INDEPENDENTLY VERIFIED"
+  },
+  "artifact_identity_publication": "Raw final Markdown and JSON SHA-256 identities are published in 26b after atomic materialization."
+}

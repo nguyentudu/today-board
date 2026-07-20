@@ -1,0 +1,42 @@
+{
+  "task_id": 42,
+  "artifact": "PLANNED_AND_OBSERVED_CANONICAL_MUTATION_INVENTORY",
+  "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+  "pre_task_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "pre_task_byte_length": 23722,
+  "authority_established": false,
+  "planned_mutations": [],
+  "observed_mutations": [],
+  "candidate_but_unauthorized_fields": [
+    {
+      "record_scope": "CONST-ISSUE-001 through CONST-ISSUE-003",
+      "field_class": "governance effectiveness or persisted verification",
+      "canonical_field": "ABSENT",
+      "reason_not_planned": "No field exists and schema extension is prohibited."
+    },
+    {
+      "record_scope": "CONST-ISSUE-001 through CONST-ISSUE-003 detailed records",
+      "field_class": "Founder decision and resolution evidence",
+      "canonical_field": "Founder decision / Resolution evidence",
+      "reason_not_planned": "Task 31 authority is logical-only; no Task 42 exact-byte package, wording approval, or execution authority exists."
+    },
+    {
+      "record_scope": "Founder Triage table",
+      "field_class": "decision, rationale, date",
+      "canonical_field": "Founder decision / Decision rationale / Decision date",
+      "reason_not_planned": "No exact Task 42 authority or postimage exists."
+    }
+  ],
+  "counts": {
+    "planned": 0,
+    "observed": 0,
+    "authorized": 0,
+    "missing": 0,
+    "unauthorized": 0
+  },
+  "post_task_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "post_task_byte_length": 23722,
+  "canonical_register_changed": false,
+  "rollback_required": false,
+  "verdict": "ZERO_MUTATIONS_PLANNED_OR_OBSERVED"
+}

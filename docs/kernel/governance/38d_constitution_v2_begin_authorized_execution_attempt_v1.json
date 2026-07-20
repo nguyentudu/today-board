@@ -1,0 +1,58 @@
+{
+  "task": 38,
+  "artifact": "BEGIN_AUTHORIZED_EXECUTION_ATTEMPT",
+  "creation_order": 2,
+  "event": "BEGIN_AUTHORIZED_EXECUTION_ATTEMPT",
+  "recorded_at": "2026-07-20T00:19:08+07:00",
+  "attempt_sequence": 1,
+  "gate_payload_sha256": "AE7EBC26BBFDACB25ED197F4E82223608867319DD43A285CA6645E9E427FAC34",
+  "task_37_artifacts": {
+    "37_constitution_v2_founder_execution_gate_authorization_for_verified_issue_status_synchronization_manifest_v1.md": "B63175083B29B76549DCA5A9008B75811211D0569872B0C798746ECC89390752",
+    "37a_constitution_v2_founder_execution_gate_authorization_for_verified_issue_status_synchronization_manifest_v1.json": "E5F1D8942A2FEA5312A2EE3CB651D8692421DB556D74932A2292F32E987E9429",
+    "37b_constitution_v2_founder_execution_gate_authorization_matrix_v1.md": "A6E9911F0BCC6EFE36E210756F03DBD1A32F753DCE8850E545E85B4F72B447E0",
+    "37c_constitution_v2_founder_execution_gate_authorization_payload_v1.json": "968426137C0EBA16E01D48B6CFA3DF504C7072BB4E6029946DF397FD5C6E899B"
+  },
+  "task_36_artifacts": {
+    "36_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_v1.md": "CCDD8C2A64EE90C16ED79EF7FA066C358D71F12F7D3C06D6570AB16596A5D772",
+    "36a_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_v1.json": "290DCEB18EF2D9B0640F06307F6A29A5575C7D02BA35E231D45CC8A46829663C",
+    "36b_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_matrix_v1.md": "05E9C175A1A3FBCCDE1FF4587472EA1131DE6281BBEF3C0B472CC7612542F743",
+    "36c_constitution_v2_independent_candidate_reconstruction_evidence_v1.json": "2E143891CF07E446AC71E11D9ED064361DBB67FC4F4FEF1F41B0DBF18795530E"
+  },
+  "task_35_artifacts": {
+    "35_constitution_v2_immutable_issue_status_synchronization_execution_manifest_v1.md": "A60BE91726696401251586420046571D0B370E9DCFFE4B7CDBD4F1551E350B2F",
+    "35a_constitution_v2_immutable_issue_status_synchronization_execution_manifest_v1.json": "57601D53BFF753C20B6DAEC2982B1E0BA7D13A1A8BBDC99F7499C072314534D4",
+    "35b_constitution_v2_immutable_issue_status_synchronization_execution_manifest_matrix_v1.md": "652EA3032B6D3F474FCFFFD42E3D18ED28DBCEFA1799D777FCDBD6B9D0496E84",
+    "35c_constitution_v2_immutable_issue_status_synchronization_execution_manifest_payload_v1.json": "3BDB5A429792896CADB50D43A10AD0961DBD060CE782F0A64811B5B9DE5D08B4"
+  },
+  "task_34_artifacts": {
+    "34_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.md": "C2082404492C4CD040DA500A5918DCE2DCA7A1875EF1D51A8B403759916219DE",
+    "34a_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.json": "2E5E31A7269AEBC4D93555F230B3AA7F5820C989D2D0290287DF8CD933384FAB",
+    "34b_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_matrix_v1.md": "49A9835DB313B625117200BEE186597E928BB5A3AFF350ECB4FE301980E66A61"
+  },
+  "task_33_artifacts": {
+    "33_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.md": "F9A01E4083183BA91812A17FE0671452407733E94DC47E2A4C9656A2FB77F61D",
+    "33a_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.json": "55AAD7598BD661AB0480423634B1AD51948AAE78D418C9425ECD02DFAD010C70",
+    "33b_constitution_v2_exact_issue_status_synchronization_operation_matrix_v1.md": "AADE4C5C0F2F3F43D16594A9CEDDBB6D4AFAA27695027085CF28A983BBF991D4",
+    "33c_constitution_v2_exact_issue_status_synchronization_frozen_approval_payload_v1.json": "1E711922212FB0AA824E00C080A156827BB6DB55E946BF0EB0A53786EE8C9068"
+  },
+  "manifest_payload_sha256": "D65395FB7185F7091C158E11B9FFE969AD373DAA70F8D2F41388194E1D46D0A1",
+  "canonical_source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+  "canonical_source_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+  "canonical_source_byte_length": 23764,
+  "candidate_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "candidate_byte_length": 23722,
+  "operation_count": 6,
+  "gate_transition": {
+    "from": "RECORDED_OPEN",
+    "to": "BEGIN_AUTHORIZED_EXECUTION_ATTEMPT"
+  },
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.14.4",
+    "pid": 16984,
+    "atomic_primitive": "MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH)"
+  },
+  "attempt_begun": true,
+  "authorization_consumed": false,
+  "canonical_modified": false
+}

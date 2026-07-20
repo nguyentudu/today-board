@@ -1,0 +1,67 @@
+{
+  "task": 41,
+  "title": "Moon Constitution v2 Independent Persisted-Result Verification Recovery Using Qualified Historical Preimage Evidence v1",
+  "primary_outcome": "VERIFICATION_SATISFIED",
+  "historical_evidence": {
+    "git_blob_id": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "expected_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "actual_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "expected_byte_length": 23764,
+    "actual_byte_length": 23764,
+    "git_object_identity_recomputed": true,
+    "identity_exact": true,
+    "preserved_export_exact": true
+  },
+  "pre_execution_provenance": {
+    "tree_id": "88bf090fdff14f630ae1405e9a92fd9c0ed1d821",
+    "path_binding_verified": true,
+    "task_33_37_presence_verified": true,
+    "task_33_37_byte_identity_verified": true,
+    "task_33_37_artifacts_verified": 19,
+    "task_38_absence_verified": true,
+    "replace_or_alternate_redirection_detected": false,
+    "non_circular": true
+  },
+  "persisted_result": {
+    "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length": 23722,
+    "identity_as_task_38_result_verified": true,
+    "post_task_38_drift_detected": false
+  },
+  "transition_verification": {
+    "required_mutations": 6,
+    "observed_mutations": 6,
+    "authorized_mutations_matched": 6,
+    "missing_required_mutations": 0,
+    "unauthorized_mutations": 0,
+    "ambiguous_mutations": 0,
+    "unexplained_byte_ranges": 0,
+    "byte_length_delta": -42,
+    "byte_level_exactness_required": true,
+    "independently_constructed_result_equal_to_persisted_result": true,
+    "verification_satisfied": true
+  },
+  "task_39_blocker": {
+    "historical_preimage_unavailability_resolved": true,
+    "exact_canonical_delta_proof_completed": true,
+    "verification_condition_now_satisfied": true,
+    "task_39_artifacts_or_verdict_modified": false
+  },
+  "scope_limitation": {
+    "pre_execution_tree_used_as_conclusive_whole_worktree_baseline": false,
+    "reason": "The recovered tree is conclusive for the canonical path and authority chain but is not a complete attribution mechanism for unrelated worktree history.",
+    "effect_on_exact_canonical_transition_verification": "NONE"
+  },
+  "governance_state": {
+    "task_41_has_governance_state_mutation_authority": false,
+    "canonical_register_modified": false,
+    "gate": "CLOSED",
+    "retry_authorized": false,
+    "governance_effective_resolved_issues": "0/3",
+    "closure_authorized": false
+  },
+  "follow_up_required": true,
+  "recommended_next_task": "Task 42 — Moon Constitution v2 Governance-Effective Issue-Status Verification-State Synchronization Authority Decision v1",
+  "verdict": "PASS — INDEPENDENT PERSISTED-RESULT VERIFICATION SATISFIED USING EXACT PRE-EXECUTION HISTORICAL EVIDENCE; TASK 39 BLOCKER RESOLVED; NO EXECUTION RETRY PERFORMED; GOVERNANCE STATE CHANGED ONLY IF SEPARATELY AUTHORIZED"
+}

@@ -1,0 +1,421 @@
+{
+  "frozen_approval_payload": {
+    "payload_id": "CONST-V2-ISSUE-STATUS-SYNC-FROZEN-APPROVAL-PAYLOAD-001",
+    "version": "v1",
+    "task_number": 33,
+    "authority_inputs": [
+      {
+        "path": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+        "required_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+        "observed_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+        "match": true
+      },
+      {
+        "path": "docs/kernel/governance/31_constitution_v2_founder_issue_resolution_authority_decision_v1.md",
+        "required_sha256": "F67029620D7C9CAF93E1098AFCF10C7063E631C271A86DA07688A2C683DE7B37",
+        "observed_sha256": "F67029620D7C9CAF93E1098AFCF10C7063E631C271A86DA07688A2C683DE7B37",
+        "match": true
+      },
+      {
+        "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+        "required_sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8",
+        "observed_sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8",
+        "match": true
+      },
+      {
+        "path": "docs/kernel/governance/31b_constitution_v2_founder_issue_resolution_decision_matrix_v1.md",
+        "required_sha256": "3874D1BD6DD539AACA61EC7B8AC71205BCE7487941137FABC5FE5860A6770DCE",
+        "observed_sha256": "3874D1BD6DD539AACA61EC7B8AC71205BCE7487941137FABC5FE5860A6770DCE",
+        "match": true
+      },
+      {
+        "path": "docs/kernel/governance/32_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.md",
+        "required_sha256": "2A5E81DBF34079DCDD03CCDC413CE68F49AA6E434DF8E5FACF507A91F98C087D",
+        "observed_sha256": "2A5E81DBF34079DCDD03CCDC413CE68F49AA6E434DF8E5FACF507A91F98C087D",
+        "match": true
+      },
+      {
+        "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+        "required_sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A",
+        "observed_sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A",
+        "match": true
+      },
+      {
+        "path": "docs/kernel/governance/32b_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_matrix_v1.md",
+        "required_sha256": "DAD150765A3208F09F931F484F8D51DE13A63941632E0867C2B1F5EC929FA711",
+        "observed_sha256": "DAD150765A3208F09F931F484F8D51DE13A63941632E0867C2B1F5EC929FA711",
+        "match": true
+      },
+      {
+        "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "required_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "observed_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "match": true
+      }
+    ],
+    "canonical_preimage": {
+      "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+      "byte_length": 23764,
+      "encoding": "UTF-8",
+      "bom": false,
+      "crlf_count": 0,
+      "lf_count": 216,
+      "final_newline": true
+    },
+    "package": {
+      "package_id": "ISSUE-STATUS-SYNC-PACKAGE-A",
+      "operation_count": 6,
+      "operation_order": [
+        "ISSUE-SYNC-OP-006",
+        "ISSUE-SYNC-OP-004",
+        "ISSUE-SYNC-OP-002",
+        "ISSUE-SYNC-OP-005",
+        "ISSUE-SYNC-OP-003",
+        "ISSUE-SYNC-OP-001"
+      ],
+      "atomicity": "ALL-OR-ZERO",
+      "subset_execution_authorized": false,
+      "partial_representation_update_authorized": false
+    },
+    "operations": [
+      {
+        "operation_id": "ISSUE-SYNC-OP-001",
+        "package_id": "ISSUE-STATUS-SYNC-PACKAGE-A",
+        "issue_id": "CONST-ISSUE-001",
+        "representation": "overview",
+        "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_file_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "deterministic_location": "canonical overview row for CONST-ISSUE-001; current-status token on source line 59",
+        "source_context": "| CONST-ISSUE-001 | Situation qualification boundary | Definition ambiguity | Major | TRIAGE REQUIRED | Sections 4, 7.1, 9, and 21 | Founder triage; if accepted, clarify the minimum constitutional qualification and defer structural tests | Amendment 001, Change A |",
+        "source_context_sha256": "BA5A61C5B09A9EBF7BAB6935A8B9AC463113FD3BC666C5BFB2FC200EBD1412C7",
+        "source_line_number": 59,
+        "source_byte_start": 4368,
+        "source_byte_end_exclusive": 4383,
+        "source_byte_length": 15,
+        "source_bytes_hex": "545249414745205245515549524544",
+        "source_bytes_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "source_token_global_occurrence_count": 7,
+        "source_token_bounded_occurrence_count": 1,
+        "replacement_bytes_hex": "5245534F4C564544",
+        "replacement_bytes_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "replacement_byte_length": 8,
+        "expected_byte_delta": -7,
+        "anchor_before_utf8": "| CONST-ISSUE-001 | Situation qualification boundary | Definition ambiguity | Major | ",
+        "anchor_before_sha256": "7DF43630A42AA85FF107CDF47F1E378D32A010802AB7D5D85CF6E505D38CD13E",
+        "anchor_after_utf8": " | Sections 4, 7.1, 9, and 21 | Founder triage; if accepted, clarify the minimum constitutional qualification and defer structural tests | Amendment 001, Change A |\n",
+        "anchor_after_sha256": "7F60A7E8CCAD05009E2907E6716AB402B83C2C8A36E0ED7D746D0740D74535B7",
+        "allowed_changed_source_byte_range": [
+          4368,
+          4383
+        ],
+        "prohibited_overlap": "all bytes outside allowed_changed_source_byte_range",
+        "precondition": "exact source bytes and source file SHA-256 must match",
+        "authority_references": [
+          {
+            "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+            "sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8"
+          },
+          {
+            "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+            "sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A"
+          }
+        ],
+        "authorized": true,
+        "candidate_byte_start": 4368,
+        "candidate_byte_end_exclusive": 4376
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-002",
+        "package_id": "ISSUE-STATUS-SYNC-PACKAGE-A",
+        "issue_id": "CONST-ISSUE-001",
+        "representation": "detailed_record",
+        "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_file_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "deterministic_location": "unique detailed record headed by ### CONST-ISSUE-001 -; current-status token on source line 86",
+        "source_context": "| Current status | TRIAGE REQUIRED |",
+        "source_context_sha256": "69EC4EA81B1DCD2377A73BC3DC5E1362E26AFD5C6B3C6D45BDCDB1FD15D73EE8",
+        "source_line_number": 86,
+        "source_byte_start": 8428,
+        "source_byte_end_exclusive": 8443,
+        "source_byte_length": 15,
+        "source_bytes_hex": "545249414745205245515549524544",
+        "source_bytes_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "source_token_global_occurrence_count": 7,
+        "source_token_bounded_occurrence_count": 1,
+        "replacement_bytes_hex": "5245534F4C564544",
+        "replacement_bytes_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "replacement_byte_length": 8,
+        "expected_byte_delta": -7,
+        "anchor_before_utf8": "| Current status | ",
+        "anchor_before_sha256": "BE40374E671D2CFA56A9552FEC5BADD174F2E72DEB5DAAEC8E902275545EF428",
+        "anchor_after_utf8": " |\n",
+        "anchor_after_sha256": "553CFB51BDEDCB3983CE8CC805875AB9EECE598DCA2C4E076EC1B2D6743DE052",
+        "allowed_changed_source_byte_range": [
+          8428,
+          8443
+        ],
+        "prohibited_overlap": "all bytes outside allowed_changed_source_byte_range",
+        "precondition": "exact source bytes and source file SHA-256 must match",
+        "authority_references": [
+          {
+            "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+            "sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8"
+          },
+          {
+            "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+            "sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A"
+          }
+        ],
+        "authorized": true,
+        "candidate_byte_start": 8407,
+        "candidate_byte_end_exclusive": 8415
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-003",
+        "package_id": "ISSUE-STATUS-SYNC-PACKAGE-A",
+        "issue_id": "CONST-ISSUE-002",
+        "representation": "overview",
+        "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_file_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "deterministic_location": "canonical overview row for CONST-ISSUE-002; current-status token on source line 60",
+        "source_context": "| CONST-ISSUE-002 | Intentional inactivity boundary | Lifecycle ambiguity | Major | TRIAGE REQUIRED | Sections 3, 7.3, 7.7, 9, 11, 15, and 19 | Founder triage; if accepted, distinguish Outcome from Waiting, Attention, pause, and chosen discontinuity | Amendment 001, Change B |",
+        "source_context_sha256": "249A4B001315A130D58BEB12508C29A57974135EA86C6EA91344D2DB373C8658",
+        "source_line_number": 60,
+        "source_byte_start": 4632,
+        "source_byte_end_exclusive": 4647,
+        "source_byte_length": 15,
+        "source_bytes_hex": "545249414745205245515549524544",
+        "source_bytes_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "source_token_global_occurrence_count": 7,
+        "source_token_bounded_occurrence_count": 1,
+        "replacement_bytes_hex": "5245534F4C564544",
+        "replacement_bytes_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "replacement_byte_length": 8,
+        "expected_byte_delta": -7,
+        "anchor_before_utf8": "| CONST-ISSUE-002 | Intentional inactivity boundary | Lifecycle ambiguity | Major | ",
+        "anchor_before_sha256": "EE4ABE797C1B1559129C2298ADB5BA08BC4D25D996CE76BB0BA05186541D29F9",
+        "anchor_after_utf8": " | Sections 3, 7.3, 7.7, 9, 11, 15, and 19 | Founder triage; if accepted, distinguish Outcome from Waiting, Attention, pause, and chosen discontinuity | Amendment 001, Change B |\n",
+        "anchor_after_sha256": "DB3F0DE996181888CE857E86E7E76FB73B18BBDD89AB6DC3F56BFA4C02070D96",
+        "allowed_changed_source_byte_range": [
+          4632,
+          4647
+        ],
+        "prohibited_overlap": "all bytes outside allowed_changed_source_byte_range",
+        "precondition": "exact source bytes and source file SHA-256 must match",
+        "authority_references": [
+          {
+            "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+            "sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8"
+          },
+          {
+            "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+            "sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A"
+          }
+        ],
+        "authorized": true,
+        "candidate_byte_start": 4625,
+        "candidate_byte_end_exclusive": 4633
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-004",
+        "package_id": "ISSUE-STATUS-SYNC-PACKAGE-A",
+        "issue_id": "CONST-ISSUE-002",
+        "representation": "detailed_record",
+        "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_file_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "deterministic_location": "unique detailed record headed by ### CONST-ISSUE-002 -; current-status token on source line 114",
+        "source_context": "| Current status | TRIAGE REQUIRED |",
+        "source_context_sha256": "69EC4EA81B1DCD2377A73BC3DC5E1362E26AFD5C6B3C6D45BDCDB1FD15D73EE8",
+        "source_line_number": 114,
+        "source_byte_start": 13050,
+        "source_byte_end_exclusive": 13065,
+        "source_byte_length": 15,
+        "source_bytes_hex": "545249414745205245515549524544",
+        "source_bytes_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "source_token_global_occurrence_count": 7,
+        "source_token_bounded_occurrence_count": 1,
+        "replacement_bytes_hex": "5245534F4C564544",
+        "replacement_bytes_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "replacement_byte_length": 8,
+        "expected_byte_delta": -7,
+        "anchor_before_utf8": "| Current status | ",
+        "anchor_before_sha256": "BE40374E671D2CFA56A9552FEC5BADD174F2E72DEB5DAAEC8E902275545EF428",
+        "anchor_after_utf8": " |\n",
+        "anchor_after_sha256": "553CFB51BDEDCB3983CE8CC805875AB9EECE598DCA2C4E076EC1B2D6743DE052",
+        "allowed_changed_source_byte_range": [
+          13050,
+          13065
+        ],
+        "prohibited_overlap": "all bytes outside allowed_changed_source_byte_range",
+        "precondition": "exact source bytes and source file SHA-256 must match",
+        "authority_references": [
+          {
+            "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+            "sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8"
+          },
+          {
+            "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+            "sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A"
+          }
+        ],
+        "authorized": true,
+        "candidate_byte_start": 13022,
+        "candidate_byte_end_exclusive": 13030
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-005",
+        "package_id": "ISSUE-STATUS-SYNC-PACKAGE-A",
+        "issue_id": "CONST-ISSUE-003",
+        "representation": "overview",
+        "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_file_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "deterministic_location": "canonical overview row for CONST-ISSUE-003; current-status token on source line 61",
+        "source_context": "| CONST-ISSUE-003 | Authorized discontinuity precedence | Trust boundary ambiguity | Critical | TRIAGE REQUIRED | Sections 3, 9, 11, 12, 15, and 19 | Founder triage; if accepted, establish precedence between authorized discontinuity and identity/preservation duties | Amendment 001, Change C |",
+        "source_context_sha256": "CB459E6AB2DDC9EEAEF897E5B73602A5504E9D86ECC4C4C449DB5E811676259E",
+        "source_line_number": 61,
+        "source_byte_start": 4922,
+        "source_byte_end_exclusive": 4937,
+        "source_byte_length": 15,
+        "source_bytes_hex": "545249414745205245515549524544",
+        "source_bytes_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "source_token_global_occurrence_count": 7,
+        "source_token_bounded_occurrence_count": 1,
+        "replacement_bytes_hex": "5245534F4C564544",
+        "replacement_bytes_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "replacement_byte_length": 8,
+        "expected_byte_delta": -7,
+        "anchor_before_utf8": "| CONST-ISSUE-003 | Authorized discontinuity precedence | Trust boundary ambiguity | Critical | ",
+        "anchor_before_sha256": "641D5E7679D691DCDE4862BD294A444BDB3CCAE38EEA433F64FF13EC8D201D56",
+        "anchor_after_utf8": " | Sections 3, 9, 11, 12, 15, and 19 | Founder triage; if accepted, establish precedence between authorized discontinuity and identity/preservation duties | Amendment 001, Change C |\n",
+        "anchor_after_sha256": "6FB67EA074AEE2EA302EAED5286DA364A3B0ED0D5DB7699A9BFE1FD1C2C3AC06",
+        "allowed_changed_source_byte_range": [
+          4922,
+          4937
+        ],
+        "prohibited_overlap": "all bytes outside allowed_changed_source_byte_range",
+        "precondition": "exact source bytes and source file SHA-256 must match",
+        "authority_references": [
+          {
+            "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+            "sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8"
+          },
+          {
+            "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+            "sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A"
+          }
+        ],
+        "authorized": true,
+        "candidate_byte_start": 4908,
+        "candidate_byte_end_exclusive": 4916
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-006",
+        "package_id": "ISSUE-STATUS-SYNC-PACKAGE-A",
+        "issue_id": "CONST-ISSUE-003",
+        "representation": "detailed_record",
+        "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_file_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "deterministic_location": "unique detailed record headed by ### CONST-ISSUE-003 -; current-status token on source line 144",
+        "source_context": "| Current status | TRIAGE REQUIRED |",
+        "source_context_sha256": "69EC4EA81B1DCD2377A73BC3DC5E1362E26AFD5C6B3C6D45BDCDB1FD15D73EE8",
+        "source_line_number": 144,
+        "source_byte_start": 18144,
+        "source_byte_end_exclusive": 18159,
+        "source_byte_length": 15,
+        "source_bytes_hex": "545249414745205245515549524544",
+        "source_bytes_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "source_token_global_occurrence_count": 7,
+        "source_token_bounded_occurrence_count": 1,
+        "replacement_bytes_hex": "5245534F4C564544",
+        "replacement_bytes_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "replacement_byte_length": 8,
+        "expected_byte_delta": -7,
+        "anchor_before_utf8": "| Current status | ",
+        "anchor_before_sha256": "BE40374E671D2CFA56A9552FEC5BADD174F2E72DEB5DAAEC8E902275545EF428",
+        "anchor_after_utf8": " |\n",
+        "anchor_after_sha256": "553CFB51BDEDCB3983CE8CC805875AB9EECE598DCA2C4E076EC1B2D6743DE052",
+        "allowed_changed_source_byte_range": [
+          18144,
+          18159
+        ],
+        "prohibited_overlap": "all bytes outside allowed_changed_source_byte_range",
+        "precondition": "exact source bytes and source file SHA-256 must match",
+        "authority_references": [
+          {
+            "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+            "sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8"
+          },
+          {
+            "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+            "sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A"
+          }
+        ],
+        "authorized": true,
+        "candidate_byte_start": 18109,
+        "candidate_byte_end_exclusive": 18117
+      }
+    ],
+    "candidate": {
+      "storage": "base64 embedded in frozen approval payload",
+      "bytes_base64": "IyBNb29uIENvbnN0aXR1dGlvbiBJc3N1ZXMgdjEKCiMjIDEuIERvY3VtZW50IENvbnRyb2wKCnwgRmllbGQgfCBWYWx1ZSB8CnwgLS0tIHwgLS0tIHwKfCBUaXRsZSB8IE1vb24gQ29uc3RpdHV0aW9uIElzc3VlcyB2MSB8CnwgRG9jdW1lbnQgSUQgfCBNT09OLUNPTlNULUlTU1VFUy0wMDEgfAp8IFZlcnNpb24gfCAxLjAgfAp8IFN0YXR1cyB8IERSQUZUIEZPUiBGT1VOREVSIFRSSUFHRSB8CnwgUGhhc2UgfCBQaGFzZSAwIC0gQ29uc3RpdHV0aW9uYWwgRm91bmRhdGlvbiB8CnwgU291cmNlIHJldmlldyB8IGBkb2NzL2tlcm5lbC9yZXZpZXdzLzAxX2NvbnN0aXR1dGlvbl9yYXRpZmljYXRpb25fcmV2aWV3X3YxLm1kYCB8CnwgQ29uc3RpdHV0aW9uIHZlcnNpb24gcmV2aWV3ZWQgfCBNb29uIENvbnRpbnVpdHkgS2VybmVsIENvbnN0aXR1dGlvbiB2MSB8CnwgQ29uc3RpdHV0aW9uIHNvdXJjZSB8IGBkb2NzL2tlcm5lbC8wMV9jb250aW51aXR5X2tlcm5lbF9jb25zdGl0dXRpb25fdjEubWRgIHwKfCBPd25lciB8IE1vb24gQXJjaGl0ZWN0dXJlIHwKfCBEZWNpc2lvbiBhdXRob3JpdHkgfCBGb3VuZGVyIHwKfCBDcmVhdGVkIGRhdGUgfCAyMDI2LTA3LTE1IHwKfCBMYXN0IHVwZGF0ZWQgZGF0ZSB8IDIwMjYtMDctMTUgfAoKIyMgMi4gUHVycG9zZQoKVGhpcyByZWdpc3RlciByZWNvcmRzIGNvbnN0aXR1dGlvbmFsIGFtYmlndWl0aWVzIGFuZCBwb3RlbnRpYWwgdGVuc2lvbnMgaWRlbnRpZmllZCBieSBpbmRlcGVuZGVudCByZXZpZXcuIEl0IHByZXNlcnZlcyB0aGUgcmVhc29uaW5nIGJlaGluZCBmdXR1cmUgYW1lbmRtZW50cywgcHJldmVudHMgc2lsZW50IGNvbnN0aXR1dGlvbmFsIGVkaXRzLCBzZXBhcmF0ZXMgaXNzdWUgaWRlbnRpZmljYXRpb24gZnJvbSBpc3N1ZSByZXNvbHV0aW9uLCBhbmQgcHJvdmlkZXMgdHJhY2VhYmlsaXR5IGZyb20gcmV2aWV3IGZpbmRpbmcgdGhyb3VnaCBhbWVuZG1lbnQgYW5kIEZvdW5kZXIgcmF0aWZpY2F0aW9uLgoKKipUaGlzIGRvY3VtZW50IGRvZXMgbm90IGFtZW5kIHRoZSBDb25zdGl0dXRpb24uKiogSXQgZG9lcyBub3QgcmF0aWZ5IHRoZSBDb25zdGl0dXRpb24sIGNyZWF0ZSBBbWVuZG1lbnQgMDAxLCBvciBzZXR0bGUgZG93bnN0cmVhbSBMYW5ndWFnZSwgT250b2xvZ3ksIENhbm9uaWNhbCBNb2RlbCwgTGlmZWN5Y2xlLCBQcmltaXRpdmUgU3BlY2lmaWNhdGlvbiwgQWNjZXB0YW5jZSBTcGVjaWZpY2F0aW9uLCBhcmNoaXRlY3R1cmUsIG9yIGltcGxlbWVudGF0aW9uIGRldGFpbHMuCgpUaGUgc291cmNlIHJldmlldyBmb3VuZCB0aGUgQ29uc3RpdHV0aW9uIGNvbmNlcHR1YWxseSB2aWFibGUgYW5kIHJlY29tbWVuZGVkICoqQUNDRVBUIFdJVEggQU1FTkRNRU5UUyoqLiBJdCBmb3VuZCB0aHJlZSBhbWVuZG1lbnQtcmVxdWlyaW5nIGFtYmlndWl0aWVzLCB6ZXJvIGFjdHVhbCBpbnZhcmlhbnQgY29uZmxpY3RzLCBhbmQgdHdvIG1ham9yIHBvdGVudGlhbCB0ZW5zaW9ucy4gYEJPUkRFUkxJTkVgIHRoZXJlZm9yZSBtZWFucyB0aGF0IHRhcmdldGVkIGNsYXJpZmljYXRpb24gaXMgcmVxdWlyZWQgYmVmb3JlIGZpbmFsIHJhdGlmaWNhdGlvbjsgaXQgZG9lcyBub3QgbWVhbiB0aGF0IHRoZSBjb25zdGl0dXRpb25hbCBzdHJ1Y3R1cmUgaGFzIGJlZW4gcmVqZWN0ZWQuCgojIyAzLiBTdGF0dXMgTW9kZWwKCnwgU3RhdHVzIHwgTWVhbmluZyB8CnwgLS0tIHwgLS0tIHwKfCBJREVOVElGSUVEIHwgQSByZXZpZXdlciBoYXMgcmVjb3JkZWQgZXZpZGVuY2Ugb2YgYSBjb25zdGl0dXRpb25hbCBxdWVzdGlvbi4gTm8gZGVjaXNpb24gdG8gYWN0IGhhcyBiZWVuIG1hZGUuIHwKfCBUUklBR0UgUkVRVUlSRUQgfCBUaGUgaXNzdWUgaXMgc3VmZmljaWVudGx5IHN1cHBvcnRlZCBmb3IgRm91bmRlciBkaXNwb3NpdGlvbiwgYnV0IGNvbnN0aXR1dGlvbmFsIGFjdGlvbiBoYXMgbm90IGJlZW4gYXV0aG9yaXplZC4gfAp8IEFDQ0VQVEVEIHwgVGhlIEZvdW5kZXIgaGFzIGRlY2lkZWQgdGhhdCB0aGUgaXNzdWUgcmVxdWlyZXMgY29uc3RpdHV0aW9uYWwgYWN0aW9uIG9yIGFuIGV4cGxpY2l0IGNvbnN0aXR1dGlvbmFsIGRlZmVycmFsLiB8CnwgUkVKRUNURUQgfCBUaGUgRm91bmRlciBoYXMgZGVjaWRlZCB0aGF0IHRoZSBjbGFpbWVkIGFtYmlndWl0eSBvciB0ZW5zaW9uIGRvZXMgbm90IHJlcXVpcmUgYWN0aW9uLiB8CnwgREVGRVJSRUQgfCBUaGUgRm91bmRlciBoYXMgcmV0YWluZWQgdGhlIGlzc3VlIGZvciBsYXRlciBkZWNpc2lvbiB3aXRob3V0IGF1dGhvcml6aW5nIGEgY3VycmVudCBhbWVuZG1lbnQuIHwKfCBSRVNPTFZFRCB8IEEgcmF0aWZpZWQgYW1lbmRtZW50IG9yIGV4cGxpY2l0IGRpc3Bvc2l0aW9uIGhhcyBzdXBwbGllZCB0aGUgYWNjZXB0ZWQgcmVzb2x1dGlvbi4gfAp8IENMT1NFRCB8IFRoZSByZXNvbHV0aW9uIGhhcyBiZWVuIGluY29ycG9yYXRlZCBpbnRvIHRoZSBhdXRob3JpdGF0aXZlIENvbnN0aXR1dGlvbiwgb3IgdGhlIHJlamVjdGVkL2RlZmVycmVkIGRpc3Bvc2l0aW9uIGhhcyBiZWVuIGZvcm1hbGx5IHJlY29yZGVkIHdpdGggbm8gZnVydGhlciBjdXJyZW50IGFjdGlvbi4gfAoKSWRlbnRpZmljYXRpb24gZG9lcyBub3QgYXV0aG9yaXplIGFtZW5kbWVudC4gQWNjZXB0YW5jZSBhdXRob3JpemVzIGEgcHJvcG9zYWwsIG5vdCBhIGNvbnN0aXR1dGlvbmFsIGNoYW5nZS4gQW4gYW1lbmRtZW50IHByb3Bvc2VzIHRoZSBtaW5pbWFsIHJlc29sdXRpb24uIEZvdW5kZXIgcmF0aWZpY2F0aW9uIGNvbmZpcm1zIHdoZXRoZXIgdGhhdCByZXNvbHV0aW9uIGlzIHZhbGlkLiBDbG9zdXJlIG9jY3VycyBvbmx5IGFmdGVyIHRoZSBhdXRob3JpdGF0aXZlIGNvbnN0aXR1dGlvbmFsIHJlY29yZCBvciBmb3JtYWwgZGlzcG9zaXRpb24gcmVmbGVjdHMgdGhlIGRlY2lzaW9uLgoKIyMgNC4gSW50ZXJwcmV0YXRpb24gb2YgUmV2aWV3IEV2aWRlbmNlCgpObyBwcm92ZW4gY29uc3RpdHV0aW9uYWwgY29udHJhZGljdGlvbiB3YXMgZm91bmQuIFRoZSB0d28gbWFqb3IgcG90ZW50aWFsIHRlbnNpb25zIGFyaXNlIHVuZGVyIHNwZWNpZmljIGNvbmRpdGlvbnMgYW5kIGFyZSBtYXBwZWQgaW50byB0aGUgdGhyZWUgaXNzdWVzIGJlbG93OgoKfCBSZXZpZXcgZmluZGluZyB8IENsYXNzaWZpY2F0aW9uIGluIHRoaXMgcmVnaXN0ZXIgfCBNYXBwaW5nIHwKfCAtLS0gfCAtLS0gfCAtLS0gfAp8IEZyZXNoIFN0YXJ0IHZlcnN1cyBTaXR1YXRpb24gaWRlbnRpdHkgfCBNYWpvciBwb3RlbnRpYWwgdGVuc2lvbiwgbm90IGFjdHVhbCBjb25mbGljdCB8IGBDT05TVC1JU1NVRS0wMDNgIHwKfCBPdXRjb21lIHZlcnN1cyBhIHJlb3BlbmVkIFNpdHVhdGlvbiB8IE1ham9yIHBvdGVudGlhbCB0ZW5zaW9uLCBub3QgYWN0dWFsIGNvbmZsaWN0IHwgYENPTlNULUlTU1VFLTAwMmAsIHdpdGggcmVvcGVuaW5nIG1lY2hhbmljcyBleHBsaWNpdGx5IGRlZmVycmVkIHwKCkRpZmZlcmVudCBpbXBsZW1lbnRhdGlvbnMgY291bGQgcmVzb2x2ZSB0aGVzZSB0ZW5zaW9ucyBkaWZmZXJlbnRseSB3aGlsZSBlYWNoIGFwcGVhcnMgZmFpdGhmdWwgdG8gdGhlIGN1cnJlbnQgdGV4dC4gQ29uc3RpdHV0aW9uYWwgY2xhcmlmaWNhdGlvbiBpcyByZXF1aXJlZCB0byBlc3RhYmxpc2ggdGhlIGdvdmVybmluZyBib3VuZGFyeTsgZG93bnN0cmVhbSBzcGVjaWZpY2F0aW9ucyBzaG91bGQgc3RpbGwgb3duIHN0cnVjdHVyYWwgYW5kIG9wZXJhdGlvbmFsIGRldGFpbC4KCk90aGVyIHJldmlldyBvYnNlcnZhdGlvbnMgcmVtYWluIGxhdGVyIFBoYXNlIDAgd29yayB1bmxlc3MgdGhleSByZXZlYWwgYSBjb25zdGl0dXRpb25hbCBjb250cmFkaWN0aW9uOiBQcm9taXNlIHNjb3BlIGFuZCBicmVhY2g7IGluZmVycmVkIGNsYXNzaWZpY2F0aW9uOyBjb25mbGljdGluZyBFdmlkZW5jZSBhbmQgcHJvdmVuYW5jZSBhdXRob3JpdHk7IFJldHVybiBQb2ludCBjYXJkaW5hbGl0eTsgYW5kIGRldGFpbGVkIHJlb3BlbmluZyBsaWZlY3ljbGUgc2VtYW50aWNzLiBUaGV5IGRvIG5vdCBjcmVhdGUgYWRkaXRpb25hbCBhbWVuZG1lbnQgcmVxdWlyZW1lbnRzIGluIHRoaXMgcmVnaXN0ZXIuCgojIyA1LiBJc3N1ZSBTdW1tYXJ5Cgp8IElzc3VlIElEIHwgU2hvcnQgdGl0bGUgfCBJc3N1ZSBjbGFzcyB8IFNldmVyaXR5IHwgQ3VycmVudCBzdGF0dXMgfCBBZmZlY3RlZCBjb25zdGl0dXRpb25hbCBzZWN0aW9uIHwgUmVxdWlyZWQgYWN0aW9uIHwgVGFyZ2V0IHJlc29sdXRpb24gfAp8IC0tLSB8IC0tLSB8IC0tLSB8IC0tLSB8IC0tLSB8IC0tLSB8IC0tLSB8IC0tLSB8CnwgQ09OU1QtSVNTVUUtMDAxIHwgU2l0dWF0aW9uIHF1YWxpZmljYXRpb24gYm91bmRhcnkgfCBEZWZpbml0aW9uIGFtYmlndWl0eSB8IE1ham9yIHwgUkVTT0xWRUQgfCBTZWN0aW9ucyA0LCA3LjEsIDksIGFuZCAyMSB8IEZvdW5kZXIgdHJpYWdlOyBpZiBhY2NlcHRlZCwgY2xhcmlmeSB0aGUgbWluaW11bSBjb25zdGl0dXRpb25hbCBxdWFsaWZpY2F0aW9uIGFuZCBkZWZlciBzdHJ1Y3R1cmFsIHRlc3RzIHwgQW1lbmRtZW50IDAwMSwgQ2hhbmdlIEEgfAp8IENPTlNULUlTU1VFLTAwMiB8IEludGVudGlvbmFsIGluYWN0aXZpdHkgYm91bmRhcnkgfCBMaWZlY3ljbGUgYW1iaWd1aXR5IHwgTWFqb3IgfCBSRVNPTFZFRCB8IFNlY3Rpb25zIDMsIDcuMywgNy43LCA5LCAxMSwgMTUsIGFuZCAxOSB8IEZvdW5kZXIgdHJpYWdlOyBpZiBhY2NlcHRlZCwgZGlzdGluZ3Vpc2ggT3V0Y29tZSBmcm9tIFdhaXRpbmcsIEF0dGVudGlvbiwgcGF1c2UsIGFuZCBjaG9zZW4gZGlzY29udGludWl0eSB8IEFtZW5kbWVudCAwMDEsIENoYW5nZSBCIHwKfCBDT05TVC1JU1NVRS0wMDMgfCBBdXRob3JpemVkIGRpc2NvbnRpbnVpdHkgcHJlY2VkZW5jZSB8IFRydXN0IGJvdW5kYXJ5IGFtYmlndWl0eSB8IENyaXRpY2FsIHwgUkVTT0xWRUQgfCBTZWN0aW9ucyAzLCA5LCAxMSwgMTIsIDE1LCBhbmQgMTkgfCBGb3VuZGVyIHRyaWFnZTsgaWYgYWNjZXB0ZWQsIGVzdGFibGlzaCBwcmVjZWRlbmNlIGJldHdlZW4gYXV0aG9yaXplZCBkaXNjb250aW51aXR5IGFuZCBpZGVudGl0eS9wcmVzZXJ2YXRpb24gZHV0aWVzIHwgQW1lbmRtZW50IDAwMSwgQ2hhbmdlIEMgfAoKRXhhY3RseSB0aHJlZSBpc3N1ZXMgcmVxdWlyZSBGb3VuZGVyIHRyaWFnZSBmb3IgcG9zc2libGUgYW1lbmRtZW50LiBOb25lIGlzIG1hcmtlZCBgQUNDRVBURURgIGJlY2F1c2Ugbm8gZXhwbGljaXQgRm91bmRlciBpc3N1ZSBkZWNpc2lvbiBpcyBwcmVzZW50IGluIHRoZSBzb3VyY2UgbWF0ZXJpYWwuCgojIyA2LiBEZXRhaWxlZCBJc3N1ZSBSZWNvcmRzCgojIyMgQ09OU1QtSVNTVUUtMDAxIC0gU2l0dWF0aW9uIFF1YWxpZmljYXRpb24gQm91bmRhcnkKCnwgRmllbGQgfCBSZWNvcmQgfAp8IC0tLSB8IC0tLSB8CnwgSXNzdWUgSUQgfCBDT05TVC1JU1NVRS0wMDEgfAp8IFRpdGxlIHwgU2l0dWF0aW9uIFF1YWxpZmljYXRpb24gQm91bmRhcnkgfAp8IElzc3VlIGNsYXNzIHwgRGVmaW5pdGlvbiBhbWJpZ3VpdHk7IHNlY29uZGFyeSB0YWc6IFNjb3BlIGJvdW5kYXJ5IGFtYmlndWl0eSB8CnwgU291cmNlIGZpbmRpbmcgfCBSZXZpZXcgc2VjdGlvbnMgMSwgMi4xLCAyLjMsIDgsIDEzLjIsIGFuZCAxNCBpZGVudGlmeSB0aGUgYWJzZW5jZSBvZiBhIG1pbmltdW0gdGVzdCBzZXBhcmF0aW5nIGEgU2l0dWF0aW9uIGZyb20gYW1iaWVudCBjb250ZXh0LCByZXRhaW5lZCBpbmZvcm1hdGlvbiwgb3IgYSB0cmFuc2llbnQgY29uY2Vybi4gfAp8IEFmZmVjdGVkIHNlY3Rpb24gb3IgY2xhdXNlcyB8IENvbnN0aXR1dGlvbiBzZWN0aW9uIDQsIGVzcGVjaWFsbHkgdGhlIGRlZmluaXRpb24gYW5kIHJvb3Qtb2JqZWN0IGV4cGxhbmF0aW9uOyBzZWN0aW9uIDcuMTsgaW52YXJpYW50IDkuMSBvbiBTaXR1YXRpb24gaWRlbnRpdHk7IHNlY3Rpb24gMjEgYWNjZXB0YW5jZSBsYW5ndWFnZS4gfAp8IEN1cnJlbnQgY29uc3RpdHV0aW9uYWwgbGFuZ3VhZ2UgfCDigJxBIFNpdHVhdGlvbiBpcyBhIGNvbnRleHQgd2l0aCB0aGUgcG90ZW50aWFsIHRvIHJlcXVpcmUgZnV0dXJlIHVuZGVyc3RhbmRpbmcsIGNvbnRpbnVhdGlvbiwgcmVzdW1wdGlvbiwgYXR0ZW50aW9uLCBjb21taXRtZW50LCBvciBjb25jbHVzaW9uLuKAnSB8CnwgQW1iaWd1aXR5IG9yIHRlbnNpb24gfCBJbnRlcnByZXRhdGlvbiBBOiBhbnkgY29udGV4dCB3aXRoIHBvc3NpYmxlIGZ1dHVyZSByZWxldmFuY2UgY2FuIHF1YWxpZnkgYXMgYSBTaXR1YXRpb24uIEludGVycHJldGF0aW9uIEI6IGEgY29udGV4dCBxdWFsaWZpZXMgb25seSB3aGVuIHRoZXJlIGlzIGEgY29oZXJlbnQgY29udGludWl0eSBjbGFpbSB3aG9zZSBpZGVudGl0eSBvciBtZWFuaW5nIG1heSBuZWVkIHByb3RlY3Rpb24gYWNyb3NzIHNlcGFyYXRpb24uIFRoZSB0ZXh0IGRvZXMgbm90IGNob29zZSBhIG1pbmltdW0gYm91bmRhcnkuIHwKfCBXaHkgaXQgbWF0dGVycyB8IFRoZSBpbnRlcnByZXRhdGlvbnMgcHJvZHVjZSBtYXRlcmlhbGx5IGRpZmZlcmVudCBLZXJuZWwgc2NvcGUuIEludGVycHJldGF0aW9uIEEgY2FuIG1ha2UgYm9va21hcmtzLCBpc29sYXRlZCBmYWN0cywgcGFzc2luZyB0aG91Z2h0cywgb3IgcmV0YWluZWQgb2JqZWN0cyBTaXR1YXRpb25zIGJ5IGRlZmF1bHQuIEludGVycHJldGF0aW9uIEIgcmVxdWlyZXMgYSByZWFzb24gdGhleSBuZWVkIGNvbnRpbnVpdHkgYW5kIG1heSBpbnN0ZWFkIHRyZWF0IHNvbWUgbWF0ZXJpYWwgYXMgRXZpZGVuY2UsIG1ldGFkYXRhLCBvciBhbWJpZW50IGNvbnRleHQuIHwKfCBGYWlsdXJlIG1vZGUgaWYgdW5yZXNvbHZlZCB8IExhbmd1YWdlLCBPbnRvbG9neSwgUGFja3MsIFN1cmZhY2VzLCBhbmQgUUEgbWF5IGNsYXNzaWZ5IHRoZSBzYW1lIG1hdGVyaWFsIGRpZmZlcmVudGx5LiBUaGUgS2VybmVsIG1heSBiZWNvbWUgYW4gaW5kaXNjcmltaW5hdGUgY29udGFpbmVyLCBvciBhIGxhdGVyIGltcGxlbWVudGF0aW9uIG1heSBpbnZlbnQgYW4gZWxpZ2liaWxpdHkgcnVsZSBhbmQgYWNjaWRlbnRhbGx5IHR1cm4gaXQgaW50byBjb25zdGl0dXRpb25hbCBwcmVjZWRlbnQuIHwKfCBCb3VuZGFyeSBvZiB0aGUgaXNzdWUgfCBUaGlzIGlzc3VlIGFza3Mgd2hhdCBtaW5pbXVtIGNvbnRpbnVpdHkgY2xhaW0gbWFrZXMgYSBjb250ZXh0IGNvbnN0aXR1dGlvbmFsbHkgZWxpZ2libGUgdG8gYmUgYSBTaXR1YXRpb24uIEl0IGRvZXMgbm90IHByZXNjcmliZSBhIGZpZWxkLCBzY29yZSwgd29ya2Zsb3csIHN0b3JhZ2UgcmVjb3JkLCByZXF1aXJlZCBQcmltaXRpdmUgc2V0LCBvciB0ZWNobmljYWwgaWRlbnRpdHkgbWVjaGFuaXNtLiB8CnwgV2hhdCB0aGlzIGlzc3VlIGRvZXMgbm90IGRlY2lkZSB8IEl0IGRvZXMgbm90IGRlY2lkZSBTaXR1YXRpb24gY2FyZGluYWxpdHksIGNvbnRhaW5tZW50LCBkdXJhdGlvbiwgcmVsYXRpb25zaGlwIHR5cGVzLCBkYXRhYmFzZSBpZGVudGl0eSwgY3JlYXRpb24gVUksIG9yIGxpZmVjeWNsZSB0cmFuc2l0aW9ucy4gfAp8IFJlcXVpcmVkIGNvbnN0aXR1dGlvbmFsIGNsYXJpZmljYXRpb24gfCBTdGF0ZSBhIG1pbmltYWwgcXVhbGlmaWNhdGlvbiB0aGF0IGlzIGJyb2FkIGVub3VnaCB0byByZW1haW4gZG9tYWluLWluZGVwZW5kZW50IGJ1dCBwcmV2ZW50cyBwb3NzaWJsZSBmdXR1cmUgcmVsZXZhbmNlIGFsb25lIGZyb20gbWFraW5nIGV2ZXJ5IHJldGFpbmVkIGl0ZW0gYSBTaXR1YXRpb24uIFN0YXRlIHRoYXQgb3BlcmF0aW9uYWwgcmVjb2duaXRpb24gY3JpdGVyaWEgYmVsb25nIGRvd25zdHJlYW0uIHwKfCBQb3NzaWJsZSByZXNvbHV0aW9uIGRpcmVjdGlvbiB8IENsYXJpZnkgdGhhdCBhIFNpdHVhdGlvbiBpcyBhIGNvbnRleHQgZm9yIHdoaWNoIGNvbnRpbnVpdHkgb2YgaWRlbnRpdHkgb3IgbWVhbmluZyBhY3Jvc3MgYSBtZWFuaW5nZnVsIHNlcGFyYXRpb24gbWF5IGJlIG5lZWRlZCwgYW5kIHRoYXQgcmV0YWluZWQgbWF0ZXJpYWwgd2l0aG91dCBzdWNoIGEgY29udGludWl0eSBjbGFpbSBkb2VzIG5vdCBiZWNvbWUgYSBTaXR1YXRpb24gbWVyZWx5IGJlY2F1c2UgaXQgbWF5IGJlIHVzZWZ1bCBsYXRlci4gRXhhY3QgY2Fub25pY2FsIHdvcmRpbmcgYmVsb25ncyB0byB0aGUgYW1lbmRtZW50IHRhc2suIHwKfCBEb3duc3RyZWFtIGRvY3VtZW50cyBhZmZlY3RlZCB8IENvbnRpbnVpdHkgTGFuZ3VhZ2U7IE9udG9sb2d5OyBDYW5vbmljYWwgTW9kZWw7IFNpdHVhdGlvbiBQcmltaXRpdmUgU3BlY2lmaWNhdGlvbjsgS2VybmVsIEFjY2VwdGFuY2UgU3BlY2lmaWNhdGlvbi4gfAp8IFByb3Bvc2VkIGFtZW5kbWVudCBtYXBwaW5nIHwgQW1lbmRtZW50IDAwMSwgQ2hhbmdlIEE6IG9uZSBkZWZpbml0aW9uIGNsYXJpZmljYXRpb24gcGx1cyBvbmUgZXhwbGljaXQgZGVmZXJyYWwgYm91bmRhcnkuIHwKfCBDdXJyZW50IHN0YXR1cyB8IFJFU09MVkVEIHwKfCBGb3VuZGVyIGRlY2lzaW9uIHwgIHwKfCBSZXNvbHV0aW9uIGV2aWRlbmNlIHwgIHwKfCBDbG9zdXJlIGNvbmRpdGlvbiB8IEEgRm91bmRlci1yYXRpZmllZCBhbWVuZG1lbnQgZXN0YWJsaXNoZXMgdGhlIG1pbmltdW0gY29uc3RpdHV0aW9uYWwgYm91bmRhcnkgYW5kIGRvd25zdHJlYW0gb3duZXJzaGlwLCBhbmQgdGhlIGF1dGhvcml0YXRpdmUgQ29uc3RpdHV0aW9uIGluY29ycG9yYXRlcyBpdDsgb3IgdGhlIEZvdW5kZXIgcmVqZWN0cy9kZWZlci1kaXNwb3NpdGlvbnMgdGhlIGlzc3VlIHdpdGggcmF0aW9uYWxlLiB8CgoqKkNvbnN0aXR1dGlvbmFsIHF1ZXN0aW9uLioqIFRoZSBDb25zdGl0dXRpb24gaXRzZWxmIHNob3VsZCBkZWZpbmUgdGhlIG1pbmltdW0gbWVhbmluZyBib3VuZGFyeSBiZWNhdXNlIGRvd25zdHJlYW0gbGF5ZXJzIGFyZSBmb3JiaWRkZW4gdG8gcmVkZWZpbmUgU2l0dWF0aW9uLiBDb250aW51aXR5IExhbmd1YWdlIG1heSBzdGFuZGFyZGl6ZSB0ZXJtcywgT250b2xvZ3kgbWF5IGRlZmluZSByZWxhdGlvbnNoaXBzLCB0aGUgQ2Fub25pY2FsIE1vZGVsIG1heSBkZWZpbmUgcmVwcmVzZW50YXRpb24sIGFuZCB0aGUgQWNjZXB0YW5jZSBTcGVjaWZpY2F0aW9uIG1heSBwcm92aWRlIG9iamVjdGl2ZSBleGFtcGxlcy4gVGhvc2UgZG9jdW1lbnRzIG11c3Qgbm90IGludmVudCB0aGUgY29uc3RpdHV0aW9uYWwgcXVhbGlmaWNhdGlvbiBpbmRlcGVuZGVudGx5LgoKKipNaW5pbWFsaXR5IGNvbnN0cmFpbnQuKiogUHJlc2VydmUgU2l0dWF0aW9uIGFzIE1vb24ncyByb290LCBkb21haW4taW5kZXBlbmRlbnQgY29uY2VwdHVhbCBvYmplY3QgYW5kIHByZXNlcnZlIGFsbCBjdXJyZW50IG5vbi1lcXVpdmFsZW5jZSBzdGF0ZW1lbnRzLiBDaGFuZ2Ugb25seSB0aGUgcXVhbGlmaWNhdGlvbiBib3VuZGFyeSBhbmQgaXRzIGV4cGxpY2l0IGRvd25zdHJlYW0gZGVmZXJyYWwuCgojIyMgQ09OU1QtSVNTVUUtMDAyIC0gT3V0Y29tZSwgV2FpdGluZywgQXR0ZW50aW9uLCBhbmQgSW50ZW50aW9uYWwgSW5hY3Rpdml0eQoKfCBGaWVsZCB8IFJlY29yZCB8CnwgLS0tIHwgLS0tIHwKfCBJc3N1ZSBJRCB8IENPTlNULUlTU1VFLTAwMiB8CnwgVGl0bGUgfCBPdXRjb21lLCBXYWl0aW5nLCBBdHRlbnRpb24sIGFuZCBJbnRlbnRpb25hbCBJbmFjdGl2aXR5IEJvdW5kYXJ5IHwKfCBJc3N1ZSBjbGFzcyB8IExpZmVjeWNsZSBhbWJpZ3VpdHk7IHNlY29uZGFyeSB0YWdzOiBEZWZpbml0aW9uIGFtYmlndWl0eSwgSW52YXJpYW50IHRlbnNpb24gfAp8IFNvdXJjZSBmaW5kaW5nIHwgUmV2aWV3IHNlY3Rpb25zIDEsIDIuMywgMywgNC4yLCA4LCAxMy4yLCBhbmQgMTQgZmluZCB0aGF0IOKAnGludGVudGlvbmFsbHkgaW5hY3RpdmXigJ0gY2FuIG92ZXJsYXAgd2l0aCB2b2x1bnRhcnkgV2FpdGluZywgQXR0ZW50aW9uIG1hbmFnZW1lbnQsIHBhdXNlLCBhYmFuZG9ubWVudCwgbGVhdmluZyBhbG9uZSwgYW5kIGNob3NlbiBkaXNjb250aW51aXR5LiBUaGUgcmVvcGVuZWQtT3V0Y29tZSBxdWVzdGlvbiBpcyBhIG1ham9yIHBvdGVudGlhbCB0ZW5zaW9uLCBub3QgYSBwcm92ZW4gY29uZmxpY3QuIHwKfCBBZmZlY3RlZCBzZWN0aW9uIG9yIGNsYXVzZXMgfCBDb25zdGl0dXRpb24gc2VjdGlvbiAzIG9uIEF0dGVudGlvbiBhbmQgT3V0Y29tZSBhY3Rpdml0aWVzOyBzZWN0aW9ucyA3LjMgYW5kIDcuNzsgaW52YXJpYW50cyA5LjMsIDkuNywgYW5kIDkuMTM7IHByaW5jaXBsZXMgMTEuMTUgYW5kIDExLjE2OyB0cnVzdCBjbGF1c2VzIDE1LjEsIDE1LjIsIDE1LjUsIGFuZCAxNS44OyBkZWZlcnJlZCBxdWVzdGlvbiAxOSBvbiBsaWZlY3ljbGUgdmVyc3VzIGF0dGVudGlvbiBjaGFuZ2VzLiB8CnwgQ3VycmVudCBjb25zdGl0dXRpb25hbCBsYW5ndWFnZSB8IE91dGNvbWUgaXMg4oCcdGhlIHdheSBhIFNpdHVhdGlvbiByZWFjaGVzIGEgY29uY2x1ZGVkIG9yIGludGVudGlvbmFsbHkgaW5hY3RpdmUgZGlzcG9zaXRpb27igJ07IGxhdGVyIGV4YW1wbGVzIGluY2x1ZGUg4oCcYWJhbmRvbm1lbnTigJ0gYW5kIOKAnGRlbGliZXJhdGUgbGVhdmluZy1hbG9uZS7igJ0gfAp8IEFtYmlndWl0eSBvciB0ZW5zaW9uIHwgSW50ZXJwcmV0YXRpb24gQTogYW55IGRlbGliZXJhdGUgaW5hY3Rpdml0eSwgaW5jbHVkaW5nIGEgcGF1c2Ugb3IgbGVhdmUtYWxvbmUgYXR0ZW50aW9uIGNob2ljZSwgbWF5IGV4cHJlc3MgT3V0Y29tZS4gSW50ZXJwcmV0YXRpb24gQjogT3V0Y29tZSByZXF1aXJlcyBhIGRlbGliZXJhdGUgZGlzcG9zaXRpb24gb2YgdGhlIFNpdHVhdGlvbiwgd2hpbGUgdGVtcG9yYXJ5IHBhdXNlLCB2b2x1bnRhcnkgV2FpdGluZywgYW5kIHByZXNlbnQgQXR0ZW50aW9uIGNob2ljZXMgZG8gbm90IGNvbmNsdWRlIGl0LiBSZW9wZW5pbmcgdGhlbiByYWlzZXMgYSByZWxhdGVkIGJ1dCBkZWZlcnJlZCBxdWVzdGlvbiBhYm91dCBzYW1lLCByZWxhdGVkLCBvciBzdWNjZXNzb3IgU2l0dWF0aW9uIGlkZW50aXR5LiB8CnwgV2h5IGl0IG1hdHRlcnMgfCBUaGUgaW50ZXJwcmV0YXRpb25zIHByb2R1Y2UgbWF0ZXJpYWxseSBkaWZmZXJlbnQgY2xhc3NpZmljYXRpb25zLCBsaWZlY3ljbGUgYXNzdW1wdGlvbnMsIGFuZCB0cnVzdCBiZWhhdmlvci4gQSBwZXJzb24gY2hvb3Npbmcgbm90IHRvIGF0dGVuZCB0byBzb21ldGhpbmcgY291bGQgYmUgcmVwcmVzZW50ZWQgYXMgaGF2aW5nIGNvbmNsdWRlZCBpdCwgd2hpbGUgYW5vdGhlciBjb25mb3JtaW5nIHN5c3RlbSBjb3VsZCBwcmVzZXJ2ZSBpdCBhcyBvcGVuIG9yIFdhaXRpbmcuIHwKfCBGYWlsdXJlIG1vZGUgaWYgdW5yZXNvbHZlZCB8IFN1cmZhY2VzIG1heSBzaWxlbnRseSB0dXJuIGluYWN0aXZpdHkgaW50byBPdXRjb21lLCB2b2x1bnRhcnkgZGVsYXkgaW50byBXYWl0aW5nLCBvciBsZWF2ZS1hbG9uZSBiZWhhdmlvciBpbnRvIGEgbGlmZWN5Y2xlIHRyYW5zaXRpb24uIFFBIGNhbm5vdCBvYmplY3RpdmVseSBkaXN0aW5ndWlzaCBhIHRydXRoZnVsIGRpc3Bvc2l0aW9uIGZyb20gdGVtcG9yYXJ5IG5vbi1hdHRlbnRpb24uIFJlb3BlbmluZyBiZWhhdmlvciBtYXkgYmUgc2V0dGxlZCBieSBpbXBsZW1lbnRhdGlvbiBhY2NpZGVudC4gfAp8IEJvdW5kYXJ5IG9mIHRoZSBpc3N1ZSB8IFRoaXMgaXNzdWUgcmVxdWlyZXMgY29uc3RpdHV0aW9uYWwgZGlzdGluY3Rpb25zIGFtb25nIG9ic3RydWN0aW9uLCBwcmVzZW50IGF3YXJlbmVzcywgdGVtcG9yYXJ5IHZvbHVudGFyeSBwYXVzZSwgZGVsaWJlcmF0ZSBkaXNwb3NpdGlvbiwgYW5kIGF1dGhvcml6ZWQgZGlzY29udGludWl0eS4gSXQgZG9lcyBub3QgcmVxdWlyZSBhIHRyYW5zaXRpb24gZ3JhcGggb3IgZXhoYXVzdGl2ZSBPdXRjb21lIGNhdGVnb3JpZXMuIHwKfCBXaGF0IHRoaXMgaXNzdWUgZG9lcyBub3QgZGVjaWRlIHwgSXQgZG9lcyBub3QgZGVjaWRlIHN0YXR1cyB2YWx1ZXMsIHN0YXRlLW1hY2hpbmUgdHJhbnNpdGlvbnMsIHJlb3BlbmluZyBtZWNoYW5pY3MsIHdoZXRoZXIgYSByZW9wZW5lZCBPdXRjb21lIGlzIHRoZSBzYW1lIG9yIHN1Y2Nlc3NvciBTaXR1YXRpb24sIFVJIHpvbmVzLCByZXF1aXJlZCB0aW1lc3RhbXBzLCBvciBjYXJkaW5hbGl0eS4gfAp8IFJlcXVpcmVkIGNvbnN0aXR1dGlvbmFsIGNsYXJpZmljYXRpb24gfCBDbGFyaWZ5IHRoYXQgaW5hY3Rpdml0eSBhbG9uZSBpcyBub3QgT3V0Y29tZTsgaWRlbnRpZnkgdGhlIG1pbmltdW0gc2VtYW50aWMgZGlmZmVyZW5jZSBiZXR3ZWVuIHRlbXBvcmFyeSBvYnN0cnVjdGlvbiBvciBhdHRlbnRpb24gY2hvaWNlIGFuZCBhIGRlbGliZXJhdGUgZGlzcG9zaXRpb24uIEV4cGxpY2l0bHkgZGVmZXIgdHJhbnNpdGlvbiBhbmQgcmVvcGVuaW5nIG1lY2hhbmljcyB0byBPbnRvbG9neSBhbmQgU2l0dWF0aW9uIExpZmVjeWNsZS4gfAp8IFBvc3NpYmxlIHJlc29sdXRpb24gZGlyZWN0aW9uIHwgUHJlc2VydmUgT3V0Y29tZSBhcyBob25lc3QgY29uY2x1c2lvbiBvciBkZWxpYmVyYXRlIGRpc3Bvc2l0aW9uLCB3aGlsZSBzdGF0aW5nIHRoYXQgcGF1c2luZywgbGVhdmluZyBjdXJyZW50IEF0dGVudGlvbiwgb3Igd2FpdGluZyBieSBjaG9pY2UgZG9lcyBub3QgYnkgaXRzZWxmIGVzdGFibGlzaCBPdXRjb21lLiBBIGxhdGVyIExpZmVjeWNsZSBzcGVjaWZpY2F0aW9uIGNhbiBkZXRlcm1pbmUgdHJhbnNpdGlvbnMgYW5kIHJlb3BlbmluZyBpZGVudGl0eSB1bmRlciB0aGF0IGJvdW5kYXJ5LiB8CnwgRG93bnN0cmVhbSBkb2N1bWVudHMgYWZmZWN0ZWQgfCBDb250aW51aXR5IExhbmd1YWdlOyBPbnRvbG9neTsgU2l0dWF0aW9uIExpZmVjeWNsZTsgV2FpdGluZyBhbmQgT3V0Y29tZSBQcmltaXRpdmUgU3BlY2lmaWNhdGlvbnM7IENvbnRpbnVpdHkgSW52YXJpYW50cyBTcGVjaWZpY2F0aW9uOyBLZXJuZWwgQWNjZXB0YW5jZSBTcGVjaWZpY2F0aW9uLiB8CnwgUHJvcG9zZWQgYW1lbmRtZW50IG1hcHBpbmcgfCBBbWVuZG1lbnQgMDAxLCBDaGFuZ2UgQjogb25lIGRlZmluaXRpb24gYm91bmRhcnksIG9uZSBub24taW5mZXJlbmNlIHJ1bGUgb3Igbm9ybWF0aXZlIGV4YW1wbGUsIGFuZCBvbmUgZXhwbGljaXQgbGlmZWN5Y2xlIGRlZmVycmFsLiB8CnwgQ3VycmVudCBzdGF0dXMgfCBSRVNPTFZFRCB8CnwgRm91bmRlciBkZWNpc2lvbiB8ICB8CnwgUmVzb2x1dGlvbiBldmlkZW5jZSB8ICB8CnwgQ2xvc3VyZSBjb25kaXRpb24gfCBBIEZvdW5kZXItcmF0aWZpZWQgYW1lbmRtZW50IG1ha2VzIE91dGNvbWUgZGlzdGluZ3Vpc2hhYmxlIGZyb20gaW5hY3Rpdml0eSwgV2FpdGluZywgYW5kIEF0dGVudGlvbiB3aXRob3V0IHByZW1hdHVyZWx5IGRlZmluaW5nIGxpZmVjeWNsZSBtZWNoYW5pY3MsIGFuZCB0aGUgYXV0aG9yaXRhdGl2ZSBDb25zdGl0dXRpb24gaW5jb3Jwb3JhdGVzIGl0OyBvciB0aGUgRm91bmRlciByZWNvcmRzIGFub3RoZXIgZm9ybWFsIGRpc3Bvc2l0aW9uLiB8CgoqKkNvbnN0aXR1dGlvbmFsIHF1ZXN0aW9uLioqIFRoZSBDb25zdGl0dXRpb24gbXVzdCBkZWZpbmUgdGhlIHNlbWFudGljIGRpc3RpbmN0aW9uIGJlY2F1c2UgV2FpdGluZywgQXR0ZW50aW9uLCBhbmQgT3V0Y29tZSBhcmUgY29uc3RpdHV0aW9uYWwgbWVhbmluZ3Mgb3IgYWN0aXZpdGllcyB0aGF0IGRvd25zdHJlYW0gbGF5ZXJzIG1heSBub3QgcmVkZWZpbmUuIE9udG9sb2d5IGFuZCBTaXR1YXRpb24gTGlmZWN5Y2xlIHNob3VsZCBkZWNpZGUgaWRlbnRpdHksIHRyYW5zaXRpb24sIGFuZCByZW9wZW5pbmcgbWVjaGFuaWNzLiBQcmltaXRpdmUgU3BlY2lmaWNhdGlvbnMgYW5kIEFjY2VwdGFuY2UgU3BlY2lmaWNhdGlvbiBzaG91bGQgbWFrZSB0aGUgZGlzdGluY3Rpb24gb3BlcmF0aW9uYWxseSB0ZXN0YWJsZS4KCioqQ29uZmxpY3QgY2FsaWJyYXRpb24uKiogTm8gY2xhdXNlIHByb3ZlcyB0aGF0IGEgU2l0dWF0aW9uIG11c3Qgc2ltdWx0YW5lb3VzbHkgYmUgT3V0Y29tZSBhbmQgbm90IE91dGNvbWUgdW5kZXIgaWRlbnRpY2FsIGNvbmRpdGlvbnMuIFRoZSB0ZXh0IGNyZWF0ZXMgYSBwb3RlbnRpYWwgaW50ZXJwcmV0aXZlIHRlbnNpb24gYmVjYXVzZSBkaWZmZXJlbnQgY2xhc3NpZmljYXRpb25zIGFyZSBhbGxvd2VkIGJ5IHRoZSBjdXJyZW50IGJvdW5kYXJ5LiBUaGlzIHJlZ2lzdGVyIGRvZXMgbm90IHN0YXRlIHRoYXQgdGhlIGludmFyaWFudHMgY29uZmxpY3QuCgoqKk1pbmltYWxpdHkgY29uc3RyYWludC4qKiBQcmVzZXJ2ZSBob25lc3Qgbm9uLWNvbXBsZXRpb24sIGxlZ2l0aW1hdGUgYWJhbmRvbm1lbnQsIG5vbi1jb2VyY2l2ZSBBdHRlbnRpb24sIGFuZCB0aGUgV2FpdGluZy9PdXRjb21lIGRpc3RpbmN0aW9uLiBEbyBub3QgaW50cm9kdWNlIG5ldyBQcmltaXRpdmVzIG9yIGEgbGlmZWN5Y2xlIG1vZGVsLgoKIyMjIENPTlNULUlTU1VFLTAwMyAtIFRydXN0IFByZWNlZGVuY2UgZm9yIEF1dGhvcml6ZWQgRGlzY29udGludWl0eQoKfCBGaWVsZCB8IFJlY29yZCB8CnwgLS0tIHwgLS0tIHwKfCBJc3N1ZSBJRCB8IENPTlNULUlTU1VFLTAwMyB8CnwgVGl0bGUgfCBUcnVzdCBQcmVjZWRlbmNlIGZvciBGcmVzaCBTdGFydCwgUHJlc2VudCBPbmx5LCBMaWdodCBDb250aW51aXR5LCBhbmQgTm8gT2xkIFB1bGwgfAp8IElzc3VlIGNsYXNzIHwgVHJ1c3QgYm91bmRhcnkgYW1iaWd1aXR5OyBzZWNvbmRhcnkgdGFnczogSW52YXJpYW50IHRlbnNpb24sIEF1dGhvcml0eSBhbWJpZ3VpdHkgfAp8IFNvdXJjZSBmaW5kaW5nIHwgUmV2aWV3IHNlY3Rpb25zIDEsIDIuMywgNC4yLCAxMSwgMTMuMiwgYW5kIDE0IGlkZW50aWZ5IG1pc3NpbmcgcHJlY2VkZW5jZSB3aGVuIFNpdHVhdGlvbiBpZGVudGl0eSBhbmQgcHJlc2VydmF0aW9uIG1lZXQgYSBwZXJzb24ncyBsZWdpdGltYXRlIGNob2ljZSBmb3IgZnJlc2ggc3RhcnQsIHByZXNlbnQtb25seSB1c2UsIGxpZ2h0IGNvbnRpbnVpdHksIGZvcmdldHRpbmcsIG9yIG5vLW9sZC1wdWxsLiBUaGUgcmV2aWV3IGNsYXNzaWZpZXMgdGhpcyBhcyBhIG1ham9yIHBvdGVudGlhbCB0ZW5zaW9uLCBub3QgYW4gYWN0dWFsIGNvbnRyYWRpY3Rpb24uIHwKfCBBZmZlY3RlZCBzZWN0aW9uIG9yIGNsYXVzZXMgfCBDb25zdGl0dXRpb24gZGVmaW5pdGlvbiBvZiBDb250aW51aXR5IGluIHNlY3Rpb24gMzsgaW52YXJpYW50cyA5LjEsIDkuMTEsIGFuZCA5LjE1OyBwcmluY2lwbGVzIDExLjggdGhyb3VnaCAxMS4xMDsgZGVjaXNpb24gcXVlc3Rpb24gMTIuMTM7IHRydXN0IGNsYXVzZXMgMTUuMSwgMTUuMiwgMTUuNiwgMTUuOSwgYW5kIHRoZSBjbG9zaW5nIHRydXN0IHJ1bGU7IGRlZmVycmVkIHF1ZXN0aW9uIDE5IG9uIGV4cGlyeSwgZGVsZXRpb24sIGZvcmdldHRpbmcsIGFuZCBmcmVzaCBzdGFydHMuIHwKfCBDdXJyZW50IGNvbnN0aXR1dGlvbmFsIGxhbmd1YWdlIHwg4oCcQSBTaXR1YXRpb24gbXVzdCByZW1haW4gaWRlbnRpZmlhYmxlIGFzIHRoZSBTaXR1YXRpb24gaXRzZWxmLOKAnSB3aGlsZSDigJxGcmVzaC1zdGFydCwgcHJlc2VudC1vbmx5LCBsaWdodC1jb250aW51aXR5LCBhbmQgbm8tb2xkLXB1bGwgcHJlZmVyZW5jZXMgbWF5IGJlIGVzc2VudGlhbCB0byBkaWduaXR5IGFuZCBzYWZldHku4oCdIHwKfCBBbWJpZ3VpdHkgb3IgdGVuc2lvbiB8IEludGVycHJldGF0aW9uIEE6IGlkZW50aXR5IGFuZCBwcmVzZXJ2YXRpb24gcmVtYWluIHVuY29uZGl0aW9uYWwgZHV0aWVzLCB3aGlsZSBkaXNjb250aW51aXR5IHByZWZlcmVuY2VzIGNvbnRyb2wgb25seSB3aGF0IGEgU3VyZmFjZSBkaXNwbGF5cy4gSW50ZXJwcmV0YXRpb24gQjogYXV0aG9yaXplZCBkaXNjb250aW51aXR5IG1heSBsaW1pdCByZXRlbnRpb24sIHJldHJpZXZhbCwgYW5kIHJlaW50cm9kdWN0aW9uIHRoZW1zZWx2ZXMuIEludGVycHJldGF0aW9uIEM6IHRoZSBwcmVmZXJlbmNlIGNhbiBlbmQgb25lIGNvbnRpbnVpdHkgY29udGV4dCB3aGlsZSBwcmVzZXJ2aW5nIGEgcmVzdHJpY3RlZCBpZGVudGl0eSByZWNvcmQuIFRoZSBDb25zdGl0dXRpb24gcmVjb2duaXplcyBsZWdpdGltYWN5IGJ1dCBkb2VzIG5vdCBzZXQgYXV0aG9yaXR5IG9yIHByZWNlZGVuY2UuIHwKfCBXaHkgaXQgbWF0dGVycyB8IFRoZSBpbnRlcnByZXRhdGlvbnMgcHJvZHVjZSBtYXRlcmlhbGx5IGRpZmZlcmVudCB0cnVzdCBiZWhhdmlvci4gQSBzeXN0ZW0gbWF5IHJldGFpbiBhbmQgbGF0ZXIgcmVpbnRyb2R1Y2UgbWF0ZXJpYWwgYSBwZXJzb24gaW50ZW5kZWQgdG8gbGVhdmUgYmVoaW5kLCBvciBhbm90aGVyIHN5c3RlbSBtYXkgZXJhc2UgY29udGludWl0eSB3aG9zZSBwcmVzZXJ2YXRpb24gdGhlIHBlcnNvbiBleHBlY3RlZC4gQm90aCBjb3VsZCBjbGFpbSBjb25zdGl0dXRpb25hbCBmaWRlbGl0eSB1bmRlciB0aGUgY3VycmVudCB0ZXh0LiB8CnwgRmFpbHVyZSBtb2RlIGlmIHVucmVzb2x2ZWQgfCBJZGVudGl0eSBtYXkgYmVjb21lIGNvZXJjaXZlIHJldGVudGlvbjsgZnJlc2gtc3RhcnQgbGFuZ3VhZ2UgbWF5IGJlY29tZSBtZXJlbHkgY29zbWV0aWM7IFN1cmZhY2VzIGFuZCBpbXBsZW1lbnRhdGlvbnMgbWF5IGludmVudCBpbmNvbnNpc3RlbnQgY29uc2VudCwgZm9yZ2V0dGluZywgZXhwaXJ5LCBvciBuby1vbGQtcHVsbCBydWxlczsgUUEgY2Fubm90IGRldGVybWluZSB3aGV0aGVyIG9sZCBtYXRlcmlhbCBpcyBiZWluZyBmYWl0aGZ1bGx5IHByZXNlcnZlZCBvciBpbXByb3Blcmx5IHJlaW50cm9kdWNlZC4gfAp8IEJvdW5kYXJ5IG9mIHRoZSBpc3N1ZSB8IFRoaXMgaXNzdWUgYXNrcyB3aGljaCBjb25zdGl0dXRpb25hbCBhdXRob3JpdHkgZ292ZXJucyB3aGVuIGNvbnRpbnVpdHkgc3VwcG9ydCBhbmQgYW4gYXV0aG9yaXplZCBkaXNjb250aW51aXR5IGNob2ljZSBwb2ludCBpbiBvcHBvc2l0ZSBkaXJlY3Rpb25zLiBJdCBkb2VzIG5vdCBkZWZpbmUgZGVsZXRpb24gbWVjaGFuaWNzLCByZXRlbnRpb24gcGVyaW9kcywgY29uc2VudCBVSSwgYXV0aGVudGljYXRpb24sIHN0b3JhZ2UgYXJjaGl0ZWN0dXJlLCBvciBsZWdhbCBjb21wbGlhbmNlLiB8CnwgV2hhdCB0aGlzIGlzc3VlIGRvZXMgbm90IGRlY2lkZSB8IEl0IGRvZXMgbm90IGRlY2lkZSB0ZWNobmljYWwgZXJhc3VyZSwgcmVjb3ZlcmFiaWxpdHksIGJhY2t1cHMsIGV4cGlyeSBzY2hlZHVsZXMsIGFjY291bnQgb3duZXJzaGlwLCBjcm9zcy1kZXZpY2UgYmVoYXZpb3IsIG9yIHRoZSByZXByZXNlbnRhdGlvbiBvZiBjb25zZW50IGFuZCBwcm92ZW5hbmNlLiB8CnwgUmVxdWlyZWQgY29uc3RpdHV0aW9uYWwgY2xhcmlmaWNhdGlvbiB8IEVzdGFibGlzaCB0aGF0IGlkZW50aXR5IGFuZCBwcmVzZXJ2YXRpb24gZHV0aWVzIG9wZXJhdGUgd2l0aGluIGNvbnRpbnVpdHkgdGhlIHBlcnNvbiBoYXMgYXV0aG9yaXplZCwgYW5kIHN0YXRlIHdoZXRoZXIgYXV0aG9yaXplZCBkaXNjb250aW51aXR5IGNhbiBsaW1pdCByZXRlbnRpb24sIHJldHJpZXZhbCwgYW5kIHJlaW50cm9kdWN0aW9uIHdpdGhvdXQgY29uc3RpdHV0aW5nIENvbnRpbnVpdHkgZmFpbHVyZS4gRXhwbGljaXRseSBhc3NpZ24gb3BlcmF0aW9uYWwgbWVjaGFuaXNtcyBkb3duc3RyZWFtLiB8CnwgUG9zc2libGUgcmVzb2x1dGlvbiBkaXJlY3Rpb24gfCBBZGQgYSBuYXJyb3cgcHJlY2VkZW5jZSBjbGF1c2UgbWFraW5nIGh1bWFuIGFnZW5jeSwgY29uc2VudCwgZGlnbml0eSwgYW5kIGF1dGhvcml6ZWQgY29udGludWl0eSBib3VuZGFyaWVzIGNvbnRyb2xsaW5nIHdoZW4gdGhleSBjb25mbGljdCB3aXRoIG9wdGlvbmFsIHByZXNlcnZhdGlvbiBvciByZWludHJvZHVjdGlvbi4gUHJlc2VydmUgdHJ1dGhmdWwgZGlzY2xvc3VyZSBhYm91dCB3aGF0IGNhbiBhbmQgY2Fubm90IGJlIGZvcmdvdHRlbi4gfAp8IERvd25zdHJlYW0gZG9jdW1lbnRzIGFmZmVjdGVkIHwgQ29udGludWl0eSBMYW5ndWFnZTsgT250b2xvZ3k7IENhbm9uaWNhbCBNb2RlbDsgQ29udGludWl0eSBJbnZhcmlhbnRzIFNwZWNpZmljYXRpb247IFNpdHVhdGlvbiBMaWZlY3ljbGU7IHJlbGV2YW50IFByaW1pdGl2ZSBTcGVjaWZpY2F0aW9uczsgS2VybmVsIEFjY2VwdGFuY2UgU3BlY2lmaWNhdGlvbjsgbGF0ZXIgYXJjaGl0ZWN0dXJlLiB8CnwgUHJvcG9zZWQgYW1lbmRtZW50IG1hcHBpbmcgfCBBbWVuZG1lbnQgMDAxLCBDaGFuZ2UgQzogb25lIHRydXN0LXByZWNlZGVuY2UgY2xhdXNlIGFuZCBvbmUgZXhwbGljaXQgb3BlcmF0aW9uYWwgZGVmZXJyYWwuIHwKfCBDdXJyZW50IHN0YXR1cyB8IFJFU09MVkVEIHwKfCBGb3VuZGVyIGRlY2lzaW9uIHwgIHwKfCBSZXNvbHV0aW9uIGV2aWRlbmNlIHwgIHwKfCBDbG9zdXJlIGNvbmRpdGlvbiB8IEEgRm91bmRlci1yYXRpZmllZCBhbWVuZG1lbnQgZXN0YWJsaXNoZXMgY29uc3RpdHV0aW9uYWwgcHJlY2VkZW5jZSBhbmQgZG93bnN0cmVhbSBvd25lcnNoaXAgd2l0aG91dCBwcm9taXNpbmcgdW5zdXBwb3J0ZWQgZXJhc3VyZSwgYW5kIHRoZSBhdXRob3JpdGF0aXZlIENvbnN0aXR1dGlvbiBpbmNvcnBvcmF0ZXMgaXQ7IG9yIHRoZSBGb3VuZGVyIHJlY29yZHMgYW5vdGhlciBmb3JtYWwgZGlzcG9zaXRpb24uIHwKCioqQ29uc3RpdHV0aW9uYWwgcXVlc3Rpb24uKiogVGhlIENvbnN0aXR1dGlvbiBtdXN0IGRlY2lkZSB0aGUgbm9ybWF0aXZlIHByZWNlZGVuY2UgYmVjYXVzZSBkb3duc3RyZWFtIGxheWVycyBjYW5ub3QgaW5kZXBlbmRlbnRseSBjaG9vc2Ugd2hldGhlciBjb25zZW50IGFuZCBkaWduaXR5IGNvbnN0cmFpbiBDb250aW51aXR5LiBDb250aW51aXR5IExhbmd1YWdlIGNhbiBzdGFuZGFyZGl6ZSBib3VuZGFyeSB0ZXJtczsgT250b2xvZ3ksIENhbm9uaWNhbCBNb2RlbCwgTGlmZWN5Y2xlLCBJbnZhcmlhbnRzLCBhbmQgQWNjZXB0YW5jZSBTcGVjaWZpY2F0aW9uIGNhbiBkZWZpbmUgcmVwcmVzZW50YXRpb24sIGVmZmVjdHMsIGFuZCB0ZXN0czsgYXJjaGl0ZWN0dXJlIGNhbiBpbXBsZW1lbnQgb25seSB0aGUgcmF0aWZpZWQgcnVsZS4KCioqQ29uZmxpY3QgY2FsaWJyYXRpb24uKiogTm8gZGlyZWN0IGNvbnRyYWRpY3Rpb24gY3VycmVudGx5IGNvbW1hbmRzIGJvdGggdW5jb25kaXRpb25hbCByZXRlbnRpb24gYW5kIHVuY29uZGl0aW9uYWwgZGVsZXRpb24uIFRoZSBwb3RlbnRpYWwgdGVuc2lvbiBhcmlzZXMgYmVjYXVzZSBpZGVudGl0eSBpcyBiaW5kaW5nIHdoaWxlIGF1dGhvcml6ZWQgZGlzY29udGludWl0eSBpcyBsZWdpdGltYXRlIGJ1dCBvcGVyYXRpb25hbGx5IGFuZCBub3JtYXRpdmVseSB1bmRlci1zcGVjaWZpZWQuCgoqKk1pbmltYWxpdHkgY29uc3RyYWludC4qKiBQcmVzZXJ2ZSBTaXR1YXRpb24gaWRlbnRpdHksIGZhaXRoZnVsIHByZXNlcnZhdGlvbiwgaG9uZXN0IGxvY2FsIHRydXRoLCByZXZlcnNpYmlsaXR5IHdoZXJlIHByYWN0aWNhbCwgYWdlbmN5LCBjb25zZW50LCBhbmQgZGlnbml0eS4gQWRkIG9ubHkgdGhlIHByZWNlZGVuY2UgYW5kIGV4cGxpY2l0IGRlZmVycmFsIG5lZWRlZCB0byBwcmV2ZW50IGNvZXJjaXZlIGludGVycHJldGF0aW9uLgoKIyMgNy4gQW1lbmRtZW50IE1hcHBpbmcgYW5kIE1pbmltYWxpdHkKCklmIGFsbCB0aHJlZSBpc3N1ZXMgYXJlIGFjY2VwdGVkLCB0aGUgcHJlZmVycmVkIHJlc29sdXRpb24gaXMgb25lIG5hcnJvd2x5IHNjb3BlZCAqKk1vb24gQ29uc3RpdHV0aW9uIEFtZW5kbWVudCAwMDEgdjEqKiBjb250YWluaW5nIHRocmVlIGluZGVwZW5kZW50bHkgcmV2aWV3YWJsZSBhdG9taWMgY2hhbmdlczoKCnwgSXNzdWUgfCBQcm9wb3NlZCBhbWVuZG1lbnQgdW5pdCB8IFNtYWxsZXN0IGxpa2VseSBjb25zdGl0dXRpb25hbCBjaGFuZ2UgfCBNdXN0IHJlbWFpbiB1bmNoYW5nZWQgfAp8IC0tLSB8IC0tLSB8IC0tLSB8IC0tLSB8CnwgQ09OU1QtSVNTVUUtMDAxIHwgQW1lbmRtZW50IDAwMSwgQ2hhbmdlIEEgfCBPbmUgZGVmaW5pdGlvbiBjbGFyaWZpY2F0aW9uIGFuZCBvbmUgZXhwbGljaXQgZG93bnN0cmVhbSBib3VuZGFyeSB8IFNpdHVhdGlvbiByZW1haW5zIHRoZSByb290LCBkb21haW4taW5kZXBlbmRlbnQgb2JqZWN0OyBleGlzdGluZyBub24tZXF1aXZhbGVuY2UgcnVsZXMgcmVtYWluLiB8CnwgQ09OU1QtSVNTVUUtMDAyIHwgQW1lbmRtZW50IDAwMSwgQ2hhbmdlIEIgfCBPbmUgc2VtYW50aWMgZGlzdGluY3Rpb24sIG9uZSBub24taW5mZXJlbmNlIHJ1bGUgb3Igbm9ybWF0aXZlIGV4YW1wbGUsIGFuZCBvbmUgbGlmZWN5Y2xlIGRlZmVycmFsIHwgU2V2ZW4tUHJpbWl0aXZlIHNldCwgaG9uZXN0IG5vbi1jb21wbGV0aW9uLCBub24tY29lcmNpdmUgQXR0ZW50aW9uLCBhbmQgZGV0YWlsZWQgbGlmZWN5Y2xlIGRlZmVycmFsIHJlbWFpbi4gfAp8IENPTlNULUlTU1VFLTAwMyB8IEFtZW5kbWVudCAwMDEsIENoYW5nZSBDIHwgT25lIHRydXN0LXByZWNlZGVuY2UgY2xhdXNlIGFuZCBvbmUgb3BlcmF0aW9uYWwgZGVmZXJyYWwgfCBJZGVudGl0eSBmaWRlbGl0eSwgcHJlc2VydmF0aW9uIGZpZGVsaXR5LCBhZ2VuY3ksIGRpZ25pdHksIGFuZCBob25lc3QgdGVjaG5pY2FsIGxpbWl0cyByZW1haW4uIHwKClRoZSB0aHJlZSBjaGFuZ2VzIGFyZSByZWxhdGVkIGJlY2F1c2UgdGhleSBib3VuZCB3aGVuIENvbnRpbnVpdHkgYmVnaW5zLCBob3cgaW50ZW50aW9uYWwgaW5hY3Rpdml0eSBpcyBjbGFzc2lmaWVkLCBhbmQgd2hlbiBhdXRob3JpemVkIGRpc2NvbnRpbnVpdHkgbGltaXRzIENvbnRpbnVpdHkuIEtlZXBpbmcgdGhlbSBpbiBvbmUgYW1lbmRtZW50IHByZXNlcnZlcyBhIHNpbmdsZSByYXRpZmljYXRpb24gY29udGV4dCB3aGlsZSBhbGxvd2luZyBlYWNoIGNoYW5nZSB0byBiZSBhY2NlcHRlZCwgcmVqZWN0ZWQsIG9yIHJldmlzZWQgaW5kZXBlbmRlbnRseS4KCioqQW1lbmRtZW50cyBtdXN0IGJlIG1pbmltYWwuKiogQW4gYW1lbmRtZW50IHNob3VsZCBhbHRlciBvbmx5IHRoZSBjbGF1c2VzIHJlcXVpcmVkIHRvIHJlc29sdmUgYWNjZXB0ZWQgaXNzdWVzLiBVbnJlbGF0ZWQgd29yZGluZywgdGVybWlub2xvZ3ksIHN0cnVjdHVyZSwgb3IgcGhpbG9zb3BoeSBtdXN0IHJlbWFpbiB1bmNoYW5nZWQuIE5vIGZ1bGwtZG9jdW1lbnQgcmV3cml0ZSBpcyBwZXJtaXR0ZWQgdW5sZXNzIHRoZSBGb3VuZGVyIGV4cGxpY2l0bHkgcmVqZWN0cyB0aGUgY3VycmVudCBjb25zdGl0dXRpb25hbCBzdHJ1Y3R1cmUuCgpUaGUgYW1lbmRtZW50IG11c3Qgbm90IGRlZmluZSBkYXRhYmFzZSBzY2hlbWEsIFR5cGVTY3JpcHQgaW50ZXJmYWNlcywgY2FyZGluYWxpdHkgaW1wbGVtZW50YXRpb24sIHN0b3JhZ2UgZm9ybWF0LCBBUEkgY29udHJhY3RzLCBVSSBpbnRlcmFjdGlvbiwgVG9kYXkgQm9hcmQgYmVoYXZpb3IsIFBhY2stc3BlY2lmaWMgZmllbGRzLCBkb21haW4gd29ya2Zsb3csIHRlc3QgZml4dHVyZXMsIG9yIG1pZ3JhdGlvbiBsb2dpYy4KCiMjIDguIERvd25zdHJlYW0gT3duZXJzaGlwCgp8IFF1ZXN0aW9uIHR5cGUgfCBPd25pbmcgZG93bnN0cmVhbSBsYXllciB8CnwgLS0tIHwgLS0tIHwKfCBDYW5vbmljYWwgdGVybXMgYW5kIHN1YnN0aXR1dGlvbnMgfCBDb250aW51aXR5IExhbmd1YWdlIHwKfCBQcmltaXRpdmUgcmVsYXRpb25zaGlwcyBhbmQgY29uY2VwdHVhbCBzdHJ1Y3R1cmUgfCBPbnRvbG9neSB8CnwgQ2FyZGluYWxpdHkgYW5kIGNhbm9uaWNhbCBzdHJ1Y3R1cmFsIHJlcHJlc2VudGF0aW9uIHwgQ2Fub25pY2FsIE1vZGVsIHwKfCBTdGF0ZSB0cmFuc2l0aW9ucyBhbmQgcmVvcGVuaW5nIHJ1bGVzIHwgU2l0dWF0aW9uIExpZmVjeWNsZSB8CnwgUHJpbWl0aXZlLXNwZWNpZmljIG9wZXJhdGlvbmFsIHJ1bGVzIHwgUHJpbWl0aXZlIFNwZWNpZmljYXRpb25zIHwKfCBUZXN0YWJsZSBiZWhhdmlvcmFsIGNyaXRlcmlhIGFuZCBub3JtYXRpdmUgZXhhbXBsZXMgfCBLZXJuZWwgQWNjZXB0YW5jZSBTcGVjaWZpY2F0aW9uIHwKfCBUZWNobmljYWwgcmVhbGl6YXRpb24gfCBBcmNoaXRlY3R1cmUgYW5kIEltcGxlbWVudGF0aW9uIHwKCkFuIGFjY2VwdGVkIGlzc3VlIG1heSByZXF1aXJlIHRoZSBDb25zdGl0dXRpb24gdG8gZGVmaW5lIGEgY29uY2VwdHVhbCBib3VuZGFyeSwgbm9ybWF0aXZlIHByaW5jaXBsZSwgcHJlY2VkZW5jZSBydWxlLCB0cnVzdCBib3VuZGFyeSwgb3IgZXhwbGljaXQgZGVmZXJyYWwuIEl0IG11c3Qgbm90IHVzZSBjb25zdGl0dXRpb25hbCBhbWVuZG1lbnQgdG8gcHJlLWVtcHQgdGhlIG93bmVyIG9mIG9wZXJhdGlvbmFsIGRldGFpbC4KCiMjIDkuIEZvdW5kZXIgVHJpYWdlCgpBdmFpbGFibGUgZGVjaXNpb25zIGZvciBlYWNoIGlzc3VlIGFyZToKCi0gYEFDQ0VQVGA6IHRoZSBpc3N1ZSByZXF1aXJlcyBjb25zdGl0dXRpb25hbCBhY3Rpb24gb3IgZXhwbGljaXQgY29uc3RpdHV0aW9uYWwgZGVmZXJyYWwuCi0gYFJFSkVDVGA6IHRoZSBpc3N1ZSBkb2VzIG5vdCByZXF1aXJlIGNvbnN0aXR1dGlvbmFsIGFjdGlvbi4KLSBgREVGRVJgOiByZXRhaW4gdGhlIGlzc3VlIGZvciBhIGxhdGVyIGRlY2lzaW9uIHdpdGhvdXQgY3VycmVudCBhbWVuZG1lbnQgYXV0aG9yaXR5LgotIGBSRVFVRVNUIENMQVJJRklDQVRJT05gOiByZXR1cm4gdGhlIGlzc3VlIGZvciBtb3JlIGV2aWRlbmNlIG9yIG5hcnJvd2VyIGZyYW1pbmcuCi0gYE1FUkdFIFdJVEggQU5PVEhFUiBJU1NVRWA6IGNvbWJpbmUgZGlzcG9zaXRpb24gd2l0aCBhbm90aGVyIGlzc3VlIHdoaWxlIHByZXNlcnZpbmcgc291cmNlIHRyYWNlYWJpbGl0eS4KCk5vIEZvdW5kZXIgZGVjaXNpb24gaXMgYXNzdW1lZCBieSB0aGlzIHJlZ2lzdGVyLgoKfCBJc3N1ZSBJRCB8IEZvdW5kZXIgZGVjaXNpb24gfCBEZWNpc2lvbiByYXRpb25hbGUgfCBUYXJnZXQgYW1lbmRtZW50IHwgRGVjaXNpb24gZGF0ZSB8CnwgLS0tIHwgLS0tIHwgLS0tIHwgLS0tIHwgLS0tIHwKfCBDT05TVC1JU1NVRS0wMDEgfCAgfCAgfCBBbWVuZG1lbnQgMDAxLCBDaGFuZ2UgQSB8ICB8CnwgQ09OU1QtSVNTVUUtMDAyIHwgIHwgIHwgQW1lbmRtZW50IDAwMSwgQ2hhbmdlIEIgfCAgfAp8IENPTlNULUlTU1VFLTAwMyB8ICB8ICB8IEFtZW5kbWVudCAwMDEsIENoYW5nZSBDIHwgIHwKCkFmdGVyIHRyaWFnZSwgYWNjZXB0ZWQgaXNzdWVzIG1heSBwcm9jZWVkIHRvIGEgbWluaW1hbCBhbWVuZG1lbnQgcHJvcG9zYWwuIFJlamVjdGVkIG9yIGRlZmVycmVkIGlzc3VlcyBtdXN0IHJldGFpbiB0aGVpciByYXRpb25hbGUuIE5vIGlzc3VlIGJlY29tZXMgYFJFU09MVkVEYCB1bnRpbCByYXRpZmllZCBldmlkZW5jZSBleGlzdHMsIGFuZCBubyBhY2NlcHRlZCBjb25zdGl0dXRpb25hbCBjaGFuZ2UgYmVjb21lcyBgQ0xPU0VEYCB1bnRpbCB0aGUgYXV0aG9yaXRhdGl2ZSBDb25zdGl0dXRpb24gb3IgZm9ybWFsIGRpc3Bvc2l0aW9uIHJlY29yZCByZWZsZWN0cyBpdC4KCiMjIDEwLiBSZWdpc3RlciBBY2NlcHRhbmNlIENoZWNrCgpUaGlzIHJlZ2lzdGVyIGlzIHJlYWR5IGZvciBGb3VuZGVyIHRyaWFnZSB3aGVuIGEgZnV0dXJlIGFtZW5kbWVudCB0YXNrIGNhbiBhbnN3ZXIsIGZvciBlYWNoIGlzc3VlOgoKMS4gV2hpY2ggZXhhY3QgaXNzdWUgaXMgYmVpbmcgcmVzb2x2ZWQ/CjIuIFdoeSBpcyBjb25zdGl0dXRpb25hbCBjaGFuZ2UgcmVxdWlyZWQ/CjMuIFdoaWNoIGNsYXVzZSBzaG91bGQgY2hhbmdlPwo0LiBXaGF0IGlzIHRoZSBzbWFsbGVzdCBhY2NlcHRhYmxlIGNoYW5nZT8KNS4gV2hhdCBtdXN0IHJlbWFpbiB1bmNoYW5nZWQ/CjYuIEhvdyB3aWxsIHRoZSBpc3N1ZSBiZSBjb25zaWRlcmVkIHJlc29sdmVkPwoKVGhlIHJlZ2lzdGVyIGRvZXMgbm90IGF1dGhvcml6ZSBhbiBhbnN3ZXIuIEl0IGVzdGFibGlzaGVzIHRoZSBldmlkZW5jZSwgYm91bmRhcmllcywgYW5kIGdvdmVybmFuY2UgcGF0aCBuZWVkZWQgZm9yIHRoYXQgZGVjaXNpb24uCg==",
+      "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+      "byte_length": 23722,
+      "encoding": "UTF-8",
+      "bom": false,
+      "crlf_count": 0,
+      "lf_count": 216,
+      "final_newline": true,
+      "total_byte_delta": -42
+    },
+    "difference_proof": {
+      "authorized_changed_ranges": 6,
+      "unauthorized_changed_ranges": 0,
+      "unexplained_byte_differences": 0,
+      "protected_unchanged_byte_length": 23674,
+      "protected_unchanged_bytes_sha256": "6B0DD4923C8DC6EFEC10278834D9846C50EED1F3FB87B96A41CEB65CEFAC5356",
+      "rendered_diff_hunks": 4
+    },
+    "resolution_semantics": "RESOLVED_NOT_CLOSED",
+    "history_treatment": "REPLACE_CURRENT_PRESERVE_PROVENANCE",
+    "effective_point": "EFFECTIVE_ON_INDEPENDENT_PERSISTED_VERIFICATION",
+    "interim_state": "PERSISTED_TARGET_PENDING_EFFECTIVENESS",
+    "canonical_register_unchanged": true,
+    "execution_authorized": false,
+    "founder_exact_byte_approval_required": true,
+    "prohibited_changes": [
+      "CLOSED status",
+      "issue removal",
+      "identifier or title changes",
+      "rationale or provenance changes",
+      "schema extension",
+      "unrelated whitespace or line-ending changes",
+      "Constitution mutation",
+      "structural-finding or Amendment-evidence mutation",
+      "future or wildcard issues",
+      "execution manifest creation",
+      "execution gate opening",
+      "immediate effectiveness",
+      "closure or ratification claims"
+    ]
+  },
+  "frozen_approval_payload_canonicalization": {
+    "encoding": "UTF-8",
+    "serialization": "JSON sorted keys, compact separators, ensure_ascii=false",
+    "final_newline": false,
+    "hashed_scope": "frozen_approval_payload object only"
+  },
+  "frozen_approval_payload_sha256": "73F54918847D7A63E695753E86D3AF17B2A1A98EC2A2FFD884CFFA65C3D1D0D4"
+}

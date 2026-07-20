@@ -1,0 +1,126 @@
+{
+  "task_id": 43,
+  "task_title": "Moon Constitution v2 Founder Recovery-Verification Effectiveness Authority Clarification and One-Time Delegation v1",
+  "decision_date": "2026-07-20",
+  "primary_outcome": "RECOVERY_VERIFICATION_EFFECTIVENESS_AUTHORIZED",
+  "founder_decision": {
+    "recovery_verification_governance_effect_recognized": true,
+    "one_time_delegation_granted": true,
+    "authority_class": "FOUNDER_ONE_TIME_RECOVERY_VERIFICATION_EFFECTIVENESS_DELEGATION",
+    "incident_scope": "TASK_38_TO_TASK_42_INCIDENT_ONLY",
+    "authorized_executor": "TASK_44_ONLY",
+    "reusable": false,
+    "transferable": false,
+    "delegable": false,
+    "self_extending": false,
+    "retroactive_mutation_authority": false
+  },
+  "task_41": {
+    "path": "docs/kernel/governance/41_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.md",
+    "expected_sha256": "07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6",
+    "observed_sha256": "07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6",
+    "identity_exact": true,
+    "verification_satisfied": true,
+    "task_39_blocker_resolved": true,
+    "required_mutations": 6,
+    "observed_mutations": 6,
+    "authorized_mutations": 6,
+    "missing_mutations": 0,
+    "unauthorized_mutations": 0
+  },
+  "task_42": {
+    "path": "docs/kernel/governance/42_constitution_v2_governance_effective_issue_status_verification_state_synchronization_authority_decision_v1.md",
+    "expected_sha256": "46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C",
+    "observed_sha256": "46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C",
+    "identity_exact": true,
+    "synchronization_not_authorized": true,
+    "canonical_mutations": 0
+  },
+  "authority": {
+    "effective_after_persisted_decision_identities": true,
+    "authorized_targets_artifact": "docs/kernel/governance/43d_constitution_v2_authorized_issue_status_synchronization_target_matrix_v1.json",
+    "authorized_mutation_count": 15,
+    "protected_status_assertion_count": 6,
+    "mandatory_precondition_count": 24,
+    "prohibition_count": 17,
+    "schema_extension_authorized": false,
+    "gate_reopening_authorized": false,
+    "retry_authorized": false,
+    "historical_evidence_mutation_authorized": false,
+    "executor_selected_fields_authorized": false,
+    "executor_selected_wording_authorized": false
+  },
+  "issues": {
+    "examined": 3,
+    "authorized_for_synchronization": 3,
+    "not_authorized": 0,
+    "already_synchronized": 0,
+    "status_representations_already_in_target_state": 6,
+    "items": [
+      {
+        "issue_id": "CONST-ISSUE-001",
+        "classification": "AUTHORIZED_FOR_SYNCHRONIZATION",
+        "resolution_criteria_satisfied": true,
+        "existing_fields_authorized": 5,
+        "status_assertions_protected": 2
+      },
+      {
+        "issue_id": "CONST-ISSUE-002",
+        "classification": "AUTHORIZED_FOR_SYNCHRONIZATION",
+        "resolution_criteria_satisfied": true,
+        "existing_fields_authorized": 5,
+        "status_assertions_protected": 2
+      },
+      {
+        "issue_id": "CONST-ISSUE-003",
+        "classification": "AUTHORIZED_FOR_SYNCHRONIZATION",
+        "resolution_criteria_satisfied": true,
+        "existing_fields_authorized": 5,
+        "status_assertions_protected": 2
+      }
+    ]
+  },
+  "canonical_register": {
+    "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "sha256_before": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length_before": 23722,
+    "encoding": "UTF-8",
+    "bom": "ABSENT",
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0
+  },
+  "task_43_mutations": {
+    "canonical_planned": 0,
+    "canonical_observed": 0,
+    "unauthorized": 0
+  },
+  "gate_before": "CLOSED",
+  "gate_after": "CLOSED",
+  "retry_performed": false,
+  "protected_evidence_changed": false,
+  "authority_consumption_rule": "CONSUMED_BY_ANY_VALID_TERMINAL_TASK_44_OUTCOME",
+  "authority_invalidation_rules_artifact": "docs/kernel/governance/43f_constitution_v2_authority_consumption_and_invalidation_rules_v1.json",
+  "repository": {
+    "branch": "main",
+    "head": "54b5c57ff39d0cd3f8bb3043b0b81650f8d893fd",
+    "tree": "abb6a7c8940012e12a2dcd2e5cd895ce88622553",
+    "working_tree_status": "UNTRACKED_DOCS_KERNEL_TREE_PRESENT"
+  },
+  "recommended_next_task": {
+    "task_id": 44,
+    "title": "Moon Constitution v2 One-Time Authorized Recovery-Verification Governance-State Synchronization Execution v1"
+  },
+  "artifacts_created": [
+    "docs/kernel/governance/43_constitution_v2_founder_recovery_verification_effectiveness_authority_clarification_v1.md",
+    "docs/kernel/governance/43a_constitution_v2_founder_recovery_verification_effectiveness_authority_clarification_v1.json",
+    "docs/kernel/governance/43b_constitution_v2_task41_task42_input_identity_and_consistency_report_v1.json",
+    "docs/kernel/governance/43c_constitution_v2_one_time_recovery_verification_effectiveness_authority_instrument_v1.md",
+    "docs/kernel/governance/43d_constitution_v2_authorized_issue_status_synchronization_target_matrix_v1.json",
+    "docs/kernel/governance/43e_constitution_v2_authority_precondition_and_prohibition_matrix_v1.md",
+    "docs/kernel/governance/43f_constitution_v2_authority_consumption_and_invalidation_rules_v1.json",
+    "docs/kernel/governance/43g_constitution_v2_non_mutation_compliance_report_v1.json",
+    "docs/kernel/governance/43h_constitution_v2_founder_authority_evidence_manifest_v1.json"
+  ],
+  "blocking_findings": [],
+  "verdict": "PASS — FOUNDER ONE-TIME RECOVERY-VERIFICATION EFFECTIVENESS AUTHORITY ISSUED FOR TASK 44; NO CANONICAL MUTATION PERFORMED"
+}

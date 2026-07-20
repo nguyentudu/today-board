@@ -1,0 +1,35 @@
+{
+  "task_id": 43,
+  "artifact": "NON_MUTATION_COMPLIANCE_REPORT",
+  "canonical_register": {
+    "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "sha256_before": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length_before": 23722,
+    "sha256_after": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "byte_length_after": 23722,
+    "changed": false
+  },
+  "protected_task_38_to_42_inventory": {
+    "file_count": 40,
+    "canonical_inventory_sha256_before": "0DA4D17FB4427140756D305B7447E49302778A583EFFD911B97CF98ECCFEDA9C",
+    "canonical_inventory_sha256_after": "0DA4D17FB4427140756D305B7447E49302778A583EFFD911B97CF98ECCFEDA9C",
+    "total_bytes_before": 224533,
+    "changed": false
+  },
+  "task_43_observed_mutations": {
+    "canonical_governance_register": 0,
+    "canonical_issue_status": 0,
+    "task_38_persisted_result": 0,
+    "task_39_to_42_artifacts": 0,
+    "historical_evidence": 0,
+    "execution_gate_state": 0,
+    "retry_state": 0
+  },
+  "gate_before": "CLOSED",
+  "gate_after": "CLOSED",
+  "retry_performed": false,
+  "retry_authority_created": false,
+  "governance_effective_resolved_issues": "0/3",
+  "task_43_artifact_creations_only": true,
+  "final_result": "PASS_ZERO_CANONICAL_OR_PROTECTED_EVIDENCE_MUTATION"
+}
