@@ -351,6 +351,23 @@ textarea {
   line-height: 1.4;
 }
 
+.reentry-priority-note {
+  border-left: 3px solid #a9b6a2;
+  padding-left: 0.55rem;
+  font-size: 0.82rem;
+}
+
+.reentry-signal-actionable,
+.reentry-signal-prepared {
+  border-color: #9aaa91;
+  background: #f2f6ef;
+}
+
+.reentry-signal-waiting {
+  border-color: #c7a875;
+  background: #faf5e9;
+}
+
 .card-list {
   display: grid;
   gap: 0.75rem;

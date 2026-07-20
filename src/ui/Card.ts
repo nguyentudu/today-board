@@ -1,5 +1,6 @@
 import { evidenceIdentity, type Card as BoardCard, type EvidenceKind, type EvidenceRole } from "../domain/card";
 import type { BoardState } from "../domain/state";
+import { getReentrySignal } from "../domain/reentryPriority";
 import { CardEditor } from "./CardEditor";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
@@ -157,6 +158,13 @@ export function Card({
 
     if (card.evidenceMeta.length > 0) {
       meta.append(createPill(`${card.evidenceMeta.length} ${text.keyEvidencePill}`));
+    }
+
+    const reentrySignal = getReentrySignal(card);
+    if (reentrySignal.readiness !== "excluded") {
+      const signalPill = createPill(text.reentryReadinessLabels[reentrySignal.readiness]);
+      signalPill.classList.add(`reentry-signal-${reentrySignal.readiness}`);
+      meta.append(signalPill);
     }
 
     const returnPoint = document.createElement("p");

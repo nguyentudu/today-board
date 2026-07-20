@@ -75,6 +75,14 @@ export const copy = {
     evidenceUnavailable: "Unavailable attachment",
     evidenceKindLabels: { link: "Link", image: "Image", audio: "Voice", file: "File" },
     keyEvidencePill: "key evidence",
+    reentryPriorityNote: "Ordered by the return point, next action, and evidence you recorded. States never change automatically.",
+    reentryReadinessLabels: {
+      actionable: "Next action ready",
+      prepared: "Return point ready",
+      waiting: "Waiting for a trigger",
+      "context-only": "Context saved",
+      unprepared: "Return point missing",
+    },
     richLinks: "Link",
     richLinksEmpty: "Paste link here",
     richLinksHelper: "Only lines beginning with http:// or https:// are counted as links.",
@@ -274,6 +282,14 @@ export const copy = {
     evidenceUnavailable: "Attachment không còn khả dụng",
     evidenceKindLabels: { link: "Link", image: "Ảnh", audio: "Ghi âm", file: "File" },
     keyEvidencePill: "evidence chính",
+    reentryPriorityNote: "Ưu tiên theo điểm quay lại, hành động và evidence bạn đã ghi. Moon không tự đổi trạng thái.",
+    reentryReadinessLabels: {
+      actionable: "Có hành động tiếp theo",
+      prepared: "Điểm quay lại đã rõ",
+      waiting: "Đang chờ điều kiện",
+      "context-only": "Đã giữ context",
+      unprepared: "Thiếu điểm quay lại",
+    },
     richLinks: "Link",
     richLinksEmpty: "Dán link ở đây",
     richLinksHelper: "Chỉ các dòng bắt đầu bằng http:// hoặc https:// được tính là link.",
@@ -459,6 +475,8 @@ export const copy = {
     evidenceUnavailable: string;
     evidenceKindLabels: Record<"link" | "image" | "audio" | "file", string>;
     keyEvidencePill: string;
+    reentryPriorityNote: string;
+    reentryReadinessLabels: Record<"actionable" | "prepared" | "waiting" | "context-only" | "unprepared", string>;
     richLinks: string;
     richLinksEmpty: string;
     richLinksHelper: string;

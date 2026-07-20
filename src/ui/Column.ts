@@ -1,5 +1,6 @@
 import type { Board } from "../domain/board";
 import type { EvidenceKind, EvidenceRole } from "../domain/card";
+import { compareReentryPriority } from "../domain/reentryPriority";
 import type { BoardState } from "../domain/state";
 import { Card } from "./Card";
 import type { Language } from "./i18n";
@@ -56,10 +57,20 @@ export function Column(props: ColumnProps): HTMLElement {
 
   header.append(title, description);
 
+  if (props.state === "continue") {
+    const priorityNote = document.createElement("p");
+    priorityNote.className = "reentry-priority-note";
+    priorityNote.textContent = text.reentryPriorityNote;
+    header.append(priorityNote);
+  }
+
   const list = document.createElement("div");
   list.className = "card-list";
 
   const cards = props.board.cards.filter((card) => card.state === props.state && !card.hidden);
+  if (props.state === "continue") {
+    cards.sort(compareReentryPriority);
+  }
 
   if (cards.length === 0) {
     const empty = document.createElement("p");

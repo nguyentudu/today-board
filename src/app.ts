@@ -13,7 +13,7 @@ if (!app) {
 }
 
 const root = app;
-const BUILD_ID = "2026.07.20-c";
+const BUILD_ID = "2026.07.20-d";
 const statusRegion = document.createElement("div");
 statusRegion.className = "app-status-region";
 statusRegion.setAttribute("aria-label", "Application status");
