@@ -19,6 +19,7 @@
     "test:reentry-core": "node scripts/verify-reentry-core.mjs",
     "test:promise-closure": "node scripts/verify-promise-closure.mjs",
     "test:evidence-meaning": "node scripts/verify-evidence-meaning.mjs",
+    "test:evidence-access": "node scripts/verify-evidence-access.mjs",
     "test:state-behavior": "node scripts/verify-state-behavior.mjs",
     "test:edit-session": "node scripts/verify-edit-session.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""

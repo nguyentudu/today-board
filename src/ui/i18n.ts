@@ -73,6 +73,10 @@ export const copy = {
     evidenceMeaningEmpty: "Attachments are available, but none has a specific role yet.",
     evidenceNone: "No evidence attached yet.",
     evidenceUnavailable: "Unavailable attachment",
+    evidenceOpen: "Open",
+    evidenceDownload: "Download",
+    evidenceShow: "Show",
+    evidencePlay: "Play",
     evidenceKindLabels: { link: "Link", image: "Image", audio: "Voice", file: "File" },
     keyEvidencePill: "key evidence",
     reentryPriorityNote: "Ordered by the return point, next action, and evidence you recorded. States never change automatically.",
@@ -283,6 +287,10 @@ export const copy = {
     evidenceMeaningEmpty: "Đã có attachment nhưng chưa chỉ rõ vai trò evidence.",
     evidenceNone: "Chưa gắn evidence.",
     evidenceUnavailable: "Attachment không còn khả dụng",
+    evidenceOpen: "Mở",
+    evidenceDownload: "Tải xuống",
+    evidenceShow: "Xem",
+    evidencePlay: "Phát",
     evidenceKindLabels: { link: "Link", image: "Ảnh", audio: "Ghi âm", file: "File" },
     keyEvidencePill: "evidence chính",
     reentryPriorityNote: "Ưu tiên theo điểm quay lại, hành động và evidence bạn đã ghi. Moon không tự đổi trạng thái.",
@@ -479,6 +487,10 @@ export const copy = {
     evidenceMeaningEmpty: string;
     evidenceNone: string;
     evidenceUnavailable: string;
+    evidenceOpen: string;
+    evidenceDownload: string;
+    evidenceShow: string;
+    evidencePlay: string;
     evidenceKindLabels: Record<"link" | "image" | "audio" | "file", string>;
     keyEvidencePill: string;
     reentryPriorityNote: string;

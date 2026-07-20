@@ -136,7 +136,7 @@ const buildId = appSource.match(/BUILD_ID = "([^"]+)"/)?.[1];
 const cacheVersion = swSource.match(/CACHE_VERSION = "([^"]+)"/)?.[1];
 assert(
   "app and service-worker identities move together",
-  buildId?.replace(/\./g, "-") === cacheVersion && buildId === "2026.07.20-e",
+  Boolean(buildId) && buildId?.replace(/\./g, "-") === cacheVersion,
 );
 
 if (failures.length > 0) {

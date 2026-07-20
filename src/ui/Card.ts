@@ -311,7 +311,7 @@ function renderRichContext(
         item.append(anchor);
       } else {
         item.className = "plain-link-text";
-        item.textContent = link;
+        item.textContent = link.startsWith("data:") ? text.evidenceUnavailable : link;
       }
       appendEvidenceRoleControl(item, card, "link", link, text, actions);
       list.append(item);
@@ -335,10 +335,12 @@ function renderRichContext(
         const image = document.createElement("img");
         image.src = ref;
         image.alt = text.imageRefs;
+        image.id = evidenceTargetId("image", ref);
+        image.tabIndex = -1;
         mediaItem.append(label, image);
       } else {
-        const reference = document.createElement("code");
-        reference.textContent = ref;
+        const reference = document.createElement(ref.startsWith("data:") ? "p" : "code");
+        reference.textContent = ref.startsWith("data:") ? text.evidenceUnavailable : ref;
         mediaItem.append(reference);
       }
 
@@ -365,7 +367,13 @@ function renderRichContext(
         const audio = document.createElement("audio");
         audio.controls = true;
         audio.src = ref;
+        audio.id = evidenceTargetId("audio", ref);
+        audio.tabIndex = -1;
         mediaItem.append(label, audio);
+      } else {
+        const unavailable = document.createElement("p");
+        unavailable.textContent = text.evidenceUnavailable;
+        mediaItem.append(unavailable);
       }
 
       mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onAudioRefs(removeAt(card.audioRefs, index))));
@@ -518,28 +526,114 @@ function renderEvidenceMeaning(card: BoardCard, text: (typeof copy)[Language]): 
   const list = document.createElement("ul");
   for (const meta of ranked) {
     const item = document.createElement("li");
-    item.textContent = `${text.evidenceRoleLabels[meta.role]} · ${resolveEvidenceLabel(card, meta.id, meta.kind, text)}`;
+    item.className = "evidence-access-item";
+    const access = resolveEvidenceAccess(card, meta.id, meta.kind, text);
+    const description = document.createElement("span");
+    description.className = "evidence-access-description";
+    description.textContent = `${text.evidenceRoleLabels[meta.role]} · ${access.label}`;
+    item.append(description, createEvidenceAction(access, text));
     list.append(item);
   }
   block.append(list);
   return block;
 }
 
-function resolveEvidenceLabel(
+interface EvidenceAccess {
+  kind: EvidenceKind;
+  label: string;
+  href?: string;
+  download?: string;
+  targetId?: string;
+}
+
+function resolveEvidenceAccess(
   card: BoardCard,
   id: string,
   kind: EvidenceKind,
   text: (typeof copy)[Language],
-): string {
+): EvidenceAccess {
   if (kind === "file") {
-    return card.fileRefs.find((source) => evidenceIdentity(kind, source) === id)?.name ?? text.evidenceUnavailable;
+    const source = card.fileRefs.find((candidate) => evidenceIdentity(kind, candidate) === id);
+    return source?.dataUrl
+      ? { kind, label: source.name, href: source.dataUrl, download: source.name }
+      : { kind, label: source?.name ?? text.evidenceUnavailable };
   }
+
   const sources = kind === "link" ? card.richLinks : kind === "image" ? card.imageRefs : card.audioRefs;
   const index = sources.findIndex((source) => evidenceIdentity(kind, source) === id);
   if (index < 0) {
-    return text.evidenceUnavailable;
+    return { kind, label: text.evidenceUnavailable };
   }
-  return kind === "link" ? sources[index] : `${text.evidenceKindLabels[kind]} ${index + 1}`;
+
+  const source = sources[index];
+  if (kind === "link") {
+    const href = normalizeReadableHttpUrl(source);
+    const label = source.startsWith("data:") ? text.evidenceUnavailable : source;
+    return href ? { kind, label, href } : { kind, label };
+  }
+
+  const expectedPrefix = kind === "image" ? "data:image/" : "data:audio/";
+  return source.startsWith(expectedPrefix)
+    ? { kind, label: `${text.evidenceKindLabels[kind]} ${index + 1}`, targetId: evidenceTargetId(kind, source) }
+    : { kind, label: text.evidenceUnavailable };
+}
+
+function createEvidenceAction(access: EvidenceAccess, text: (typeof copy)[Language]): HTMLElement {
+  const actionLabel = evidenceActionLabel(access.kind, text);
+  if (access.href) {
+    const link = document.createElement("a");
+    link.className = "evidence-access-action";
+    link.href = access.href;
+    link.textContent = actionLabel;
+    link.setAttribute("aria-label", `${actionLabel}: ${access.label}`);
+    if (access.download) {
+      link.download = access.download;
+    } else {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+    return link;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "evidence-access-action quiet-button";
+  button.textContent = access.targetId ? actionLabel : text.evidenceUnavailable;
+  button.disabled = !access.targetId;
+  button.setAttribute("aria-label", `${button.textContent}: ${access.label}`);
+  if (access.targetId) {
+    button.addEventListener("click", () => focusEvidenceTarget(access.targetId!, access.kind === "audio"));
+  }
+  return button;
+}
+
+function evidenceActionLabel(kind: EvidenceKind, text: (typeof copy)[Language]): string {
+  if (kind === "file") {
+    return text.evidenceDownload;
+  }
+  if (kind === "image") {
+    return text.evidenceShow;
+  }
+  if (kind === "audio") {
+    return text.evidencePlay;
+  }
+  return text.evidenceOpen;
+}
+
+function focusEvidenceTarget(targetId: string, playAudio: boolean): void {
+  const target = document.getElementById(targetId);
+  if (!target) {
+    return;
+  }
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  target.focus({ preventScroll: true });
+  if (playAudio && target instanceof HTMLAudioElement) {
+    void target.play().catch(() => undefined);
+  }
+}
+
+function evidenceTargetId(kind: "image" | "audio", source: string): string {
+  return `evidence-target-${evidenceIdentity(kind, source)}`;
 }
 
 function evidenceRoleRank(role: BoardCard["evidenceMeta"][number]["role"]): number {
