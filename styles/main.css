@@ -760,8 +760,26 @@ textarea {
 
 .card-actions {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.55rem;
+}
+
+.card-actions .action-label,
+.card-actions .edit-session-status {
+  grid-column: 1 / -1;
+}
+
+.edit-save {
+  border-color: #66805d;
+  background: #dce9d6;
+  color: #273323;
+}
+
+.edit-session-status {
+  min-height: 1.25rem;
+  margin: 0;
+  color: #9a3f35;
+  font-size: 0.88rem;
 }
 
 .action-label {

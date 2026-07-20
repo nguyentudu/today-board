@@ -23,6 +23,25 @@ export interface Board {
   updatedAt: string;
 }
 
+export interface CardEditDraft {
+  title: string;
+  note: string;
+  contextSnapshot: string;
+  whyStillOpen: string;
+  waitingOn: string;
+  ifYouReturn: string;
+  nextStepKind: Card["nextStepKind"];
+  nextStep: string;
+  promise: string;
+  promiseTo: string;
+  promiseDueOn: string;
+  promiseStatus: Card["promiseStatus"];
+  outcome: string;
+  richLinks: string[];
+  bookmarkReason: string;
+  tags: string[];
+}
+
 export function createBoard(): Board {
   return {
     version: 1,
@@ -35,6 +54,61 @@ export function addCard(board: Board, title: string, state: BoardState = "contin
   return touchBoard({
     ...board,
     cards: [createCard(title, state), ...board.cards],
+  });
+}
+
+export function createCardEditDraft(card: Card): CardEditDraft {
+  return {
+    title: card.title,
+    note: card.note,
+    contextSnapshot: card.contextSnapshot,
+    whyStillOpen: card.whyStillOpen,
+    waitingOn: card.waitingOn,
+    ifYouReturn: card.ifYouReturn,
+    nextStepKind: card.nextStepKind,
+    nextStep: card.nextStep,
+    promise: card.promise,
+    promiseTo: card.promiseTo,
+    promiseDueOn: card.promiseDueOn,
+    promiseStatus: card.promiseStatus,
+    outcome: card.outcome,
+    richLinks: [...card.richLinks],
+    bookmarkReason: card.bookmarkReason,
+    tags: [...card.tags],
+  };
+}
+
+export function isCardEditDraftDirty(card: Card, draft: CardEditDraft): boolean {
+  return JSON.stringify(createCardEditDraft(card)) !== JSON.stringify(draft);
+}
+
+export function applyCardEditDraft(board: Board, cardId: string, draft: CardEditDraft): Board {
+  return updateCard(board, cardId, (card) => {
+    const promise = normalizeReentryField(draft.promise).slice(0, 360);
+    const updated = {
+      ...card,
+      title: draft.title.trim() || "Untitled return",
+      note: draft.note.slice(0, 280),
+      contextSnapshot: normalizeReentryField(draft.contextSnapshot).slice(0, 360),
+      whyStillOpen: normalizeReentryField(draft.whyStillOpen).slice(0, 360),
+      waitingOn: normalizeReentryField(draft.waitingOn).slice(0, 360),
+      ifYouReturn: normalizeReentryField(draft.ifYouReturn).slice(0, 360),
+      nextStepKind: normalizeNextStepKind(draft.nextStepKind, draft.nextStep),
+      nextStep: normalizeReentryField(draft.nextStep).slice(0, 360),
+      promise,
+      promiseTo: normalizeReentryField(draft.promiseTo).slice(0, 160),
+      promiseDueOn: normalizeDateOnly(draft.promiseDueOn),
+      promiseStatus: normalizePromiseStatus(draft.promiseStatus, promise),
+      outcome: normalizeReentryField(draft.outcome).slice(0, 480),
+      richLinks: normalizeList(draft.richLinks),
+      bookmarkReason: draft.bookmarkReason.slice(0, 360),
+      tags: normalizeTags(draft.tags),
+    };
+    const identities = collectEvidenceIdentities(updated);
+    return touchCard({
+      ...updated,
+      evidenceMeta: card.evidenceMeta.filter((meta) => identities.has(meta.id)),
+    });
   });
 }
 

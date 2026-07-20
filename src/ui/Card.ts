@@ -1,4 +1,9 @@
 import { evidenceIdentity, type Card as BoardCard, type EvidenceKind, type EvidenceRole } from "../domain/card";
+import {
+  createCardEditDraft,
+  isCardEditDraftDirty,
+  type CardEditDraft,
+} from "../domain/board";
 import type { BoardState } from "../domain/state";
 import { getReentrySignal } from "../domain/reentryPriority";
 import { CardEditor } from "./CardEditor";
@@ -10,60 +15,35 @@ import { extractValidHttpUrls, normalizeReadableHttpUrl } from "../lib/links";
 interface CardProps {
   card: BoardCard;
   language: Language;
-  onRename: (cardId: string, title: string) => void;
   onMove: (cardId: string, state: BoardState) => void;
-  onNote: (cardId: string, note: string) => void;
-  onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
-  onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
-  onWaitingOn: (cardId: string, waitingOn: string) => void;
-  onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
-  onNextStepKind: (cardId: string, nextStepKind: BoardCard["nextStepKind"]) => void;
-  onNextStep: (cardId: string, nextStep: string) => void;
-  onPromise: (
-    cardId: string,
-    promise: { text?: string; to?: string; dueOn?: string; status?: BoardCard["promiseStatus"] },
-  ) => void;
-  onOutcome: (cardId: string, outcome: string) => void;
+  onSaveDraft: (cardId: string, draft: CardEditDraft) => boolean;
   onEvidenceRole: (
     cardId: string,
     evidence: { id: string; kind: EvidenceKind; role: EvidenceRole },
   ) => void;
-  onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
   onFileRefs: (cardId: string, fileRefs: BoardCard["fileRefs"]) => void;
-  onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
-  onTags: (cardId: string, tags: string[]) => void;
   onHide: (cardId: string) => void;
 }
+
+const editSessions = new Map<string, CardEditDraft>();
 
 export function Card({
   card,
   language,
-  onRename,
   onMove,
-  onNote,
-  onContextSnapshot,
-  onWhyStillOpen,
-  onWaitingOn,
-  onIfYouReturn,
-  onNextStepKind,
-  onNextStep,
-  onPromise,
-  onOutcome,
+  onSaveDraft,
   onEvidenceRole,
-  onRichLinks,
   onImageRefs,
   onAudioRefs,
   onFileRefs,
-  onBookmarkReason,
-  onTags,
   onHide,
 }: CardProps): HTMLElement {
   const text = copy[language];
   const item = document.createElement("article");
   item.className = "card";
-  let mode: "summary" | "open" | "edit" = "summary";
+  let mode: "summary" | "open" | "edit" = editSessions.has(card.id) ? "edit" : "summary";
 
   const render = () => {
     item.className = `card card-${mode}`;
@@ -78,32 +58,25 @@ export function Card({
     item.append(renderHeaderActions());
 
     if (mode === "edit") {
+      const draft = editSessions.get(card.id) ?? createCardEditDraft(card);
+      editSessions.set(card.id, draft);
       item.append(
         CardEditor({
           card,
+          draft,
           language,
-          onRename: (title) => onRename(card.id, title),
-          onNote: (note) => onNote(card.id, note),
-          onContextSnapshot: (contextSnapshot) => onContextSnapshot(card.id, contextSnapshot),
-          onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
-          onWaitingOn: (waitingOn) => onWaitingOn(card.id, waitingOn),
-          onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
-          onNextStepKind: (nextStepKind) => onNextStepKind(card.id, nextStepKind),
-          onNextStep: (nextStep) => onNextStep(card.id, nextStep),
-          onPromise: (promise) => onPromise(card.id, promise),
-          onOutcome: (outcome) => onOutcome(card.id, outcome),
-          onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
+          onDraftChange: (change) =>
+            editSessions.set(card.id, { ...(editSessions.get(card.id) ?? draft), ...change }),
           onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
           onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
           onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
-          onBookmarkReason: (bookmarkReason) => onBookmarkReason(card.id, bookmarkReason),
-          onTags: (tags) => onTags(card.id, tags),
         }),
       );
     } else {
       item.append(renderReadableDetail(card, text));
     }
 
+    // Media and evidence roles remain immediate-save operations; the module-level draft survives their board rerender.
     item.append(
       renderRichContext(card, text, {
         onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
@@ -123,6 +96,20 @@ export function Card({
   const setMode = (nextMode: typeof mode) => {
     mode = nextMode;
     render();
+  };
+
+  const startEditing = () => {
+    editSessions.set(card.id, createCardEditDraft(card));
+    setMode("edit");
+  };
+
+  const discardDraft = (): boolean => {
+    const draft = editSessions.get(card.id);
+    if (draft && isCardEditDraftDirty(card, draft) && !window.confirm(text.unsavedDraftConfirm)) {
+      return false;
+    }
+    editSessions.delete(card.id);
+    return true;
   };
 
   const renderSummary = (): HTMLElement => {
@@ -178,7 +165,7 @@ export function Card({
     actions.className = "summary-actions";
     actions.append(
       createModeButton(text.openCard, () => setMode("open")),
-      createModeButton(text.editCard, () => setMode("edit")),
+      createModeButton(text.editCard, startEditing),
     );
 
     summary.append(title, snapshot, returnPoint, meta, actions);
@@ -194,7 +181,14 @@ export function Card({
     header.className = "card-mode-header";
     const title = document.createElement("h3");
     title.textContent = card.title;
-    header.append(title, createModeButton(text.collapseCard, () => setMode("summary")));
+    header.append(
+      title,
+      createModeButton(text.collapseCard, () => {
+        if (mode !== "edit" || discardDraft()) {
+          setMode("summary");
+        }
+      }),
+    );
     return header;
   };
 
@@ -218,15 +212,54 @@ export function Card({
       moveSelect.append(option);
     }
 
-    moveSelect.addEventListener("change", () => onMove(card.id, moveSelect.value as BoardState));
+    moveSelect.addEventListener("change", () => {
+      if (!discardDraft()) {
+        moveSelect.value = card.state;
+        return;
+      }
+      onMove(card.id, moveSelect.value as BoardState);
+    });
 
     const hideButton = document.createElement("button");
     hideButton.type = "button";
     hideButton.className = "quiet-button";
     hideButton.textContent = text.hideCard;
-    hideButton.addEventListener("click", () => onHide(card.id));
+    hideButton.addEventListener("click", () => {
+      if (discardDraft()) {
+        onHide(card.id);
+      }
+    });
 
-    actions.append(moveLabel, hideButton);
+    const saveButton = document.createElement("button");
+    saveButton.type = "button";
+    saveButton.className = "primary-button edit-save";
+    saveButton.textContent = text.saveAction;
+    saveButton.addEventListener("click", () => {
+      const draft = editSessions.get(card.id);
+      if (!draft) {
+        return;
+      }
+      editSessions.delete(card.id);
+      if (!onSaveDraft(card.id, draft)) {
+        editSessions.set(card.id, draft);
+        status.textContent = text.editSaveFailed;
+      }
+    });
+
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.className = "quiet-button edit-cancel";
+    cancelButton.textContent = text.cancelAction;
+    cancelButton.addEventListener("click", () => {
+      editSessions.delete(card.id);
+      setMode("open");
+    });
+
+    const status = document.createElement("p");
+    status.className = "edit-session-status";
+    status.setAttribute("role", "status");
+
+    actions.append(saveButton, cancelButton, moveLabel, hideButton, status);
     return actions;
   };
 

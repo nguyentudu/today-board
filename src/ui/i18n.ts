@@ -131,6 +131,9 @@ export const copy = {
     storageViewDetails: "View storage details",
     storageCleanupConsequence: "This will remove media from hidden cards. It cannot be undone unless you exported the board first.",
     cancelAction: "Cancel",
+    saveAction: "Save",
+    editSaveFailed: "Could not save. Your draft is still here.",
+    unsavedDraftConfirm: "Discard this unsaved draft and continue?",
     confirmAction: "Confirm",
     hiddenCardsAffected: "hidden cards affected",
     mediaItemsAffected: "media items",
@@ -338,6 +341,9 @@ export const copy = {
     storageViewDetails: "Xem chi tiết dung lượng",
     storageCleanupConsequence: "Thao tác này sẽ xóa media khỏi các card đã ẩn. Không thể hoàn tác nếu bạn chưa xuất board.",
     cancelAction: "Hủy",
+    saveAction: "Lưu",
+    editSaveFailed: "Chưa lưu được. Bản nháp vẫn còn ở đây.",
+    unsavedDraftConfirm: "Bỏ bản nháp chưa lưu và tiếp tục?",
     confirmAction: "Xác nhận",
     hiddenCardsAffected: "card ẩn bị ảnh hưởng",
     mediaItemsAffected: "media",
@@ -525,6 +531,9 @@ export const copy = {
     storageViewDetails: string;
     storageCleanupConsequence: string;
     cancelAction: string;
+    saveAction: string;
+    editSaveFailed: string;
+    unsavedDraftConfirm: string;
     confirmAction: string;
     hiddenCardsAffected: string;
     mediaItemsAffected: string;

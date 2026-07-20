@@ -1,4 +1,5 @@
 import type { Card, FileRef } from "../domain/card";
+import type { CardEditDraft } from "../domain/board";
 import { normalizeTags } from "../domain/card";
 import {
   MAX_AUDIO_BYTES,
@@ -17,44 +18,22 @@ const SAFE_FILE_BYTES = 300_000;
 
 interface CardEditorProps {
   card: Card;
+  draft: CardEditDraft;
   language: Language;
-  onRename: (title: string) => void;
-  onNote: (note: string) => void;
-  onContextSnapshot: (contextSnapshot: string) => void;
-  onWhyStillOpen: (whyStillOpen: string) => void;
-  onWaitingOn: (waitingOn: string) => void;
-  onIfYouReturn: (ifYouReturn: string) => void;
-  onNextStepKind: (nextStepKind: Card["nextStepKind"]) => void;
-  onNextStep: (nextStep: string) => void;
-  onPromise: (promise: { text?: string; to?: string; dueOn?: string; status?: Card["promiseStatus"] }) => void;
-  onOutcome: (outcome: string) => void;
-  onRichLinks: (richLinks: string[]) => void;
+  onDraftChange: (change: Partial<CardEditDraft>) => void;
   onImageRefs: (imageRefs: string[]) => void;
   onAudioRefs: (audioRefs: string[]) => void;
   onFileRefs: (fileRefs: FileRef[]) => void;
-  onBookmarkReason: (bookmarkReason: string) => void;
-  onTags: (tags: string[]) => void;
 }
 
 export function CardEditor({
   card,
+  draft,
   language,
-  onRename,
-  onNote,
-  onContextSnapshot,
-  onWhyStillOpen,
-  onWaitingOn,
-  onIfYouReturn,
-  onNextStepKind,
-  onNextStep,
-  onPromise,
-  onOutcome,
-  onRichLinks,
+  onDraftChange,
   onImageRefs,
   onAudioRefs,
   onFileRefs,
-  onBookmarkReason,
-  onTags,
 }: CardEditorProps): HTMLDivElement {
   const text = copy[language];
   const editor = document.createElement("div");
@@ -70,9 +49,9 @@ export function CardEditor({
   const title = document.createElement("input");
   title.className = "card-title-input";
   title.type = "text";
-  title.value = card.title;
+  title.value = draft.title;
   title.ariaLabel = text.cardName;
-  title.addEventListener("change", () => onRename(title.value));
+  title.addEventListener("input", () => onDraftChange({ title: title.value }));
 
   const titleHelper = document.createElement("span");
   titleHelper.className = "field-helper";
@@ -89,12 +68,12 @@ export function CardEditor({
 
   const note = document.createElement("textarea");
   note.className = "card-note-input";
-  note.value = card.note;
+  note.value = draft.note;
   note.maxLength = 280;
   note.rows = 3;
   note.placeholder = text.tinyNote;
   note.ariaLabel = text.tinyNote;
-  note.addEventListener("change", () => onNote(note.value));
+  note.addEventListener("input", () => onDraftChange({ note: note.value }));
 
   noteField.append(noteLabel, note);
 
@@ -107,12 +86,12 @@ export function CardEditor({
 
   const contextSnapshot = document.createElement("textarea");
   contextSnapshot.className = "card-reentry-input";
-  contextSnapshot.value = card.contextSnapshot;
+  contextSnapshot.value = draft.contextSnapshot;
   contextSnapshot.maxLength = 360;
   contextSnapshot.rows = 3;
   contextSnapshot.placeholder = text.contextSnapshotEmpty;
   contextSnapshot.ariaLabel = text.contextSnapshot;
-  contextSnapshot.addEventListener("change", () => onContextSnapshot(contextSnapshot.value));
+  contextSnapshot.addEventListener("input", () => onDraftChange({ contextSnapshot: contextSnapshot.value }));
 
   contextSnapshotField.append(contextSnapshotLabel, contextSnapshot);
 
@@ -125,12 +104,12 @@ export function CardEditor({
 
   const whyStillOpen = document.createElement("textarea");
   whyStillOpen.className = "card-reentry-input";
-  whyStillOpen.value = card.whyStillOpen;
+  whyStillOpen.value = draft.whyStillOpen;
   whyStillOpen.maxLength = 360;
   whyStillOpen.rows = 3;
   whyStillOpen.placeholder = text.whyStillOpenEmpty;
   whyStillOpen.ariaLabel = text.whyStillOpen;
-  whyStillOpen.addEventListener("change", () => onWhyStillOpen(whyStillOpen.value));
+  whyStillOpen.addEventListener("input", () => onDraftChange({ whyStillOpen: whyStillOpen.value }));
 
   whyStillOpenField.append(whyStillOpenLabel, whyStillOpen);
 
@@ -143,12 +122,12 @@ export function CardEditor({
 
   const waitingOn = document.createElement("textarea");
   waitingOn.className = "card-reentry-input";
-  waitingOn.value = card.waitingOn;
+  waitingOn.value = draft.waitingOn;
   waitingOn.maxLength = 360;
   waitingOn.rows = 2;
   waitingOn.placeholder = text.waitingOnEmpty;
   waitingOn.ariaLabel = text.waitingOn;
-  waitingOn.addEventListener("change", () => onWaitingOn(waitingOn.value));
+  waitingOn.addEventListener("input", () => onDraftChange({ waitingOn: waitingOn.value }));
 
   waitingOnField.append(waitingOnLabel, waitingOn);
 
@@ -161,12 +140,12 @@ export function CardEditor({
 
   const ifYouReturn = document.createElement("textarea");
   ifYouReturn.className = "card-reentry-input";
-  ifYouReturn.value = card.ifYouReturn;
+  ifYouReturn.value = draft.ifYouReturn;
   ifYouReturn.maxLength = 360;
   ifYouReturn.rows = 3;
   ifYouReturn.placeholder = text.ifYouReturnEmpty;
   ifYouReturn.ariaLabel = text.ifYouReturn;
-  ifYouReturn.addEventListener("change", () => onIfYouReturn(ifYouReturn.value));
+  ifYouReturn.addEventListener("input", () => onDraftChange({ ifYouReturn: ifYouReturn.value }));
 
   ifYouReturnField.append(ifYouReturnLabel, ifYouReturn);
 
@@ -183,10 +162,12 @@ export function CardEditor({
     const option = document.createElement("option");
     option.value = kind;
     option.textContent = text.nextStepKindLabels[kind];
-    option.selected = card.nextStepKind === kind;
+    option.selected = draft.nextStepKind === kind;
     nextStepKind.append(option);
   }
-  nextStepKind.addEventListener("change", () => onNextStepKind(nextStepKind.value as Card["nextStepKind"]));
+  nextStepKind.addEventListener("change", () =>
+    onDraftChange({ nextStepKind: nextStepKind.value as Card["nextStepKind"] }),
+  );
 
   nextStepKindField.append(nextStepKindLabel, nextStepKind);
 
@@ -199,26 +180,26 @@ export function CardEditor({
 
   const nextStep = document.createElement("textarea");
   nextStep.className = "card-reentry-input";
-  nextStep.value = card.nextStep;
+  nextStep.value = draft.nextStep;
   nextStep.maxLength = 360;
   nextStep.rows = 2;
   nextStep.placeholder = text.nextStepEmpty;
   nextStep.ariaLabel = text.nextStep;
-  nextStep.addEventListener("change", () => onNextStep(nextStep.value));
+  nextStep.addEventListener("input", () => onDraftChange({ nextStep: nextStep.value }));
 
   nextStepField.append(nextStepLabel, nextStep);
 
   const promiseField = createTextareaField(
     text.promise,
     text.promiseEmpty,
-    card.promise,
-    (value) => onPromise({ text: value }),
+    draft.promise,
+    (value) => onDraftChange({ promise: value }),
     text.promiseHelper,
   );
   promiseField.classList.add("continuity-section-field");
 
-  const promiseToField = createTextField(text.promiseTo, text.promiseToEmpty, card.promiseTo, 160, (value) =>
-    onPromise({ to: value }),
+  const promiseToField = createTextField(text.promiseTo, text.promiseToEmpty, draft.promiseTo, 160, (value) =>
+    onDraftChange({ promiseTo: value }),
   );
 
   const promiseDueField = document.createElement("label");
@@ -228,9 +209,9 @@ export function CardEditor({
   promiseDueLabel.textContent = text.promiseDueOn;
   const promiseDue = document.createElement("input");
   promiseDue.type = "date";
-  promiseDue.value = card.promiseDueOn;
+  promiseDue.value = draft.promiseDueOn;
   promiseDue.ariaLabel = text.promiseDueOn;
-  promiseDue.addEventListener("change", () => onPromise({ dueOn: promiseDue.value }));
+  promiseDue.addEventListener("change", () => onDraftChange({ promiseDueOn: promiseDue.value }));
   promiseDueField.append(promiseDueLabel, promiseDue);
 
   const promiseStatusField = document.createElement("label");
@@ -240,42 +221,42 @@ export function CardEditor({
   promiseStatusLabel.textContent = text.promiseStatus;
   const promiseStatus = document.createElement("select");
   promiseStatus.ariaLabel = text.promiseStatus;
-  const promiseStatuses: Card["promiseStatus"][] = card.promise.trim()
+  const promiseStatuses: Card["promiseStatus"][] = draft.promise.trim()
     ? ["open", "kept", "released"]
     : ["none"];
   for (const status of promiseStatuses) {
     const option = document.createElement("option");
     option.value = status;
     option.textContent = text.promiseStatusLabels[status];
-    option.selected = card.promiseStatus === status;
+    option.selected = draft.promiseStatus === status;
     promiseStatus.append(option);
   }
   promiseStatus.addEventListener("change", () =>
-    onPromise({ status: promiseStatus.value as Card["promiseStatus"] }),
+    onDraftChange({ promiseStatus: promiseStatus.value as Card["promiseStatus"] }),
   );
   promiseStatusField.append(promiseStatusLabel, promiseStatus);
 
   const outcomeField = createTextareaField(
     text.outcome,
     text.outcomeEmpty,
-    card.outcome,
-    onOutcome,
+    draft.outcome,
+    (value) => onDraftChange({ outcome: value }),
     text.outcomeHelper,
   );
   outcomeField.classList.add("continuity-section-field");
 
-  const linksField = createTextareaField(text.richLinks, text.richLinksEmpty, card.richLinks.join("\n"), (value) =>
-    onRichLinks(splitLines(value)),
+  const linksField = createTextareaField(text.richLinks, text.richLinksEmpty, draft.richLinks.join("\n"), (value) =>
+    onDraftChange({ richLinks: splitLines(value) }),
     text.richLinksHelper,
   );
   const captureControls = createCaptureControls(card, text, onImageRefs, onAudioRefs, onFileRefs);
   const bookmarkReasonField = createTextareaField(
     text.bookmarkReason,
     text.bookmarkReasonEmpty,
-    card.bookmarkReason,
-    onBookmarkReason,
+    draft.bookmarkReason,
+    (value) => onDraftChange({ bookmarkReason: value }),
   );
-  const tagsField = createTagField(card.tags, text, onTags);
+  const tagsField = createTagField(draft.tags, text, (tags) => onDraftChange({ tags }));
 
   editor.append(
     titleField,
@@ -318,7 +299,7 @@ function createTextField(
   input.maxLength = maxLength;
   input.placeholder = placeholder;
   input.ariaLabel = label;
-  input.addEventListener("change", () => onChange(input.value));
+  input.addEventListener("input", () => onChange(input.value));
   field.append(fieldLabel, input);
   return field;
 }
@@ -346,7 +327,7 @@ function createTagField(
   input.ariaLabel = text.tags;
   input.maxLength = 280;
   const saveTags = () => onTags(normalizeTags(input.value.split(/[,\s]+/)));
-  input.addEventListener("change", saveTags);
+  input.addEventListener("input", saveTags);
   input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -678,7 +659,7 @@ function createTextareaField(
   textarea.rows = 3;
   textarea.placeholder = placeholder;
   textarea.ariaLabel = label;
-  textarea.addEventListener("change", () => onChange(textarea.value));
+  textarea.addEventListener("input", () => onChange(textarea.value));
 
   field.append(fieldLabel);
 

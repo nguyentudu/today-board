@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "today-board-shell";
-const CACHE_VERSION = "2026-07-20-d";
+const CACHE_VERSION = "2026-07-20-e";
 const SHELL_CACHE = `${CACHE_PREFIX}-${CACHE_VERSION}`;
 const APP_SCOPE = new URL(self.registration.scope).pathname;
 const CRITICAL_ASSETS = ["./manifest.webmanifest", "./icon.svg"];

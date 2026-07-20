@@ -7,9 +7,9 @@ const checks = [
     reject: ["card.imageRefs.join", "imageRefsEmpty"],
   },
   {
-    name: "cards start in collapsed summary mode",
+    name: "cards start collapsed unless an edit session is being restored",
     file: "src/ui/Card.ts",
-    require: ['mode: "summary" | "open" | "edit" = "summary"', "renderSummary()"],
+    require: ['editSessions.has(card.id) ? "edit" : "summary"', "renderSummary()"],
   },
   {
     name: "open mode is readable detail, not editor",

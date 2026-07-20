@@ -1,15 +1,10 @@
 import {
   addCard,
+  applyCardEditDraft,
   hideCard,
   moveCard,
-  renameCard,
-  updateCardNote,
   updateCardEvidenceRole,
-  updateCardOutcome,
-  updateCardPromise,
-  updateCardReentryNotes,
   updateCardRichContext,
-  updateCardTags,
   type Board as BoardModel,
 } from "../domain/board";
 import {
@@ -211,34 +206,14 @@ export function Board({
           board: visibleBoard,
           state,
           language,
-          onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
           onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
-          onNote: (cardId: string, note: string) => commit(updateCardNote(board, cardId, note)),
-          onContextSnapshot: (cardId: string, contextSnapshot: string) =>
-            commit(updateCardReentryNotes(board, cardId, { contextSnapshot })),
-          onWhyStillOpen: (cardId: string, whyStillOpen: string) =>
-            commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
-          onWaitingOn: (cardId: string, waitingOn: string) =>
-            commit(updateCardReentryNotes(board, cardId, { waitingOn })),
-          onIfYouReturn: (cardId: string, ifYouReturn: string) =>
-            commit(updateCardReentryNotes(board, cardId, { ifYouReturn })),
-          onNextStepKind: (cardId: string, nextStepKind) =>
-            commit(updateCardReentryNotes(board, cardId, { nextStepKind })),
-          onNextStep: (cardId: string, nextStep: string) =>
-            commit(updateCardReentryNotes(board, cardId, { nextStep })),
-          onPromise: (cardId: string, promise) => commit(updateCardPromise(board, cardId, promise)),
-          onOutcome: (cardId: string, outcome: string) => commit(updateCardOutcome(board, cardId, outcome)),
+          onSaveDraft: (cardId, draft) => commit(applyCardEditDraft(board, cardId, draft)),
           onEvidenceRole: (cardId: string, evidence) => commit(updateCardEvidenceRole(board, cardId, evidence)),
-          onRichLinks: (cardId: string, richLinks: string[]) =>
-            commit(updateCardRichContext(board, cardId, { richLinks })),
           onImageRefs: (cardId: string, imageRefs: string[]) =>
             commit(updateCardRichContext(board, cardId, { imageRefs })),
           onAudioRefs: (cardId: string, audioRefs: string[]) =>
             commit(updateCardRichContext(board, cardId, { audioRefs })),
           onFileRefs: (cardId: string, fileRefs) => commit(updateCardRichContext(board, cardId, { fileRefs })),
-          onBookmarkReason: (cardId: string, bookmarkReason: string) =>
-            commit(updateCardRichContext(board, cardId, { bookmarkReason })),
-          onTags: (cardId: string, tags: string[]) => commit(updateCardTags(board, cardId, tags)),
           onHide: (cardId: string) => commit(hideCard(board, cardId)),
         }),
       );

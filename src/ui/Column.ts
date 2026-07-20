@@ -1,4 +1,4 @@
-import type { Board } from "../domain/board";
+import type { Board, CardEditDraft } from "../domain/board";
 import type { EvidenceKind, EvidenceRole } from "../domain/card";
 import { compareReentryPriority } from "../domain/reentryPriority";
 import type { BoardState } from "../domain/state";
@@ -10,20 +10,8 @@ interface ColumnProps {
   board: Board;
   state: BoardState;
   language: Language;
-  onRename: (cardId: string, title: string) => void;
   onMove: (cardId: string, state: BoardState) => void;
-  onNote: (cardId: string, note: string) => void;
-  onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
-  onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
-  onWaitingOn: (cardId: string, waitingOn: string) => void;
-  onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
-  onNextStepKind: (cardId: string, nextStepKind: Board["cards"][number]["nextStepKind"]) => void;
-  onNextStep: (cardId: string, nextStep: string) => void;
-  onPromise: (
-    cardId: string,
-    promise: { text?: string; to?: string; dueOn?: string; status?: Board["cards"][number]["promiseStatus"] },
-  ) => void;
-  onOutcome: (cardId: string, outcome: string) => void;
+  onSaveDraft: (cardId: string, draft: CardEditDraft) => boolean;
   onEvidenceRole: (
     cardId: string,
     evidence: {
@@ -32,12 +20,9 @@ interface ColumnProps {
       role: EvidenceRole;
     },
   ) => void;
-  onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
   onFileRefs: (cardId: string, fileRefs: Board["cards"][number]["fileRefs"]) => void;
-  onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
-  onTags: (cardId: string, tags: string[]) => void;
   onHide: (cardId: string) => void;
 }
 
@@ -83,24 +68,12 @@ export function Column(props: ColumnProps): HTMLElement {
         Card({
           card,
           language: props.language,
-          onRename: props.onRename,
           onMove: props.onMove,
-          onNote: props.onNote,
-          onContextSnapshot: props.onContextSnapshot,
-          onWhyStillOpen: props.onWhyStillOpen,
-          onWaitingOn: props.onWaitingOn,
-          onIfYouReturn: props.onIfYouReturn,
-          onNextStepKind: props.onNextStepKind,
-          onNextStep: props.onNextStep,
-          onPromise: props.onPromise,
-          onOutcome: props.onOutcome,
+          onSaveDraft: props.onSaveDraft,
           onEvidenceRole: props.onEvidenceRole,
-          onRichLinks: props.onRichLinks,
           onImageRefs: props.onImageRefs,
           onAudioRefs: props.onAudioRefs,
           onFileRefs: props.onFileRefs,
-          onBookmarkReason: props.onBookmarkReason,
-          onTags: props.onTags,
           onHide: props.onHide,
         }),
       );
