@@ -36,6 +36,7 @@ function card(id, overrides = {}) {
     imageRefs: [],
     audioRefs: [],
     fileRefs: [],
+    evidenceMeta: [],
     bookmarkReason: "worth keeping",
     tags: ["moon", "research"],
     state: "continue",
@@ -76,6 +77,7 @@ const cards = [
   card("next-step", { title: "Different", nextStep: "open-figma-token", richLinks: [], tags: [] }),
   card("promise", { title: "Different", promise: "deliver-logo-token", promiseTo: "client-lan-token", richLinks: [], tags: [] }),
   card("outcome", { title: "Different", outcome: "approved-version-three-token", richLinks: [], tags: [] }),
+  card("evidence-role", { title: "Different", evidenceMeta: [{ id: "file-proof", kind: "file", role: "outcome-proof" }], richLinks: [], tags: [] }),
   card("hidden", { hidden: true, title: "hidden-token" }),
 ];
 
@@ -161,3 +163,4 @@ assert("next step search match", ids(filterCards(cards, query({ search: "open-fi
 assert("promise search match", ids(filterCards(cards, query({ search: "deliver-logo-token" }), states, now))[0] === "promise");
 assert("promise counterparty search match", ids(filterCards(cards, query({ search: "client-lan-token" }), states, now))[0] === "promise");
 assert("outcome search match", ids(filterCards(cards, query({ search: "approved-version-three-token" }), states, now))[0] === "outcome");
+assert("evidence role search match", ids(filterCards(cards, query({ search: "outcome-proof" }), states, now))[0] === "evidence-role");

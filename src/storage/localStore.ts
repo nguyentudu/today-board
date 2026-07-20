@@ -1,7 +1,9 @@
 import { createBoard, type Board } from "../domain/board";
 import {
+  collectEvidenceIdentities,
   normalizeFileRefs,
   normalizeDateOnly,
+  normalizeEvidenceMeta,
   normalizeList,
   normalizeNextStepKind,
   normalizePromiseStatus,
@@ -79,6 +81,18 @@ export function sanitizeBoard(value: unknown): Board {
         sourceClosedAt ||
         [...stateHistory].reverse().find((transition) => transition.to === "finished")?.at ||
         "";
+      const richLinks = Array.isArray(source.richLinks)
+        ? normalizeList(source.richLinks.filter((item): item is string => typeof item === "string"))
+        : [];
+      const imageRefs = Array.isArray(source.imageRefs)
+        ? normalizeList(source.imageRefs.filter((item): item is string => typeof item === "string"))
+        : [];
+      const audioRefs = Array.isArray(source.audioRefs)
+        ? normalizeList(source.audioRefs.filter((item): item is string => typeof item === "string"))
+        : [];
+      const fileRefs = Array.isArray(source.fileRefs) ? normalizeFileRefs(source.fileRefs) : [];
+      const identities = collectEvidenceIdentities({ richLinks, imageRefs, audioRefs, fileRefs });
+      const evidenceMeta = normalizeEvidenceMeta(source.evidenceMeta).filter((meta) => identities.has(meta.id));
 
       return [
         {
@@ -106,16 +120,11 @@ export function sanitizeBoard(value: unknown): Board {
           outcome: typeof source.outcome === "string" ? normalizeReentryField(source.outcome).slice(0, 480) : "",
           closedAt,
           stateHistory,
-          richLinks: Array.isArray(source.richLinks)
-            ? normalizeList(source.richLinks.filter((value): value is string => typeof value === "string"))
-            : [],
-          imageRefs: Array.isArray(source.imageRefs)
-            ? normalizeList(source.imageRefs.filter((value): value is string => typeof value === "string"))
-            : [],
-          audioRefs: Array.isArray(source.audioRefs)
-            ? normalizeList(source.audioRefs.filter((value): value is string => typeof value === "string"))
-            : [],
-          fileRefs: Array.isArray(source.fileRefs) ? normalizeFileRefs(source.fileRefs) : [],
+          evidenceMeta,
+          richLinks,
+          imageRefs,
+          audioRefs,
+          fileRefs,
           bookmarkReason: typeof source.bookmarkReason === "string" ? source.bookmarkReason.slice(0, 360) : "",
           tags: Array.isArray(source.tags) ? normalizeTags(source.tags) : typeof source.tags === "string" ? normalizeTags([source.tags]) : [],
           state,

@@ -1,4 +1,5 @@
 import type { Board } from "../domain/board";
+import type { EvidenceKind, EvidenceRole } from "../domain/card";
 import type { BoardState } from "../domain/state";
 import { Card } from "./Card";
 import type { Language } from "./i18n";
@@ -22,6 +23,14 @@ interface ColumnProps {
     promise: { text?: string; to?: string; dueOn?: string; status?: Board["cards"][number]["promiseStatus"] },
   ) => void;
   onOutcome: (cardId: string, outcome: string) => void;
+  onEvidenceRole: (
+    cardId: string,
+    evidence: {
+      id: string;
+      kind: EvidenceKind;
+      role: EvidenceRole;
+    },
+  ) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
@@ -74,6 +83,7 @@ export function Column(props: ColumnProps): HTMLElement {
           onNextStep: props.onNextStep,
           onPromise: props.onPromise,
           onOutcome: props.onOutcome,
+          onEvidenceRole: props.onEvidenceRole,
           onRichLinks: props.onRichLinks,
           onImageRefs: props.onImageRefs,
           onAudioRefs: props.onAudioRefs,

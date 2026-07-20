@@ -28,6 +28,7 @@ export interface Card {
   outcome: string;
   closedAt: string;
   stateHistory: StateTransition[];
+  evidenceMeta: EvidenceMeta[];
   richLinks: string[];
   imageRefs: string[];
   audioRefs: string[];
@@ -47,6 +48,15 @@ export interface StateTransition {
   from: BoardState;
   to: BoardState;
   at: string;
+}
+
+export type EvidenceKind = "link" | "image" | "audio" | "file";
+export type EvidenceRole = "reference" | "brief" | "feedback" | "latest" | "return-first" | "outcome-proof";
+
+export interface EvidenceMeta {
+  id: string;
+  kind: EvidenceKind;
+  role: Exclude<EvidenceRole, "reference">;
 }
 
 export interface FileRef {
@@ -76,6 +86,7 @@ export function createCard(title: string, state: BoardState = "continue"): Card 
     outcome: "",
     closedAt: "",
     stateHistory: [],
+    evidenceMeta: [],
     richLinks: [],
     imageRefs: [],
     audioRefs: [],
@@ -150,6 +161,71 @@ export function normalizeStateHistory(value: unknown): StateTransition[] {
   });
 
   return coherent ? transitions : [];
+}
+
+export function evidenceIdentity(kind: EvidenceKind, source: string | FileRef): string {
+  const signature = typeof source === "string"
+    ? compactEvidenceSource(source)
+    : [source.name, source.type, source.size, compactEvidenceSource(source.dataUrl ?? "")].join("|");
+  let hash = 0x811c9dc5;
+  const input = `${kind}|${signature}`;
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193);
+  }
+  return `${kind}-${(hash >>> 0).toString(36)}`;
+}
+
+export function normalizeEvidenceMeta(value: unknown): EvidenceMeta[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const result: EvidenceMeta[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object") {
+      continue;
+    }
+    const source = item as Record<string, unknown>;
+    if (
+      typeof source.id !== "string" ||
+      !isEvidenceKind(source.kind) ||
+      !isAssignedEvidenceRole(source.role) ||
+      result.some((meta) => meta.id === source.id)
+    ) {
+      continue;
+    }
+    result.push({ id: source.id.slice(0, 80), kind: source.kind, role: source.role });
+    if (result.length >= 32) {
+      break;
+    }
+  }
+  return result;
+}
+
+export function collectEvidenceIdentities(card: Pick<Card, "richLinks" | "imageRefs" | "audioRefs" | "fileRefs">): Set<string> {
+  return new Set([
+    ...card.richLinks.map((source) => evidenceIdentity("link", source)),
+    ...card.imageRefs.map((source) => evidenceIdentity("image", source)),
+    ...card.audioRefs.map((source) => evidenceIdentity("audio", source)),
+    ...card.fileRefs.map((source) => evidenceIdentity("file", source)),
+  ]);
+}
+
+export function isEvidenceRole(value: unknown): value is EvidenceRole {
+  return value === "reference" || isAssignedEvidenceRole(value);
+}
+
+function isEvidenceKind(value: unknown): value is EvidenceKind {
+  return value === "link" || value === "image" || value === "audio" || value === "file";
+}
+
+function isAssignedEvidenceRole(value: unknown): value is EvidenceMeta["role"] {
+  return value === "brief" || value === "feedback" || value === "latest" || value === "return-first" || value === "outcome-proof";
+}
+
+function compactEvidenceSource(value: string): string {
+  return `${value.length}:${value.slice(0, 96)}:${value.slice(-96)}`;
 }
 
 export function touchCard(card: Card): Card {

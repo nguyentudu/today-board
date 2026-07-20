@@ -1,4 +1,4 @@
-import type { Card as BoardCard } from "../domain/card";
+import { evidenceIdentity, type Card as BoardCard, type EvidenceKind, type EvidenceRole } from "../domain/card";
 import type { BoardState } from "../domain/state";
 import { CardEditor } from "./CardEditor";
 import type { Language } from "./i18n";
@@ -23,6 +23,10 @@ interface CardProps {
     promise: { text?: string; to?: string; dueOn?: string; status?: BoardCard["promiseStatus"] },
   ) => void;
   onOutcome: (cardId: string, outcome: string) => void;
+  onEvidenceRole: (
+    cardId: string,
+    evidence: { id: string; kind: EvidenceKind; role: EvidenceRole },
+  ) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
@@ -46,6 +50,7 @@ export function Card({
   onNextStep,
   onPromise,
   onOutcome,
+  onEvidenceRole,
   onRichLinks,
   onImageRefs,
   onAudioRefs,
@@ -103,6 +108,8 @@ export function Card({
         onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
         onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
         onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+        onEvidenceRole: (evidence) => onEvidenceRole(card.id, evidence),
+        editable: mode === "edit",
       }),
       renderSnapshot(card, text, language),
     );
@@ -146,6 +153,10 @@ export function Card({
 
     if (card.state === "finished") {
       meta.append(createPill(card.outcome.trim() ? text.outcomeRecorded : text.outcomeMissing));
+    }
+
+    if (card.evidenceMeta.length > 0) {
+      meta.append(createPill(`${card.evidenceMeta.length} ${text.keyEvidencePill}`));
     }
 
     const returnPoint = document.createElement("p");
@@ -223,6 +234,8 @@ function renderRichContext(
     onImageRefs: (imageRefs: string[]) => void;
     onAudioRefs: (audioRefs: string[]) => void;
     onFileRefs: (fileRefs: BoardCard["fileRefs"]) => void;
+    onEvidenceRole: (evidence: { id: string; kind: EvidenceKind; role: EvidenceRole }) => void;
+    editable: boolean;
   },
 ): HTMLElement {
   const section = document.createElement("section");
@@ -239,28 +252,27 @@ function renderRichContext(
     section.append(reason);
   }
 
-  const validLinks = extractValidHttpUrls(card.richLinks);
-  const invalidLinkText = card.richLinks.filter((link) => link.trim() && normalizeReadableHttpUrl(link) === null);
+  const visibleLinks = card.richLinks.filter((link) => link.trim());
 
-  if (validLinks.length > 0 || invalidLinkText.length > 0) {
+  if (visibleLinks.length > 0) {
     const list = document.createElement("ul");
     list.className = "rich-link-list";
 
-    for (const link of validLinks) {
+    for (const link of visibleLinks) {
       const item = document.createElement("li");
-      const anchor = document.createElement("a");
-      anchor.href = link;
-      anchor.textContent = link;
-      anchor.target = "_blank";
-      anchor.rel = "noreferrer";
-      item.append(anchor);
-      list.append(item);
-    }
-
-    for (const linkText of invalidLinkText) {
-      const item = document.createElement("li");
-      item.className = "plain-link-text";
-      item.textContent = linkText;
+      const normalized = normalizeReadableHttpUrl(link);
+      if (normalized) {
+        const anchor = document.createElement("a");
+        anchor.href = normalized;
+        anchor.textContent = link;
+        anchor.target = "_blank";
+        anchor.rel = "noreferrer";
+        item.append(anchor);
+      } else {
+        item.className = "plain-link-text";
+        item.textContent = link;
+      }
+      appendEvidenceRoleControl(item, card, "link", link, text, actions);
       list.append(item);
     }
 
@@ -290,6 +302,7 @@ function renderRichContext(
       }
 
       mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onImageRefs(removeAt(card.imageRefs, index))));
+      appendEvidenceRoleControl(mediaItem, card, "image", ref, text, actions);
       gallery.append(mediaItem);
     });
 
@@ -315,6 +328,7 @@ function renderRichContext(
       }
 
       mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onAudioRefs(removeAt(card.audioRefs, index))));
+      appendEvidenceRoleControl(mediaItem, card, "audio", ref, text, actions);
       audioList.append(mediaItem);
     });
 
@@ -340,6 +354,7 @@ function renderRichContext(
       }
 
       item.append(createRemoveButton(text.removeMedia, () => actions.onFileRefs(removeAt(card.fileRefs, index))));
+      appendEvidenceRoleControl(item, card, "file", fileRef, text, actions);
       fileList.append(item);
     });
 
@@ -354,6 +369,44 @@ function renderRichContext(
   }
 
   return section;
+}
+
+function appendEvidenceRoleControl(
+  container: HTMLElement,
+  card: BoardCard,
+  kind: EvidenceKind,
+  source: string | BoardCard["fileRefs"][number],
+  text: (typeof copy)[Language],
+  actions: {
+    onEvidenceRole: (evidence: { id: string; kind: EvidenceKind; role: EvidenceRole }) => void;
+    editable: boolean;
+  },
+): void {
+  const id = evidenceIdentity(kind, source);
+  const assignment = card.evidenceMeta.find((meta) => meta.id === id);
+  if (!actions.editable) {
+    if (assignment) {
+      container.append(createPill(text.evidenceRoleLabels[assignment.role]));
+    }
+    return;
+  }
+
+  const label = document.createElement("label");
+  label.className = "evidence-role-control";
+  const caption = document.createElement("span");
+  caption.textContent = text.evidenceRole;
+  const select = document.createElement("select");
+  select.ariaLabel = text.evidenceRole;
+  for (const role of ["reference", "brief", "feedback", "latest", "return-first", "outcome-proof"] as const) {
+    const option = document.createElement("option");
+    option.value = role;
+    option.textContent = text.evidenceRoleLabels[role];
+    option.selected = (assignment?.role ?? "reference") === role;
+    select.append(option);
+  }
+  select.addEventListener("change", () => actions.onEvidenceRole({ id, kind, role: select.value as EvidenceRole }));
+  label.append(caption, select);
+  container.append(label);
 }
 
 function estimateDataUrlBytes(value: string): number {
@@ -398,9 +451,58 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
     detail.append(block);
   }
 
-  detail.append(renderStateHistory(card, text));
+  detail.append(renderEvidenceMeaning(card, text), renderStateHistory(card, text));
 
   return detail;
+}
+
+function renderEvidenceMeaning(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
+  const block = document.createElement("div");
+  block.className = "evidence-meaning";
+  const heading = document.createElement("h4");
+  heading.textContent = text.evidenceMeaning;
+  block.append(heading);
+
+  const ranked = [...card.evidenceMeta].sort(
+    (left, right) => evidenceRoleRank(left.role) - evidenceRoleRank(right.role),
+  );
+  if (ranked.length === 0) {
+    const empty = document.createElement("p");
+    const attachmentCount = card.richLinks.length + card.imageRefs.length + card.audioRefs.length + card.fileRefs.length;
+    empty.textContent = attachmentCount > 0 ? text.evidenceMeaningEmpty : text.evidenceNone;
+    block.append(empty);
+    return block;
+  }
+
+  const list = document.createElement("ul");
+  for (const meta of ranked) {
+    const item = document.createElement("li");
+    item.textContent = `${text.evidenceRoleLabels[meta.role]} · ${resolveEvidenceLabel(card, meta.id, meta.kind, text)}`;
+    list.append(item);
+  }
+  block.append(list);
+  return block;
+}
+
+function resolveEvidenceLabel(
+  card: BoardCard,
+  id: string,
+  kind: EvidenceKind,
+  text: (typeof copy)[Language],
+): string {
+  if (kind === "file") {
+    return card.fileRefs.find((source) => evidenceIdentity(kind, source) === id)?.name ?? text.evidenceUnavailable;
+  }
+  const sources = kind === "link" ? card.richLinks : kind === "image" ? card.imageRefs : card.audioRefs;
+  const index = sources.findIndex((source) => evidenceIdentity(kind, source) === id);
+  if (index < 0) {
+    return text.evidenceUnavailable;
+  }
+  return kind === "link" ? sources[index] : `${text.evidenceKindLabels[kind]} ${index + 1}`;
+}
+
+function evidenceRoleRank(role: BoardCard["evidenceMeta"][number]["role"]): number {
+  return ["return-first", "latest", "feedback", "brief", "outcome-proof"].indexOf(role);
 }
 
 function formatPromise(card: BoardCard, text: (typeof copy)[Language]): string {

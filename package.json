@@ -18,6 +18,7 @@
     "test:pwa-finalization": "node scripts/verify-pwa-finalization.mjs",
     "test:reentry-core": "node scripts/verify-reentry-core.mjs",
     "test:promise-closure": "node scripts/verify-promise-closure.mjs",
+    "test:evidence-meaning": "node scripts/verify-evidence-meaning.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {

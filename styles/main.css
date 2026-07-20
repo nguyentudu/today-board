@@ -477,13 +477,26 @@ textarea {
   white-space: pre-line;
 }
 
-.state-history ul {
+.state-history ul,
+.evidence-meaning ul {
   display: grid;
   gap: 0.25rem;
   margin: 0;
   padding-left: 1.2rem;
   color: #5f5d55;
   font-size: 0.88rem;
+}
+
+.evidence-role-control {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+  color: #5f5d55;
+  font-size: 0.82rem;
+}
+
+.evidence-role-control select {
+  width: 100%;
 }
 
 .card-editor {

@@ -60,6 +60,21 @@ export const copy = {
     closedAt: "Last closed",
     stateHistory: "State history",
     stateHistoryEmpty: "No state transition recorded yet.",
+    evidenceRole: "Evidence role",
+    evidenceRoleLabels: {
+      reference: "Reference",
+      brief: "Brief",
+      feedback: "Feedback",
+      latest: "Latest version",
+      "return-first": "Open first when returning",
+      "outcome-proof": "Outcome proof",
+    },
+    evidenceMeaning: "Evidence to use",
+    evidenceMeaningEmpty: "Attachments are available, but none has a specific role yet.",
+    evidenceNone: "No evidence attached yet.",
+    evidenceUnavailable: "Unavailable attachment",
+    evidenceKindLabels: { link: "Link", image: "Image", audio: "Voice", file: "File" },
+    keyEvidencePill: "key evidence",
     richLinks: "Link",
     richLinksEmpty: "Paste link here",
     richLinksHelper: "Only lines beginning with http:// or https:// are counted as links.",
@@ -244,6 +259,21 @@ export const copy = {
     closedAt: "Lần đóng gần nhất",
     stateHistory: "Lịch sử trạng thái",
     stateHistoryEmpty: "Chưa ghi nhận lần chuyển trạng thái nào.",
+    evidenceRole: "Vai trò evidence",
+    evidenceRoleLabels: {
+      reference: "Tham khảo",
+      brief: "Brief",
+      feedback: "Feedback",
+      latest: "Bản mới nhất",
+      "return-first": "Mở đầu tiên khi quay lại",
+      "outcome-proof": "Bằng chứng kết quả",
+    },
+    evidenceMeaning: "Evidence cần dùng",
+    evidenceMeaningEmpty: "Đã có attachment nhưng chưa chỉ rõ vai trò evidence.",
+    evidenceNone: "Chưa gắn evidence.",
+    evidenceUnavailable: "Attachment không còn khả dụng",
+    evidenceKindLabels: { link: "Link", image: "Ảnh", audio: "Ghi âm", file: "File" },
+    keyEvidencePill: "evidence chính",
     richLinks: "Link",
     richLinksEmpty: "Dán link ở đây",
     richLinksHelper: "Chỉ các dòng bắt đầu bằng http:// hoặc https:// được tính là link.",
@@ -421,6 +451,14 @@ export const copy = {
     closedAt: string;
     stateHistory: string;
     stateHistoryEmpty: string;
+    evidenceRole: string;
+    evidenceRoleLabels: Record<"reference" | "brief" | "feedback" | "latest" | "return-first" | "outcome-proof", string>;
+    evidenceMeaning: string;
+    evidenceMeaningEmpty: string;
+    evidenceNone: string;
+    evidenceUnavailable: string;
+    evidenceKindLabels: Record<"link" | "image" | "audio" | "file", string>;
+    keyEvidencePill: string;
     richLinks: string;
     richLinksEmpty: string;
     richLinksHelper: string;

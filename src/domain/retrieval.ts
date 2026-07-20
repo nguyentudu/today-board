@@ -89,6 +89,7 @@ export function buildSearchText(card: Card): string {
       card.promiseTo,
       card.promiseDueOn,
       card.outcome,
+      ...(card.evidenceMeta ?? []).map((meta) => meta.role),
       card.bookmarkReason,
       ...extractValidHttpUrls(card.richLinks),
       ...card.richLinks.filter(isSearchableHumanLinkText),

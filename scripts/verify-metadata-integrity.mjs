@@ -24,7 +24,12 @@ assert("canonical validator rejects unsafe protocols", !isValidHttpUrl("data:ima
 assert("canonical validator rejects non strings", !isValidHttpUrl({}) && !isValidHttpUrl([]));
 assert("mixed links count valid URLs only", extractValidHttpUrls(["https://example.com/a", "https://example.com/b", "#research"]).length === 2);
 assert("hashtag-only link count is zero", extractValidHttpUrls(["#research"]).length === 0);
-assert("card rendering uses canonical validator", cardSource.includes("extractValidHttpUrls(card.richLinks)") && cardSource.includes("normalizeReadableHttpUrl(link) === null"));
+assert(
+  "card rendering uses canonical validator",
+  cardSource.includes("const normalized = normalizeReadableHttpUrl(link)")
+    && cardSource.includes("anchor.href = normalized")
+    && cardSource.includes("if (normalized)"),
+);
 assert("retrieval filter uses canonical validator", retrievalSource.includes("extractValidHttpUrls(card.richLinks).length > 0"));
 assert("search index uses valid URLs from canonical validator", retrievalSource.includes("...extractValidHttpUrls(card.richLinks)"));
 assert("safeHref auto-prefix was removed", !cardSource.includes("function safeHref") && !cardSource.includes("https://${value}"));

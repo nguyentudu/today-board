@@ -1,6 +1,7 @@
 import type { Card } from "./card";
 import {
   createCard,
+  collectEvidenceIdentities,
   normalizeFileRefs,
   normalizeDateOnly,
   normalizeList,
@@ -8,8 +9,11 @@ import {
   normalizePromiseStatus,
   normalizeReentryField,
   normalizeTags,
+  isEvidenceRole,
   touchCard,
   type FileRef,
+  type EvidenceKind,
+  type EvidenceRole,
 } from "./card";
 import type { BoardState } from "./state";
 
@@ -127,8 +131,8 @@ export function updateCardRichContext(
   cardId: string,
   richContext: { richLinks?: string[]; imageRefs?: string[]; audioRefs?: string[]; fileRefs?: FileRef[]; bookmarkReason?: string },
 ): Board {
-  return updateCard(board, cardId, (card) =>
-    touchCard({
+  return updateCard(board, cardId, (card) => {
+    const updated = {
       ...card,
       richLinks: richContext.richLinks === undefined ? card.richLinks : normalizeList(richContext.richLinks),
       imageRefs: richContext.imageRefs === undefined ? card.imageRefs : normalizeList(richContext.imageRefs),
@@ -136,8 +140,32 @@ export function updateCardRichContext(
       fileRefs: richContext.fileRefs === undefined ? card.fileRefs : normalizeFileRefs(richContext.fileRefs),
       bookmarkReason:
         richContext.bookmarkReason === undefined ? card.bookmarkReason : richContext.bookmarkReason.slice(0, 360),
-    }),
-  );
+    };
+    const identities = collectEvidenceIdentities(updated);
+    return touchCard({
+      ...updated,
+      evidenceMeta: card.evidenceMeta.filter((meta) => identities.has(meta.id)),
+    });
+  });
+}
+
+export function updateCardEvidenceRole(
+  board: Board,
+  cardId: string,
+  evidence: { id: string; kind: EvidenceKind; role: EvidenceRole },
+): Board {
+  return updateCard(board, cardId, (card) => {
+    const identities = collectEvidenceIdentities(card);
+    if (!identities.has(evidence.id) || !evidence.id.startsWith(`${evidence.kind}-`) || !isEvidenceRole(evidence.role)) {
+      return card;
+    }
+
+    const retained = card.evidenceMeta.filter((meta) => meta.id !== evidence.id);
+    const evidenceMeta = evidence.role === "reference"
+      ? retained
+      : [...retained, { id: evidence.id, kind: evidence.kind, role: evidence.role }].slice(-32);
+    return touchCard({ ...card, evidenceMeta });
+  });
 }
 
 export function updateCardTags(board: Board, cardId: string, tags: string[]): Board {

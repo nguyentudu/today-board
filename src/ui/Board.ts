@@ -4,6 +4,7 @@ import {
   moveCard,
   renameCard,
   updateCardNote,
+  updateCardEvidenceRole,
   updateCardOutcome,
   updateCardPromise,
   updateCardReentryNotes,
@@ -227,6 +228,7 @@ export function Board({
             commit(updateCardReentryNotes(board, cardId, { nextStep })),
           onPromise: (cardId: string, promise) => commit(updateCardPromise(board, cardId, promise)),
           onOutcome: (cardId: string, outcome: string) => commit(updateCardOutcome(board, cardId, outcome)),
+          onEvidenceRole: (cardId: string, evidence) => commit(updateCardEvidenceRole(board, cardId, evidence)),
           onRichLinks: (cardId: string, richLinks: string[]) =>
             commit(updateCardRichContext(board, cardId, { richLinks })),
           onImageRefs: (cardId: string, imageRefs: string[]) =>
