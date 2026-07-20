@@ -38,6 +38,28 @@ export const copy = {
     nextStepEmpty: "No next action or trigger yet.",
     nextAction: "Next action",
     nextTrigger: "Next trigger",
+    promise: "Promise",
+    promiseEmpty: "No promise recorded.",
+    promiseHelper: "Keep commitments visible instead of burying them in notes.",
+    promiseTo: "Promised to",
+    promiseToEmpty: "Person or customer",
+    promiseDueOn: "Promised date",
+    promiseStatus: "Promise status",
+    promiseStatusLabels: {
+      none: "No promise",
+      open: "Open",
+      kept: "Kept",
+      released: "Released or cancelled",
+    },
+    promisePill: "Promise open",
+    outcome: "Outcome",
+    outcomeEmpty: "No outcome recorded yet.",
+    outcomeHelper: "Record how the situation ended, not only that it is done.",
+    outcomeRecorded: "Outcome recorded",
+    outcomeMissing: "Outcome missing",
+    closedAt: "Last closed",
+    stateHistory: "State history",
+    stateHistoryEmpty: "No state transition recorded yet.",
     richLinks: "Link",
     richLinksEmpty: "Paste link here",
     richLinksHelper: "Only lines beginning with http:// or https:// are counted as links.",
@@ -200,6 +222,28 @@ export const copy = {
     nextStepEmpty: "Chưa có hành động hoặc điều kiện tiếp theo.",
     nextAction: "Hành động tiếp theo",
     nextTrigger: "Điều kiện tiếp theo",
+    promise: "Lời hứa",
+    promiseEmpty: "Chưa ghi lời hứa.",
+    promiseHelper: "Giữ lời hứa hiện rõ thay vì để chìm trong ghi chú.",
+    promiseTo: "Đã hứa với ai?",
+    promiseToEmpty: "Người hoặc khách hàng",
+    promiseDueOn: "Ngày đã hứa",
+    promiseStatus: "Trạng thái lời hứa",
+    promiseStatusLabels: {
+      none: "Không có lời hứa",
+      open: "Còn mở",
+      kept: "Đã giữ lời",
+      released: "Đã hủy hoặc được miễn",
+    },
+    promisePill: "Còn lời hứa",
+    outcome: "Kết quả",
+    outcomeEmpty: "Chưa ghi kết quả.",
+    outcomeHelper: "Ghi tình huống đã kết thúc thế nào, không chỉ đánh dấu Đã xong.",
+    outcomeRecorded: "Đã ghi kết quả",
+    outcomeMissing: "Thiếu kết quả",
+    closedAt: "Lần đóng gần nhất",
+    stateHistory: "Lịch sử trạng thái",
+    stateHistoryEmpty: "Chưa ghi nhận lần chuyển trạng thái nào.",
     richLinks: "Link",
     richLinksEmpty: "Dán link ở đây",
     richLinksHelper: "Chỉ các dòng bắt đầu bằng http:// hoặc https:// được tính là link.",
@@ -360,6 +404,23 @@ export const copy = {
     nextStepEmpty: string;
     nextAction: string;
     nextTrigger: string;
+    promise: string;
+    promiseEmpty: string;
+    promiseHelper: string;
+    promiseTo: string;
+    promiseToEmpty: string;
+    promiseDueOn: string;
+    promiseStatus: string;
+    promiseStatusLabels: Record<"none" | "open" | "kept" | "released", string>;
+    promisePill: string;
+    outcome: string;
+    outcomeEmpty: string;
+    outcomeHelper: string;
+    outcomeRecorded: string;
+    outcomeMissing: string;
+    closedAt: string;
+    stateHistory: string;
+    stateHistoryEmpty: string;
     richLinks: string;
     richLinksEmpty: string;
     richLinksHelper: string;

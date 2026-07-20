@@ -1,9 +1,12 @@
 import { createBoard, type Board } from "../domain/board";
 import {
   normalizeFileRefs,
+  normalizeDateOnly,
   normalizeList,
   normalizeNextStepKind,
+  normalizePromiseStatus,
   normalizeReentryField,
+  normalizeStateHistory,
   normalizeTags,
 } from "../domain/card";
 import { isBoardState } from "../domain/state";
@@ -61,6 +64,21 @@ export function sanitizeBoard(value: unknown): Board {
       const source = card as unknown as Record<string, unknown>;
       const state = isBoardState(source.state) ? source.state : "continue";
       const now = new Date().toISOString();
+      const promise =
+        typeof source.promise === "string" ? normalizeReentryField(source.promise).slice(0, 360) : "";
+      const normalizedHistory = normalizeStateHistory(source.stateHistory);
+      const stateHistory =
+        normalizedHistory.length === 0 || normalizedHistory[normalizedHistory.length - 1]?.to === state
+          ? normalizedHistory
+          : [];
+      const sourceClosedAt =
+        typeof source.closedAt === "string" && !Number.isNaN(new Date(source.closedAt).getTime())
+          ? new Date(source.closedAt).toISOString()
+          : "";
+      const closedAt =
+        sourceClosedAt ||
+        [...stateHistory].reverse().find((transition) => transition.to === "finished")?.at ||
+        "";
 
       return [
         {
@@ -80,6 +98,14 @@ export function sanitizeBoard(value: unknown): Board {
             typeof source.nextStep === "string" ? source.nextStep : "",
           ),
           nextStep: typeof source.nextStep === "string" ? normalizeReentryField(source.nextStep).slice(0, 360) : "",
+          promise,
+          promiseTo:
+            typeof source.promiseTo === "string" ? normalizeReentryField(source.promiseTo).slice(0, 160) : "",
+          promiseDueOn: normalizeDateOnly(source.promiseDueOn),
+          promiseStatus: normalizePromiseStatus(source.promiseStatus, promise),
+          outcome: typeof source.outcome === "string" ? normalizeReentryField(source.outcome).slice(0, 480) : "",
+          closedAt,
+          stateHistory,
           richLinks: Array.isArray(source.richLinks)
             ? normalizeList(source.richLinks.filter((value): value is string => typeof value === "string"))
             : [],

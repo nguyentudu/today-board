@@ -1,4 +1,4 @@
-import type { BoardState } from "./state";
+import { isBoardState, type BoardState } from "./state";
 
 const REENTRY_PLACEHOLDER_VALUES = new Set([
   "Snapshot: what is happening?",
@@ -21,6 +21,13 @@ export interface Card {
   ifYouReturn: string;
   nextStepKind: NextStepKind;
   nextStep: string;
+  promise: string;
+  promiseTo: string;
+  promiseDueOn: string;
+  promiseStatus: PromiseStatus;
+  outcome: string;
+  closedAt: string;
+  stateHistory: StateTransition[];
   richLinks: string[];
   imageRefs: string[];
   audioRefs: string[];
@@ -34,6 +41,13 @@ export interface Card {
 }
 
 export type NextStepKind = "none" | "action" | "trigger";
+export type PromiseStatus = "none" | "open" | "kept" | "released";
+
+export interface StateTransition {
+  from: BoardState;
+  to: BoardState;
+  at: string;
+}
 
 export interface FileRef {
   name: string;
@@ -55,6 +69,13 @@ export function createCard(title: string, state: BoardState = "continue"): Card 
     ifYouReturn: "",
     nextStepKind: "none",
     nextStep: "",
+    promise: "",
+    promiseTo: "",
+    promiseDueOn: "",
+    promiseStatus: "none",
+    outcome: "",
+    closedAt: "",
+    stateHistory: [],
     richLinks: [],
     imageRefs: [],
     audioRefs: [],
@@ -74,6 +95,61 @@ export function normalizeNextStepKind(value: unknown, nextStep = ""): NextStepKi
   }
 
   return nextStep.trim() ? "action" : "none";
+}
+
+export function normalizePromiseStatus(value: unknown, promise = ""): PromiseStatus {
+  if (!promise.trim()) {
+    return "none";
+  }
+
+  if (value === "open" || value === "kept" || value === "released") {
+    return value;
+  }
+
+  return "open";
+}
+
+export function normalizeDateOnly(value: unknown): string {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return "";
+  }
+
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day ? value : "";
+}
+
+export function normalizeStateHistory(value: unknown): StateTransition[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  const transitions = value
+    .flatMap((item) => {
+      if (!item || typeof item !== "object") {
+        return [];
+      }
+
+      const source = item as Record<string, unknown>;
+      if (!isBoardState(source.from) || !isBoardState(source.to) || typeof source.at !== "string") {
+        return [];
+      }
+
+      const at = new Date(source.at);
+      if (Number.isNaN(at.getTime()) || source.from === source.to) {
+        return [];
+      }
+
+      return [{ from: source.from, to: source.to, at: at.toISOString() }];
+    })
+    .slice(-40);
+
+  const coherent = transitions.every((transition, index) => {
+    const previous = transitions[index - 1];
+    return !previous || (transition.from === previous.to && transition.at >= previous.at);
+  });
+
+  return coherent ? transitions : [];
 }
 
 export function touchCard(card: Card): Card {

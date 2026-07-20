@@ -17,6 +17,11 @@ interface ColumnProps {
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
   onNextStepKind: (cardId: string, nextStepKind: Board["cards"][number]["nextStepKind"]) => void;
   onNextStep: (cardId: string, nextStep: string) => void;
+  onPromise: (
+    cardId: string,
+    promise: { text?: string; to?: string; dueOn?: string; status?: Board["cards"][number]["promiseStatus"] },
+  ) => void;
+  onOutcome: (cardId: string, outcome: string) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
@@ -67,6 +72,8 @@ export function Column(props: ColumnProps): HTMLElement {
           onIfYouReturn: props.onIfYouReturn,
           onNextStepKind: props.onNextStepKind,
           onNextStep: props.onNextStep,
+          onPromise: props.onPromise,
+          onOutcome: props.onOutcome,
           onRichLinks: props.onRichLinks,
           onImageRefs: props.onImageRefs,
           onAudioRefs: props.onAudioRefs,

@@ -18,6 +18,11 @@ interface CardProps {
   onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
   onNextStepKind: (cardId: string, nextStepKind: BoardCard["nextStepKind"]) => void;
   onNextStep: (cardId: string, nextStep: string) => void;
+  onPromise: (
+    cardId: string,
+    promise: { text?: string; to?: string; dueOn?: string; status?: BoardCard["promiseStatus"] },
+  ) => void;
+  onOutcome: (cardId: string, outcome: string) => void;
   onRichLinks: (cardId: string, richLinks: string[]) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
@@ -39,6 +44,8 @@ export function Card({
   onIfYouReturn,
   onNextStepKind,
   onNextStep,
+  onPromise,
+  onOutcome,
   onRichLinks,
   onImageRefs,
   onAudioRefs,
@@ -77,6 +84,8 @@ export function Card({
           onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
           onNextStepKind: (nextStepKind) => onNextStepKind(card.id, nextStepKind),
           onNextStep: (nextStep) => onNextStep(card.id, nextStep),
+          onPromise: (promise) => onPromise(card.id, promise),
+          onOutcome: (outcome) => onOutcome(card.id, outcome),
           onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
           onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
           onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
@@ -129,6 +138,14 @@ export function Card({
 
     if (card.waitingOn.trim()) {
       meta.append(createPill(text.waitingPill));
+    }
+
+    if (card.promise.trim() && card.promiseStatus === "open") {
+      meta.append(createPill(text.promisePill));
+    }
+
+    if (card.state === "finished") {
+      meta.append(createPill(card.outcome.trim() ? text.outcomeRecorded : text.outcomeMissing));
     }
 
     const returnPoint = document.createElement("p");
@@ -368,6 +385,8 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
     [text.waitingOn, card.waitingOn, text.waitingOnEmpty],
     [text.ifYouReturn, card.ifYouReturn, text.ifYouReturnEmpty],
     [nextStepLabel(card, text), card.nextStep, text.nextStepEmpty],
+    [text.promise, formatPromise(card, text), text.promiseEmpty],
+    [text.outcome, card.outcome, text.outcomeEmpty],
     [text.tinyNote, card.note, ""],
   ]) {
     const block = document.createElement("div");
@@ -379,7 +398,47 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
     detail.append(block);
   }
 
+  detail.append(renderStateHistory(card, text));
+
   return detail;
+}
+
+function formatPromise(card: BoardCard, text: (typeof copy)[Language]): string {
+  if (!card.promise.trim()) {
+    return "";
+  }
+
+  const details = [
+    card.promiseTo.trim() ? `${text.promiseTo}: ${card.promiseTo.trim()}` : "",
+    card.promiseDueOn ? `${text.promiseDueOn}: ${card.promiseDueOn}` : "",
+    `${text.promiseStatus}: ${text.promiseStatusLabels[card.promiseStatus]}`,
+  ].filter(Boolean);
+  return [card.promise.trim(), ...details].join("\n");
+}
+
+function renderStateHistory(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
+  const block = document.createElement("div");
+  block.className = "state-history";
+  const heading = document.createElement("h4");
+  heading.textContent = text.stateHistory;
+  block.append(heading);
+
+  const recent = card.stateHistory.slice(-3).reverse();
+  if (recent.length === 0) {
+    const empty = document.createElement("p");
+    empty.textContent = text.stateHistoryEmpty;
+    block.append(empty);
+    return block;
+  }
+
+  const list = document.createElement("ul");
+  for (const transition of recent) {
+    const item = document.createElement("li");
+    item.textContent = `${text.stateLabels[transition.from]} → ${text.stateLabels[transition.to]} · ${formatDate(transition.at)}`;
+    list.append(item);
+  }
+  block.append(list);
+  return block;
 }
 
 function nextStepLabel(card: BoardCard, text: (typeof copy)[Language]): string {
@@ -425,11 +484,16 @@ function renderSnapshot(card: BoardCard, text: (typeof copy)[Language], language
   const snapshot = document.createElement("dl");
   snapshot.className = "context-snapshot";
 
-  for (const row of [
+  const rows = [
     [text.created, formatDate(card.createdAt)],
     [text.lastTouched, formatDate(card.updatedAt)],
     [text.currentState, text.stateLabels[card.state]],
-  ]) {
+  ];
+  if (card.closedAt) {
+    rows.push([text.closedAt, formatDate(card.closedAt)]);
+  }
+
+  for (const row of rows) {
     const term = document.createElement("dt");
     term.textContent = row[0];
 

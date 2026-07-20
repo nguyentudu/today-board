@@ -26,6 +26,8 @@ interface CardEditorProps {
   onIfYouReturn: (ifYouReturn: string) => void;
   onNextStepKind: (nextStepKind: Card["nextStepKind"]) => void;
   onNextStep: (nextStep: string) => void;
+  onPromise: (promise: { text?: string; to?: string; dueOn?: string; status?: Card["promiseStatus"] }) => void;
+  onOutcome: (outcome: string) => void;
   onRichLinks: (richLinks: string[]) => void;
   onImageRefs: (imageRefs: string[]) => void;
   onAudioRefs: (audioRefs: string[]) => void;
@@ -45,6 +47,8 @@ export function CardEditor({
   onIfYouReturn,
   onNextStepKind,
   onNextStep,
+  onPromise,
+  onOutcome,
   onRichLinks,
   onImageRefs,
   onAudioRefs,
@@ -204,6 +208,62 @@ export function CardEditor({
 
   nextStepField.append(nextStepLabel, nextStep);
 
+  const promiseField = createTextareaField(
+    text.promise,
+    text.promiseEmpty,
+    card.promise,
+    (value) => onPromise({ text: value }),
+    text.promiseHelper,
+  );
+  promiseField.classList.add("continuity-section-field");
+
+  const promiseToField = createTextField(text.promiseTo, text.promiseToEmpty, card.promiseTo, 160, (value) =>
+    onPromise({ to: value }),
+  );
+
+  const promiseDueField = document.createElement("label");
+  promiseDueField.className = "card-field";
+  const promiseDueLabel = document.createElement("span");
+  promiseDueLabel.className = "field-label";
+  promiseDueLabel.textContent = text.promiseDueOn;
+  const promiseDue = document.createElement("input");
+  promiseDue.type = "date";
+  promiseDue.value = card.promiseDueOn;
+  promiseDue.ariaLabel = text.promiseDueOn;
+  promiseDue.addEventListener("change", () => onPromise({ dueOn: promiseDue.value }));
+  promiseDueField.append(promiseDueLabel, promiseDue);
+
+  const promiseStatusField = document.createElement("label");
+  promiseStatusField.className = "card-field";
+  const promiseStatusLabel = document.createElement("span");
+  promiseStatusLabel.className = "field-label";
+  promiseStatusLabel.textContent = text.promiseStatus;
+  const promiseStatus = document.createElement("select");
+  promiseStatus.ariaLabel = text.promiseStatus;
+  const promiseStatuses: Card["promiseStatus"][] = card.promise.trim()
+    ? ["open", "kept", "released"]
+    : ["none"];
+  for (const status of promiseStatuses) {
+    const option = document.createElement("option");
+    option.value = status;
+    option.textContent = text.promiseStatusLabels[status];
+    option.selected = card.promiseStatus === status;
+    promiseStatus.append(option);
+  }
+  promiseStatus.addEventListener("change", () =>
+    onPromise({ status: promiseStatus.value as Card["promiseStatus"] }),
+  );
+  promiseStatusField.append(promiseStatusLabel, promiseStatus);
+
+  const outcomeField = createTextareaField(
+    text.outcome,
+    text.outcomeEmpty,
+    card.outcome,
+    onOutcome,
+    text.outcomeHelper,
+  );
+  outcomeField.classList.add("continuity-section-field");
+
   const linksField = createTextareaField(text.richLinks, text.richLinksEmpty, card.richLinks.join("\n"), (value) =>
     onRichLinks(splitLines(value)),
     text.richLinksHelper,
@@ -226,6 +286,11 @@ export function CardEditor({
     ifYouReturnField,
     nextStepKindField,
     nextStepField,
+    promiseField,
+    promiseToField,
+    promiseDueField,
+    promiseStatusField,
+    outcomeField,
     linksField,
     captureControls,
     bookmarkReasonField,
@@ -233,6 +298,29 @@ export function CardEditor({
   );
 
   return editor;
+}
+
+function createTextField(
+  label: string,
+  placeholder: string,
+  value: string,
+  maxLength: number,
+  onChange: (value: string) => void,
+): HTMLLabelElement {
+  const field = document.createElement("label");
+  field.className = "card-field";
+  const fieldLabel = document.createElement("span");
+  fieldLabel.className = "field-label";
+  fieldLabel.textContent = label;
+  const input = document.createElement("input");
+  input.type = "text";
+  input.value = value;
+  input.maxLength = maxLength;
+  input.placeholder = placeholder;
+  input.ariaLabel = label;
+  input.addEventListener("change", () => onChange(input.value));
+  field.append(fieldLabel, input);
+  return field;
 }
 
 function createTagField(

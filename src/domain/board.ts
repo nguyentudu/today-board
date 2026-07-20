@@ -2,8 +2,10 @@ import type { Card } from "./card";
 import {
   createCard,
   normalizeFileRefs,
+  normalizeDateOnly,
   normalizeList,
   normalizeNextStepKind,
+  normalizePromiseStatus,
   normalizeReentryField,
   normalizeTags,
   touchCard,
@@ -89,6 +91,37 @@ export function updateCardReentryNotes(
   );
 }
 
+export function updateCardPromise(
+  board: Board,
+  cardId: string,
+  promise: {
+    text?: string;
+    to?: string;
+    dueOn?: string;
+    status?: Card["promiseStatus"];
+  },
+): Board {
+  return updateCard(board, cardId, (card) => {
+    const text = promise.text === undefined ? card.promise : normalizeReentryField(promise.text).slice(0, 360);
+    return touchCard({
+      ...card,
+      promise: text,
+      promiseTo: promise.to === undefined ? card.promiseTo : normalizeReentryField(promise.to).slice(0, 160),
+      promiseDueOn: promise.dueOn === undefined ? card.promiseDueOn : normalizeDateOnly(promise.dueOn),
+      promiseStatus: normalizePromiseStatus(promise.status ?? card.promiseStatus, text),
+    });
+  });
+}
+
+export function updateCardOutcome(board: Board, cardId: string, outcome: string): Board {
+  return updateCard(board, cardId, (card) =>
+    touchCard({
+      ...card,
+      outcome: normalizeReentryField(outcome).slice(0, 480),
+    }),
+  );
+}
+
 export function updateCardRichContext(
   board: Board,
   cardId: string,
@@ -117,7 +150,20 @@ export function updateCardTags(board: Board, cardId: string, tags: string[]): Bo
 }
 
 export function moveCard(board: Board, cardId: string, state: BoardState): Board {
-  return updateCard(board, cardId, (card) => touchCard({ ...card, state }));
+  return updateCard(board, cardId, (card) => {
+    if (card.state === state) {
+      return card;
+    }
+
+    const now = new Date().toISOString();
+    return {
+      ...card,
+      state,
+      closedAt: state === "finished" ? now : card.closedAt,
+      stateHistory: [...card.stateHistory, { from: card.state, to: state, at: now }].slice(-40),
+      updatedAt: now,
+    };
+  });
 }
 
 export function hideCard(board: Board, cardId: string): Board {

@@ -4,6 +4,8 @@ import {
   moveCard,
   renameCard,
   updateCardNote,
+  updateCardOutcome,
+  updateCardPromise,
   updateCardReentryNotes,
   updateCardRichContext,
   updateCardTags,
@@ -223,6 +225,8 @@ export function Board({
             commit(updateCardReentryNotes(board, cardId, { nextStepKind })),
           onNextStep: (cardId: string, nextStep: string) =>
             commit(updateCardReentryNotes(board, cardId, { nextStep })),
+          onPromise: (cardId: string, promise) => commit(updateCardPromise(board, cardId, promise)),
+          onOutcome: (cardId: string, outcome: string) => commit(updateCardOutcome(board, cardId, outcome)),
           onRichLinks: (cardId: string, richLinks: string[]) =>
             commit(updateCardRichContext(board, cardId, { richLinks })),
           onImageRefs: (cardId: string, imageRefs: string[]) =>
