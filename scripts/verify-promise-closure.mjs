@@ -3,6 +3,7 @@ import ts from "typescript";
 
 const stateSource = readFileSync("src/domain/state.ts", "utf8");
 const cardSource = readFileSync("src/domain/card.ts", "utf8");
+const lifecycleSource = readFileSync("src/domain/lifecycle.ts", "utf8");
 const boardSource = readFileSync("src/domain/board.ts", "utf8");
 const localStoreSource = readFileSync("src/storage/localStore.ts", "utf8");
 const retrievalSource = readFileSync("src/domain/retrieval.ts", "utf8");
@@ -22,7 +23,7 @@ function stripImports(source) {
   return source.replace(/import[\s\S]*?from\s+["'][^"']+["'];\s*/g, "");
 }
 
-const executableSource = [stateSource, cardSource, boardSource, localStoreSource]
+const executableSource = [stateSource, cardSource, lifecycleSource, boardSource, localStoreSource]
   .map(stripImports)
   .join("\n");
 const js = ts.transpileModule(executableSource, {
@@ -57,7 +58,8 @@ const invalidDate = domain.updateCardPromise(promised, createdCard.id, { dueOn: 
 assert("invalid promised dates are rejected", invalidDate.cards[0].promiseDueOn === "");
 
 const withOutcome = domain.updateCardOutcome(promised, createdCard.id, "Logo v3 approved and final files delivered");
-const finished = domain.moveCard(withOutcome, createdCard.id, "finished");
+const readyToFinish = domain.updateCardPromise(withOutcome, createdCard.id, { status: "kept" });
+const finished = domain.moveCard(readyToFinish, createdCard.id, "finished");
 const finishedCard = finished.cards[0];
 assert(
   "finishing records one exact state transition",
@@ -80,7 +82,7 @@ const roundTripped = domain.sanitizeBoard(JSON.parse(JSON.stringify(reopened)));
 assert(
   "JSON export and import preserve promise and closure semantics",
   roundTripped.cards[0].promise === promisedCard.promise
-    && roundTripped.cards[0].promiseStatus === "open"
+    && roundTripped.cards[0].promiseStatus === "kept"
     && roundTripped.cards[0].outcome === finishedCard.outcome
     && roundTripped.cards[0].stateHistory.length === 2,
 );

@@ -21,6 +21,7 @@
     "test:evidence-meaning": "node scripts/verify-evidence-meaning.mjs",
     "test:evidence-access": "node scripts/verify-evidence-access.mjs",
     "test:state-behavior": "node scripts/verify-state-behavior.mjs",
+    "test:lifecycle-integrity": "node scripts/verify-lifecycle-integrity.mjs",
     "test:edit-session": "node scripts/verify-edit-session.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },

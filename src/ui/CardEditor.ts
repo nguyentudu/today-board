@@ -221,9 +221,7 @@ export function CardEditor({
   promiseStatusLabel.textContent = text.promiseStatus;
   const promiseStatus = document.createElement("select");
   promiseStatus.ariaLabel = text.promiseStatus;
-  const promiseStatuses: Card["promiseStatus"][] = draft.promise.trim()
-    ? ["open", "kept", "released"]
-    : ["none"];
+  const promiseStatuses: Card["promiseStatus"][] = ["none", "open", "kept", "released"];
   for (const status of promiseStatuses) {
     const option = document.createElement("option");
     option.value = status;
@@ -237,7 +235,9 @@ export function CardEditor({
   promiseStatusField.append(promiseStatusLabel, promiseStatus);
 
   const outcomeField = createTextareaField(
-    text.outcome,
+    card.state !== "finished" && Boolean(card.closedAt) && Boolean(draft.outcome.trim())
+      ? text.previousOutcome
+      : text.outcome,
     text.outcomeEmpty,
     draft.outcome,
     (value) => onDraftChange({ outcome: value }),

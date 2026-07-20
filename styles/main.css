@@ -805,6 +805,34 @@ textarea {
   grid-column: 1 / -1;
 }
 
+.transition-confirmation {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  border: 1px solid #d4b468;
+  border-radius: 6px;
+  background: #fff8df;
+  padding: 0.7rem;
+}
+
+.transition-confirmation[hidden] {
+  display: none;
+}
+
+.transition-confirmation p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #514728;
+  line-height: 1.4;
+}
+
+.transition-confirm-button {
+  border-color: #806f36;
+  background: #eadca8;
+  color: #302a19;
+}
+
 .edit-save {
   border-color: #66805d;
   background: #dce9d6;
@@ -1014,6 +1042,10 @@ textarea {
   }
 
   .evidence-access-item {
+    grid-template-columns: 1fr;
+  }
+
+  .transition-confirmation {
     grid-template-columns: 1fr;
   }
 

@@ -3,6 +3,7 @@ import ts from "typescript";
 
 const stateSource = readFileSync("src/domain/state.ts", "utf8");
 const cardDomainSource = readFileSync("src/domain/card.ts", "utf8");
+const lifecycleDomainSource = readFileSync("src/domain/lifecycle.ts", "utf8");
 const boardDomainSource = readFileSync("src/domain/board.ts", "utf8");
 const boardViewSource = readFileSync("src/ui/Board.ts", "utf8");
 const cardViewSource = readFileSync("src/ui/Card.ts", "utf8");
@@ -23,7 +24,7 @@ function stripImports(source) {
   return source.replace(/import[\s\S]*?from\s+["'][^"']+["'];\s*/g, "");
 }
 
-const executableSource = [stateSource, cardDomainSource, boardDomainSource]
+const executableSource = [stateSource, cardDomainSource, lifecycleDomainSource, boardDomainSource]
   .map(stripImports)
   .join("\n");
 const js = ts.transpileModule(executableSource, {
@@ -111,7 +112,9 @@ assert(
 assert(
   "state and hide cannot silently discard a draft",
   cardViewSource.includes("window.confirm(text.unsavedDraftConfirm)")
-    && cardViewSource.includes("if (!discardDraft())")
+    && cardViewSource.includes("assessLifecycleTransition(card, targetState, draft)")
+    && cardViewSource.includes("onTransition(card.id, draft, targetState")
+    && cardViewSource.includes("transition-confirmation")
     && cardViewSource.includes("if (discardDraft())"),
 );
 assert(

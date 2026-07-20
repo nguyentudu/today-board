@@ -5,6 +5,10 @@ import {
   type CardEditDraft,
 } from "../domain/board";
 import type { BoardState } from "../domain/state";
+import {
+  assessLifecycleTransition,
+  type LifecycleTransitionConfirmation,
+} from "../domain/lifecycle";
 import { getReentrySignal } from "../domain/reentryPriority";
 import { CardEditor } from "./CardEditor";
 import type { Language } from "./i18n";
@@ -15,7 +19,12 @@ import { extractValidHttpUrls, normalizeReadableHttpUrl } from "../lib/links";
 interface CardProps {
   card: BoardCard;
   language: Language;
-  onMove: (cardId: string, state: BoardState) => void;
+  onTransition: (
+    cardId: string,
+    draft: CardEditDraft,
+    state: BoardState,
+    confirmations: LifecycleTransitionConfirmation[],
+  ) => boolean;
   onSaveDraft: (cardId: string, draft: CardEditDraft) => boolean;
   onEvidenceRole: (
     cardId: string,
@@ -32,7 +41,7 @@ const editSessions = new Map<string, CardEditDraft>();
 export function Card({
   card,
   language,
-  onMove,
+  onTransition,
   onSaveDraft,
   onEvidenceRole,
   onImageRefs,
@@ -212,13 +221,73 @@ export function Card({
       moveSelect.append(option);
     }
 
-    moveSelect.addEventListener("change", () => {
-      if (!discardDraft()) {
-        moveSelect.value = card.state;
+    const transitionPanel = document.createElement("div");
+    transitionPanel.className = "transition-confirmation";
+    transitionPanel.hidden = true;
+    transitionPanel.setAttribute("role", "group");
+    const transitionMessage = document.createElement("p");
+    const transitionConfirm = document.createElement("button");
+    transitionConfirm.type = "button";
+    transitionConfirm.className = "transition-confirm-button";
+    const transitionCancel = document.createElement("button");
+    transitionCancel.type = "button";
+    transitionCancel.className = "quiet-button";
+    transitionCancel.textContent = text.cancelAction;
+    transitionPanel.append(transitionMessage, transitionConfirm, transitionCancel);
+
+    const clearPendingTransition = () => {
+      moveSelect.value = card.state;
+      transitionPanel.hidden = true;
+      transitionConfirm.onclick = null;
+    };
+
+    const executeTransition = (targetState: BoardState, confirmations: LifecycleTransitionConfirmation[]) => {
+      const draft = editSessions.get(card.id);
+      if (!draft) {
+        clearPendingTransition();
         return;
       }
-      onMove(card.id, moveSelect.value as BoardState);
-    });
+      editSessions.delete(card.id);
+      if (!onTransition(card.id, draft, targetState, confirmations)) {
+        editSessions.set(card.id, draft);
+        clearPendingTransition();
+        status.textContent = text.transitionSaveFailed;
+      }
+    };
+
+    const prepareTransition = (targetState: BoardState) => {
+      const draft = editSessions.get(card.id);
+      if (!draft || targetState === card.state) {
+        clearPendingTransition();
+        return;
+      }
+      const assessment = assessLifecycleTransition(card, targetState, draft);
+      if (!assessment.allowed) {
+        clearPendingTransition();
+        status.textContent = text.finishBlockedOpenPromise;
+        return;
+      }
+
+      status.textContent = "";
+      const required = assessment.requiredConfirmations[0];
+      if (!required) {
+        executeTransition(targetState, []);
+        return;
+      }
+
+      transitionPanel.hidden = false;
+      transitionMessage.textContent = required === "FINISH_WITHOUT_OUTCOME"
+        ? text.finishWithoutOutcomeWarning
+        : text.leaveAloneOpenPromiseWarning;
+      transitionConfirm.textContent = required === "FINISH_WITHOUT_OUTCOME"
+        ? text.finishWithoutOutcomeAction
+        : text.leaveAloneConfirmAction;
+      transitionConfirm.onclick = () => executeTransition(targetState, [required]);
+      transitionConfirm.focus();
+    };
+
+    moveSelect.addEventListener("change", () => prepareTransition(moveSelect.value as BoardState));
+    transitionCancel.addEventListener("click", clearPendingTransition);
 
     const hideButton = document.createElement("button");
     hideButton.type = "button";
@@ -259,7 +328,7 @@ export function Card({
     status.className = "edit-session-status";
     status.setAttribute("role", "status");
 
-    actions.append(saveButton, cancelButton, moveLabel, hideButton, status);
+    actions.append(saveButton, cancelButton, moveLabel, transitionPanel, hideButton, status);
     return actions;
   };
 
@@ -488,7 +557,7 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
     [text.ifYouReturn, card.ifYouReturn, text.ifYouReturnEmpty],
     [nextStepLabel(card, text), card.nextStep, text.nextStepEmpty],
     [text.promise, formatPromise(card, text), text.promiseEmpty],
-    [text.outcome, card.outcome, text.outcomeEmpty],
+    [outcomeDisplayLabel(card, text), card.outcome, text.outcomeEmpty],
     [text.tinyNote, card.note, ""],
   ]) {
     const block = document.createElement("div");
@@ -688,6 +757,12 @@ function nextStepLabel(card: BoardCard, text: (typeof copy)[Language]): string {
   }
 
   return text.nextStep;
+}
+
+function outcomeDisplayLabel(card: BoardCard, text: (typeof copy)[Language]): string {
+  return card.state !== "finished" && Boolean(card.closedAt) && Boolean(card.outcome.trim())
+    ? text.previousOutcome
+    : text.outcome;
 }
 
 function renderTags(tags: string[], limit = tags.length): HTMLElement | undefined {

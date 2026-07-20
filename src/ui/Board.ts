@@ -1,8 +1,8 @@
 import {
   addCard,
   applyCardEditDraft,
+  applyCardEditDraftAndTransition,
   hideCard,
-  moveCard,
   updateCardEvidenceRole,
   updateCardRichContext,
   type Board as BoardModel,
@@ -206,7 +206,10 @@ export function Board({
           board: visibleBoard,
           state,
           language,
-          onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
+          onTransition: (cardId, draft, nextState, confirmations) => {
+            const result = applyCardEditDraftAndTransition(board, cardId, draft, nextState, confirmations);
+            return result.applied ? commit(result.board) : false;
+          },
           onSaveDraft: (cardId, draft) => commit(applyCardEditDraft(board, cardId, draft)),
           onEvidenceRole: (cardId: string, evidence) => commit(updateCardEvidenceRole(board, cardId, evidence)),
           onImageRefs: (cardId: string, imageRefs: string[]) =>

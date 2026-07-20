@@ -13,6 +13,12 @@ export const copy = {
     selectedFile: "Selected:",
     savedNote: "Saved locally for continuity. No tracking.",
     changeZone: "Change zone",
+    finishBlockedOpenPromise: "Finish is blocked while the Promise is open. Mark it Kept or Released first.",
+    finishWithoutOutcomeWarning: "No Outcome is recorded. Finish anyway without inventing one?",
+    finishWithoutOutcomeAction: "Finish without Outcome",
+    leaveAloneOpenPromiseWarning: "This Promise is still open. Leave Alone will stop this Situation from surfacing automatically.",
+    leaveAloneConfirmAction: "Move to Leave Alone",
+    transitionSaveFailed: "Could not save the transition. Your draft and original state are unchanged.",
     hideCard: "Hide card",
     cardName: "Situation name",
     situationTitleHelper: "Name the situation so you can recognize it without reopening everything.",
@@ -53,6 +59,7 @@ export const copy = {
     },
     promisePill: "Promise open",
     outcome: "Outcome",
+    previousOutcome: "Previous Outcome",
     outcomeEmpty: "No outcome recorded yet.",
     outcomeHelper: "Record how the situation ended, not only that it is done.",
     outcomeRecorded: "Outcome recorded",
@@ -227,6 +234,12 @@ export const copy = {
     selectedFile: "Selected:",
     savedNote: "Đã lưu trên máy này. Không theo dõi.",
     changeZone: "Đổi vùng",
+    finishBlockedOpenPromise: "Chưa thể chuyển sang Đã xong khi Lời hứa còn mở. Hãy đánh dấu Đã giữ lời hoặc Đã hủy/được miễn trước.",
+    finishWithoutOutcomeWarning: "Chưa ghi Kết quả. Vẫn chuyển sang Đã xong mà không tự tạo Kết quả?",
+    finishWithoutOutcomeAction: "Đã xong không có Kết quả",
+    leaveAloneOpenPromiseWarning: "Lời hứa vẫn còn mở. Để yên sẽ khiến Tình huống không tự xuất hiện lại.",
+    leaveAloneConfirmAction: "Chuyển sang Để yên",
+    transitionSaveFailed: "Chưa lưu được chuyển trạng thái. Bản nháp và trạng thái ban đầu vẫn được giữ nguyên.",
     hideCard: "Ẩn card",
     cardName: "Tên tình huống",
     situationTitleHelper: "Đặt tên đủ rõ để sau này nhận ra mà không phải đọc lại mọi thứ.",
@@ -267,6 +280,7 @@ export const copy = {
     },
     promisePill: "Còn lời hứa",
     outcome: "Kết quả",
+    previousOutcome: "Kết quả trước đó",
     outcomeEmpty: "Chưa ghi kết quả.",
     outcomeHelper: "Ghi tình huống đã kết thúc thế nào, không chỉ đánh dấu Đã xong.",
     outcomeRecorded: "Đã ghi kết quả",
@@ -443,6 +457,12 @@ export const copy = {
     selectedFile: string;
     savedNote: string;
     changeZone: string;
+    finishBlockedOpenPromise: string;
+    finishWithoutOutcomeWarning: string;
+    finishWithoutOutcomeAction: string;
+    leaveAloneOpenPromiseWarning: string;
+    leaveAloneConfirmAction: string;
+    transitionSaveFailed: string;
     hideCard: string;
     cardName: string;
     situationTitleHelper: string;
@@ -474,6 +494,7 @@ export const copy = {
     promiseStatusLabels: Record<"none" | "open" | "kept" | "released", string>;
     promisePill: string;
     outcome: string;
+    previousOutcome: string;
     outcomeEmpty: string;
     outcomeHelper: string;
     outcomeRecorded: string;

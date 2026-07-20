@@ -16,6 +16,11 @@ import {
   type EvidenceRole,
 } from "./card";
 import type { BoardState } from "./state";
+import {
+  assessLifecycleTransition,
+  type LifecycleTransitionAssessment,
+  type LifecycleTransitionConfirmation,
+} from "./lifecycle";
 
 export interface Board {
   version: 1;
@@ -40,6 +45,12 @@ export interface CardEditDraft {
   richLinks: string[];
   bookmarkReason: string;
   tags: string[];
+}
+
+export interface LifecycleTransitionResult {
+  board: Board;
+  assessment: LifecycleTransitionAssessment | null;
+  applied: boolean;
 }
 
 export function createBoard(): Board {
@@ -83,33 +94,46 @@ export function isCardEditDraftDirty(card: Card, draft: CardEditDraft): boolean 
 }
 
 export function applyCardEditDraft(board: Board, cardId: string, draft: CardEditDraft): Board {
-  return updateCard(board, cardId, (card) => {
-    const promise = normalizeReentryField(draft.promise).slice(0, 360);
-    const updated = {
-      ...card,
-      title: draft.title.trim() || "Untitled return",
-      note: draft.note.slice(0, 280),
-      contextSnapshot: normalizeReentryField(draft.contextSnapshot).slice(0, 360),
-      whyStillOpen: normalizeReentryField(draft.whyStillOpen).slice(0, 360),
-      waitingOn: normalizeReentryField(draft.waitingOn).slice(0, 360),
-      ifYouReturn: normalizeReentryField(draft.ifYouReturn).slice(0, 360),
-      nextStepKind: normalizeNextStepKind(draft.nextStepKind, draft.nextStep),
-      nextStep: normalizeReentryField(draft.nextStep).slice(0, 360),
-      promise,
-      promiseTo: normalizeReentryField(draft.promiseTo).slice(0, 160),
-      promiseDueOn: normalizeDateOnly(draft.promiseDueOn),
-      promiseStatus: normalizePromiseStatus(draft.promiseStatus, promise),
-      outcome: normalizeReentryField(draft.outcome).slice(0, 480),
-      richLinks: normalizeList(draft.richLinks),
-      bookmarkReason: draft.bookmarkReason.slice(0, 360),
-      tags: normalizeTags(draft.tags),
-    };
-    const identities = collectEvidenceIdentities(updated);
-    return touchCard({
-      ...updated,
-      evidenceMeta: card.evidenceMeta.filter((meta) => identities.has(meta.id)),
-    });
-  });
+  return updateCard(board, cardId, (card) => touchCard(normalizeCardEditDraft(card, draft)));
+}
+
+export function applyCardEditDraftAndTransition(
+  board: Board,
+  cardId: string,
+  draft: CardEditDraft,
+  targetState: BoardState,
+  confirmations: LifecycleTransitionConfirmation[] = [],
+): LifecycleTransitionResult {
+  const card = board.cards.find((candidate) => candidate.id === cardId);
+  if (!card) {
+    return { board, assessment: null, applied: false };
+  }
+
+  const assessment = assessLifecycleTransition(card, targetState, draft);
+  const confirmationsSatisfied = assessment.requiredConfirmations.every((required) => confirmations.includes(required));
+  if (!assessment.transitionNeeded || !assessment.allowed || !confirmationsSatisfied) {
+    return { board, assessment, applied: false };
+  }
+
+  const now = new Date().toISOString();
+  const normalized = normalizeCardEditDraft(card, draft);
+  const transitioned: Card = {
+    ...normalized,
+    state: targetState,
+    closedAt: targetState === "finished" ? now : card.closedAt,
+    stateHistory: [...card.stateHistory, { from: card.state, to: targetState, at: now }].slice(-40),
+    updatedAt: now,
+  };
+
+  return {
+    board: {
+      ...board,
+      cards: board.cards.map((candidate) => (candidate.id === cardId ? transitioned : candidate)),
+      updatedAt: now,
+    },
+    assessment,
+    applied: true,
+  };
 }
 
 export function renameCard(board: Board, cardId: string, title: string): Board {
@@ -251,21 +275,17 @@ export function updateCardTags(board: Board, cardId: string, tags: string[]): Bo
   );
 }
 
-export function moveCard(board: Board, cardId: string, state: BoardState): Board {
-  return updateCard(board, cardId, (card) => {
-    if (card.state === state) {
-      return card;
-    }
-
-    const now = new Date().toISOString();
-    return {
-      ...card,
-      state,
-      closedAt: state === "finished" ? now : card.closedAt,
-      stateHistory: [...card.stateHistory, { from: card.state, to: state, at: now }].slice(-40),
-      updatedAt: now,
-    };
-  });
+export function moveCard(
+  board: Board,
+  cardId: string,
+  state: BoardState,
+  confirmations: LifecycleTransitionConfirmation[] = [],
+): Board {
+  const card = board.cards.find((candidate) => candidate.id === cardId);
+  if (!card) {
+    return board;
+  }
+  return applyCardEditDraftAndTransition(board, cardId, createCardEditDraft(card), state, confirmations).board;
 }
 
 export function hideCard(board: Board, cardId: string): Board {
@@ -283,5 +303,33 @@ function touchBoard(board: Board): Board {
   return {
     ...board,
     updatedAt: new Date().toISOString(),
+  };
+}
+
+function normalizeCardEditDraft(card: Card, draft: CardEditDraft): Card {
+  const promise = normalizeReentryField(draft.promise).slice(0, 360);
+  const updated = {
+    ...card,
+    title: draft.title.trim() || "Untitled return",
+    note: draft.note.slice(0, 280),
+    contextSnapshot: normalizeReentryField(draft.contextSnapshot).slice(0, 360),
+    whyStillOpen: normalizeReentryField(draft.whyStillOpen).slice(0, 360),
+    waitingOn: normalizeReentryField(draft.waitingOn).slice(0, 360),
+    ifYouReturn: normalizeReentryField(draft.ifYouReturn).slice(0, 360),
+    nextStepKind: normalizeNextStepKind(draft.nextStepKind, draft.nextStep),
+    nextStep: normalizeReentryField(draft.nextStep).slice(0, 360),
+    promise,
+    promiseTo: normalizeReentryField(draft.promiseTo).slice(0, 160),
+    promiseDueOn: normalizeDateOnly(draft.promiseDueOn),
+    promiseStatus: normalizePromiseStatus(draft.promiseStatus, promise),
+    outcome: normalizeReentryField(draft.outcome).slice(0, 480),
+    richLinks: normalizeList(draft.richLinks),
+    bookmarkReason: draft.bookmarkReason.slice(0, 360),
+    tags: normalizeTags(draft.tags),
+  };
+  const identities = collectEvidenceIdentities(updated);
+  return {
+    ...updated,
+    evidenceMeta: card.evidenceMeta.filter((meta) => identities.has(meta.id)),
   };
 }

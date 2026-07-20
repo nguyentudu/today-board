@@ -1,5 +1,6 @@
 import type { Board, CardEditDraft } from "../domain/board";
 import type { EvidenceKind, EvidenceRole } from "../domain/card";
+import type { LifecycleTransitionConfirmation } from "../domain/lifecycle";
 import { compareReentryPriority } from "../domain/reentryPriority";
 import type { BoardState } from "../domain/state";
 import { Card } from "./Card";
@@ -10,7 +11,12 @@ interface ColumnProps {
   board: Board;
   state: BoardState;
   language: Language;
-  onMove: (cardId: string, state: BoardState) => void;
+  onTransition: (
+    cardId: string,
+    draft: CardEditDraft,
+    state: BoardState,
+    confirmations: LifecycleTransitionConfirmation[],
+  ) => boolean;
   onSaveDraft: (cardId: string, draft: CardEditDraft) => boolean;
   onEvidenceRole: (
     cardId: string,
@@ -68,7 +74,7 @@ export function Column(props: ColumnProps): HTMLElement {
         Card({
           card,
           language: props.language,
-          onMove: props.onMove,
+          onTransition: props.onTransition,
           onSaveDraft: props.onSaveDraft,
           onEvidenceRole: props.onEvidenceRole,
           onImageRefs: props.onImageRefs,
