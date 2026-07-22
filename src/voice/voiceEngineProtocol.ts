@@ -21,6 +21,7 @@ export const VOICE_ENGINE_MODEL = {
 export const VOICE_ENGINE_MAX_AUDIO_SECONDS = 15;
 export const VOICE_ENGINE_SAMPLE_RATE = 16_000;
 export const VOICE_ENGINE_MAX_NEW_TOKENS = 96;
+export const VOICE_ENGINE_CACHE_KEY = "today-board-voice-model-ff4177021cc4";
 
 export type VoiceEngineBackend = "webgpu" | "wasm";
 
@@ -38,22 +39,24 @@ export interface VoiceEngineMetrics {
 export type VoiceEngineRequest =
   | { id: number; type: "install"; preferWebGpu: boolean }
   | { id: number; type: "prepare"; backend: VoiceEngineBackend }
+  | { id: number; type: "verify"; backend: VoiceEngineBackend }
   | { id: number; type: "transcribe"; audio: Float32Array; audioDurationMs: number }
   | { id: number; type: "remove" }
   | { id: number; type: "dispose" };
 
 export type VoiceEngineResponse =
-  | { id: number; type: "progress"; loaded: number; total: number; file?: string }
+  | { id: number; type: "progress"; loaded: number; total: number; files: number; file?: string }
   | { id: number; type: "fallback"; from: "webgpu"; to: "wasm"; reason: string }
   | { id: number; type: "installed"; backend: VoiceEngineBackend; metrics: VoiceEngineMetrics }
   | { id: number; type: "prepared"; backend: VoiceEngineBackend; metrics: VoiceEngineMetrics }
+  | { id: number; type: "verified"; backend: VoiceEngineBackend; cachedFiles: number }
   | { id: number; type: "transcribed"; transcript: string; metrics: VoiceEngineMetrics }
-  | { id: number; type: "removed"; deletedFiles: number }
+  | { id: number; type: "removed"; deletedFiles: number; removedBytes?: number }
   | { id: number; type: "disposed" }
   | {
       id: number;
       type: "error";
-      phase: "install" | "prepare" | "transcribe" | "remove" | "dispose";
+      phase: "install" | "prepare" | "verify" | "transcribe" | "remove" | "dispose";
       message: string;
       recoverable: boolean;
     };

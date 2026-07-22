@@ -156,7 +156,7 @@ assert(
 );
 assert(
   "app and service-worker identities close together",
-  app.includes('BUILD_ID = "2026.07.23-a"') && sw.includes('CACHE_VERSION = "2026-07-23-a"'),
+  app.includes('BUILD_ID = "2026.07.23-b"') && sw.includes('CACHE_VERSION = "2026-07-23-b"'),
 );
 
 if (failures.length > 0) {

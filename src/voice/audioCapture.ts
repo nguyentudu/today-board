@@ -6,6 +6,34 @@ export interface MemoryAudioCapture {
   durationMs: () => number;
 }
 
+interface AudioContextLifecycle {
+  state: string;
+  resume: () => Promise<void>;
+  close: () => Promise<void>;
+}
+
+interface AudioTrackSource {
+  getTracks: () => Array<{ stop: () => void }>;
+}
+
+export async function ensureAudioContextRunning(context: AudioContextLifecycle): Promise<void> {
+  if (context.state === "suspended") {
+    await context.resume();
+  }
+  if (context.state !== "running") {
+    throw new Error("AUDIO_CONTEXT_NOT_RUNNING");
+  }
+}
+
+export async function releaseAudioResources(stream: AudioTrackSource, context?: AudioContextLifecycle): Promise<void> {
+  for (const track of stream.getTracks()) {
+    track.stop();
+  }
+  if (context && context.state !== "closed") {
+    await context.close();
+  }
+}
+
 export async function startMemoryAudioCapture(onLimitReached: () => void): Promise<MemoryAudioCapture> {
   if (!navigator.mediaDevices?.getUserMedia || typeof AudioContext === "undefined") {
     throw new Error("MICROPHONE_UNSUPPORTED");
@@ -20,9 +48,18 @@ export async function startMemoryAudioCapture(onLimitReached: () => void): Promi
     },
     video: false,
   });
-  const context = new AudioContext();
-  const source = context.createMediaStreamSource(stream);
-  const processor = context.createScriptProcessor(4096, 1, 1);
+  let context: AudioContext | undefined;
+  let source: MediaStreamAudioSourceNode;
+  let processor: ScriptProcessorNode;
+  try {
+    context = new AudioContext();
+    await ensureAudioContextRunning(context);
+    source = context.createMediaStreamSource(stream);
+    processor = context.createScriptProcessor(4096, 1, 1);
+  } catch (error) {
+    await releaseAudioResources(stream, context).catch(() => undefined);
+    throw error;
+  }
   const chunks: Float32Array[] = [];
   const maximumSamples = Math.ceil(context.sampleRate * VOICE_ENGINE_MAX_AUDIO_SECONDS);
   let capturedSamples = 0;
@@ -69,12 +106,7 @@ export async function startMemoryAudioCapture(onLimitReached: () => void): Promi
     processor.onaudioprocess = null;
     processor.disconnect();
     source.disconnect();
-    for (const track of stream.getTracks()) {
-      track.stop();
-    }
-    if (context.state !== "closed") {
-      await context.close();
-    }
+    await releaseAudioResources(stream, context);
   }
 }
 

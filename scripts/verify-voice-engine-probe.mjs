@@ -1,10 +1,13 @@
 import { readFileSync } from "node:fs";
+import ts from "typescript";
 
 const app = readFileSync("src/app.ts", "utf8");
 const probe = readFileSync("src/ui/VoiceEngineProbe.ts", "utf8");
 const worker = readFileSync("src/voice/voiceEngine.worker.ts", "utf8");
 const capture = readFileSync("src/voice/audioCapture.ts", "utf8");
 const protocol = readFileSync("src/voice/voiceEngineProtocol.ts", "utf8");
+const progressSource = readFileSync("src/voice/modelDownloadProgress.ts", "utf8");
+const installationSource = readFileSync("src/voice/modelInstallationState.ts", "utf8");
 const originalProbe = readFileSync("src/ui/VoiceCapabilityProbe.ts", "utf8");
 const sw = readFileSync("public/sw.js", "utf8");
 const styles = readFileSync("styles/main.css", "utf8");
@@ -18,6 +21,57 @@ function assert(name, condition) {
     failures.push(name);
   }
 }
+
+async function loadTypeScriptModule(source) {
+  const executable = source.replace(/import[\s\S]*?from\s+["'][^"']+["'];\s*/g, "");
+  const js = ts.transpileModule(executable, {
+    compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2020 },
+  }).outputText;
+  return import(`data:text/javascript;base64,${Buffer.from(js).toString("base64")}`);
+}
+
+const progressDomain = await loadTypeScriptModule(progressSource);
+const installationDomain = await loadTypeScriptModule(installationSource);
+const audioDomain = await loadTypeScriptModule(capture);
+
+const progressLedger = new progressDomain.ModelDownloadProgress();
+progressLedger.update({ status: "progress", file: "encoder.onnx", loaded: 10, total: 100 });
+progressLedger.update({ status: "progress", file: "decoder.onnx", loaded: 20, total: 200 });
+const aggregate = progressLedger.update({ status: "progress", file: "encoder.onnx", loaded: 50, total: 100 });
+assert("download bytes aggregate latest progress across unique files", aggregate.loaded === 70 && aggregate.total === 300 && aggregate.files === 2);
+
+assert(
+  "a marker requires persistence verification before offline readiness",
+  installationDomain.classifyModelInstallation("valid", "not-run") === "marker-verification-required"
+    && installationDomain.classifyModelInstallation("valid", "passed") === "verified"
+    && installationDomain.classifyModelInstallation("valid", "failed") === "incomplete"
+    && installationDomain.classifyModelInstallation("invalid", "not-run") === "incomplete",
+);
+
+let resumed = false;
+const suspendedContext = {
+  state: "suspended",
+  async resume() { resumed = true; this.state = "running"; },
+  async close() { this.state = "closed"; },
+};
+await audioDomain.ensureAudioContextRunning(suspendedContext);
+assert("suspended Android AudioContext resumes before capture", resumed && suspendedContext.state === "running");
+
+let stoppedTracks = 0;
+let closedContext = false;
+const failedContext = {
+  state: "suspended",
+  async resume() { throw new Error("resume denied"); },
+  async close() { closedContext = true; this.state = "closed"; },
+};
+let resumeRejected = false;
+try {
+  await audioDomain.ensureAudioContextRunning(failedContext);
+} catch {
+  resumeRejected = true;
+}
+await audioDomain.releaseAudioResources({ getTracks: () => [{ stop: () => { stoppedTracks += 1; } }] }, failedContext);
+assert("AudioContext resume failure permits complete microphone cleanup", resumeRejected && stoppedTracks === 1 && closedContext);
 
 assert(
   "engine probe is hidden and unloaded by default",
@@ -115,15 +169,29 @@ assert(
     && probe.includes("marker.revision === VOICE_ENGINE_MODEL.revision")
     && worker.includes("await loadPipeline(backend, true)")
     && worker.includes("local_files_only: localFilesOnly")
-    && probe.includes("modelMissing"),
+    && probe.includes("modelMissing")
+    && probe.indexOf("await verifyPersistedModel(response.backend)") < probe.indexOf("await writeMarker(candidateMarker)")
+    && probe.includes('type: "verify"')
+    && probe.includes("const verifier = new Worker"),
 );
 assert(
-  "download progress retry and explicit model removal are present",
+  "failed or markerless installs retain exact cleanup",
   worker.includes('type: "progress"')
     && probe.includes("installButton.textContent = text.retry")
-    && worker.includes("ModelRegistry.clear_pipeline_cache")
     && probe.includes("await deleteMarker()")
-    && probe.includes('removeButton.addEventListener("click"'),
+    && probe.includes('removeButton.addEventListener("click"')
+    && probe.includes("removeButton.hidden = false")
+    && !probe.includes("isBusy() || !marker")
+    && worker.includes("clearExactBrowserCacheEntries")
+    && worker.includes("isExactPinnedModelRequest"),
+);
+assert(
+  "cleanup never removes board shell or unrelated browser caches",
+  worker.includes('[VOICE_ENGINE_CACHE_KEY, "transformers-cache"]')
+    && worker.includes("cache.delete(request)")
+    && !worker.includes('caches.delete("today-board-shell')
+    && !worker.includes("caches.keys()")
+    && probe.includes("caches.delete(MARKER_CACHE)"),
 );
 assert(
   "WebGPU preference has a bounded WASM fallback",
@@ -172,7 +240,7 @@ assert(
 );
 assert(
   "app and service-worker identities move together",
-  app.includes('BUILD_ID = "2026.07.23-a"') && sw.includes('CACHE_VERSION = "2026-07-23-a"'),
+  app.includes('BUILD_ID = "2026.07.23-b"') && sw.includes('CACHE_VERSION = "2026-07-23-b"'),
 );
 
 if (failures.length > 0) {

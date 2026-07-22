@@ -1,7 +1,9 @@
 /// <reference lib="webworker" />
 
 import { env, ModelRegistry, pipeline } from "@huggingface/transformers";
+import { ModelDownloadProgress } from "./modelDownloadProgress";
 import {
+  VOICE_ENGINE_CACHE_KEY,
   VOICE_ENGINE_MAX_NEW_TOKENS,
   VOICE_ENGINE_MODEL,
   type VoiceEngineBackend,
@@ -18,6 +20,7 @@ env.allowLocalModels = false;
 env.allowRemoteModels = true;
 env.useBrowserCache = true;
 env.useWasmCache = true;
+env.cacheKey = VOICE_ENGINE_CACHE_KEY;
 
 let transcriber: Transcriber | undefined;
 let loadedBackend: VoiceEngineBackend | undefined;
@@ -34,6 +37,9 @@ async function handleRequest(request: VoiceEngineRequest): Promise<void> {
         return;
       case "prepare":
         await prepare(request.id, request.backend);
+        return;
+      case "verify":
+        await verify(request.id, request.backend);
         return;
       case "transcribe":
         await transcribe(request.id, request.audio, request.audioDurationMs);
@@ -59,18 +65,19 @@ async function handleRequest(request: VoiceEngineRequest): Promise<void> {
 async function install(id: number, preferWebGpu: boolean): Promise<void> {
   const startedAt = performance.now();
   const progressStart = performance.now();
-  let downloadedBytes = 0;
+  const progressLedger = new ModelDownloadProgress();
   const progress = (event: unknown) => {
     const info = event as { status?: string; loaded?: number; total?: number; file?: string };
     if (info.status !== "progress_total" && info.status !== "progress") {
       return;
     }
-    downloadedBytes = Math.max(downloadedBytes, Number(info.loaded) || 0);
+    const totals = progressLedger.update(info);
     post({
       id,
       type: "progress",
-      loaded: Number(info.loaded) || 0,
-      total: Number(info.total) || expectedBytes(preferWebGpu ? "webgpu" : "wasm"),
+      loaded: totals.loaded,
+      total: totals.total || expectedBytes(preferWebGpu ? "webgpu" : "wasm"),
+      files: totals.files,
       file: info.file,
     });
   };
@@ -95,11 +102,26 @@ async function install(id: number, preferWebGpu: boolean): Promise<void> {
     backend,
     metrics: {
       backend,
-      modelDownloadBytes: downloadedBytes,
+      modelDownloadBytes: progressLedger.totals().loaded,
       modelDownloadDurationMs: completedAt - progressStart,
       coldLoadDurationMs: completedAt - startedAt,
     },
   });
+}
+
+async function verify(id: number, backend: VoiceEngineBackend): Promise<void> {
+  await disposePipeline();
+  const cacheStatus = await ModelRegistry.is_pipeline_cached_files(
+    VOICE_ENGINE_MODEL.task,
+    VOICE_ENGINE_MODEL.id,
+    modelConfig(backend, true),
+  );
+  if (!cacheStatus.allCached || cacheStatus.files.length === 0) {
+    throw new Error("MODEL_CACHE_INCOMPLETE");
+  }
+  await loadPipeline(backend, true);
+  await disposePipeline();
+  post({ id, type: "verified", backend, cachedFiles: cacheStatus.files.length });
 }
 
 async function prepare(id: number, backend: VoiceEngineBackend): Promise<void> {
@@ -151,17 +173,58 @@ async function transcribe(id: number, audio: Float32Array, audioDurationMs: numb
 
 async function remove(id: number): Promise<void> {
   await disposePipeline();
-  let deletedFiles = 0;
-  for (const backend of ["webgpu", "wasm"] as const) {
-    const config = modelConfig(backend, false);
-    const result = await ModelRegistry.clear_pipeline_cache(
-      VOICE_ENGINE_MODEL.task,
-      VOICE_ENGINE_MODEL.id,
-      config,
-    );
-    deletedFiles += result.filesDeleted;
+  const result = await clearExactBrowserCacheEntries();
+  post({
+    id,
+    type: "removed",
+    deletedFiles: result.deletedFiles,
+    removedBytes: result.byteCountAvailable ? result.removedBytes : undefined,
+  });
+}
+
+async function clearExactBrowserCacheEntries(): Promise<{
+  deletedFiles: number;
+  removedBytes: number;
+  byteCountAvailable: boolean;
+}> {
+  if (typeof caches === "undefined") {
+    return { deletedFiles: 0, removedBytes: 0, byteCountAvailable: false };
   }
-  post({ id, type: "removed", deletedFiles });
+  let deletedFiles = 0;
+  let removedBytes = 0;
+  let byteCountAvailable = true;
+  for (const cacheName of [VOICE_ENGINE_CACHE_KEY, "transformers-cache"]) {
+    if (!(await caches.has(cacheName))) {
+      continue;
+    }
+    const cache = await caches.open(cacheName);
+    for (const request of await cache.keys()) {
+      if (!isExactPinnedModelRequest(request.url)) {
+        continue;
+      }
+      const response = await cache.match(request);
+      const contentLength = Number(response?.headers.get("content-length"));
+      if (Number.isFinite(contentLength) && contentLength >= 0) {
+        removedBytes += contentLength;
+      } else {
+        byteCountAvailable = false;
+      }
+      if (await cache.delete(request)) {
+        deletedFiles += 1;
+      }
+    }
+    if ((await cache.keys()).length === 0 && cacheName === VOICE_ENGINE_CACHE_KEY) {
+      await caches.delete(cacheName);
+    }
+  }
+  return { deletedFiles, removedBytes, byteCountAvailable };
+}
+
+function isExactPinnedModelRequest(url: string): boolean {
+  const modelPath = VOICE_ENGINE_MODEL.id.split("/").map(encodeURIComponent).join("/");
+  const revision = encodeURIComponent(VOICE_ENGINE_MODEL.revision);
+  const pathname = new URL(url).pathname;
+  return pathname.includes(`/${modelPath}/resolve/${revision}/`);
 }
 
 async function loadPipeline(

@@ -1,5 +1,6 @@
 import type { Language } from "./i18n";
 import { startMemoryAudioCapture, type MemoryAudioCapture } from "../voice/audioCapture";
+import { classifyModelInstallation, type ModelInstallationState } from "../voice/modelInstallationState";
 import {
   VOICE_ENGINE_MAX_AUDIO_SECONDS,
   VOICE_ENGINE_MODEL,
@@ -37,6 +38,11 @@ type ProbePhase =
   | "removing"
   | "failure";
 
+interface MarkerReadResult {
+  present: boolean;
+  marker?: InstallationMarker;
+}
+
 const MARKER_CACHE = "today-board-voice-engine-probe-v1";
 const MARKER_PATH = `./__voice-engine-probe/${VOICE_ENGINE_MODEL.revision}`;
 
@@ -56,12 +62,14 @@ const copy = {
     state: "Model state",
     backend: "Backend",
     notInstalled: "Model not installed",
-    installed: "Installed for offline use",
+    markerFound: "Installation marker found; exact cache verification required",
+    installed: "Exact model cache verified for offline use",
+    incomplete: "Model cache is incomplete, stale, or evicted",
     installing: "Installing model",
     checking: "Checking local installation...",
     install: "Install model",
     retry: "Retry installation",
-    remove: "Remove model",
+    remove: "Clean downloaded model data",
     installConsent: "Installation starts only after this button. The exact pinned files are cached for offline use.",
     fallback: "WebGPU could not load the model. Trying the bounded WASM q8 fallback.",
     start: "Start 15-second sample",
@@ -72,6 +80,8 @@ const copy = {
     transcribing: "Transcribing locally in the worker...",
     removing: "Removing cached model files...",
     removed: "Downloaded model data removed.",
+    removedFiles: "files removed",
+    removedBytes: "bytes removed",
     transcript: "Final transcript",
     noTranscript: "No successful transcript yet.",
     unsupported: "This device exposes neither WebGPU nor the required WebAssembly runtime.",
@@ -108,12 +118,14 @@ const copy = {
     state: "Trạng thái mô hình",
     backend: "Bộ xử lý",
     notInstalled: "Chưa cài mô hình",
-    installed: "Đã cài để dùng ngoại tuyến",
+    markerFound: "Đã thấy dấu cài đặt; cần xác minh chính xác bộ nhớ đệm",
+    installed: "Đã xác minh chính xác bộ nhớ đệm để dùng ngoại tuyến",
+    incomplete: "Bộ nhớ đệm mô hình thiếu, cũ hoặc đã bị xóa",
     installing: "Đang cài mô hình",
     checking: "Đang kiểm tra bản cài cục bộ...",
     install: "Cài mô hình",
     retry: "Thử cài lại",
-    remove: "Xóa mô hình",
+    remove: "Dọn dữ liệu mô hình đã tải",
     installConsent: "Chỉ bắt đầu cài sau khi bạn bấm nút này. Các tệp đã ghim sẽ được lưu để dùng ngoại tuyến.",
     fallback: "WebGPU không tải được mô hình. Đang thử WASM q8 dự phòng có giới hạn.",
     start: "Bắt đầu mẫu 15 giây",
@@ -124,6 +136,8 @@ const copy = {
     transcribing: "Đang chép lời cục bộ trong worker...",
     removing: "Đang xóa tệp mô hình đã lưu...",
     removed: "Đã xóa dữ liệu mô hình tải xuống.",
+    removedFiles: "tệp đã xóa",
+    removedBytes: "byte đã xóa",
     transcript: "Bản chép cuối cùng",
     noTranscript: "Chưa có bản chép thành công.",
     unsupported: "Thiết bị này không có WebGPU và cũng không có WebAssembly cần thiết.",
@@ -153,6 +167,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   const supportsWebGpu = "gpu" in navigator;
   const supportsCache = "caches" in window;
   let phase: ProbePhase = "checking";
+  let installationState: ModelInstallationState = "not-installed";
   let marker: InstallationMarker | undefined;
   let capture: MemoryAudioCapture | undefined;
   let transcript = "";
@@ -161,7 +176,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   let requestSequence = 0;
   let destroyed = false;
   const pending = new Map<number, { resolve: (response: VoiceEngineResponse) => void; reject: (error: Error) => void }>();
-  const worker = new Worker(new URL("../voice/voiceEngine.worker.ts", import.meta.url), { type: "module" });
+  let worker = createWorker();
 
   const shell = document.createElement("section");
   shell.className = "voice-engine-probe";
@@ -266,8 +281,6 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
     status,
   );
 
-  worker.addEventListener("message", handleWorkerMessage);
-  worker.addEventListener("error", handleWorkerFailure);
   installButton.addEventListener("click", () => void installModel());
   removeButton.addEventListener("click", () => void removeModel());
   startButton.addEventListener("click", () => void startCapture());
@@ -310,10 +323,42 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       render();
       return;
     }
-    marker = await readMarker();
-    phase = marker ? "installed" : "not-installed";
-    statusMessage = marker ? text.installed : text.notInstalled;
+    const markerResult = await readMarker();
+    if (!markerResult.present) {
+      installationState = classifyModelInstallation("absent", "not-run");
+      phase = "not-installed";
+      statusMessage = text.notInstalled;
+      render();
+      return;
+    }
+    if (!markerResult.marker) {
+      installationState = classifyModelInstallation("invalid", "not-run");
+      phase = "not-installed";
+      statusMessage = text.incomplete;
+      installButton.textContent = text.retry;
+      render();
+      return;
+    }
+    marker = markerResult.marker;
+    installationState = classifyModelInstallation("valid", "not-run");
+    phase = "checking";
+    statusMessage = text.markerFound;
+    setBusy(true);
     render();
+    try {
+      await verifyPersistedModel(marker.backend);
+      installationState = classifyModelInstallation("valid", "passed");
+      phase = "installed";
+      statusMessage = text.installed;
+    } catch {
+      installationState = classifyModelInstallation("valid", "failed");
+      phase = "not-installed";
+      statusMessage = text.incomplete;
+      installButton.textContent = text.retry;
+    } finally {
+      setBusy(false);
+      render();
+    }
   }
 
   async function installModel(): Promise<void> {
@@ -331,19 +376,23 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       if (response.type !== "installed") {
         throw new Error("INSTALL_RESULT_INVALID");
       }
-      marker = {
+      const candidateMarker: InstallationMarker = {
         model: VOICE_ENGINE_MODEL.id,
         revision: VOICE_ENGINE_MODEL.revision,
         backend: response.backend,
         installedAt: new Date().toISOString(),
       };
-      await writeMarker(marker);
+      await verifyPersistedModel(response.backend);
+      await writeMarker(candidateMarker);
+      marker = candidateMarker;
+      installationState = "verified";
       metrics = { ...metrics, ...response.metrics };
       phase = "installed";
       statusMessage = text.installed;
       progress.value = 1;
       progressValue.textContent = "100%";
     } catch (error) {
+      installationState = "incomplete";
       phase = "failure";
       statusMessage = `${text.failed}: ${errorMessage(error)}`;
       installButton.textContent = text.retry;
@@ -354,7 +403,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   }
 
   async function removeModel(): Promise<void> {
-    if (isBusy() || !marker) {
+    if (isBusy() || !supportsCache) {
       return;
     }
     phase = "removing";
@@ -368,14 +417,18 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       }
       await deleteMarker();
       marker = undefined;
+      installationState = "not-installed";
       metrics = {};
       transcript = "";
       phase = "not-installed";
-      statusMessage = text.removed;
+      statusMessage = `${text.removed} ${response.deletedFiles} ${text.removedFiles}${
+        response.removedBytes === undefined ? "" : `; ${response.removedBytes.toLocaleString()} ${text.removedBytes}`
+      }.`;
       installButton.textContent = text.install;
       progress.value = 0;
       progressValue.textContent = "0%";
     } catch (error) {
+      installationState = "incomplete";
       phase = "failure";
       statusMessage = `${text.failed}: ${errorMessage(error)}`;
     } finally {
@@ -385,7 +438,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   }
 
   async function startCapture(): Promise<void> {
-    if (isBusy() || !marker) {
+    if (isBusy() || installationState !== "verified" || !marker) {
       statusMessage = text.modelMissing;
       render();
       return;
@@ -401,11 +454,13 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
     transcript = "";
     setBusy(true);
     render();
+    let modelPrepared = false;
     try {
       const response = await request({ type: "prepare", backend: marker.backend });
       if (response.type !== "prepared") {
         throw new Error("PREPARE_RESULT_INVALID");
       }
+      modelPrepared = true;
       metrics = { ...metrics, ...response.metrics };
       capture = await startMemoryAudioCapture(() => void stopAndTranscribe());
       phase = "recording";
@@ -413,8 +468,14 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       shell.dataset.recording = "true";
       render();
     } catch (error) {
-      phase = "failure";
-      statusMessage = `${text.modelMissing} ${errorMessage(error)}`;
+      if (!modelPrepared) {
+        installationState = "incomplete";
+        phase = "failure";
+        statusMessage = `${text.modelMissing} ${errorMessage(error)}`;
+      } else {
+        phase = "installed";
+        statusMessage = `${text.failed}: ${errorMessage(error)}`;
+      }
       setBusy(false);
       render();
     }
@@ -446,7 +507,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       statusMessage = text.installed;
     } catch (error) {
       transcript = "";
-      phase = "failure";
+      phase = "installed";
       statusMessage = `${text.failed}: ${errorMessage(error)}`;
     } finally {
       setBusy(false);
@@ -457,6 +518,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   function request(
     payload: Omit<Extract<VoiceEngineRequest, { type: "install" }>, "id">
       | Omit<Extract<VoiceEngineRequest, { type: "prepare" }>, "id">
+      | Omit<Extract<VoiceEngineRequest, { type: "verify" }>, "id">
       | Omit<Extract<VoiceEngineRequest, { type: "transcribe" }>, "id">
       | Omit<Extract<VoiceEngineRequest, { type: "remove" }>, "id">
       | Omit<Extract<VoiceEngineRequest, { type: "dispose" }>, "id">,
@@ -475,7 +537,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       const total = response.total || expectedBytes(marker?.backend ?? (supportsWebGpu ? "webgpu" : "wasm"));
       progress.value = Math.min(1, response.loaded / total);
       progressValue.textContent = `${Math.round(progress.value * 100)}%`;
-      metrics.modelDownloadBytes = Math.max(metrics.modelDownloadBytes ?? 0, response.loaded);
+      metrics.modelDownloadBytes = response.loaded;
       renderMetrics();
       return;
     }
@@ -502,10 +564,62 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       operation.reject(error);
     }
     pending.clear();
+    const activeCapture = capture;
+    capture = undefined;
+    delete shell.dataset.recording;
     phase = "failure";
     statusMessage = `${text.failed}: ${error.message}`;
     setBusy(false);
+    if (activeCapture) {
+      void activeCapture.cancel().catch(() => undefined);
+    }
+    replaceWorker();
     render();
+  }
+
+  function createWorker(): Worker {
+    const nextWorker = new Worker(new URL("../voice/voiceEngine.worker.ts", import.meta.url), { type: "module" });
+    nextWorker.addEventListener("message", handleWorkerMessage);
+    nextWorker.addEventListener("error", handleWorkerFailure);
+    return nextWorker;
+  }
+
+  function replaceWorker(): void {
+    worker.terminate();
+    if (!destroyed) {
+      worker = createWorker();
+    }
+  }
+
+  async function verifyPersistedModel(backend: VoiceEngineBackend): Promise<void> {
+    const verifier = new Worker(new URL("../voice/voiceEngine.worker.ts", import.meta.url), { type: "module" });
+    const id = ++requestSequence;
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const timeout = window.setTimeout(() => reject(new Error("MODEL_CACHE_VERIFICATION_TIMEOUT")), 180_000);
+        verifier.addEventListener("message", (event: MessageEvent<VoiceEngineResponse>) => {
+          const response = event.data;
+          if (response.id !== id) {
+            return;
+          }
+          window.clearTimeout(timeout);
+          if (response.type === "verified") {
+            resolve();
+          } else if (response.type === "error") {
+            reject(new Error(response.message));
+          } else {
+            reject(new Error("MODEL_CACHE_VERIFICATION_INVALID"));
+          }
+        });
+        verifier.addEventListener("error", (event) => {
+          window.clearTimeout(timeout);
+          reject(new Error(event.message || "MODEL_CACHE_VERIFICATION_WORKER_FAILED"));
+        });
+        verifier.postMessage({ id, type: "verify", backend } satisfies VoiceEngineRequest);
+      });
+    } finally {
+      verifier.terminate();
+    }
   }
 
   async function destroy(): Promise<void> {
@@ -517,6 +631,8 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
     window.removeEventListener("popstate", cleanupForNavigation);
     const activeCapture = capture;
     capture = undefined;
+    delete shell.dataset.recording;
+    setBusy(false);
     if (activeCapture) {
       await activeCapture.cancel();
     }
@@ -525,18 +641,16 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
     }
     pending.clear();
     worker.terminate();
-    delete shell.dataset.recording;
-    setBusy(false);
   }
 
   function render(): void {
     stateValue.textContent = phaseLabel();
     stateValue.dataset.phase = phase;
-    installButton.hidden = Boolean(marker) && phase !== "failure";
+    installButton.hidden = installationState === "verified";
     installButton.disabled = isBusy() || !supportsCache || (!supportsWebGpu && !supportsWasm);
-    removeButton.hidden = !marker;
-    removeButton.disabled = isBusy();
-    startButton.disabled = !marker || isBusy();
+    removeButton.hidden = false;
+    removeButton.disabled = isBusy() || !supportsCache;
+    startButton.disabled = installationState !== "verified" || !marker || isBusy();
     stopButton.disabled = phase !== "recording";
     clearButton.disabled = !transcript || phase === "recording" || phase === "transcribing";
     progressLabel.hidden = phase !== "installing";
@@ -562,8 +676,14 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   }
 
   function phaseLabel(): string {
-    if (phase === "installed" || phase === "recording" || phase === "preparing" || phase === "transcribing") {
+    if (installationState === "verified" && (phase === "installed" || phase === "recording" || phase === "preparing" || phase === "transcribing")) {
       return marker ? `${text.installed} · ${text[marker.backend]}` : text.installed;
+    }
+    if (installationState === "marker-verification-required") {
+      return text.markerFound;
+    }
+    if (installationState === "incomplete") {
+      return text.incomplete;
     }
     if (phase === "installing") {
       return text.installing;
@@ -591,17 +711,20 @@ function appendDefinition(list: HTMLDListElement, term: string, value: string): 
   list.append(label, detail);
 }
 
-async function readMarker(): Promise<InstallationMarker | undefined> {
+async function readMarker(): Promise<MarkerReadResult> {
   const cache = await caches.open(MARKER_CACHE);
   const response = await cache.match(MARKER_PATH);
   if (!response) {
-    return undefined;
+    return { present: false };
   }
   try {
     const marker = (await response.json()) as InstallationMarker;
-    return marker.model === VOICE_ENGINE_MODEL.id && marker.revision === VOICE_ENGINE_MODEL.revision ? marker : undefined;
+    const validBackend = marker.backend === "webgpu" || marker.backend === "wasm";
+    return marker.model === VOICE_ENGINE_MODEL.id && marker.revision === VOICE_ENGINE_MODEL.revision && validBackend
+      ? { present: true, marker }
+      : { present: true };
   } catch {
-    return undefined;
+    return { present: true };
   }
 }
 
