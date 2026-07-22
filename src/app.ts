@@ -14,11 +14,12 @@ if (!app) {
 }
 
 const root = app;
-const BUILD_ID = "2026.07.22-c";
+const BUILD_ID = "2026.07.23-a";
 const statusRegion = document.createElement("div");
 statusRegion.className = "app-status-region";
 statusRegion.setAttribute("aria-label", "Application status");
 const voiceProbeMode = isVoiceCapabilityProbeMode();
+const voiceEngineProbeMode = isVoiceEngineProbeMode();
 let board: BoardModel | undefined;
 let selectedImportFileName = "";
 let language: Language = "vi";
@@ -28,12 +29,13 @@ let offlineMessage: HTMLElement | undefined;
 let updateActivationRequested = false;
 let hasReloadedForUpdate = false;
 let networkStatusTimer: number | undefined;
-let destroyActiveView: (() => void) | undefined;
+let destroyActiveView: (() => void | Promise<void>) | undefined;
+let viewLoadSequence = 0;
 
 window.__TODAY_BOARD_BUILD_ID__ = BUILD_ID;
 renderBuildMarker();
 
-if (!voiceProbeMode) {
+if (!voiceProbeMode && !voiceEngineProbeMode) {
   board = loadBoard();
   if (!isQuickCaptureMode()) {
     board = applySharedLink(board);
@@ -51,6 +53,39 @@ function render(nextBoard?: BoardModel): void {
   destroyActiveView = undefined;
   renderNetworkStatus();
   renderUpdateMessage();
+
+  if (voiceEngineProbeMode) {
+    const request = ++viewLoadSequence;
+    const loading = document.createElement("p");
+    loading.className = "voice-engine-loading";
+    loading.setAttribute("role", "status");
+    loading.textContent = language === "vi" ? "Đang mở thử nghiệm Voice cục bộ..." : "Opening the local Voice probe...";
+    root.replaceChildren(statusRegion, loading);
+    void import("./ui/VoiceEngineProbe")
+      .then(({ VoiceEngineProbe }) => {
+        if (request !== viewLoadSequence) {
+          return;
+        }
+        const probe = VoiceEngineProbe({
+          language,
+          onLanguageChange: (nextLanguage: Language) => {
+            language = nextLanguage;
+            render();
+          },
+        });
+        destroyActiveView = probe.destroy;
+        root.replaceChildren(statusRegion, probe.element);
+      })
+      .catch(() => {
+        if (request === viewLoadSequence) {
+          loading.textContent =
+            language === "vi"
+              ? "Không thể mở bộ máy Voice cục bộ trên thiết bị này."
+              : "The local Voice engine could not be opened on this device.";
+        }
+      });
+    return;
+  }
 
   if (voiceProbeMode) {
     const probe = VoiceCapabilityProbe({
@@ -213,6 +248,10 @@ function isVoiceCapabilityProbeMode(): boolean {
   return new URLSearchParams(window.location.search).get("voice-probe") === "1";
 }
 
+function isVoiceEngineProbeMode(): boolean {
+  return new URLSearchParams(window.location.search).get("voice-engine-probe") === "1";
+}
+
 function getShareParam(name: "title" | "text" | "url"): string {
   return new URLSearchParams(window.location.search).get(name)?.trim() ?? "";
 }
@@ -347,6 +386,12 @@ function renderUpdateMessage(): void {
 }
 
 function getUpdateBlockReason(): string | null {
+  if (document.documentElement.dataset.voiceEngineBusy === "true") {
+    return language === "vi"
+      ? "Bộ máy Voice cục bộ đang ghi âm hoặc xử lý. Hãy dừng hoặc đợi hoàn tất trước khi tải lại."
+      : "The local Voice engine is recording or processing. Stop it or wait before reloading.";
+  }
+
   if (document.documentElement.dataset.voiceRecognitionActive === "true") {
     return language === "vi"
       ? "Đang nhận dạng trên thiết bị. Hãy dừng trước khi tải lại."

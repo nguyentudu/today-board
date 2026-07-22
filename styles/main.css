@@ -236,6 +236,99 @@ textarea {
   color: #67645c;
 }
 
+.voice-engine-loading {
+  width: min(48rem, calc(100% - 2rem));
+  margin: 2rem auto;
+}
+
+.voice-engine-probe {
+  display: grid;
+  width: min(48rem, 100%);
+  gap: 1rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.voice-engine-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.voice-engine-header h1 {
+  margin: 0.2rem 0 0;
+  font-size: 1.8rem;
+  line-height: 1.15;
+}
+
+.voice-engine-header p:not(.voice-probe-badge) {
+  max-width: 40rem;
+  margin: 0.65rem 0 0;
+  color: #626057;
+  line-height: 1.5;
+}
+
+.voice-engine-identity,
+.voice-engine-metrics dl {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.75fr) minmax(0, 1.5fr);
+  margin: 0;
+  border-top: 1px solid #d7d1c5;
+}
+
+.voice-engine-identity dt,
+.voice-engine-identity dd,
+.voice-engine-metrics dt,
+.voice-engine-metrics dd {
+  min-width: 0;
+  margin: 0;
+  border-bottom: 1px solid #d7d1c5;
+  padding: 0.55rem 0;
+  overflow-wrap: anywhere;
+}
+
+.voice-engine-identity dt,
+.voice-engine-metrics dt {
+  color: #626057;
+}
+
+.voice-engine-state,
+.voice-engine-progress {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.75fr) minmax(0, 1.5fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.voice-engine-progress progress {
+  width: 100%;
+  min-width: 0;
+  accent-color: #356148;
+}
+
+.voice-engine-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.voice-engine-actions button {
+  min-height: 44px;
+}
+
+.voice-engine-transcript,
+.voice-engine-metrics {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.voice-engine-transcript h2,
+.voice-engine-metrics h2 {
+  margin: 0.5rem 0 0;
+  font-size: 1rem;
+}
+
 .top-panel {
   display: flex;
   align-items: end;
@@ -1213,6 +1306,43 @@ textarea {
 
   .voice-probe-controls {
     grid-template-columns: 1fr;
+  }
+
+  .voice-engine-probe {
+    padding: 1rem;
+  }
+
+  .voice-engine-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .voice-engine-header .language-toggle {
+    width: 100%;
+  }
+
+  .voice-engine-identity,
+  .voice-engine-metrics dl,
+  .voice-engine-state,
+  .voice-engine-progress {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+
+  .voice-engine-identity dt,
+  .voice-engine-metrics dt {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .voice-engine-identity dd,
+  .voice-engine-metrics dd {
+    padding-top: 0.15rem;
+  }
+
+  .voice-engine-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .board-controls,
