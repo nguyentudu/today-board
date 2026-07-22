@@ -1122,22 +1122,21 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  .card-edit {
-    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  .card-edit .draft-action-bar {
+    position: sticky;
+    z-index: 5;
+    top: calc(0.5rem + env(safe-area-inset-top));
+    border: 1px solid #b8b1a2;
+    border-radius: 8px;
+    background: rgba(255, 253, 248, 0.98);
+    padding: 0.55rem;
+    box-shadow: 0 4px 12px rgba(45, 41, 32, 0.12);
   }
 
-  .card-edit .draft-action-bar {
-    position: fixed;
-    z-index: 20;
-    right: max(0.75rem, env(safe-area-inset-right));
-    bottom: 0;
-    left: max(0.75rem, env(safe-area-inset-left));
-    border: 1px solid #b8b1a2;
-    border-bottom: 0;
-    border-radius: 8px 8px 0 0;
-    background: rgba(255, 253, 248, 0.98);
-    padding: 0.65rem 0.65rem calc(0.65rem + env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 14px rgba(45, 41, 32, 0.14);
+  .card-edit .editor-section,
+  .card-edit .rich-context,
+  .card-edit .lifecycle-actions {
+    scroll-margin-top: calc(5.5rem + env(safe-area-inset-top));
   }
 
   .lifecycle-actions {

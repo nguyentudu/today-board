@@ -52,6 +52,7 @@ export function Card({
   const text = copy[language];
   const item = document.createElement("article");
   item.className = "card";
+  item.dataset.cardId = card.id;
   let mode: "summary" | "open" | "edit" = editSessions.has(card.id) ? "edit" : "summary";
 
   const render = () => {
@@ -69,6 +70,7 @@ export function Card({
     if (mode === "edit") {
       const draft = editSessions.get(card.id) ?? createCardEditDraft(card);
       editSessions.set(card.id, draft);
+      const editActions = renderEditActions();
       // Attachments and evidence roles remain immediate-save operations; the staged text draft survives their rerender.
       const evidenceSupplement = renderRichContext(card, text, {
         onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
@@ -81,6 +83,7 @@ export function Card({
       detailsSupplement.className = "editor-details-supplement";
       detailsSupplement.append(renderSnapshot(card, text, language), renderStateHistory(card, text));
       item.append(
+        editActions.draftActions,
         CardEditor({
           card,
           draft,
@@ -93,6 +96,7 @@ export function Card({
           evidenceSupplement,
           detailsSupplement,
         }),
+        editActions.lifecycleActions,
       );
     } else {
       item.append(
@@ -108,9 +112,6 @@ export function Card({
       );
     }
 
-    if (mode === "edit") {
-      item.append(renderEditActions());
-    }
   };
 
   const setMode = (nextMode: typeof mode) => {
@@ -213,9 +214,7 @@ export function Card({
     return header;
   };
 
-  const renderEditActions = (): HTMLElement => {
-    const actions = document.createElement("div");
-    actions.className = "card-actions";
+  const renderEditActions = (): { draftActions: HTMLElement; lifecycleActions: HTMLElement } => {
 
     const moveLabel = document.createElement("label");
     moveLabel.className = "action-label";
@@ -350,15 +349,16 @@ export function Card({
     status.setAttribute("role", "status");
 
     const draftActions = document.createElement("div");
-    draftActions.className = "draft-action-bar";
+    draftActions.className = "card-actions draft-action-bar";
+    draftActions.dataset.cardId = card.id;
     draftActions.append(saveButton, cancelButton);
 
     const lifecycleActions = document.createElement("div");
-    lifecycleActions.className = "lifecycle-actions";
+    lifecycleActions.className = "card-actions lifecycle-actions";
+    lifecycleActions.dataset.cardId = card.id;
     lifecycleActions.append(moveLabel, transitionPanel, hideButton, status);
 
-    actions.append(draftActions, lifecycleActions);
-    return actions;
+    return { draftActions, lifecycleActions };
   };
 
   render();

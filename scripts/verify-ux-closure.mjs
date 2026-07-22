@@ -75,12 +75,51 @@ assert(
     && card.includes("requiredConfirmations"),
 );
 assert(
-  "mobile Save and Cancel remain reachable without covering content",
-  card.includes('draftActions.className = "draft-action-bar"')
-    && css.includes(".card-edit .draft-action-bar")
-    && css.includes("position: fixed")
-    && css.includes("env(safe-area-inset-bottom)")
-    && css.includes("padding-bottom: calc(5.5rem"),
+  "mobile Save and Cancel remain card-bounded and reachable",
+  card.includes('draftActions.className = "card-actions draft-action-bar"')
+    && card.includes("editActions.draftActions")
+    && card.includes("editActions.lifecycleActions")
+    && card.indexOf("editActions.draftActions") < card.indexOf("CardEditor({")
+    && card.indexOf("CardEditor({") < card.indexOf("editActions.lifecycleActions")
+    && css.includes("position: sticky")
+    && css.includes("env(safe-area-inset-top)")
+    && css.includes("scroll-margin-top"),
+);
+const draftBarCss = css.slice(
+  css.indexOf(".card-edit .draft-action-bar"),
+  css.indexOf("}", css.indexOf(".card-edit .draft-action-bar")) + 1,
+);
+assert(
+  "draft action bars cannot share viewport-global fixed positioning",
+  draftBarCss.includes("position: sticky") && !draftBarCss.includes("position: fixed"),
+);
+assert(
+  "two cards retain independent drafts across rerenders",
+  card.includes("const editSessions = new Map<string, CardEditDraft>()")
+    && card.includes('editSessions.has(card.id) ? "edit" : "summary"')
+    && card.includes("editSessions.set(card.id, { ...(editSessions.get(card.id) ?? draft), ...change })"),
+);
+assert(
+  "each Save and Cancel remains bound to its owning card",
+  card.includes("item.dataset.cardId = card.id")
+    && card.includes("draftActions.dataset.cardId = card.id")
+    && card.includes("onSaveDraft(card.id, draft)")
+    && card.includes("editSessions.delete(card.id)")
+    && !card.includes("editSessions.clear()"),
+);
+assert(
+  "small Android widths keep editor actions bounded without horizontal overflow",
+  css.includes("@media (max-width: 640px)")
+    && css.includes("min-width: 0")
+    && draftBarCss.includes("position: sticky")
+    && !draftBarCss.includes("left:")
+    && !draftBarCss.includes("right:"),
+);
+assert(
+  "closing one editor cannot alter another draft",
+  card.includes("const discardDraft = (): boolean")
+    && card.includes("editSessions.delete(card.id)")
+    && card.includes('setMode("open")'),
 );
 assert(
   "focus and keyboard cleanup preserves staged draft semantics",
@@ -117,7 +156,7 @@ assert(
 );
 assert(
   "app and service-worker identities close together",
-  app.includes('BUILD_ID = "2026.07.22-a"') && sw.includes('CACHE_VERSION = "2026-07-22-a"'),
+  app.includes('BUILD_ID = "2026.07.22-b"') && sw.includes('CACHE_VERSION = "2026-07-22-b"'),
 );
 
 if (failures.length > 0) {
