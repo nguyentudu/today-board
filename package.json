@@ -24,6 +24,7 @@
     "test:lifecycle-integrity": "node scripts/verify-lifecycle-integrity.mjs",
     "test:edit-session": "node scripts/verify-edit-session.mjs",
     "test:ux-closure": "node scripts/verify-ux-closure.mjs",
+    "test:voice-capability": "node scripts/verify-voice-capability.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {

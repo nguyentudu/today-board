@@ -5,6 +5,7 @@ import { BOARD_STORAGE_WARNING_BYTES, estimateBoardSize, loadBoard, saveBoard, t
 import { Board as BoardView } from "./ui/Board";
 import type { Language } from "./ui/i18n";
 import { QuickCapture, type QuickCapturePayload, type QuickCaptureSaveResult } from "./ui/QuickCapture";
+import { VoiceCapabilityProbe } from "./ui/VoiceCapabilityProbe";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -13,11 +14,12 @@ if (!app) {
 }
 
 const root = app;
-const BUILD_ID = "2026.07.22-b";
+const BUILD_ID = "2026.07.22-c";
 const statusRegion = document.createElement("div");
 statusRegion.className = "app-status-region";
 statusRegion.setAttribute("aria-label", "Application status");
-let board = loadBoard();
+const voiceProbeMode = isVoiceCapabilityProbeMode();
+let board: BoardModel | undefined;
 let selectedImportFileName = "";
 let language: Language = "vi";
 let waitingServiceWorker: ServiceWorker | undefined;
@@ -26,21 +28,46 @@ let offlineMessage: HTMLElement | undefined;
 let updateActivationRequested = false;
 let hasReloadedForUpdate = false;
 let networkStatusTimer: number | undefined;
+let destroyActiveView: (() => void) | undefined;
 
 window.__TODAY_BOARD_BUILD_ID__ = BUILD_ID;
 renderBuildMarker();
 
-if (!isQuickCaptureMode()) {
-  board = applySharedLink(board);
+if (!voiceProbeMode) {
+  board = loadBoard();
+  if (!isQuickCaptureMode()) {
+    board = applySharedLink(board);
+  }
+  saveBoard(board);
 }
-saveBoard(board);
 setupNetworkStatus();
 registerServiceWorker();
 
-function render(nextBoard: BoardModel = board): void {
-  board = nextBoard;
+function render(nextBoard?: BoardModel): void {
+  if (nextBoard) {
+    board = nextBoard;
+  }
+  destroyActiveView?.();
+  destroyActiveView = undefined;
   renderNetworkStatus();
   renderUpdateMessage();
+
+  if (voiceProbeMode) {
+    const probe = VoiceCapabilityProbe({
+      language,
+      onLanguageChange: (nextLanguage: Language) => {
+        language = nextLanguage;
+        render();
+      },
+    });
+    destroyActiveView = probe.destroy;
+    root.replaceChildren(statusRegion, probe.element);
+    return;
+  }
+
+  if (!board) {
+    throw new Error("Board state unavailable outside Voice probe mode.");
+  }
 
   if (isQuickCaptureMode()) {
     root.replaceChildren(
@@ -182,6 +209,10 @@ function isQuickCaptureMode(): boolean {
   return params.get("mode") === "quick-capture" || window.location.pathname.endsWith("/quick-capture");
 }
 
+function isVoiceCapabilityProbeMode(): boolean {
+  return new URLSearchParams(window.location.search).get("voice-probe") === "1";
+}
+
 function getShareParam(name: "title" | "text" | "url"): string {
   return new URLSearchParams(window.location.search).get(name)?.trim() ?? "";
 }
@@ -316,6 +347,12 @@ function renderUpdateMessage(): void {
 }
 
 function getUpdateBlockReason(): string | null {
+  if (document.documentElement.dataset.voiceRecognitionActive === "true") {
+    return language === "vi"
+      ? "Đang nhận dạng trên thiết bị. Hãy dừng trước khi tải lại."
+      : "On-device recognition is active. Stop it before reloading.";
+  }
+
   if (document.querySelector(".card-editor")) {
     return language === "vi"
       ? "Bạn đang chỉnh sửa. Hãy lưu hoặc thoát trước khi tải lại."
