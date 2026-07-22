@@ -1,8 +1,13 @@
 # Moon Today Board
 
-Moon Product v1 Local for controlled public testing.
+Today Board v1 is accepted as a complete local-first product baseline.
 
-This is not launch. This is not scale. This is only a local-first test surface for 10 users.
+Accepted repository commit: `33e5750b9577277cb94dae2e736a7444e29e587a`
+
+Accepted runtime identities:
+
+- App build: `2026.07.22-b`
+- Service-worker cache: `2026-07-22-b`
 
 ## Product DNA
 
@@ -78,7 +83,7 @@ dist
 
 See [docs/deploy/public-test-url.md](docs/deploy/public-test-url.md).
 
-## Test With Users
+## Use With People
 
 Use the app with one person at a time.
 
@@ -91,7 +96,7 @@ Ask them to:
 - Reload the page and confirm the board returns.
 - Export their board if they want to keep it outside Moon.
 
-10-user protocol:
+The original bounded testing protocol remains useful when gathering feedback:
 
 - Share the public test URL with only 10 testers.
 - Observe whether they return without being pushed.
@@ -131,31 +136,22 @@ No cloud. No account. No tracking.
 
 For controlled public testing, use a static host only. See [docs/deploy/static-deploy.md](docs/deploy/static-deploy.md).
 
-## Next Milestone
+## Accepted V1 Status
 
-10 users / 3 returns / 3 relief signals
+Today Board v1 is **ACCEPTED** at commit
+`33e5750b9577277cb94dae2e736a7444e29e587a`.
 
-## Current Status
+| Acceptance area | Result | Accepted scope |
+| --- | --- | --- |
+| Code | PASS | Production build and the complete repository `test:*` suite pass. |
+| Android runtime | PASS | Responsive interaction, long-card editing, independent edit sessions, and standalone behavior are accepted. |
+| Offline | PASS | Local-first persistence, offline app-shell behavior, JSON portability, and old-board compatibility are accepted. |
+| Lifecycle | PASS | Promise and closure guardrails, atomic transitions, history integrity, and Leave Alone consent are accepted. |
+| UX | PASS | Re-entry-first presentation, progressive editing, actionable evidence, draft continuity, and card-scoped sticky actions are accepted. |
+| PWA update | PASS | Install readiness, explicit update activation, busy/edit protection, and app/cache identity alignment are accepted. |
 
-```text
-Re-entry Core                  EARLY PASS
-Quick Capture                  PASS
-Rich Media                     PASS
-Storage Foundation             PASS WITH ARCHITECTURAL WARNING
-Card Density                   PASS
-Zone Auto-height               PASS ON ANDROID
-Retrieval Surface              PASS ON ANDROID
-Retrieval Metadata Integrity   PASS ON ANDROID
-Responsive Surface Polish      PASS ON ANDROID + DESKTOP
-PWA Foundation                 PASS
-Install Recognition            PASS ON ANDROID
-Android Standalone Core        PASS
-Android Offline Core           PASS
-Installed PWA Finalization     IN PROGRESS
-Install Readiness              PASS CORE / FINAL UPDATE PROOF PENDING
-Desktop Installed Verification NEXT AFTER ANDROID FINALIZATION
-iPhone Add to Home Screen      AFTER DESKTOP
-IndexedDB                      LIKELY LATER
-Tester Evidence System         LATER
-Weekly Review                  DEFERRED
-```
+This acceptance supersedes earlier candidate, `EARLY PASS`, pending-proof,
+and in-progress status wording for Today Board v1.
+
+Voice, collaboration, and marketplace capabilities are post-v1 scope and
+were not included in this accepted release.
