@@ -24,6 +24,8 @@ interface CardEditorProps {
   onImageRefs: (imageRefs: string[]) => void;
   onAudioRefs: (audioRefs: string[]) => void;
   onFileRefs: (fileRefs: FileRef[]) => void;
+  evidenceSupplement: HTMLElement;
+  detailsSupplement: HTMLElement;
 }
 
 export function CardEditor({
@@ -34,6 +36,8 @@ export function CardEditor({
   onImageRefs,
   onAudioRefs,
   onFileRefs,
+  evidenceSupplement,
+  detailsSupplement,
 }: CardEditorProps): HTMLDivElement {
   const text = copy[language];
   const editor = document.createElement("div");
@@ -258,27 +262,97 @@ export function CardEditor({
   );
   const tagsField = createTagField(draft.tags, text, (tags) => onDraftChange({ tags }));
 
+  const promiseRelevant = Boolean(
+    draft.promise.trim()
+      || draft.promiseTo.trim()
+      || draft.promiseDueOn
+      || draft.promiseStatus !== "none"
+      || draft.outcome.trim()
+      || card.state === "finished",
+  );
+  const evidenceRelevant = Boolean(
+    draft.richLinks.length
+      || draft.bookmarkReason.trim()
+      || card.imageRefs.length
+      || card.audioRefs.length
+      || card.fileRefs.length
+      || card.evidenceMeta.length,
+  );
+  const detailsRelevant = Boolean(draft.note.trim() || draft.tags.length || card.stateHistory.length);
+
   editor.append(
-    titleField,
-    noteField,
-    contextSnapshotField,
-    whyStillOpenField,
-    waitingOnField,
-    ifYouReturnField,
-    nextStepKindField,
-    nextStepField,
-    promiseField,
-    promiseToField,
-    promiseDueField,
-    promiseStatusField,
-    outcomeField,
-    linksField,
-    captureControls,
-    bookmarkReasonField,
-    tagsField,
+    createEditorSection("reentry-essentials", text.editorReentryEssentials, true, [
+      titleField,
+      contextSnapshotField,
+      whyStillOpenField,
+      waitingOnField,
+      ifYouReturnField,
+      nextStepKindField,
+      nextStepField,
+    ]),
+    createEditorSection("promise-closure", text.editorPromiseClosure, promiseRelevant, [
+      promiseField,
+      promiseToField,
+      promiseDueField,
+      promiseStatusField,
+      outcomeField,
+    ]),
+    createEditorSection("evidence", text.editorEvidence, evidenceRelevant, [
+      linksField,
+      captureControls,
+      bookmarkReasonField,
+      evidenceSupplement,
+    ]),
+    createEditorSection("details", text.editorDetails, detailsRelevant, [
+      noteField,
+      tagsField,
+      detailsSupplement,
+    ]),
   );
 
   return editor;
+}
+
+function createEditorSection(
+  id: string,
+  label: string,
+  open: boolean,
+  children: HTMLElement[],
+): HTMLDetailsElement {
+  const section = document.createElement("details");
+  section.className = "editor-section";
+  section.dataset.editorSection = id;
+  section.open = open;
+
+  const summary = document.createElement("summary");
+  summary.textContent = label;
+  summary.setAttribute("aria-expanded", String(open));
+
+  const content = document.createElement("div");
+  content.className = "editor-section-content";
+  content.append(...children);
+  section.append(summary, content);
+
+  let anchorTop = 0;
+  summary.addEventListener("pointerdown", () => {
+    anchorTop = section.getBoundingClientRect().top;
+  });
+  summary.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      anchorTop = section.getBoundingClientRect().top;
+    }
+  });
+  section.addEventListener("toggle", () => {
+    summary.setAttribute("aria-expanded", String(section.open));
+    if (!section.open && section.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    if (anchorTop) {
+      requestAnimationFrame(() => window.scrollBy(0, section.getBoundingClientRect().top - anchorTop));
+    }
+  });
+
+  return section;
 }
 
 function createTextField(

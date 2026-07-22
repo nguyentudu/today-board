@@ -69,6 +69,17 @@ export function Card({
     if (mode === "edit") {
       const draft = editSessions.get(card.id) ?? createCardEditDraft(card);
       editSessions.set(card.id, draft);
+      // Attachments and evidence roles remain immediate-save operations; the staged text draft survives their rerender.
+      const evidenceSupplement = renderRichContext(card, text, {
+        onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+        onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+        onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+        onEvidenceRole: (evidence) => onEvidenceRole(card.id, evidence),
+        editable: true,
+      });
+      const detailsSupplement = document.createElement("div");
+      detailsSupplement.className = "editor-details-supplement";
+      detailsSupplement.append(renderSnapshot(card, text, language), renderStateHistory(card, text));
       item.append(
         CardEditor({
           card,
@@ -79,23 +90,23 @@ export function Card({
           onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
           onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
           onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+          evidenceSupplement,
+          detailsSupplement,
         }),
       );
     } else {
-      item.append(renderReadableDetail(card, text));
+      item.append(
+        renderReadableDetail(card, text),
+        renderRichContext(card, text, {
+          onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+          onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+          onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+          onEvidenceRole: (evidence) => onEvidenceRole(card.id, evidence),
+          editable: false,
+        }),
+        renderSnapshot(card, text, language),
+      );
     }
-
-    // Media and evidence roles remain immediate-save operations; the module-level draft survives their board rerender.
-    item.append(
-      renderRichContext(card, text, {
-        onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
-        onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
-        onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
-        onEvidenceRole: (evidence) => onEvidenceRole(card.id, evidence),
-        editable: mode === "edit",
-      }),
-      renderSnapshot(card, text, language),
-    );
 
     if (mode === "edit") {
       item.append(renderEditActions());
@@ -194,6 +205,7 @@ export function Card({
       title,
       createModeButton(text.collapseCard, () => {
         if (mode !== "edit" || discardDraft()) {
+          releaseObsoleteFocus(item);
           setMode("summary");
         }
       }),
@@ -252,6 +264,8 @@ export function Card({
         editSessions.set(card.id, draft);
         clearPendingTransition();
         status.textContent = text.transitionSaveFailed;
+      } else {
+        releaseObsoleteFocus(item);
       }
     };
 
@@ -263,6 +277,7 @@ export function Card({
       }
       const assessment = assessLifecycleTransition(card, targetState, draft);
       if (!assessment.allowed) {
+        openEditorSection(item, "promise-closure");
         clearPendingTransition();
         status.textContent = text.finishBlockedOpenPromise;
         return;
@@ -274,6 +289,8 @@ export function Card({
         executeTransition(targetState, []);
         return;
       }
+
+      openEditorSection(item, "promise-closure");
 
       transitionPanel.hidden = false;
       transitionMessage.textContent = required === "FINISH_WITHOUT_OUTCOME"
@@ -295,6 +312,7 @@ export function Card({
     hideButton.textContent = text.hideCard;
     hideButton.addEventListener("click", () => {
       if (discardDraft()) {
+        releaseObsoleteFocus(item);
         onHide(card.id);
       }
     });
@@ -312,6 +330,8 @@ export function Card({
       if (!onSaveDraft(card.id, draft)) {
         editSessions.set(card.id, draft);
         status.textContent = text.editSaveFailed;
+      } else {
+        releaseObsoleteFocus(item);
       }
     });
 
@@ -321,6 +341,7 @@ export function Card({
     cancelButton.textContent = text.cancelAction;
     cancelButton.addEventListener("click", () => {
       editSessions.delete(card.id);
+      releaseObsoleteFocus(item);
       setMode("open");
     });
 
@@ -328,13 +349,36 @@ export function Card({
     status.className = "edit-session-status";
     status.setAttribute("role", "status");
 
-    actions.append(saveButton, cancelButton, moveLabel, transitionPanel, hideButton, status);
+    const draftActions = document.createElement("div");
+    draftActions.className = "draft-action-bar";
+    draftActions.append(saveButton, cancelButton);
+
+    const lifecycleActions = document.createElement("div");
+    lifecycleActions.className = "lifecycle-actions";
+    lifecycleActions.append(moveLabel, transitionPanel, hideButton, status);
+
+    actions.append(draftActions, lifecycleActions);
     return actions;
   };
 
   render();
 
   return item;
+}
+
+function openEditorSection(container: HTMLElement, id: string): void {
+  const section = container.querySelector<HTMLDetailsElement>(`[data-editor-section="${id}"]`);
+  if (!section) {
+    return;
+  }
+  section.open = true;
+  section.querySelector("summary")?.setAttribute("aria-expanded", "true");
+}
+
+function releaseObsoleteFocus(container: HTMLElement): void {
+  if (container.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
 }
 
 function renderRichContext(

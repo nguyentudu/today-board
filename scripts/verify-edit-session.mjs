@@ -83,7 +83,7 @@ assert(
   "edit remains open across persisted media rerenders",
   cardViewSource.includes("const editSessions = new Map")
     && cardViewSource.includes('editSessions.has(card.id) ? "edit" : "summary"')
-    && cardViewSource.includes("module-level draft survives their board rerender"),
+    && cardViewSource.includes("staged text draft survives their rerender"),
 );
 assert(
   "text entry updates only the staged draft",

@@ -119,7 +119,7 @@ assert(
   "edit-session behavior remains intact",
   editSessionSource.includes("failed storage save retains the draft")
     && cardViewSource.includes("const editSessions = new Map")
-    && cardViewSource.includes("module-level draft survives their board rerender"),
+    && cardViewSource.includes("staged text draft survives their rerender"),
 );
 
 const buildId = appSource.match(/BUILD_ID = "([^"]+)"/)?.[1];

@@ -140,7 +140,7 @@ textarea {
 
 .board-controls {
   display: grid;
-  grid-template-columns: auto minmax(14rem, 1fr) auto auto auto auto;
+  grid-template-columns: auto minmax(14rem, 1fr) auto auto;
   gap: 0.6rem;
   align-items: center;
   width: min(100%, 68rem);
@@ -175,7 +175,6 @@ textarea {
 }
 
 .selected-file {
-  grid-column: 1 / -1;
   color: #706f65;
   font-size: 0.9rem;
 }
@@ -183,6 +182,44 @@ textarea {
 .local-note {
   margin: 0 0 1.2rem;
   color: #706f65;
+}
+
+.data-device-panel {
+  margin: 0 0 1rem;
+  border: 1px solid #d8d2c4;
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.72);
+  padding: 0.8rem;
+}
+
+.data-device-panel > summary,
+.editor-section > summary {
+  cursor: pointer;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.data-device-description {
+  margin: 0.65rem 0;
+  color: #68665d;
+  line-height: 1.4;
+}
+
+.data-device-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.data-device-panel > .storage-panel {
+  margin: 0.75rem 0 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.75rem 0 0;
 }
 
 .retrieval-surface {
@@ -541,20 +578,50 @@ textarea {
 }
 
 .evidence-role-control {
-  display: grid;
-  gap: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  max-width: 100%;
   margin-top: 0.4rem;
   color: #5f5d55;
   font-size: 0.82rem;
 }
 
 .evidence-role-control select {
-  width: 100%;
+  width: auto;
+  max-width: min(100%, 15rem);
+  min-height: 2.5rem;
+  padding: 0.4rem 2rem 0.4rem 0.55rem;
 }
 
 .card-editor {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.65rem;
+}
+
+.editor-section {
+  border: 1px solid #d8d2c4;
+  border-radius: 6px;
+  background: #fffdf8;
+}
+
+.editor-section > summary {
+  padding: 0.7rem;
+}
+
+.editor-section[open] > summary {
+  border-bottom: 1px solid #e3ddcf;
+}
+
+.editor-section-content,
+.editor-details-supplement {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.editor-section-content {
+  padding: 0.75rem;
 }
 
 .card-field {
@@ -796,12 +863,18 @@ textarea {
 
 .card-actions {
   display: grid;
+  gap: 0.55rem;
+}
+
+.draft-action-bar,
+.lifecycle-actions {
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.55rem;
 }
 
-.card-actions .action-label,
-.card-actions .edit-session-status {
+.lifecycle-actions .action-label,
+.lifecycle-actions .edit-session-status {
   grid-column: 1 / -1;
 }
 
@@ -1047,6 +1120,41 @@ textarea {
 
   .transition-confirmation {
     grid-template-columns: 1fr;
+  }
+
+  .card-edit {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+
+  .card-edit .draft-action-bar {
+    position: fixed;
+    z-index: 20;
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: 0;
+    left: max(0.75rem, env(safe-area-inset-left));
+    border: 1px solid #b8b1a2;
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+    background: rgba(255, 253, 248, 0.98);
+    padding: 0.65rem 0.65rem calc(0.65rem + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 14px rgba(45, 41, 32, 0.14);
+  }
+
+  .lifecycle-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .lifecycle-actions > * {
+    grid-column: 1;
+  }
+
+  .evidence-role-control {
+    display: flex;
+    width: 100%;
+  }
+
+  .evidence-role-control select {
+    flex: 1;
   }
 
   .evidence-access-action {

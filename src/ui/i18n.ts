@@ -6,11 +6,14 @@ export const copy = {
   en: {
     title: "Moon Today Board",
     subtitle: "Help me return without rebuilding my world.",
+    languageLabel: "Language",
     createPlaceholder: "Name something to hold",
     createButton: "Create card",
     exportButton: "Export JSON",
     importButton: "Import board",
     selectedFile: "Selected:",
+    dataOnDevice: "Data on this device",
+    dataOnDeviceHelper: "Stored only in this browser unless you export it. No account, sync, analytics, or tracking.",
     savedNote: "Saved locally for continuity. No tracking.",
     changeZone: "Change zone",
     finishBlockedOpenPromise: "Finish is blocked while the Promise is open. Mark it Kept or Released first.",
@@ -21,6 +24,10 @@ export const copy = {
     transitionSaveFailed: "Could not save the transition. Your draft and original state are unchanged.",
     hideCard: "Hide card",
     cardName: "Situation name",
+    editorReentryEssentials: "Re-entry essentials",
+    editorPromiseClosure: "Promise and closure",
+    editorEvidence: "Evidence",
+    editorDetails: "Details",
     situationTitleHelper: "Name the situation so you can recognize it without reopening everything.",
     tinyNote: "Small note",
     contextSnapshot: "What is happening now?",
@@ -227,11 +234,14 @@ export const copy = {
   vi: {
     title: "Moon Today Board",
     subtitle: "Giúp tôi quay lại mà không phải dựng lại mọi thứ.",
+    languageLabel: "Ngôn ngữ",
     createPlaceholder: "Viết một điều cần giữ lại",
     createButton: "Tạo card",
     exportButton: "Xuất JSON",
     importButton: "Nhập board",
-    selectedFile: "Selected:",
+    selectedFile: "Đã chọn:",
+    dataOnDevice: "Dữ liệu trên thiết bị này",
+    dataOnDeviceHelper: "Chỉ lưu trong trình duyệt này trừ khi bạn xuất file. Không tài khoản, đồng bộ, phân tích hay theo dõi.",
     savedNote: "Đã lưu trên máy này. Không theo dõi.",
     changeZone: "Đổi vùng",
     finishBlockedOpenPromise: "Chưa thể chuyển sang Đã xong khi Lời hứa còn mở. Hãy đánh dấu Đã giữ lời hoặc Đã hủy/được miễn trước.",
@@ -242,6 +252,10 @@ export const copy = {
     transitionSaveFailed: "Chưa lưu được chuyển trạng thái. Bản nháp và trạng thái ban đầu vẫn được giữ nguyên.",
     hideCard: "Ẩn card",
     cardName: "Tên tình huống",
+    editorReentryEssentials: "Điểm cốt yếu để quay lại",
+    editorPromiseClosure: "Lời hứa và kết thúc",
+    editorEvidence: "Bằng chứng",
+    editorDetails: "Chi tiết",
     situationTitleHelper: "Đặt tên đủ rõ để sau này nhận ra mà không phải đọc lại mọi thứ.",
     tinyNote: "Ghi chú nhỏ",
     contextSnapshot: "Hiện đang có chuyện gì?",
@@ -450,11 +464,14 @@ export const copy = {
   {
     title: string;
     subtitle: string;
+    languageLabel: string;
     createPlaceholder: string;
     createButton: string;
     exportButton: string;
     importButton: string;
     selectedFile: string;
+    dataOnDevice: string;
+    dataOnDeviceHelper: string;
     savedNote: string;
     changeZone: string;
     finishBlockedOpenPromise: string;
@@ -465,6 +482,10 @@ export const copy = {
     transitionSaveFailed: string;
     hideCard: string;
     cardName: string;
+    editorReentryEssentials: string;
+    editorPromiseClosure: string;
+    editorEvidence: string;
+    editorDetails: string;
     situationTitleHelper: string;
     tinyNote: string;
     contextSnapshot: string;
