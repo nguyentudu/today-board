@@ -6,22 +6,61 @@ export const VOICE_ENGINE_MODEL = {
   languageLabel: "Vietnamese",
   task: "automatic-speech-recognition",
   transformersVersion: "4.2.0",
+  onnxRuntimeWebVersion: "1.26.0-dev.20260416-b7804b056c",
+  configurationIdentity: "whisper-tiny-ff417702-webgpu-fp16-wasm-uint8-no-qdq-v5",
   webgpu: {
     device: "webgpu",
     dtype: "fp16",
     expectedBytes: 78_882_591,
+    artifacts: [
+      { file: "onnx/encoder_model_fp16.onnx", bytes: 16_519_192 },
+      { file: "onnx/decoder_model_merged_fp16.onnx", bytes: 59_593_896 },
+    ],
   },
   wasm: {
     device: "wasm",
-    dtype: "q8",
-    expectedBytes: 43_613_734,
+    dtype: "uint8",
+    graphOptimizationLevel: "disabled",
+    expectedBytes: 43_613_764,
+    artifacts: [
+      { file: "onnx/encoder_model_uint8.onnx", bytes: 10_124_990 },
+      { file: "onnx/decoder_model_merged_uint8.onnx", bytes: 30_719_271 },
+    ],
   },
 } as const;
+
+export const VOICE_ENGINE_REJECTED_WASM_CONFIGURATIONS = [
+  {
+    dtype: "q8",
+    graphOptimizationLevel: "all",
+    encoder: "onnx/encoder_model_quantized.onnx",
+    encoderBytes: 10_124_990,
+    decoder: "onnx/decoder_model_merged_quantized.onnx",
+    decoderBytes: 30_719_241,
+    failure: "TransposedDQWeightsForMatMulNBits missing required scale",
+  },
+  {
+    dtype: "uint8",
+    graphOptimizationLevel: "all",
+    encoder: "onnx/encoder_model_uint8.onnx",
+    encoderBytes: 10_124_990,
+    decoder: "onnx/decoder_model_merged_uint8.onnx",
+    decoderBytes: 30_719_271,
+    failure: "TransposeDQWeightsForMatMulNBits missing required scale",
+  },
+] as const;
 
 export const VOICE_ENGINE_MAX_AUDIO_SECONDS = 15;
 export const VOICE_ENGINE_SAMPLE_RATE = 16_000;
 export const VOICE_ENGINE_MAX_NEW_TOKENS = 96;
-export const VOICE_ENGINE_CACHE_KEY = "today-board-voice-model-ff4177021cc4";
+export const VOICE_ENGINE_CACHE_KEY = "today-board-voice-model-ff4177021cc4-uint8-no-qdq-v5";
+export const VOICE_ENGINE_LEGACY_CACHE_KEYS = [
+  "today-board-voice-model-ff4177021cc4-uint8-no-qdq-v4",
+  "today-board-voice-model-ff4177021cc4-uint8-no-qdq-v3",
+  "today-board-voice-model-ff4177021cc4-uint8-v2",
+  "today-board-voice-model-ff4177021cc4",
+  "transformers-cache",
+] as const;
 
 export type VoiceEngineBackend = "webgpu" | "wasm";
 
@@ -37,7 +76,7 @@ export interface VoiceEngineMetrics {
 }
 
 export type VoiceEngineRequest =
-  | { id: number; type: "install"; preferWebGpu: boolean }
+  | { id: number; type: "install"; backend: VoiceEngineBackend }
   | { id: number; type: "prepare"; backend: VoiceEngineBackend }
   | { id: number; type: "verify"; backend: VoiceEngineBackend }
   | { id: number; type: "transcribe"; audio: Float32Array; audioDurationMs: number }
@@ -46,7 +85,6 @@ export type VoiceEngineRequest =
 
 export type VoiceEngineResponse =
   | { id: number; type: "progress"; loaded: number; total: number; files: number; file?: string }
-  | { id: number; type: "fallback"; from: "webgpu"; to: "wasm"; reason: string }
   | { id: number; type: "installed"; backend: VoiceEngineBackend; metrics: VoiceEngineMetrics }
   | { id: number; type: "prepared"; backend: VoiceEngineBackend; metrics: VoiceEngineMetrics }
   | { id: number; type: "verified"; backend: VoiceEngineBackend; cachedFiles: number }

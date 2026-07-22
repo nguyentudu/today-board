@@ -182,7 +182,7 @@ assert(
 );
 assert(
   "app and service-worker identities move together",
-  appSource.includes('BUILD_ID = "2026.07.23-b"') && swSource.includes('CACHE_VERSION = "2026-07-23-b"'),
+  appSource.includes('BUILD_ID = "2026.07.23-c"') && swSource.includes('CACHE_VERSION = "2026-07-23-c"'),
 );
 
 if (failures.length > 0) {

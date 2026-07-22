@@ -23,6 +23,7 @@ export interface VoiceEngineProbeHandle {
 interface InstallationMarker {
   model: string;
   revision: string;
+  configuration: string;
   backend: VoiceEngineBackend;
   installedAt: string;
 }
@@ -43,8 +44,14 @@ interface MarkerReadResult {
   marker?: InstallationMarker;
 }
 
-const MARKER_CACHE = "today-board-voice-engine-probe-v1";
-const MARKER_PATH = `./__voice-engine-probe/${VOICE_ENGINE_MODEL.revision}`;
+const MARKER_CACHE = "today-board-voice-engine-probe-v5";
+const LEGACY_MARKER_CACHES = [
+  "today-board-voice-engine-probe-v4",
+  "today-board-voice-engine-probe-v3",
+  "today-board-voice-engine-probe-v2",
+  "today-board-voice-engine-probe-v1",
+] as const;
+const MARKER_PATH = `./__voice-engine-probe/${VOICE_ENGINE_MODEL.configurationIdentity}`;
 
 const copy = {
   en: {
@@ -58,7 +65,11 @@ const copy = {
     license: "License",
     language: "Recognition language",
     size: "Expected model download",
-    sizeValue: "75.2 MiB on WebGPU or 41.6 MiB on the WASM fallback, plus the bundled engine runtime.",
+    sizeValue: "75.2 MiB on WebGPU fp16 or 41.6 MiB on WASM uint8, including tokenizer/config files.",
+    webgpuArtifacts: "WebGPU artifacts",
+    wasmArtifacts: "WASM artifacts",
+    wasmRuntime: "WASM session configuration",
+    backendChoice: "Installation backend",
     state: "Model state",
     backend: "Backend",
     notInstalled: "Model not installed",
@@ -71,7 +82,6 @@ const copy = {
     retry: "Retry installation",
     remove: "Clean downloaded model data",
     installConsent: "Installation starts only after this button. The exact pinned files are cached for offline use.",
-    fallback: "WebGPU could not load the model. Trying the bounded WASM q8 fallback.",
     start: "Start 15-second sample",
     stop: "Stop and transcribe",
     clear: "Clear transcript",
@@ -101,7 +111,7 @@ const copy = {
     realTimeFactor: "Real-time factor",
     unavailable: "Not measured",
     webgpu: "WebGPU fp16",
-    wasm: "WASM q8",
+    wasm: "WASM uint8",
   },
   vi: {
     internal: "Thử nghiệm nội bộ",
@@ -114,7 +124,11 @@ const copy = {
     license: "Giấy phép",
     language: "Ngôn ngữ nhận dạng",
     size: "Dung lượng tải mô hình dự kiến",
-    sizeValue: "75,2 MiB với WebGPU hoặc 41,6 MiB với WASM dự phòng, cộng bộ máy đã đóng gói.",
+    sizeValue: "75,2 MiB với WebGPU fp16 hoặc 41,6 MiB với WASM uint8, gồm tệp tokenizer/config.",
+    webgpuArtifacts: "Tệp WebGPU",
+    wasmArtifacts: "Tệp WASM",
+    wasmRuntime: "Cấu hình phiên WASM",
+    backendChoice: "Bộ xử lý để cài",
     state: "Trạng thái mô hình",
     backend: "Bộ xử lý",
     notInstalled: "Chưa cài mô hình",
@@ -127,7 +141,6 @@ const copy = {
     retry: "Thử cài lại",
     remove: "Dọn dữ liệu mô hình đã tải",
     installConsent: "Chỉ bắt đầu cài sau khi bạn bấm nút này. Các tệp đã ghim sẽ được lưu để dùng ngoại tuyến.",
-    fallback: "WebGPU không tải được mô hình. Đang thử WASM q8 dự phòng có giới hạn.",
     start: "Bắt đầu mẫu 15 giây",
     stop: "Dừng và chép lời",
     clear: "Xóa bản chép",
@@ -157,7 +170,7 @@ const copy = {
     realTimeFactor: "Hệ số thời gian thực",
     unavailable: "Chưa đo",
     webgpu: "WebGPU fp16",
-    wasm: "WASM q8",
+    wasm: "WASM uint8",
   },
 } as const;
 
@@ -167,6 +180,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   const supportsWebGpu = "gpu" in navigator;
   const supportsCache = "caches" in window;
   let phase: ProbePhase = "checking";
+  let selectedBackend: VoiceEngineBackend = supportsWasm ? "wasm" : "webgpu";
   let installationState: ModelInstallationState = "not-installed";
   let marker: InstallationMarker | undefined;
   let capture: MemoryAudioCapture | undefined;
@@ -180,6 +194,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
 
   const shell = document.createElement("section");
   shell.className = "voice-engine-probe";
+  shell.dataset.testid = "voice-engine-probe";
   shell.setAttribute("aria-labelledby", "voice-engine-probe-title");
 
   const header = document.createElement("header");
@@ -208,6 +223,34 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   appendDefinition(identity, text.license, VOICE_ENGINE_MODEL.license);
   appendDefinition(identity, text.language, "vi / Vietnamese");
   appendDefinition(identity, text.size, text.sizeValue);
+  appendDefinition(identity, text.webgpuArtifacts, artifactSummary("webgpu"));
+  appendDefinition(identity, text.wasmArtifacts, artifactSummary("wasm"));
+  appendDefinition(
+    identity,
+    text.wasmRuntime,
+    `${VOICE_ENGINE_MODEL.onnxRuntimeWebVersion}; graphOptimizationLevel=disabled; local_files_only inventory + remote fetch denied`,
+  );
+
+  const backendControl = document.createElement("label");
+  backendControl.className = "voice-engine-backend-control";
+  const backendLabel = document.createElement("span");
+  backendLabel.textContent = text.backendChoice;
+  const backendSelect = document.createElement("select");
+  backendSelect.dataset.testid = "voice-engine-backend";
+  backendSelect.ariaLabel = text.backendChoice;
+  for (const backend of ["wasm", "webgpu"] as const) {
+    const option = document.createElement("option");
+    option.value = backend;
+    option.textContent = `${text[backend]} · ${formatBytes(VOICE_ENGINE_MODEL[backend].expectedBytes)}`;
+    option.disabled = backend === "wasm" ? !supportsWasm : !supportsWebGpu;
+    backendSelect.append(option);
+  }
+  backendSelect.value = selectedBackend;
+  backendSelect.addEventListener("change", () => {
+    selectedBackend = backendSelect.value as VoiceEngineBackend;
+    render();
+  });
+  backendControl.append(backendLabel, backendSelect);
 
   const state = document.createElement("div");
   state.className = "voice-engine-state";
@@ -235,6 +278,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   const modelActions = document.createElement("div");
   modelActions.className = "voice-engine-actions";
   const installButton = createButton(text.install);
+  installButton.dataset.testid = "voice-engine-install";
   const removeButton = createButton(text.remove, "quiet-button");
   modelActions.append(installButton, removeButton);
 
@@ -262,6 +306,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   metricsBlock.append(metricsHeading, metricsList);
 
   const status = document.createElement("p");
+  status.dataset.testid = "voice-engine-status";
   status.className = "voice-probe-status";
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
@@ -271,6 +316,7 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
     header,
     privacy,
     identity,
+    backendControl,
     state,
     progressLabel,
     installHelp,
@@ -340,6 +386,8 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       return;
     }
     marker = markerResult.marker;
+    selectedBackend = marker.backend;
+    backendSelect.value = selectedBackend;
     installationState = classifyModelInstallation("valid", "not-run");
     phase = "checking";
     statusMessage = text.markerFound;
@@ -362,7 +410,8 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
   }
 
   async function installModel(): Promise<void> {
-    if (isBusy() || !supportsCache || (!supportsWebGpu && !supportsWasm)) {
+    const backendAvailable = selectedBackend === "wasm" ? supportsWasm : supportsWebGpu;
+    if (isBusy() || !supportsCache || !backendAvailable) {
       return;
     }
     phase = "installing";
@@ -372,13 +421,14 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
     setBusy(true);
     render();
     try {
-      const response = await request({ type: "install", preferWebGpu: supportsWebGpu });
+      const response = await request({ type: "install", backend: selectedBackend });
       if (response.type !== "installed") {
         throw new Error("INSTALL_RESULT_INVALID");
       }
       const candidateMarker: InstallationMarker = {
         model: VOICE_ENGINE_MODEL.id,
         revision: VOICE_ENGINE_MODEL.revision,
+        configuration: VOICE_ENGINE_MODEL.configurationIdentity,
         backend: response.backend,
         installedAt: new Date().toISOString(),
       };
@@ -541,11 +591,6 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
       renderMetrics();
       return;
     }
-    if (response.type === "fallback") {
-      statusMessage = text.fallback;
-      render();
-      return;
-    }
     const operation = pending.get(response.id);
     if (!operation) {
       return;
@@ -647,7 +692,9 @@ export function VoiceEngineProbe({ language, onLanguageChange }: VoiceEngineProb
     stateValue.textContent = phaseLabel();
     stateValue.dataset.phase = phase;
     installButton.hidden = installationState === "verified";
-    installButton.disabled = isBusy() || !supportsCache || (!supportsWebGpu && !supportsWasm);
+    const selectedBackendAvailable = selectedBackend === "wasm" ? supportsWasm : supportsWebGpu;
+    installButton.disabled = isBusy() || !supportsCache || !selectedBackendAvailable;
+    backendSelect.disabled = isBusy() || installationState === "verified";
     removeButton.hidden = false;
     removeButton.disabled = isBusy() || !supportsCache;
     startButton.disabled = installationState !== "verified" || !marker || isBusy();
@@ -720,7 +767,10 @@ async function readMarker(): Promise<MarkerReadResult> {
   try {
     const marker = (await response.json()) as InstallationMarker;
     const validBackend = marker.backend === "webgpu" || marker.backend === "wasm";
-    return marker.model === VOICE_ENGINE_MODEL.id && marker.revision === VOICE_ENGINE_MODEL.revision && validBackend
+    return marker.model === VOICE_ENGINE_MODEL.id
+      && marker.revision === VOICE_ENGINE_MODEL.revision
+      && marker.configuration === VOICE_ENGINE_MODEL.configurationIdentity
+      && validBackend
       ? { present: true, marker }
       : { present: true };
   } catch {
@@ -743,6 +793,9 @@ async function deleteMarker(): Promise<void> {
   if (remaining.length === 0) {
     await caches.delete(MARKER_CACHE);
   }
+  for (const cacheName of LEGACY_MARKER_CACHES) {
+    await caches.delete(cacheName);
+  }
 }
 
 function setBusy(active: boolean): void {
@@ -763,6 +816,12 @@ function isBusy(): boolean {
 
 function expectedBytes(backend: VoiceEngineBackend): number {
   return VOICE_ENGINE_MODEL[backend].expectedBytes;
+}
+
+function artifactSummary(backend: VoiceEngineBackend): string {
+  return VOICE_ENGINE_MODEL[backend].artifacts
+    .map((artifact) => `${artifact.file} (${formatBytes(artifact.bytes)})`)
+    .join("; ");
 }
 
 function formatBytes(value: number | undefined): string {

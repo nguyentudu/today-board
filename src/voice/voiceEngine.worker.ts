@@ -4,6 +4,7 @@ import { env, ModelRegistry, pipeline } from "@huggingface/transformers";
 import { ModelDownloadProgress } from "./modelDownloadProgress";
 import {
   VOICE_ENGINE_CACHE_KEY,
+  VOICE_ENGINE_LEGACY_CACHE_KEYS,
   VOICE_ENGINE_MAX_NEW_TOKENS,
   VOICE_ENGINE_MODEL,
   type VoiceEngineBackend,
@@ -33,7 +34,7 @@ async function handleRequest(request: VoiceEngineRequest): Promise<void> {
   try {
     switch (request.type) {
       case "install":
-        await install(request.id, request.preferWebGpu);
+        await install(request.id, request.backend);
         return;
       case "prepare":
         await prepare(request.id, request.backend);
@@ -62,7 +63,7 @@ async function handleRequest(request: VoiceEngineRequest): Promise<void> {
   }
 }
 
-async function install(id: number, preferWebGpu: boolean): Promise<void> {
+async function install(id: number, backend: VoiceEngineBackend): Promise<void> {
   const startedAt = performance.now();
   const progressStart = performance.now();
   const progressLedger = new ModelDownloadProgress();
@@ -76,24 +77,13 @@ async function install(id: number, preferWebGpu: boolean): Promise<void> {
       id,
       type: "progress",
       loaded: totals.loaded,
-      total: totals.total || expectedBytes(preferWebGpu ? "webgpu" : "wasm"),
+      total: totals.total || expectedBytes(backend),
       files: totals.files,
       file: info.file,
     });
   };
 
-  let backend: VoiceEngineBackend = preferWebGpu ? "webgpu" : "wasm";
-  try {
-    await loadPipeline(backend, false, progress);
-  } catch (error) {
-    if (backend !== "webgpu") {
-      throw error;
-    }
-    await disposePipeline();
-    post({ id, type: "fallback", from: "webgpu", to: "wasm", reason: errorMessage(error) });
-    backend = "wasm";
-    await loadPipeline(backend, false, progress);
-  }
+  await loadPipeline(backend, false, progress);
 
   const completedAt = performance.now();
   post({
@@ -193,7 +183,7 @@ async function clearExactBrowserCacheEntries(): Promise<{
   let deletedFiles = 0;
   let removedBytes = 0;
   let byteCountAvailable = true;
-  for (const cacheName of [VOICE_ENGINE_CACHE_KEY, "transformers-cache"]) {
+  for (const cacheName of [VOICE_ENGINE_CACHE_KEY, ...VOICE_ENGINE_LEGACY_CACHE_KEYS]) {
     if (!(await caches.has(cacheName))) {
       continue;
     }
@@ -229,22 +219,43 @@ function isExactPinnedModelRequest(url: string): boolean {
 
 async function loadPipeline(
   backend: VoiceEngineBackend,
-  localFilesOnly: boolean,
+  cacheOnly: boolean,
   progressCallback?: (event: unknown) => void,
 ): Promise<void> {
   if (transcriber && loadedBackend === backend) {
     return;
   }
   await disposePipeline();
-  transcriber = await pipeline(
+  const createPipeline = () => pipeline(
     VOICE_ENGINE_MODEL.task,
     VOICE_ENGINE_MODEL.id,
     {
-      ...modelConfig(backend, localFilesOnly),
+      ...modelConfig(backend, false),
       progress_callback: progressCallback,
     },
   );
+  transcriber = cacheOnly
+    ? await withRemoteNetworkBlocked(createPipeline)
+    : await createPipeline();
   loadedBackend = backend;
+}
+
+async function withRemoteNetworkBlocked<T>(action: () => Promise<T>): Promise<T> {
+  const originalFetch = self.fetch.bind(self);
+  const guardedFetch: typeof fetch = async (input, init) => {
+    const rawUrl = input instanceof Request ? input.url : input instanceof URL ? input.href : String(input);
+    const url = new URL(rawUrl, self.location.href);
+    if (url.origin !== self.location.origin) {
+      throw new Error(`OFFLINE_VERIFICATION_BLOCKED_REMOTE_REQUEST:${url.origin}${url.pathname}`);
+    }
+    return originalFetch(input, init);
+  };
+  self.fetch = guardedFetch;
+  try {
+    return await action();
+  } finally {
+    self.fetch = originalFetch;
+  }
 }
 
 function modelConfig(backend: VoiceEngineBackend, localFilesOnly: boolean) {
@@ -254,6 +265,9 @@ function modelConfig(backend: VoiceEngineBackend, localFilesOnly: boolean) {
     device: variant.device,
     dtype: variant.dtype,
     local_files_only: localFilesOnly,
+    session_options: backend === "wasm"
+      ? { graphOptimizationLevel: "disabled" as const }
+      : undefined,
   } as const;
 }
 

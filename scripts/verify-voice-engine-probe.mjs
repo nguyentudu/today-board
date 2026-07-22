@@ -11,6 +11,7 @@ const installationSource = readFileSync("src/voice/modelInstallationState.ts", "
 const originalProbe = readFileSync("src/ui/VoiceCapabilityProbe.ts", "utf8");
 const sw = readFileSync("public/sw.js", "utf8");
 const styles = readFileSync("styles/main.css", "utf8");
+const browserSmoke = readFileSync("scripts/smoke-voice-wasm-browser.mjs", "utf8");
 const pkg = JSON.parse(readFileSync("package.json", "utf8"));
 const failures = [];
 
@@ -78,7 +79,8 @@ assert(
   app.includes('get("voice-engine-probe") === "1"')
     && app.includes('import("./ui/VoiceEngineProbe")')
     && !app.includes('import { VoiceEngineProbe }')
-    && app.includes("if (!voiceProbeMode && !voiceEngineProbeMode)"),
+    && app.includes("if (!voiceProbeMode && !voiceEngineProbeMode)")
+    && !app.includes("voiceEngine.worker"),
 );
 assert(
   "existing platform capability probe remains available",
@@ -118,7 +120,9 @@ assert(
     && !worker.includes("apiKey")
     && !probe.includes("analytics")
     && !worker.includes("analytics")
-    && worker.includes("local_files_only: localFilesOnly"),
+    && worker.includes("local_files_only: localFilesOnly")
+    && !worker.includes('from: "webgpu", to: "wasm"')
+    && !protocol.includes('type: "fallback"'),
 );
 assert(
   "probe performs no board or Today Board storage mutation",
@@ -167,8 +171,14 @@ assert(
   "offline use requires the exact installed revision and cache-only preparation",
   probe.includes("MARKER_CACHE")
     && probe.includes("marker.revision === VOICE_ENGINE_MODEL.revision")
+    && probe.includes("marker.configuration === VOICE_ENGINE_MODEL.configurationIdentity")
     && worker.includes("await loadPipeline(backend, true)")
     && worker.includes("local_files_only: localFilesOnly")
+    && worker.includes("ModelRegistry.is_pipeline_cached_files")
+    && worker.includes("modelConfig(backend, true)")
+    && worker.includes("withRemoteNetworkBlocked")
+    && worker.includes("OFFLINE_VERIFICATION_BLOCKED_REMOTE_REQUEST")
+    && worker.includes("url.origin !== self.location.origin")
     && probe.includes("modelMissing")
     && probe.indexOf("await verifyPersistedModel(response.backend)") < probe.indexOf("await writeMarker(candidateMarker)")
     && probe.includes('type: "verify"')
@@ -186,26 +196,61 @@ assert(
     && worker.includes("isExactPinnedModelRequest"),
 );
 assert(
+  "session creation failures remain exact and recoverable without a marker",
+  worker.includes("message: errorMessage(error)")
+    && probe.includes("statusMessage = `${text.failed}: ${errorMessage(error)}`")
+    && probe.indexOf("await verifyPersistedModel(response.backend)") < probe.indexOf("await writeMarker(candidateMarker)")
+    && probe.includes("setBusy(false)")
+    && probe.includes("replaceWorker()"),
+);
+assert(
   "cleanup never removes board shell or unrelated browser caches",
-  worker.includes('[VOICE_ENGINE_CACHE_KEY, "transformers-cache"]')
+  worker.includes("[VOICE_ENGINE_CACHE_KEY, ...VOICE_ENGINE_LEGACY_CACHE_KEYS]")
     && worker.includes("cache.delete(request)")
     && !worker.includes('caches.delete("today-board-shell')
     && !worker.includes("caches.keys()")
     && probe.includes("caches.delete(MARKER_CACHE)"),
 );
 assert(
-  "WebGPU preference has a bounded WASM fallback",
+  "WebGPU and repaired WASM installation choices are explicit and non-cascading",
   protocol.includes('device: "webgpu"')
     && protocol.includes('dtype: "fp16"')
     && protocol.includes('device: "wasm"')
-    && protocol.includes('dtype: "q8"')
-    && worker.includes('from: "webgpu", to: "wasm"')
-    && probe.includes("!supportsWasm && !supportsWebGpu"),
+    && protocol.includes('dtype: "uint8"')
+    && probe.includes('const backendSelect = document.createElement("select")')
+    && probe.includes('request({ type: "install", backend: selectedBackend })')
+    && worker.includes("await loadPipeline(backend, false, progress)")
+    && !worker.includes("preferWebGpu"),
+);
+assert(
+  "the incompatible optimized Android q8 and uint8 paths are recorded but never selected",
+  protocol.includes("VOICE_ENGINE_REJECTED_WASM_CONFIGURATIONS")
+    && protocol.includes('encoder: "onnx/encoder_model_quantized.onnx"')
+    && protocol.includes('decoder: "onnx/decoder_model_merged_quantized.onnx"')
+    && protocol.includes("TransposedDQWeightsForMatMulNBits missing required scale")
+    && protocol.includes('file: "onnx/encoder_model_uint8.onnx"')
+    && protocol.includes('file: "onnx/decoder_model_merged_uint8.onnx"')
+    && protocol.includes('graphOptimizationLevel: "disabled"')
+    && worker.includes('graphOptimizationLevel: "disabled" as const'),
+);
+assert(
+  "artifact configuration changes invalidate old cache and markers",
+  protocol.includes('VOICE_ENGINE_CACHE_KEY = "today-board-voice-model-ff4177021cc4-uint8-no-qdq-v5"')
+    && protocol.includes('"today-board-voice-model-ff4177021cc4-uint8-no-qdq-v4"')
+    && protocol.includes('"today-board-voice-model-ff4177021cc4-uint8-no-qdq-v3"')
+    && protocol.includes('"today-board-voice-model-ff4177021cc4-uint8-v2"')
+    && protocol.includes('"today-board-voice-model-ff4177021cc4"')
+    && probe.includes('MARKER_CACHE = "today-board-voice-engine-probe-v5"')
+    && probe.includes('"today-board-voice-engine-probe-v4"')
+    && probe.includes('"today-board-voice-engine-probe-v3"')
+    && probe.includes('"today-board-voice-engine-probe-v2"')
+    && probe.includes('"today-board-voice-engine-probe-v1"')
+    && probe.includes("VOICE_ENGINE_MODEL.configurationIdentity"),
 );
 assert(
   "download sizes and runtime metrics are exposed",
   protocol.includes("expectedBytes: 78_882_591")
-    && protocol.includes("expectedBytes: 43_613_734")
+    && protocol.includes("expectedBytes: 43_613_764")
     && [
       "modelDownloadBytes",
       "modelDownloadDurationMs",
@@ -239,8 +284,16 @@ assert(
   pkg.scripts["test:voice-engine-probe"] === "node scripts/verify-voice-engine-probe.mjs",
 );
 assert(
+  "bounded browser smoke disables WebGPU and verifies the real WASM offline session at 360x800",
+  pkg.scripts["smoke:voice-wasm-browser"] === "node scripts/smoke-voice-wasm-browser.mjs"
+    && browserSmoke.includes('"--disable-webgpu"')
+    && browserSmoke.includes('width: 360')
+    && browserSmoke.includes("backend.value = 'wasm'")
+    && browserSmoke.includes("offlineSessionVerified: true"),
+);
+assert(
   "app and service-worker identities move together",
-  app.includes('BUILD_ID = "2026.07.23-b"') && sw.includes('CACHE_VERSION = "2026-07-23-b"'),
+  app.includes('BUILD_ID = "2026.07.23-c"') && sw.includes('CACHE_VERSION = "2026-07-23-c"'),
 );
 
 if (failures.length > 0) {
