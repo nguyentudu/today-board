@@ -55,8 +55,8 @@ if (!column.includes("props.board.cards.filter") || !column.includes("!card.hidd
   fail("hidden cards must be filtered from visible zone height.");
 }
 
-if (!card.includes('let mode: "summary" | "open" | "edit" = "summary"')) {
-  fail("cards must start collapsed.");
+if (!card.includes('editSessions.has(card.id) ? "edit" : "summary"')) {
+  fail("cards must start collapsed unless an active edit session is being restored.");
 }
 
 if (!card.includes("setMode(\"open\")") || !card.includes("setMode(\"summary\")")) {

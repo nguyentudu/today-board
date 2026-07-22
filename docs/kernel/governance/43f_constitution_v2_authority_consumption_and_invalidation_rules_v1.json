@@ -1,0 +1,42 @@
+{
+  "task_id": 43,
+  "artifact": "AUTHORITY_CONSUMPTION_AND_INVALIDATION_RULES",
+  "authority_class": "FOUNDER_ONE_TIME_RECOVERY_VERIFICATION_EFFECTIVENESS_DELEGATION",
+  "authorized_executor": "TASK_44_ONLY",
+  "initial_state": "ISSUED_UNCONSUMED",
+  "attempt_limit": 1,
+  "reusable": false,
+  "transferable": false,
+  "delegable": false,
+  "consumption_rule": "The authority is consumed when Task 44 persists any valid terminal outcome, whether or not canonical mutations were applied.",
+  "valid_terminal_outcomes": [
+    "SYNCHRONIZATION_APPLIED",
+    "SYNCHRONIZATION_PARTIALLY_APPLIED_AS_AUTHORIZED",
+    "SYNCHRONIZATION_NOT_REQUIRED",
+    "SYNCHRONIZATION_PRECONDITION_FAILED",
+    "AUTHORITY_INPUT_INVALID"
+  ],
+  "terminal_state_after_any_valid_outcome": "CONSUMED_CLOSED",
+  "second_attempt_authorized": false,
+  "invalidation_rules": [
+    "Task 41 main report identity no longer matches the authorized digest.",
+    "Task 42 main report identity no longer matches the authorized digest.",
+    "Any protected Task 38-43 evidence changes.",
+    "The canonical target state changes incompatibly with artifact 43d.",
+    "A Task 38 retry occurs.",
+    "The execution gate is reopened.",
+    "Schema extension becomes necessary.",
+    "An unresolved authority conflict appears.",
+    "Task 44 cannot identify every exact authorized target.",
+    "Any executor other than Task 44 attempts to exercise the authority.",
+    "Task 44 cannot prove zero unrelated field changes.",
+    "Task 44 attempts to expand, omit, substitute, or infer a target or wording."
+  ],
+  "invalidation_effect": {
+    "canonical_mutation_authorized": false,
+    "gate_reopening_authorized": false,
+    "retry_authorized": false,
+    "replacement_authority_created": false,
+    "new_founder_decision_required_for_future_attempt": true
+  }
+}

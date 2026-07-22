@@ -56,7 +56,7 @@ export function QuickCapture({
 
   const languageToggle = document.createElement("div");
   languageToggle.className = "language-toggle";
-  languageToggle.setAttribute("aria-label", "Language");
+  languageToggle.setAttribute("aria-label", text.languageLabel);
 
   for (const option of ["vi", "en"] as const) {
     const button = document.createElement("button");

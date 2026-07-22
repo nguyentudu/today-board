@@ -6,22 +6,101 @@ export const copy = {
   en: {
     title: "Moon Today Board",
     subtitle: "Help me return without rebuilding my world.",
+    languageLabel: "Language",
     createPlaceholder: "Name something to hold",
     createButton: "Create card",
     exportButton: "Export JSON",
     importButton: "Import board",
     selectedFile: "Selected:",
+    dataOnDevice: "Data on this device",
+    dataOnDeviceHelper: "Stored only in this browser unless you export it. No account, sync, analytics, or tracking.",
     savedNote: "Saved locally for continuity. No tracking.",
     changeZone: "Change zone",
+    finishBlockedOpenPromise: "Finish is blocked while the Promise is open. Mark it Kept or Released first.",
+    finishWithoutOutcomeWarning: "No Outcome is recorded. Finish anyway without inventing one?",
+    finishWithoutOutcomeAction: "Finish without Outcome",
+    leaveAloneOpenPromiseWarning: "This Promise is still open. Leave Alone will stop this Situation from surfacing automatically.",
+    leaveAloneConfirmAction: "Move to Leave Alone",
+    transitionSaveFailed: "Could not save the transition. Your draft and original state are unchanged.",
     hideCard: "Hide card",
-    cardName: "Card title",
+    cardName: "Situation name",
+    editorReentryEssentials: "Re-entry essentials",
+    editorPromiseClosure: "Promise and closure",
+    editorEvidence: "Evidence",
+    editorDetails: "Details",
+    situationTitleHelper: "Name the situation so you can recognize it without reopening everything.",
     tinyNote: "Small note",
-    contextSnapshot: "Snapshot: what is happening?",
+    contextSnapshot: "What is happening now?",
     contextSnapshotEmpty: "No snapshot yet.",
     whyStillOpen: "Why is this still open?",
     whyStillOpenEmpty: "Not clear why this is still open.",
-    ifYouReturn: "If I return, start here",
+    waitingOn: "What is this waiting for?",
+    waitingOnEmpty: "Not waiting for anything, or not clear yet.",
+    waitingPill: "Waiting",
+    ifYouReturn: "Return point",
     ifYouReturnEmpty: "No starting point yet.",
+    returnPointShort: "Return here",
+    reentryViewTitle: "When you return",
+    nextStepKind: "What comes next?",
+    nextStepKindLabels: {
+      none: "Not clear yet",
+      action: "An action I can take",
+      trigger: "Wait for a trigger",
+    },
+    nextStep: "Next action or trigger",
+    nextStepEmpty: "No next action or trigger yet.",
+    nextAction: "Next action",
+    nextTrigger: "Next trigger",
+    promise: "Promise",
+    promiseEmpty: "No promise recorded.",
+    promiseHelper: "Keep commitments visible instead of burying them in notes.",
+    promiseTo: "Promised to",
+    promiseToEmpty: "Person or customer",
+    promiseDueOn: "Promised date",
+    promiseStatus: "Promise status",
+    promiseStatusLabels: {
+      none: "No promise",
+      open: "Open",
+      kept: "Kept",
+      released: "Released or cancelled",
+    },
+    promisePill: "Promise open",
+    outcome: "Outcome",
+    previousOutcome: "Previous Outcome",
+    outcomeEmpty: "No outcome recorded yet.",
+    outcomeHelper: "Record how the situation ended, not only that it is done.",
+    outcomeRecorded: "Outcome recorded",
+    outcomeMissing: "Outcome missing",
+    closedAt: "Last closed",
+    stateHistory: "State history",
+    stateHistoryEmpty: "No state transition recorded yet.",
+    evidenceRole: "Evidence role",
+    evidenceRoleLabels: {
+      reference: "Reference",
+      brief: "Brief",
+      feedback: "Feedback",
+      latest: "Latest version",
+      "return-first": "Open first when returning",
+      "outcome-proof": "Outcome proof",
+    },
+    evidenceMeaning: "Evidence to use",
+    evidenceMeaningEmpty: "Attachments are available, but none has a specific role yet.",
+    evidenceNone: "No evidence attached yet.",
+    evidenceUnavailable: "Unavailable attachment",
+    evidenceOpen: "Open",
+    evidenceDownload: "Download",
+    evidenceShow: "Show",
+    evidencePlay: "Play",
+    evidenceKindLabels: { link: "Link", image: "Image", audio: "Voice", file: "File" },
+    keyEvidencePill: "key evidence",
+    reentryPriorityNote: "Ordered by the return point, next action, and evidence you recorded. States never change automatically.",
+    reentryReadinessLabels: {
+      actionable: "Next action ready",
+      prepared: "Return point ready",
+      waiting: "Waiting for a trigger",
+      "context-only": "Context saved",
+      unprepared: "Return point missing",
+    },
     richLinks: "Link",
     richLinksEmpty: "Paste link here",
     richLinksHelper: "Only lines beginning with http:// or https:// are counted as links.",
@@ -70,6 +149,9 @@ export const copy = {
     storageViewDetails: "View storage details",
     storageCleanupConsequence: "This will remove media from hidden cards. It cannot be undone unless you exported the board first.",
     cancelAction: "Cancel",
+    saveAction: "Save",
+    editSaveFailed: "Could not save. Your draft is still here.",
+    unsavedDraftConfirm: "Discard this unsaved draft and continue?",
     confirmAction: "Confirm",
     hiddenCardsAffected: "hidden cards affected",
     mediaItemsAffected: "media items",
@@ -152,22 +234,101 @@ export const copy = {
   vi: {
     title: "Moon Today Board",
     subtitle: "Giúp tôi quay lại mà không phải dựng lại mọi thứ.",
+    languageLabel: "Ngôn ngữ",
     createPlaceholder: "Viết một điều cần giữ lại",
     createButton: "Tạo card",
     exportButton: "Xuất JSON",
     importButton: "Nhập board",
-    selectedFile: "Selected:",
+    selectedFile: "Đã chọn:",
+    dataOnDevice: "Dữ liệu trên thiết bị này",
+    dataOnDeviceHelper: "Chỉ lưu trong trình duyệt này trừ khi bạn xuất file. Không tài khoản, đồng bộ, phân tích hay theo dõi.",
     savedNote: "Đã lưu trên máy này. Không theo dõi.",
     changeZone: "Đổi vùng",
+    finishBlockedOpenPromise: "Chưa thể chuyển sang Đã xong khi Lời hứa còn mở. Hãy đánh dấu Đã giữ lời hoặc Đã hủy/được miễn trước.",
+    finishWithoutOutcomeWarning: "Chưa ghi Kết quả. Vẫn chuyển sang Đã xong mà không tự tạo Kết quả?",
+    finishWithoutOutcomeAction: "Đã xong không có Kết quả",
+    leaveAloneOpenPromiseWarning: "Lời hứa vẫn còn mở. Để yên sẽ khiến Tình huống không tự xuất hiện lại.",
+    leaveAloneConfirmAction: "Chuyển sang Để yên",
+    transitionSaveFailed: "Chưa lưu được chuyển trạng thái. Bản nháp và trạng thái ban đầu vẫn được giữ nguyên.",
     hideCard: "Ẩn card",
-    cardName: "Tên card",
+    cardName: "Tên tình huống",
+    editorReentryEssentials: "Điểm cốt yếu để quay lại",
+    editorPromiseClosure: "Lời hứa và kết thúc",
+    editorEvidence: "Bằng chứng",
+    editorDetails: "Chi tiết",
+    situationTitleHelper: "Đặt tên đủ rõ để sau này nhận ra mà không phải đọc lại mọi thứ.",
     tinyNote: "Ghi chú nhỏ",
-    contextSnapshot: "Snapshot: chuyện gì đang diễn ra?",
+    contextSnapshot: "Hiện đang có chuyện gì?",
     contextSnapshotEmpty: "Chưa ghi snapshot.",
     whyStillOpen: "Vì sao còn mở?",
     whyStillOpenEmpty: "Chưa rõ vì sao còn mở.",
-    ifYouReturn: "Nếu quay lại, bắt đầu từ đâu?",
+    waitingOn: "Đang chờ ai hoặc chờ gì?",
+    waitingOnEmpty: "Không chờ gì, hoặc chưa rõ.",
+    waitingPill: "Đang chờ",
+    ifYouReturn: "Điểm quay lại",
     ifYouReturnEmpty: "Chưa có điểm bắt đầu.",
+    returnPointShort: "Quay lại từ đây",
+    reentryViewTitle: "Khi quay lại",
+    nextStepKind: "Điều gì xảy ra tiếp theo?",
+    nextStepKindLabels: {
+      none: "Chưa rõ",
+      action: "Có hành động có thể làm",
+      trigger: "Chờ một điều kiện xảy ra",
+    },
+    nextStep: "Hành động hoặc điều kiện tiếp theo",
+    nextStepEmpty: "Chưa có hành động hoặc điều kiện tiếp theo.",
+    nextAction: "Hành động tiếp theo",
+    nextTrigger: "Điều kiện tiếp theo",
+    promise: "Lời hứa",
+    promiseEmpty: "Chưa ghi lời hứa.",
+    promiseHelper: "Giữ lời hứa hiện rõ thay vì để chìm trong ghi chú.",
+    promiseTo: "Đã hứa với ai?",
+    promiseToEmpty: "Người hoặc khách hàng",
+    promiseDueOn: "Ngày đã hứa",
+    promiseStatus: "Trạng thái lời hứa",
+    promiseStatusLabels: {
+      none: "Không có lời hứa",
+      open: "Còn mở",
+      kept: "Đã giữ lời",
+      released: "Đã hủy hoặc được miễn",
+    },
+    promisePill: "Còn lời hứa",
+    outcome: "Kết quả",
+    previousOutcome: "Kết quả trước đó",
+    outcomeEmpty: "Chưa ghi kết quả.",
+    outcomeHelper: "Ghi tình huống đã kết thúc thế nào, không chỉ đánh dấu Đã xong.",
+    outcomeRecorded: "Đã ghi kết quả",
+    outcomeMissing: "Thiếu kết quả",
+    closedAt: "Lần đóng gần nhất",
+    stateHistory: "Lịch sử trạng thái",
+    stateHistoryEmpty: "Chưa ghi nhận lần chuyển trạng thái nào.",
+    evidenceRole: "Vai trò evidence",
+    evidenceRoleLabels: {
+      reference: "Tham khảo",
+      brief: "Brief",
+      feedback: "Feedback",
+      latest: "Bản mới nhất",
+      "return-first": "Mở đầu tiên khi quay lại",
+      "outcome-proof": "Bằng chứng kết quả",
+    },
+    evidenceMeaning: "Evidence cần dùng",
+    evidenceMeaningEmpty: "Đã có attachment nhưng chưa chỉ rõ vai trò evidence.",
+    evidenceNone: "Chưa gắn evidence.",
+    evidenceUnavailable: "Attachment không còn khả dụng",
+    evidenceOpen: "Mở",
+    evidenceDownload: "Tải xuống",
+    evidenceShow: "Xem",
+    evidencePlay: "Phát",
+    evidenceKindLabels: { link: "Link", image: "Ảnh", audio: "Ghi âm", file: "File" },
+    keyEvidencePill: "evidence chính",
+    reentryPriorityNote: "Ưu tiên theo điểm quay lại, hành động và evidence bạn đã ghi. Moon không tự đổi trạng thái.",
+    reentryReadinessLabels: {
+      actionable: "Có hành động tiếp theo",
+      prepared: "Điểm quay lại đã rõ",
+      waiting: "Đang chờ điều kiện",
+      "context-only": "Đã giữ context",
+      unprepared: "Thiếu điểm quay lại",
+    },
     richLinks: "Link",
     richLinksEmpty: "Dán link ở đây",
     richLinksHelper: "Chỉ các dòng bắt đầu bằng http:// hoặc https:// được tính là link.",
@@ -216,6 +377,9 @@ export const copy = {
     storageViewDetails: "Xem chi tiết dung lượng",
     storageCleanupConsequence: "Thao tác này sẽ xóa media khỏi các card đã ẩn. Không thể hoàn tác nếu bạn chưa xuất board.",
     cancelAction: "Hủy",
+    saveAction: "Lưu",
+    editSaveFailed: "Chưa lưu được. Bản nháp vẫn còn ở đây.",
+    unsavedDraftConfirm: "Bỏ bản nháp chưa lưu và tiếp tục?",
     confirmAction: "Xác nhận",
     hiddenCardsAffected: "card ẩn bị ảnh hưởng",
     mediaItemsAffected: "media",
@@ -300,22 +464,79 @@ export const copy = {
   {
     title: string;
     subtitle: string;
+    languageLabel: string;
     createPlaceholder: string;
     createButton: string;
     exportButton: string;
     importButton: string;
     selectedFile: string;
+    dataOnDevice: string;
+    dataOnDeviceHelper: string;
     savedNote: string;
     changeZone: string;
+    finishBlockedOpenPromise: string;
+    finishWithoutOutcomeWarning: string;
+    finishWithoutOutcomeAction: string;
+    leaveAloneOpenPromiseWarning: string;
+    leaveAloneConfirmAction: string;
+    transitionSaveFailed: string;
     hideCard: string;
     cardName: string;
+    editorReentryEssentials: string;
+    editorPromiseClosure: string;
+    editorEvidence: string;
+    editorDetails: string;
+    situationTitleHelper: string;
     tinyNote: string;
     contextSnapshot: string;
     contextSnapshotEmpty: string;
     whyStillOpen: string;
     whyStillOpenEmpty: string;
+    waitingOn: string;
+    waitingOnEmpty: string;
+    waitingPill: string;
     ifYouReturn: string;
     ifYouReturnEmpty: string;
+    returnPointShort: string;
+    reentryViewTitle: string;
+    nextStepKind: string;
+    nextStepKindLabels: Record<"none" | "action" | "trigger", string>;
+    nextStep: string;
+    nextStepEmpty: string;
+    nextAction: string;
+    nextTrigger: string;
+    promise: string;
+    promiseEmpty: string;
+    promiseHelper: string;
+    promiseTo: string;
+    promiseToEmpty: string;
+    promiseDueOn: string;
+    promiseStatus: string;
+    promiseStatusLabels: Record<"none" | "open" | "kept" | "released", string>;
+    promisePill: string;
+    outcome: string;
+    previousOutcome: string;
+    outcomeEmpty: string;
+    outcomeHelper: string;
+    outcomeRecorded: string;
+    outcomeMissing: string;
+    closedAt: string;
+    stateHistory: string;
+    stateHistoryEmpty: string;
+    evidenceRole: string;
+    evidenceRoleLabels: Record<"reference" | "brief" | "feedback" | "latest" | "return-first" | "outcome-proof", string>;
+    evidenceMeaning: string;
+    evidenceMeaningEmpty: string;
+    evidenceNone: string;
+    evidenceUnavailable: string;
+    evidenceOpen: string;
+    evidenceDownload: string;
+    evidenceShow: string;
+    evidencePlay: string;
+    evidenceKindLabels: Record<"link" | "image" | "audio" | "file", string>;
+    keyEvidencePill: string;
+    reentryPriorityNote: string;
+    reentryReadinessLabels: Record<"actionable" | "prepared" | "waiting" | "context-only" | "unprepared", string>;
     richLinks: string;
     richLinksEmpty: string;
     richLinksHelper: string;
@@ -364,6 +585,9 @@ export const copy = {
     storageViewDetails: string;
     storageCleanupConsequence: string;
     cancelAction: string;
+    saveAction: string;
+    editSaveFailed: string;
+    unsavedDraftConfirm: string;
     confirmAction: string;
     hiddenCardsAffected: string;
     mediaItemsAffected: string;

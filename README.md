@@ -1,8 +1,13 @@
 # Moon Today Board
 
-Moon Product v1 Local for controlled public testing.
+Today Board v1 is accepted as a complete local-first product baseline.
 
-This is not launch. This is not scale. This is only a local-first test surface for 10 users.
+Accepted repository commit: `33e5750b9577277cb94dae2e736a7444e29e587a`
+
+Accepted runtime identities:
+
+- App build: `2026.07.22-b`
+- Service-worker cache: `2026-07-22-b`
 
 ## Product DNA
 
@@ -14,14 +19,21 @@ Help me return without rebuilding my world.
 
 ## What It Does
 
-- Create cards.
-- Rename cards.
-- Move cards between Continue, Pause, Finished, and Leave Alone.
-- Add and edit a tiny note.
-- Hide cards.
-- Save locally for continuity.
-- Export JSON for portability.
-- Import JSON from a previous board export.
+- Capture Situations and persist them locally on the user's device.
+- Move Situations through Continue, Pause, Finished, and Leave Alone with
+  explicit lifecycle semantics.
+- Record Waiting context, a Return Point, and the next Action or Trigger.
+- Track a Promise, its counterparty and due date, and its explicit status.
+- Record an Outcome while preserving closure and reopening history.
+- Attach links, images, audio, and files, then assign evidence roles without
+  duplicating stored media.
+- Open assigned re-entry evidence directly from the Situation that needs it.
+- Search and filter Situations by their saved continuity context.
+- Edit through progressive sections with independent draft continuity,
+  explicit Save and Cancel, and guarded state transitions.
+- Export and import the board as JSON while preserving accepted semantics.
+- Install and run as an offline-capable, local-first PWA with explicit update
+  activation and edit-session protection.
 
 ## Run Locally
 
@@ -78,7 +90,7 @@ dist
 
 See [docs/deploy/public-test-url.md](docs/deploy/public-test-url.md).
 
-## Test With Users
+## Use With People
 
 Use the app with one person at a time.
 
@@ -91,7 +103,7 @@ Ask them to:
 - Reload the page and confirm the board returns.
 - Export their board if they want to keep it outside Moon.
 
-10-user protocol:
+The original bounded testing protocol remains useful when gathering feedback:
 
 - Share the public test URL with only 10 testers.
 - Observe whether they return without being pushed.
@@ -107,11 +119,12 @@ The board saves in the browser on the user's device through local storage. It ex
 
 There is no cloud account, remote database, or cross-device sync. Users can keep a copy outside Moon with Export JSON.
 
-## Forbidden Scope
+## V1 Frozen Scope
 
-Do not add:
+The accepted v1 intentionally excludes:
 
 - AI
+- voice features
 - account
 - backend
 - database
@@ -119,43 +132,38 @@ Do not add:
 - tracking
 - notification
 - sync
-- team
-- payment
+- collaboration
+- marketplace
+- payments
 - Railway backend
 
 Local storage is allowed only for product continuity. No tracking, analytics, telemetry, or remote calls are included.
 
 No cloud. No account. No tracking.
 
+These boundaries describe the accepted v1 release. They do not permanently
+prohibit separately governed work in a future version.
+
 ## Static Deploy
 
 For controlled public testing, use a static host only. See [docs/deploy/static-deploy.md](docs/deploy/static-deploy.md).
 
-## Next Milestone
+## Accepted V1 Status
 
-10 users / 3 returns / 3 relief signals
+Today Board v1 is **ACCEPTED** at commit
+`33e5750b9577277cb94dae2e736a7444e29e587a`.
 
-## Current Status
+| Acceptance area | Result | Accepted scope |
+| --- | --- | --- |
+| Code | PASS | Production build and the complete repository `test:*` suite pass. |
+| Android runtime | PASS | Responsive interaction, long-card editing, independent edit sessions, and standalone behavior are accepted. |
+| Offline | PASS | Local-first persistence, offline app-shell behavior, JSON portability, and old-board compatibility are accepted. |
+| Lifecycle | PASS | Promise and closure guardrails, atomic transitions, history integrity, and Leave Alone consent are accepted. |
+| UX | PASS | Re-entry-first presentation, progressive editing, actionable evidence, draft continuity, and card-scoped sticky actions are accepted. |
+| PWA update | PASS | Install readiness, explicit update activation, busy/edit protection, and app/cache identity alignment are accepted. |
 
-```text
-Re-entry Core                  EARLY PASS
-Quick Capture                  PASS
-Rich Media                     PASS
-Storage Foundation             PASS WITH ARCHITECTURAL WARNING
-Card Density                   PASS
-Zone Auto-height               PASS ON ANDROID
-Retrieval Surface              PASS ON ANDROID
-Retrieval Metadata Integrity   PASS ON ANDROID
-Responsive Surface Polish      PASS ON ANDROID + DESKTOP
-PWA Foundation                 PASS
-Install Recognition            PASS ON ANDROID
-Android Standalone Core        PASS
-Android Offline Core           PASS
-Installed PWA Finalization     IN PROGRESS
-Install Readiness              PASS CORE / FINAL UPDATE PROOF PENDING
-Desktop Installed Verification NEXT AFTER ANDROID FINALIZATION
-iPhone Add to Home Screen      AFTER DESKTOP
-IndexedDB                      LIKELY LATER
-Tester Evidence System         LATER
-Weekly Review                  DEFERRED
-```
+This acceptance supersedes earlier candidate, `EARLY PASS`, pending-proof,
+and in-progress status wording for Today Board v1.
+
+Voice, collaboration, and marketplace capabilities are post-v1 scope and
+were not included in this accepted release.

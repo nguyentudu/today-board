@@ -1,0 +1,37 @@
+{
+  "task_id": 44,
+  "artifact": "TASK_41_TASK_42_TASK_43_INPUT_IDENTITY_AND_AUTHORITY_VALIDATION",
+  "identities": [
+    {"task":41,"path":"docs/kernel/governance/41_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.md","expected_sha256":"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6","observed_sha256":"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6","exact":true},
+    {"task":42,"path":"docs/kernel/governance/42_constitution_v2_governance_effective_issue_status_verification_state_synchronization_authority_decision_v1.md","expected_sha256":"46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C","observed_sha256":"46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C","exact":true},
+    {"task":43,"path":"docs/kernel/governance/43_constitution_v2_founder_recovery_verification_effectiveness_authority_clarification_v1.md","expected_sha256":"AD583ED9050423664D919822A14D3537F657C5CD44BCD54F855EA9C8B95AF5A7","observed_sha256":"AD583ED9050423664D919822A14D3537F657C5CD44BCD54F855EA9C8B95AF5A7","exact":true}
+  ],
+  "founder_authority_provenance": {
+    "actual_issuance_confirmed": true,
+    "recommendation_only": false,
+    "inferred_authority": false,
+    "authority_class":"FOUNDER_ONE_TIME_RECOVERY_VERIFICATION_EFFECTIVENESS_DELEGATION",
+    "executor":"TASK_44_ONLY",
+    "incident_scope":"TASK_38_TO_TASK_42_INCIDENT_ONLY"
+  },
+  "authority_runtime_checks": {
+    "primary_outcome_authorized": true,
+    "authority_unconsumed_before_task_44": true,
+    "reusable": false,
+    "schema_extension_authorized": false,
+    "gate_reopening_authorized": false,
+    "retry_authorized": false,
+    "historical_evidence_mutation_authorized": false,
+    "target_matrix_present": true,
+    "target_count": 15,
+    "material_cross_artifact_contradictions": 0,
+    "higher_priority_conflicts": 0,
+    "other_exercise_attempts_detected": 0,
+    "authority_invalidated_before_execution": false
+  },
+  "required_json_inputs_parsed": 14,
+  "duplicate_json_keys": 0,
+  "protected_task_38_to_43_files": 49,
+  "protected_inventory_sha256_before": "C2EE4941F015B3F45BB3A1C07AD9B5CF9CD0B547C4CD190AC528730E4867B8EB",
+  "validation_result": "PASS_AUTHORITY_VALID"
+}

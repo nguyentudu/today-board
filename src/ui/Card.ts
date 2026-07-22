@@ -1,5 +1,15 @@
-import type { Card as BoardCard } from "../domain/card";
+import { evidenceIdentity, type Card as BoardCard, type EvidenceKind, type EvidenceRole } from "../domain/card";
+import {
+  createCardEditDraft,
+  isCardEditDraftDirty,
+  type CardEditDraft,
+} from "../domain/board";
 import type { BoardState } from "../domain/state";
+import {
+  assessLifecycleTransition,
+  type LifecycleTransitionConfirmation,
+} from "../domain/lifecycle";
+import { getReentrySignal } from "../domain/reentryPriority";
 import { CardEditor } from "./CardEditor";
 import type { Language } from "./i18n";
 import { copy } from "./i18n";
@@ -9,42 +19,41 @@ import { extractValidHttpUrls, normalizeReadableHttpUrl } from "../lib/links";
 interface CardProps {
   card: BoardCard;
   language: Language;
-  onRename: (cardId: string, title: string) => void;
-  onMove: (cardId: string, state: BoardState) => void;
-  onNote: (cardId: string, note: string) => void;
-  onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
-  onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
-  onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
-  onRichLinks: (cardId: string, richLinks: string[]) => void;
+  onTransition: (
+    cardId: string,
+    draft: CardEditDraft,
+    state: BoardState,
+    confirmations: LifecycleTransitionConfirmation[],
+  ) => boolean;
+  onSaveDraft: (cardId: string, draft: CardEditDraft) => boolean;
+  onEvidenceRole: (
+    cardId: string,
+    evidence: { id: string; kind: EvidenceKind; role: EvidenceRole },
+  ) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
   onFileRefs: (cardId: string, fileRefs: BoardCard["fileRefs"]) => void;
-  onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
-  onTags: (cardId: string, tags: string[]) => void;
   onHide: (cardId: string) => void;
 }
+
+const editSessions = new Map<string, CardEditDraft>();
 
 export function Card({
   card,
   language,
-  onRename,
-  onMove,
-  onNote,
-  onContextSnapshot,
-  onWhyStillOpen,
-  onIfYouReturn,
-  onRichLinks,
+  onTransition,
+  onSaveDraft,
+  onEvidenceRole,
   onImageRefs,
   onAudioRefs,
   onFileRefs,
-  onBookmarkReason,
-  onTags,
   onHide,
 }: CardProps): HTMLElement {
   const text = copy[language];
   const item = document.createElement("article");
   item.className = "card";
-  let mode: "summary" | "open" | "edit" = "summary";
+  item.dataset.cardId = card.id;
+  let mode: "summary" | "open" | "edit" = editSessions.has(card.id) ? "edit" : "summary";
 
   const render = () => {
     item.className = `card card-${mode}`;
@@ -59,44 +68,69 @@ export function Card({
     item.append(renderHeaderActions());
 
     if (mode === "edit") {
-      item.append(
-        CardEditor({
-          card,
-          language,
-          onRename: (title) => onRename(card.id, title),
-          onNote: (note) => onNote(card.id, note),
-          onContextSnapshot: (contextSnapshot) => onContextSnapshot(card.id, contextSnapshot),
-          onWhyStillOpen: (whyStillOpen) => onWhyStillOpen(card.id, whyStillOpen),
-          onIfYouReturn: (ifYouReturn) => onIfYouReturn(card.id, ifYouReturn),
-          onRichLinks: (richLinks) => onRichLinks(card.id, richLinks),
-          onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
-          onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
-          onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
-          onBookmarkReason: (bookmarkReason) => onBookmarkReason(card.id, bookmarkReason),
-          onTags: (tags) => onTags(card.id, tags),
-        }),
-      );
-    } else {
-      item.append(renderReadableDetail(card, text));
-    }
-
-    item.append(
-      renderRichContext(card, text, {
+      const draft = editSessions.get(card.id) ?? createCardEditDraft(card);
+      editSessions.set(card.id, draft);
+      const editActions = renderEditActions();
+      // Attachments and evidence roles remain immediate-save operations; the staged text draft survives their rerender.
+      const evidenceSupplement = renderRichContext(card, text, {
         onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
         onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
         onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
-      }),
-      renderSnapshot(card, text, language),
-    );
-
-    if (mode === "edit") {
-      item.append(renderEditActions());
+        onEvidenceRole: (evidence) => onEvidenceRole(card.id, evidence),
+        editable: true,
+      });
+      const detailsSupplement = document.createElement("div");
+      detailsSupplement.className = "editor-details-supplement";
+      detailsSupplement.append(renderSnapshot(card, text, language), renderStateHistory(card, text));
+      item.append(
+        editActions.draftActions,
+        CardEditor({
+          card,
+          draft,
+          language,
+          onDraftChange: (change) =>
+            editSessions.set(card.id, { ...(editSessions.get(card.id) ?? draft), ...change }),
+          onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+          onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+          onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+          evidenceSupplement,
+          detailsSupplement,
+        }),
+        editActions.lifecycleActions,
+      );
+    } else {
+      item.append(
+        renderReadableDetail(card, text),
+        renderRichContext(card, text, {
+          onImageRefs: (imageRefs) => onImageRefs(card.id, imageRefs),
+          onAudioRefs: (audioRefs) => onAudioRefs(card.id, audioRefs),
+          onFileRefs: (fileRefs) => onFileRefs(card.id, fileRefs),
+          onEvidenceRole: (evidence) => onEvidenceRole(card.id, evidence),
+          editable: false,
+        }),
+        renderSnapshot(card, text, language),
+      );
     }
+
   };
 
   const setMode = (nextMode: typeof mode) => {
     mode = nextMode;
     render();
+  };
+
+  const startEditing = () => {
+    editSessions.set(card.id, createCardEditDraft(card));
+    setMode("edit");
+  };
+
+  const discardDraft = (): boolean => {
+    const draft = editSessions.get(card.id);
+    if (draft && isCardEditDraftDirty(card, draft) && !window.confirm(text.unsavedDraftConfirm)) {
+      return false;
+    }
+    editSessions.delete(card.id);
+    return true;
   };
 
   const renderSummary = (): HTMLElement => {
@@ -118,14 +152,44 @@ export function Card({
       ...renderMediaIndicators(card, text, language),
     );
 
+    if (card.waitingOn.trim()) {
+      meta.append(createPill(text.waitingPill));
+    }
+
+    if (card.promise.trim() && card.promiseStatus === "open") {
+      meta.append(createPill(text.promisePill));
+    }
+
+    if (card.state === "finished") {
+      meta.append(createPill(card.outcome.trim() ? text.outcomeRecorded : text.outcomeMissing));
+    }
+
+    if (card.evidenceMeta.length > 0) {
+      meta.append(createPill(`${card.evidenceMeta.length} ${text.keyEvidencePill}`));
+    }
+
+    const reentrySignal = getReentrySignal(card);
+    if (reentrySignal.readiness !== "excluded") {
+      const signalPill = createPill(text.reentryReadinessLabels[reentrySignal.readiness]);
+      signalPill.classList.add(`reentry-signal-${reentrySignal.readiness}`);
+      meta.append(signalPill);
+    }
+
+    const returnPoint = document.createElement("p");
+    returnPoint.className = "summary-return-point";
+    returnPoint.hidden = !card.ifYouReturn.trim();
+    returnPoint.textContent = card.ifYouReturn.trim()
+      ? `${text.returnPointShort}: ${card.ifYouReturn.trim()}`
+      : "";
+
     const actions = document.createElement("div");
     actions.className = "summary-actions";
     actions.append(
       createModeButton(text.openCard, () => setMode("open")),
-      createModeButton(text.editCard, () => setMode("edit")),
+      createModeButton(text.editCard, startEditing),
     );
 
-    summary.append(title, snapshot, meta, actions);
+    summary.append(title, snapshot, returnPoint, meta, actions);
     const tags = renderTags(card.tags, 3);
     if (tags) {
       summary.insertBefore(tags, actions);
@@ -138,13 +202,19 @@ export function Card({
     header.className = "card-mode-header";
     const title = document.createElement("h3");
     title.textContent = card.title;
-    header.append(title, createModeButton(text.collapseCard, () => setMode("summary")));
+    header.append(
+      title,
+      createModeButton(text.collapseCard, () => {
+        if (mode !== "edit" || discardDraft()) {
+          releaseObsoleteFocus(item);
+          setMode("summary");
+        }
+      }),
+    );
     return header;
   };
 
-  const renderEditActions = (): HTMLElement => {
-    const actions = document.createElement("div");
-    actions.className = "card-actions";
+  const renderEditActions = (): { draftActions: HTMLElement; lifecycleActions: HTMLElement } => {
 
     const moveLabel = document.createElement("label");
     moveLabel.className = "action-label";
@@ -162,21 +232,153 @@ export function Card({
       moveSelect.append(option);
     }
 
-    moveSelect.addEventListener("change", () => onMove(card.id, moveSelect.value as BoardState));
+    const transitionPanel = document.createElement("div");
+    transitionPanel.className = "transition-confirmation";
+    transitionPanel.hidden = true;
+    transitionPanel.setAttribute("role", "group");
+    const transitionMessage = document.createElement("p");
+    const transitionConfirm = document.createElement("button");
+    transitionConfirm.type = "button";
+    transitionConfirm.className = "transition-confirm-button";
+    const transitionCancel = document.createElement("button");
+    transitionCancel.type = "button";
+    transitionCancel.className = "quiet-button";
+    transitionCancel.textContent = text.cancelAction;
+    transitionPanel.append(transitionMessage, transitionConfirm, transitionCancel);
+
+    const clearPendingTransition = () => {
+      moveSelect.value = card.state;
+      transitionPanel.hidden = true;
+      transitionConfirm.onclick = null;
+    };
+
+    const executeTransition = (targetState: BoardState, confirmations: LifecycleTransitionConfirmation[]) => {
+      const draft = editSessions.get(card.id);
+      if (!draft) {
+        clearPendingTransition();
+        return;
+      }
+      editSessions.delete(card.id);
+      if (!onTransition(card.id, draft, targetState, confirmations)) {
+        editSessions.set(card.id, draft);
+        clearPendingTransition();
+        status.textContent = text.transitionSaveFailed;
+      } else {
+        releaseObsoleteFocus(item);
+      }
+    };
+
+    const prepareTransition = (targetState: BoardState) => {
+      const draft = editSessions.get(card.id);
+      if (!draft || targetState === card.state) {
+        clearPendingTransition();
+        return;
+      }
+      const assessment = assessLifecycleTransition(card, targetState, draft);
+      if (!assessment.allowed) {
+        openEditorSection(item, "promise-closure");
+        clearPendingTransition();
+        status.textContent = text.finishBlockedOpenPromise;
+        return;
+      }
+
+      status.textContent = "";
+      const required = assessment.requiredConfirmations[0];
+      if (!required) {
+        executeTransition(targetState, []);
+        return;
+      }
+
+      openEditorSection(item, "promise-closure");
+
+      transitionPanel.hidden = false;
+      transitionMessage.textContent = required === "FINISH_WITHOUT_OUTCOME"
+        ? text.finishWithoutOutcomeWarning
+        : text.leaveAloneOpenPromiseWarning;
+      transitionConfirm.textContent = required === "FINISH_WITHOUT_OUTCOME"
+        ? text.finishWithoutOutcomeAction
+        : text.leaveAloneConfirmAction;
+      transitionConfirm.onclick = () => executeTransition(targetState, [required]);
+      transitionConfirm.focus();
+    };
+
+    moveSelect.addEventListener("change", () => prepareTransition(moveSelect.value as BoardState));
+    transitionCancel.addEventListener("click", clearPendingTransition);
 
     const hideButton = document.createElement("button");
     hideButton.type = "button";
     hideButton.className = "quiet-button";
     hideButton.textContent = text.hideCard;
-    hideButton.addEventListener("click", () => onHide(card.id));
+    hideButton.addEventListener("click", () => {
+      if (discardDraft()) {
+        releaseObsoleteFocus(item);
+        onHide(card.id);
+      }
+    });
 
-    actions.append(moveLabel, hideButton);
-    return actions;
+    const saveButton = document.createElement("button");
+    saveButton.type = "button";
+    saveButton.className = "primary-button edit-save";
+    saveButton.textContent = text.saveAction;
+    saveButton.addEventListener("click", () => {
+      const draft = editSessions.get(card.id);
+      if (!draft) {
+        return;
+      }
+      editSessions.delete(card.id);
+      if (!onSaveDraft(card.id, draft)) {
+        editSessions.set(card.id, draft);
+        status.textContent = text.editSaveFailed;
+      } else {
+        releaseObsoleteFocus(item);
+      }
+    });
+
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.className = "quiet-button edit-cancel";
+    cancelButton.textContent = text.cancelAction;
+    cancelButton.addEventListener("click", () => {
+      editSessions.delete(card.id);
+      releaseObsoleteFocus(item);
+      setMode("open");
+    });
+
+    const status = document.createElement("p");
+    status.className = "edit-session-status";
+    status.setAttribute("role", "status");
+
+    const draftActions = document.createElement("div");
+    draftActions.className = "card-actions draft-action-bar";
+    draftActions.dataset.cardId = card.id;
+    draftActions.append(saveButton, cancelButton);
+
+    const lifecycleActions = document.createElement("div");
+    lifecycleActions.className = "card-actions lifecycle-actions";
+    lifecycleActions.dataset.cardId = card.id;
+    lifecycleActions.append(moveLabel, transitionPanel, hideButton, status);
+
+    return { draftActions, lifecycleActions };
   };
 
   render();
 
   return item;
+}
+
+function openEditorSection(container: HTMLElement, id: string): void {
+  const section = container.querySelector<HTMLDetailsElement>(`[data-editor-section="${id}"]`);
+  if (!section) {
+    return;
+  }
+  section.open = true;
+  section.querySelector("summary")?.setAttribute("aria-expanded", "true");
+}
+
+function releaseObsoleteFocus(container: HTMLElement): void {
+  if (container.contains(document.activeElement) && document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
 }
 
 function renderRichContext(
@@ -186,6 +388,8 @@ function renderRichContext(
     onImageRefs: (imageRefs: string[]) => void;
     onAudioRefs: (audioRefs: string[]) => void;
     onFileRefs: (fileRefs: BoardCard["fileRefs"]) => void;
+    onEvidenceRole: (evidence: { id: string; kind: EvidenceKind; role: EvidenceRole }) => void;
+    editable: boolean;
   },
 ): HTMLElement {
   const section = document.createElement("section");
@@ -202,28 +406,27 @@ function renderRichContext(
     section.append(reason);
   }
 
-  const validLinks = extractValidHttpUrls(card.richLinks);
-  const invalidLinkText = card.richLinks.filter((link) => link.trim() && normalizeReadableHttpUrl(link) === null);
+  const visibleLinks = card.richLinks.filter((link) => link.trim());
 
-  if (validLinks.length > 0 || invalidLinkText.length > 0) {
+  if (visibleLinks.length > 0) {
     const list = document.createElement("ul");
     list.className = "rich-link-list";
 
-    for (const link of validLinks) {
+    for (const link of visibleLinks) {
       const item = document.createElement("li");
-      const anchor = document.createElement("a");
-      anchor.href = link;
-      anchor.textContent = link;
-      anchor.target = "_blank";
-      anchor.rel = "noreferrer";
-      item.append(anchor);
-      list.append(item);
-    }
-
-    for (const linkText of invalidLinkText) {
-      const item = document.createElement("li");
-      item.className = "plain-link-text";
-      item.textContent = linkText;
+      const normalized = normalizeReadableHttpUrl(link);
+      if (normalized) {
+        const anchor = document.createElement("a");
+        anchor.href = normalized;
+        anchor.textContent = link;
+        anchor.target = "_blank";
+        anchor.rel = "noreferrer";
+        item.append(anchor);
+      } else {
+        item.className = "plain-link-text";
+        item.textContent = link.startsWith("data:") ? text.evidenceUnavailable : link;
+      }
+      appendEvidenceRoleControl(item, card, "link", link, text, actions);
       list.append(item);
     }
 
@@ -245,14 +448,17 @@ function renderRichContext(
         const image = document.createElement("img");
         image.src = ref;
         image.alt = text.imageRefs;
+        image.id = evidenceTargetId("image", ref);
+        image.tabIndex = -1;
         mediaItem.append(label, image);
       } else {
-        const reference = document.createElement("code");
-        reference.textContent = ref;
+        const reference = document.createElement(ref.startsWith("data:") ? "p" : "code");
+        reference.textContent = ref.startsWith("data:") ? text.evidenceUnavailable : ref;
         mediaItem.append(reference);
       }
 
       mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onImageRefs(removeAt(card.imageRefs, index))));
+      appendEvidenceRoleControl(mediaItem, card, "image", ref, text, actions);
       gallery.append(mediaItem);
     });
 
@@ -274,10 +480,17 @@ function renderRichContext(
         const audio = document.createElement("audio");
         audio.controls = true;
         audio.src = ref;
+        audio.id = evidenceTargetId("audio", ref);
+        audio.tabIndex = -1;
         mediaItem.append(label, audio);
+      } else {
+        const unavailable = document.createElement("p");
+        unavailable.textContent = text.evidenceUnavailable;
+        mediaItem.append(unavailable);
       }
 
       mediaItem.append(createRemoveButton(text.removeMedia, () => actions.onAudioRefs(removeAt(card.audioRefs, index))));
+      appendEvidenceRoleControl(mediaItem, card, "audio", ref, text, actions);
       audioList.append(mediaItem);
     });
 
@@ -303,6 +516,7 @@ function renderRichContext(
       }
 
       item.append(createRemoveButton(text.removeMedia, () => actions.onFileRefs(removeAt(card.fileRefs, index))));
+      appendEvidenceRoleControl(item, card, "file", fileRef, text, actions);
       fileList.append(item);
     });
 
@@ -319,6 +533,44 @@ function renderRichContext(
   return section;
 }
 
+function appendEvidenceRoleControl(
+  container: HTMLElement,
+  card: BoardCard,
+  kind: EvidenceKind,
+  source: string | BoardCard["fileRefs"][number],
+  text: (typeof copy)[Language],
+  actions: {
+    onEvidenceRole: (evidence: { id: string; kind: EvidenceKind; role: EvidenceRole }) => void;
+    editable: boolean;
+  },
+): void {
+  const id = evidenceIdentity(kind, source);
+  const assignment = card.evidenceMeta.find((meta) => meta.id === id);
+  if (!actions.editable) {
+    if (assignment) {
+      container.append(createPill(text.evidenceRoleLabels[assignment.role]));
+    }
+    return;
+  }
+
+  const label = document.createElement("label");
+  label.className = "evidence-role-control";
+  const caption = document.createElement("span");
+  caption.textContent = text.evidenceRole;
+  const select = document.createElement("select");
+  select.ariaLabel = text.evidenceRole;
+  for (const role of ["reference", "brief", "feedback", "latest", "return-first", "outcome-proof"] as const) {
+    const option = document.createElement("option");
+    option.value = role;
+    option.textContent = text.evidenceRoleLabels[role];
+    option.selected = (assignment?.role ?? "reference") === role;
+    select.append(option);
+  }
+  select.addEventListener("change", () => actions.onEvidenceRole({ id, kind, role: select.value as EvidenceRole }));
+  label.append(caption, select);
+  container.append(label);
+}
+
 function estimateDataUrlBytes(value: string): number {
   const base64 = value.split(",")[1] ?? "";
   return Math.floor((base64.length * 3) / 4);
@@ -327,6 +579,11 @@ function estimateDataUrlBytes(value: string): number {
 function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
   const detail = document.createElement("section");
   detail.className = "readable-detail";
+
+  const heading = document.createElement("h3");
+  heading.className = "reentry-heading";
+  heading.textContent = text.reentryViewTitle;
+  detail.append(heading);
 
   const tags = renderTags(card.tags);
   if (tags) {
@@ -340,7 +597,11 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
   for (const [label, value, empty] of [
     [text.contextSnapshot, card.contextSnapshot, text.contextSnapshotEmpty],
     [text.whyStillOpen, card.whyStillOpen, text.whyStillOpenEmpty],
+    [text.waitingOn, card.waitingOn, text.waitingOnEmpty],
     [text.ifYouReturn, card.ifYouReturn, text.ifYouReturnEmpty],
+    [nextStepLabel(card, text), card.nextStep, text.nextStepEmpty],
+    [text.promise, formatPromise(card, text), text.promiseEmpty],
+    [outcomeDisplayLabel(card, text), card.outcome, text.outcomeEmpty],
     [text.tinyNote, card.note, ""],
   ]) {
     const block = document.createElement("div");
@@ -352,7 +613,200 @@ function renderReadableDetail(card: BoardCard, text: (typeof copy)[Language]): H
     detail.append(block);
   }
 
+  detail.append(renderEvidenceMeaning(card, text), renderStateHistory(card, text));
+
   return detail;
+}
+
+function renderEvidenceMeaning(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
+  const block = document.createElement("div");
+  block.className = "evidence-meaning";
+  const heading = document.createElement("h4");
+  heading.textContent = text.evidenceMeaning;
+  block.append(heading);
+
+  const ranked = [...card.evidenceMeta].sort(
+    (left, right) => evidenceRoleRank(left.role) - evidenceRoleRank(right.role),
+  );
+  if (ranked.length === 0) {
+    const empty = document.createElement("p");
+    const attachmentCount = card.richLinks.length + card.imageRefs.length + card.audioRefs.length + card.fileRefs.length;
+    empty.textContent = attachmentCount > 0 ? text.evidenceMeaningEmpty : text.evidenceNone;
+    block.append(empty);
+    return block;
+  }
+
+  const list = document.createElement("ul");
+  for (const meta of ranked) {
+    const item = document.createElement("li");
+    item.className = "evidence-access-item";
+    const access = resolveEvidenceAccess(card, meta.id, meta.kind, text);
+    const description = document.createElement("span");
+    description.className = "evidence-access-description";
+    description.textContent = `${text.evidenceRoleLabels[meta.role]} · ${access.label}`;
+    item.append(description, createEvidenceAction(access, text));
+    list.append(item);
+  }
+  block.append(list);
+  return block;
+}
+
+interface EvidenceAccess {
+  kind: EvidenceKind;
+  label: string;
+  href?: string;
+  download?: string;
+  targetId?: string;
+}
+
+function resolveEvidenceAccess(
+  card: BoardCard,
+  id: string,
+  kind: EvidenceKind,
+  text: (typeof copy)[Language],
+): EvidenceAccess {
+  if (kind === "file") {
+    const source = card.fileRefs.find((candidate) => evidenceIdentity(kind, candidate) === id);
+    return source?.dataUrl
+      ? { kind, label: source.name, href: source.dataUrl, download: source.name }
+      : { kind, label: source?.name ?? text.evidenceUnavailable };
+  }
+
+  const sources = kind === "link" ? card.richLinks : kind === "image" ? card.imageRefs : card.audioRefs;
+  const index = sources.findIndex((source) => evidenceIdentity(kind, source) === id);
+  if (index < 0) {
+    return { kind, label: text.evidenceUnavailable };
+  }
+
+  const source = sources[index];
+  if (kind === "link") {
+    const href = normalizeReadableHttpUrl(source);
+    const label = source.startsWith("data:") ? text.evidenceUnavailable : source;
+    return href ? { kind, label, href } : { kind, label };
+  }
+
+  const expectedPrefix = kind === "image" ? "data:image/" : "data:audio/";
+  return source.startsWith(expectedPrefix)
+    ? { kind, label: `${text.evidenceKindLabels[kind]} ${index + 1}`, targetId: evidenceTargetId(kind, source) }
+    : { kind, label: text.evidenceUnavailable };
+}
+
+function createEvidenceAction(access: EvidenceAccess, text: (typeof copy)[Language]): HTMLElement {
+  const actionLabel = evidenceActionLabel(access.kind, text);
+  if (access.href) {
+    const link = document.createElement("a");
+    link.className = "evidence-access-action";
+    link.href = access.href;
+    link.textContent = actionLabel;
+    link.setAttribute("aria-label", `${actionLabel}: ${access.label}`);
+    if (access.download) {
+      link.download = access.download;
+    } else {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+    return link;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "evidence-access-action quiet-button";
+  button.textContent = access.targetId ? actionLabel : text.evidenceUnavailable;
+  button.disabled = !access.targetId;
+  button.setAttribute("aria-label", `${button.textContent}: ${access.label}`);
+  if (access.targetId) {
+    button.addEventListener("click", () => focusEvidenceTarget(access.targetId!, access.kind === "audio"));
+  }
+  return button;
+}
+
+function evidenceActionLabel(kind: EvidenceKind, text: (typeof copy)[Language]): string {
+  if (kind === "file") {
+    return text.evidenceDownload;
+  }
+  if (kind === "image") {
+    return text.evidenceShow;
+  }
+  if (kind === "audio") {
+    return text.evidencePlay;
+  }
+  return text.evidenceOpen;
+}
+
+function focusEvidenceTarget(targetId: string, playAudio: boolean): void {
+  const target = document.getElementById(targetId);
+  if (!target) {
+    return;
+  }
+  target.scrollIntoView({ behavior: "smooth", block: "center" });
+  target.focus({ preventScroll: true });
+  if (playAudio && target instanceof HTMLAudioElement) {
+    void target.play().catch(() => undefined);
+  }
+}
+
+function evidenceTargetId(kind: "image" | "audio", source: string): string {
+  return `evidence-target-${evidenceIdentity(kind, source)}`;
+}
+
+function evidenceRoleRank(role: BoardCard["evidenceMeta"][number]["role"]): number {
+  return ["return-first", "latest", "feedback", "brief", "outcome-proof"].indexOf(role);
+}
+
+function formatPromise(card: BoardCard, text: (typeof copy)[Language]): string {
+  if (!card.promise.trim()) {
+    return "";
+  }
+
+  const details = [
+    card.promiseTo.trim() ? `${text.promiseTo}: ${card.promiseTo.trim()}` : "",
+    card.promiseDueOn ? `${text.promiseDueOn}: ${card.promiseDueOn}` : "",
+    `${text.promiseStatus}: ${text.promiseStatusLabels[card.promiseStatus]}`,
+  ].filter(Boolean);
+  return [card.promise.trim(), ...details].join("\n");
+}
+
+function renderStateHistory(card: BoardCard, text: (typeof copy)[Language]): HTMLElement {
+  const block = document.createElement("div");
+  block.className = "state-history";
+  const heading = document.createElement("h4");
+  heading.textContent = text.stateHistory;
+  block.append(heading);
+
+  const recent = card.stateHistory.slice(-3).reverse();
+  if (recent.length === 0) {
+    const empty = document.createElement("p");
+    empty.textContent = text.stateHistoryEmpty;
+    block.append(empty);
+    return block;
+  }
+
+  const list = document.createElement("ul");
+  for (const transition of recent) {
+    const item = document.createElement("li");
+    item.textContent = `${text.stateLabels[transition.from]} → ${text.stateLabels[transition.to]} · ${formatDate(transition.at)}`;
+    list.append(item);
+  }
+  block.append(list);
+  return block;
+}
+
+function nextStepLabel(card: BoardCard, text: (typeof copy)[Language]): string {
+  if (card.nextStepKind === "action") {
+    return text.nextAction;
+  }
+
+  if (card.nextStepKind === "trigger") {
+    return text.nextTrigger;
+  }
+
+  return text.nextStep;
+}
+
+function outcomeDisplayLabel(card: BoardCard, text: (typeof copy)[Language]): string {
+  return card.state !== "finished" && Boolean(card.closedAt) && Boolean(card.outcome.trim())
+    ? text.previousOutcome
+    : text.outcome;
 }
 
 function renderTags(tags: string[], limit = tags.length): HTMLElement | undefined {
@@ -386,11 +840,16 @@ function renderSnapshot(card: BoardCard, text: (typeof copy)[Language], language
   const snapshot = document.createElement("dl");
   snapshot.className = "context-snapshot";
 
-  for (const row of [
+  const rows = [
     [text.created, formatDate(card.createdAt)],
     [text.lastTouched, formatDate(card.updatedAt)],
     [text.currentState, text.stateLabels[card.state]],
-  ]) {
+  ];
+  if (card.closedAt) {
+    rows.push([text.closedAt, formatDate(card.closedAt)]);
+  }
+
+  for (const row of rows) {
     const term = document.createElement("dt");
     term.textContent = row[0];
 

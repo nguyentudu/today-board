@@ -1,0 +1,19 @@
+{
+  "task_id": 44,
+  "artifact": "PRE_EXECUTION_CANONICAL_STATE_IDENTITY_REPORT",
+  "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+  "expected_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "observed_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "expected_byte_length": 23722,
+  "observed_byte_length": 23722,
+  "utf8_valid": true,
+  "bom_absent": true,
+  "line_endings": "LF_ONLY",
+  "crlf_count": 0,
+  "issue_records_identified": 3,
+  "overview_statuses_resolved": 3,
+  "detailed_statuses_resolved": 3,
+  "authorized_empty_field_preconditions_matched": 15,
+  "conflicting_target_values": 0,
+  "precondition_exact": true
+}

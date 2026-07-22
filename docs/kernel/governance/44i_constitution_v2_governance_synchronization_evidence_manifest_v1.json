@@ -1,0 +1,67 @@
+{
+  "task_id": 44,
+  "artifact": "GOVERNANCE_SYNCHRONIZATION_EVIDENCE_MANIFEST",
+  "primary_outcome": "SYNCHRONIZATION_APPLIED",
+  "authority_inputs": [
+    {"path":"docs/kernel/governance/41_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.md","sha256":"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6"},
+    {"path":"docs/kernel/governance/42_constitution_v2_governance_effective_issue_status_verification_state_synchronization_authority_decision_v1.md","sha256":"46CCFA38A86199A79A37B87DEF9A415DF1709F20E22CA06AADC36E92AC71793C"},
+    {"path":"docs/kernel/governance/43_constitution_v2_founder_recovery_verification_effectiveness_authority_clarification_v1.md","sha256":"AD583ED9050423664D919822A14D3537F657C5CD44BCD54F855EA9C8B95AF5A7"},
+    {"path":"docs/kernel/governance/43a_constitution_v2_founder_recovery_verification_effectiveness_authority_clarification_v1.json","sha256":"05C102077EE475489421BEF7D8B361F7859E9D23737575743152F44B4DD3CA6A"},
+    {"path":"docs/kernel/governance/43c_constitution_v2_one_time_recovery_verification_effectiveness_authority_instrument_v1.md","sha256":"06B082EE4C782A7BF29DB7258B00AC88E7B29ECD5D6DC19C061E43320FCE148B"},
+    {"path":"docs/kernel/governance/43d_constitution_v2_authorized_issue_status_synchronization_target_matrix_v1.json","sha256":"C47A3A6C850000A5836124A78BFF132D0E6C1AB6D008291EE506CB15E809B7B5"},
+    {"path":"docs/kernel/governance/43f_constitution_v2_authority_consumption_and_invalidation_rules_v1.json","sha256":"1CF84E78B239F8EB401BCAA680619FBB8F8C631AE7ED071A0889EC63E54B3BD5"},
+    {"path":"docs/kernel/governance/43h_constitution_v2_founder_authority_evidence_manifest_v1.json","sha256":"383646CA083F04B3EE5221D4E80080BD46C0DCE27D09731BBEFB0043D06C0EDB"}
+  ],
+  "canonical_transition": {
+    "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "preimage_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+    "preimage_byte_length": 23722,
+    "postimage_sha256": "D36F3CAC43800AB7581B49035ED19F51DEF68EB55A1AEAB1B1BBFBBD9D329244",
+    "postimage_byte_length": 26282,
+    "planned_mutations": 15,
+    "observed_mutations": 15,
+    "authorized_mutations": 15,
+    "missing_mutations": 0,
+    "unauthorized_mutations": 0,
+    "atomic_replacement_count": 1,
+    "rollback_performed": false
+  },
+  "protected_evidence": {
+    "task_range": "38-43",
+    "file_count": 49,
+    "canonical_inventory_sha256_before": "C2EE4941F015B3F45BB3A1C07AD9B5CF9CD0B547C4CD190AC528730E4867B8EB",
+    "canonical_inventory_sha256_after": "C2EE4941F015B3F45BB3A1C07AD9B5CF9CD0B547C4CD190AC528730E4867B8EB",
+    "changed": false
+  },
+  "created_artifacts": [
+    {"path":"docs/kernel/governance/44_constitution_v2_one_time_authorized_recovery_verification_governance_state_synchronization_execution_v1.md","sha256":"1ED9955687A2E4E3CE688D517BC93BDE6B312B717D3B223613BE33294BBA5107","byte_length":5170},
+    {"path":"docs/kernel/governance/44a_constitution_v2_one_time_authorized_recovery_verification_governance_state_synchronization_execution_v1.json","sha256":"EC508A92A38CEA2AFBED2275282197106211D38B01C0F7725BFA2CCEAA8BD192","byte_length":5151},
+    {"path":"docs/kernel/governance/44b_constitution_v2_task41_task42_task43_input_identity_and_authority_validation_v1.json","sha256":"4DC63AF3F625A62132D21D28F473778ECD0CC1DE658982E101020B0E6DC69B03","byte_length":2248},
+    {"path":"docs/kernel/governance/44c_constitution_v2_pre_execution_canonical_state_identity_report_v1.json","sha256":"5C2A7030C5A533019BC512245D872695E9B8DAE95044F2D57BCD50568C7991D8","byte_length":705},
+    {"path":"docs/kernel/governance/44d_constitution_v2_authorized_governance_synchronization_execution_plan_v1.json","sha256":"4BAB12E6CE62BABA6A91B4AA859D32A9224CF914AA6D1A5B93764DDEB69810C8","byte_length":4550},
+    {"path":"docs/kernel/governance/44e_constitution_v2_observed_canonical_mutation_inventory_v1.json","sha256":"4AA0E3A22F1D5DC0104F89A22E0597BC5E2BC7802AC03FF57B59C5E70E6D952B","byte_length":1657},
+    {"path":"docs/kernel/governance/44f_constitution_v2_authorized_transition_compliance_matrix_v1.md","sha256":"7C726C1BE3018D6DE264997FB7037A6D7F8A05EBB99AC0685052E3D959D0B718","byte_length":2251},
+    {"path":"docs/kernel/governance/44g_constitution_v2_post_execution_canonical_state_identity_report_v1.json","sha256":"02C8CD007B72A1A9E13E1D5D15FDB40E8B9F7A4EFCD4F9996B3D067561A6C99C","byte_length":780},
+    {"path":"docs/kernel/governance/44h_constitution_v2_one_time_authority_consumption_report_v1.json","sha256":"E3B9AF9C4D6CE258908158767727B6F371A02906EB0EAAA1B3DA8AC3295304C8","byte_length":951},
+    {"path":"docs/kernel/governance/44i_constitution_v2_governance_synchronization_evidence_manifest_v1.json","identity_rule":"SHA-256 computed from final persisted raw bytes and reported by Task 44 completion; self-hash is not embedded to avoid recursion."}
+  ],
+  "artifact_invariants": {
+    "encoding": "UTF-8",
+    "bom": "ABSENT",
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0,
+    "final_newline_required": true,
+    "duplicate_json_keys": 0
+  },
+  "terminal_governance_state": {
+    "authority_consumed": true,
+    "second_attempt_authorized": false,
+    "gate": "CLOSED",
+    "retry_authorized": false,
+    "retry_performed": false,
+    "governance_effective_resolved_issues": "3/3",
+    "resolution_semantics": "RESOLVED_NOT_CLOSED",
+    "governance_chain_closed": true
+  },
+  "verdict": "PASS — ONE-TIME AUTHORIZED GOVERNANCE-STATE SYNCHRONIZATION APPLIED WITH EXACT TARGET COMPLIANCE; AUTHORITY CONSUMED; GOVERNANCE CHAIN CLOSED"
+}

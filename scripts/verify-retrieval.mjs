@@ -36,6 +36,7 @@ function card(id, overrides = {}) {
     imageRefs: [],
     audioRefs: [],
     fileRefs: [],
+    evidenceMeta: [],
     bookmarkReason: "worth keeping",
     tags: ["moon", "research"],
     state: "continue",
@@ -72,6 +73,11 @@ const cards = [
     fileRefs: [{ name: "plain.pdf", type: "application/pdf", size: 1 }],
     tags: ["retrieval-proof-742"],
   }),
+  card("waiting", { title: "Different", waitingOn: "client-feedback-token", richLinks: [], tags: [] }),
+  card("next-step", { title: "Different", nextStep: "open-figma-token", richLinks: [], tags: [] }),
+  card("promise", { title: "Different", promise: "deliver-logo-token", promiseTo: "client-lan-token", richLinks: [], tags: [] }),
+  card("outcome", { title: "Different", outcome: "approved-version-three-token", richLinks: [], tags: [] }),
+  card("evidence-role", { title: "Different", evidenceMeta: [{ id: "file-proof", kind: "file", role: "outcome-proof" }], richLinks: [], tags: [] }),
   card("hidden", { hidden: true, title: "hidden-token" }),
 ];
 
@@ -152,3 +158,9 @@ assert("link hashtag does not create tag filter match", !ids(filterCards(cards, 
 assert("tag filter reads only tags array", ids(filterCards(cards, query({ tags: ["retrieval-proof-742"] }), states, now))[0] === "tag-proof");
 assert("unique tag token search match", ids(filterCards(cards, query({ search: "retrieval-proof-742" }), states, now))[0] === "tag-proof");
 assert("unique hashtag token search match", ids(filterCards(cards, query({ search: "#retrieval-proof-742" }), states, now))[0] === "tag-proof");
+assert("waiting context search match", ids(filterCards(cards, query({ search: "client-feedback-token" }), states, now))[0] === "waiting");
+assert("next step search match", ids(filterCards(cards, query({ search: "open-figma-token" }), states, now))[0] === "next-step");
+assert("promise search match", ids(filterCards(cards, query({ search: "deliver-logo-token" }), states, now))[0] === "promise");
+assert("promise counterparty search match", ids(filterCards(cards, query({ search: "client-lan-token" }), states, now))[0] === "promise");
+assert("outcome search match", ids(filterCards(cards, query({ search: "approved-version-three-token" }), states, now))[0] === "outcome");
+assert("evidence role search match", ids(filterCards(cards, query({ search: "outcome-proof" }), states, now))[0] === "evidence-role");

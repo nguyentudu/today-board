@@ -1,0 +1,78 @@
+{
+  "task": 40,
+  "artifact": "RECOVERED_HISTORICAL_PREIMAGE_EVIDENCE_IDENTITY_REPORT",
+  "generated_at": "2026-07-20",
+  "required_preimage": {
+    "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+    "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "byte_length": 23764,
+    "encoding": "UTF-8",
+    "bom": "absent",
+    "line_endings": "LF_ONLY",
+    "crlf_count": 0,
+    "lf_count": 216,
+    "final_newline": true
+  },
+  "recovered_blob": {
+    "evidence_id": "EVID-40-001",
+    "git_object_type": "blob",
+    "git_object_id_sha1": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "storage_location": ".git/objects/2f/617624d30b5ab84cf85a9a4aabe74ee10543a3",
+    "reachability": "UNREACHABLE_BUT_RETRIEVABLE",
+    "observed_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "observed_byte_length": 23764,
+    "utf8_valid": true,
+    "bom_absent": true,
+    "crlf_count": 0,
+    "lf_count": 216,
+    "final_newline": true,
+    "exact_identity_match": true,
+    "complete_bytes_available": true,
+    "derived_from_current_candidate": false,
+    "classification": "ADMISSIBLE_EXACT"
+  },
+  "path_binding_trees": [
+    {
+      "evidence_id": "EVID-40-002",
+      "root_tree_sha1": "88bf090fdff14f630ae1405e9a92fd9c0ed1d821",
+      "tree_chain_sha1": [
+        "88bf090fdff14f630ae1405e9a92fd9c0ed1d821",
+        "e079aa11b7d5429433cfc837272206004d5c8827",
+        "9b597ab0250f754430c896e5d6897a50fe7f6244",
+        "19560e1286465702b4d43585ffbc11cf991bfa82"
+      ],
+      "bound_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "bound_blob_sha1": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+      "task_33_through_37_artifacts_present_and_hash_matched": 19,
+      "task_38_artifacts_present": 0,
+      "task_39_artifacts_present": 0,
+      "task_40_artifacts_present": 0,
+      "classification": "ADMISSIBLE_EXACT"
+    },
+    {
+      "evidence_id": "EVID-40-003",
+      "root_tree_sha1": "59ff025f959ab8c64f5c297a9236f4ae183cfd03",
+      "tree_chain_sha1": [
+        "59ff025f959ab8c64f5c297a9236f4ae183cfd03",
+        "1c9ac36cd1bee366b7fb43b05644b34f8a0c0122",
+        "16a5a6da9e0f584895d24e601b174a34987f7f92",
+        "22d267d9d81770b42b74224f69c880e9cd779a44"
+      ],
+      "bound_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "bound_blob_sha1": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+      "classification": "ADMISSIBLE_EXACT"
+    }
+  ],
+  "non_circularity": {
+    "reverse_reconstruction_performed": false,
+    "synthetic_preimage_created": false,
+    "current_candidate_used_to_generate_evidence": false,
+    "content_addressed_path_binding_verified": true,
+    "pre_execution_authority_snapshot_verified": true,
+    "result": "PASS"
+  },
+  "availability_warning": "The blob and binding trees are currently unreachable Git objects and may be removed by future garbage collection. Task 40 performed no garbage collection, pruning, ref creation, or object mutation.",
+  "full_preimage_copied_into_task_40_artifacts": false,
+  "copy_omission_reason": "The governed content-addressed Git location is directly retrievable; unnecessary byte duplication was avoided.",
+  "verdict": "EXACT_INDEPENDENT_HISTORICAL_PREIMAGE_EVIDENCE_RECOVERED_AND_QUALIFIED"
+}

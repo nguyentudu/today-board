@@ -13,7 +13,7 @@ if (!app) {
 }
 
 const root = app;
-const BUILD_ID = "2026.07.13-c";
+const BUILD_ID = "2026.07.22-b";
 const statusRegion = document.createElement("div");
 statusRegion.className = "app-status-region";
 statusRegion.setAttribute("aria-label", "Application status");
@@ -39,7 +39,6 @@ registerServiceWorker();
 
 function render(nextBoard: BoardModel = board): void {
   board = nextBoard;
-  saveBoard(board);
   renderNetworkStatus();
   renderUpdateMessage();
 

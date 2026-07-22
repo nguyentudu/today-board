@@ -1,0 +1,28 @@
+{
+  "task": 38,
+  "artifact": "ATOMIC_REPLACEMENT_EVIDENCE",
+  "creation_order": 4,
+  "created_at": "2026-07-20T00:19:09+07:00",
+  "gate_payload_sha256": "AE7EBC26BBFDACB25ED197F4E82223608867319DD43A285CA6645E9E427FAC34",
+  "manifest_payload_sha256": "D65395FB7185F7091C158E11B9FFE969AD373DAA70F8D2F41388194E1D46D0A1",
+  "attempt_sequence": 1,
+  "source_preimage_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+  "temporary_candidate_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "target_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+  "primitive": "MoveFileExW",
+  "flags": [
+    "MOVEFILE_REPLACE_EXISTING",
+    "MOVEFILE_WRITE_THROUGH"
+  ],
+  "same_filesystem": true,
+  "single_replacement_attempt": true,
+  "atomic_replacement_attempted": true,
+  "atomic_replacement_call_succeeded": true,
+  "in_place_editing": false,
+  "partial_canonical_writes": 0,
+  "directory_durability_requested": true,
+  "directory_durability_mechanism": "MOVEFILE_WRITE_THROUGH",
+  "direct_directory_handle_flush_supported": false,
+  "replacement_timestamp": "2026-07-20T00:19:09+07:00",
+  "observed_target_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886"
+}

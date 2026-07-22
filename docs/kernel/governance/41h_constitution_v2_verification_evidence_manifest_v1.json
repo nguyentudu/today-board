@@ -1,0 +1,298 @@
+{
+  "task": 41,
+  "artifact": "VERIFICATION_EVIDENCE_MANIFEST",
+  "generated_at": "2026-07-20",
+  "manifest_scope": "All Task 41 artifacts except this manifest self-identity, all persisted Task 33-40 files relied upon, the current canonical file, task specification, and recovered Git objects",
+  "task_41_artifacts": [
+    {
+      "path": "docs/kernel/governance/41_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.md",
+      "sha256": "07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6",
+      "byte_length": 8960
+    },
+    {
+      "path": "docs/kernel/governance/41a_constitution_v2_independent_persisted_result_verification_recovery_assessment_v1.json",
+      "sha256": "1F50D76CAEB47753745C86B5231027E64107A4B8DB68671688ECCBA132841A61",
+      "byte_length": 4772
+    },
+    {
+      "path": "docs/kernel/governance/evidence/41_constitution_v2_historical_preimage_exact.bin",
+      "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+      "byte_length": 23764
+    },
+    {
+      "path": "docs/kernel/governance/41b_constitution_v2_historical_preimage_identity_verification_v1.json",
+      "sha256": "F462DE035AFB5A3AD7D97275E12278907ECAD6ED8AF366E75CCD7524A17B9D1A",
+      "byte_length": 2438
+    },
+    {
+      "path": "docs/kernel/governance/41c_constitution_v2_pre_execution_tree_provenance_inventory_v1.md",
+      "sha256": "A978D45BE407978795614C4F31E33A5FECA9198AC5B259C07F34A7A706A452EF",
+      "byte_length": 5788
+    },
+    {
+      "path": "docs/kernel/governance/41d_constitution_v2_persisted_result_identity_report_v1.json",
+      "sha256": "BD2656EE7B4FBFDC4DAEBB59B4C36C158F68495AF9FB728B827B8255279E05A4",
+      "byte_length": 1551
+    },
+    {
+      "path": "docs/kernel/governance/41e_constitution_v2_preimage_to_persisted_result_mutation_inventory_v1.json",
+      "sha256": "11FC370BDE99622734E7C6ABA550BACE4D31D5D8F47278C56FACADDF5758A82D",
+      "byte_length": 4853
+    },
+    {
+      "path": "docs/kernel/governance/41f_constitution_v2_authorized_transition_compliance_matrix_v1.md",
+      "sha256": "8F7BEDFBA3039081D6A450466167ABDACCD4AF1269D59835EA86AAD89498CF25",
+      "byte_length": 2899
+    },
+    {
+      "path": "docs/kernel/governance/41g_constitution_v2_independent_verification_recovery_determination_v1.json",
+      "sha256": "9082EC9EB13B4249CCE6DCC77D2BBA0088F6F0E74A4F2C4017FB0FFA2A113DD3",
+      "byte_length": 3032
+    }
+  ],
+  "manifest_self_identity": {
+    "path": "docs/kernel/governance/41h_constitution_v2_verification_evidence_manifest_v1.json",
+    "sha256": "RECORDED_AFTER_PERSISTENCE_IN_TASK_41_COMPLETION_RESPONSE",
+    "byte_length": "RECORDED_AFTER_PERSISTENCE_IN_TASK_41_COMPLETION_RESPONSE",
+    "reason": "A cryptographic artifact cannot contain its own final hash without self-reference."
+  },
+  "source_artifacts": [
+    {
+      "path": "docs/kernel/governance/33_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.md",
+      "sha256": "F9A01E4083183BA91812A17FE0671452407733E94DC47E2A4C9656A2FB77F61D",
+      "byte_length": 11514
+    },
+    {
+      "path": "docs/kernel/governance/33a_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.json",
+      "sha256": "55AAD7598BD661AB0480423634B1AD51948AAE78D418C9425ECD02DFAD010C70",
+      "byte_length": 22641
+    },
+    {
+      "path": "docs/kernel/governance/33b_constitution_v2_exact_issue_status_synchronization_operation_matrix_v1.md",
+      "sha256": "AADE4C5C0F2F3F43D16594A9CEDDBB6D4AFAA27695027085CF28A983BBF991D4",
+      "byte_length": 2272
+    },
+    {
+      "path": "docs/kernel/governance/33c_constitution_v2_exact_issue_status_synchronization_frozen_approval_payload_v1.json",
+      "sha256": "1E711922212FB0AA824E00C080A156827BB6DB55E946BF0EB0A53786EE8C9068",
+      "byte_length": 54191
+    },
+    {
+      "path": "docs/kernel/governance/34_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.md",
+      "sha256": "C2082404492C4CD040DA500A5918DCE2DCA7A1875EF1D51A8B403759916219DE",
+      "byte_length": 7472
+    },
+    {
+      "path": "docs/kernel/governance/34a_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.json",
+      "sha256": "2E5E31A7269AEBC4D93555F230B3AA7F5820C989D2D0290287DF8CD933384FAB",
+      "byte_length": 7707
+    },
+    {
+      "path": "docs/kernel/governance/34b_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_matrix_v1.md",
+      "sha256": "49A9835DB313B625117200BEE186597E928BB5A3AFF350ECB4FE301980E66A61",
+      "byte_length": 2464
+    },
+    {
+      "path": "docs/kernel/governance/35_constitution_v2_immutable_issue_status_synchronization_execution_manifest_v1.md",
+      "sha256": "A60BE91726696401251586420046571D0B370E9DCFFE4B7CDBD4F1551E350B2F",
+      "byte_length": 11005
+    },
+    {
+      "path": "docs/kernel/governance/35a_constitution_v2_immutable_issue_status_synchronization_execution_manifest_v1.json",
+      "sha256": "57601D53BFF753C20B6DAEC2982B1E0BA7D13A1A8BBDC99F7499C072314534D4",
+      "byte_length": 20331
+    },
+    {
+      "path": "docs/kernel/governance/35b_constitution_v2_immutable_issue_status_synchronization_execution_manifest_matrix_v1.md",
+      "sha256": "652EA3032B6D3F474FCFFFD42E3D18ED28DBCEFA1799D777FCDBD6B9D0496E84",
+      "byte_length": 4331
+    },
+    {
+      "path": "docs/kernel/governance/35c_constitution_v2_immutable_issue_status_synchronization_execution_manifest_payload_v1.json",
+      "sha256": "3BDB5A429792896CADB50D43A10AD0961DBD060CE782F0A64811B5B9DE5D08B4",
+      "byte_length": 21329
+    },
+    {
+      "path": "docs/kernel/governance/36_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_v1.md",
+      "sha256": "CCDD8C2A64EE90C16ED79EF7FA066C358D71F12F7D3C06D6570AB16596A5D772",
+      "byte_length": 10025
+    },
+    {
+      "path": "docs/kernel/governance/36a_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_v1.json",
+      "sha256": "290DCEB18EF2D9B0640F06307F6A29A5575C7D02BA35E231D45CC8A46829663C",
+      "byte_length": 15294
+    },
+    {
+      "path": "docs/kernel/governance/36b_constitution_v2_independent_issue_status_synchronization_execution_manifest_verification_matrix_v1.md",
+      "sha256": "05E9C175A1A3FBCCDE1FF4587472EA1131DE6281BBEF3C0B472CC7612542F743",
+      "byte_length": 3897
+    },
+    {
+      "path": "docs/kernel/governance/36c_constitution_v2_independent_candidate_reconstruction_evidence_v1.json",
+      "sha256": "2E143891CF07E446AC71E11D9ED064361DBB67FC4F4FEF1F41B0DBF18795530E",
+      "byte_length": 10081
+    },
+    {
+      "path": "docs/kernel/governance/37_constitution_v2_founder_execution_gate_authorization_for_verified_issue_status_synchronization_manifest_v1.md",
+      "sha256": "B63175083B29B76549DCA5A9008B75811211D0569872B0C798746ECC89390752",
+      "byte_length": 9057
+    },
+    {
+      "path": "docs/kernel/governance/37a_constitution_v2_founder_execution_gate_authorization_for_verified_issue_status_synchronization_manifest_v1.json",
+      "sha256": "E5F1D8942A2FEA5312A2EE3CB651D8692421DB556D74932A2292F32E987E9429",
+      "byte_length": 13190
+    },
+    {
+      "path": "docs/kernel/governance/37b_constitution_v2_founder_execution_gate_authorization_matrix_v1.md",
+      "sha256": "A6E9911F0BCC6EFE36E210756F03DBD1A32F753DCE8850E545E85B4F72B447E0",
+      "byte_length": 3869
+    },
+    {
+      "path": "docs/kernel/governance/37c_constitution_v2_founder_execution_gate_authorization_payload_v1.json",
+      "sha256": "968426137C0EBA16E01D48B6CFA3DF504C7072BB4E6029946DF397FD5C6E899B",
+      "byte_length": 13928
+    },
+    {
+      "path": "docs/kernel/governance/38_constitution_v2_atomic_issue_status_canonical_synchronization_v1.md",
+      "sha256": "12172CADF7D6B25FEA3CC12220D7418E9ACF76823F217D717726664BC9DCBDB4",
+      "byte_length": 6818
+    },
+    {
+      "path": "docs/kernel/governance/38a_constitution_v2_atomic_issue_status_canonical_synchronization_v1.json",
+      "sha256": "D08F4AF24D69390B6E327EEEB6BBDECC8CBFAA172849871E15E47AD152D13FFE",
+      "byte_length": 8458
+    },
+    {
+      "path": "docs/kernel/governance/38b_constitution_v2_atomic_issue_status_canonical_synchronization_matrix_v1.md",
+      "sha256": "F39B6E366579B5938D5435033AFD0CF002175A1E1A73BE9A76BF5DEA8462F99C",
+      "byte_length": 2079
+    },
+    {
+      "path": "docs/kernel/governance/38c_constitution_v2_atomic_issue_status_pre_execution_verification_evidence_v1.json",
+      "sha256": "068787D8542DFCA5ED2B7AE02243BE8373D4A422AC22B95F81DF8201826BB185",
+      "byte_length": 6955
+    },
+    {
+      "path": "docs/kernel/governance/38d_constitution_v2_begin_authorized_execution_attempt_v1.json",
+      "sha256": "81575704D525B119D2DC0E9E6AC7137E5B71BD5F76D86B257EAC813A88E95C65",
+      "byte_length": 4476
+    },
+    {
+      "path": "docs/kernel/governance/38e_constitution_v2_temporary_candidate_verification_evidence_v1.json",
+      "sha256": "119279D0D8FE50833AA4EBC4B8D83D933095D572423DAA772F62D1AE2AEAB9BE",
+      "byte_length": 1001
+    },
+    {
+      "path": "docs/kernel/governance/38f_constitution_v2_atomic_replacement_evidence_v1.json",
+      "sha256": "27001A890A15B885C399DA06E9C9A0F531650EFE908E316B55EC4E09ED8E9432",
+      "byte_length": 1243
+    },
+    {
+      "path": "docs/kernel/governance/38g_constitution_v2_persisted_canonical_observation_evidence_v1.json",
+      "sha256": "2418135F535EC31F4A48BD08C04EB9AA5FD801A74A185A4A44B593C8D0A4982D",
+      "byte_length": 4936
+    },
+    {
+      "path": "docs/kernel/governance/38h_constitution_v2_execution_gate_consumption_record_v1.json",
+      "sha256": "D82606776B7F2387C860098943D07DA274D3645231BD9280403699D54FF3BF1B",
+      "byte_length": 730
+    },
+    {
+      "path": "docs/kernel/governance/39_constitution_v2_independent_persisted_issue_status_synchronization_result_verification_v1.md",
+      "sha256": "50A77263B420F031D9F7857583EFCEFF45A26847D83AFF907A51F13F517D1003",
+      "byte_length": 6589
+    },
+    {
+      "path": "docs/kernel/governance/39a_constitution_v2_independent_persisted_issue_status_synchronization_result_verification_v1.json",
+      "sha256": "020DF41076D4FE0ED49EFFC7DA90E6EEF5BC5BD7EE0937DA8E947E83CDD1161E",
+      "byte_length": 9019
+    },
+    {
+      "path": "docs/kernel/governance/39b_constitution_v2_independent_persisted_issue_status_synchronization_result_verification_matrix_v1.md",
+      "sha256": "58F9B43FC161DC037652116FF31BD2158E82D34D25A86CAB3EC291A68556D909",
+      "byte_length": 8142
+    },
+    {
+      "path": "docs/kernel/governance/39c_constitution_v2_independent_current_canonical_state_observation_v1.json",
+      "sha256": "CAE42AE01090BA3101EEE5B76A508A064DE1AE9717AE9AFBA6E7120A8B75351B",
+      "byte_length": 3969
+    },
+    {
+      "path": "docs/kernel/governance/39d_constitution_v2_independent_persisted_byte_difference_evidence_v1.json",
+      "sha256": "CC642C3FCE14484B902C5667C788643DA7783FE4C62689FBC481352612511CF1",
+      "byte_length": 1549
+    },
+    {
+      "path": "docs/kernel/governance/39e_constitution_v2_issue_status_governance_effectiveness_determination_v1.json",
+      "sha256": "C075F3A58E32C386FD26FACE4294C3B3A1C10A732BBCE8DAE62D10151C0618E7",
+      "byte_length": 1562
+    },
+    {
+      "path": "docs/kernel/governance/40_constitution_v2_issue_status_synchronization_post_execution_evidence_recovery_assessment_v1.md",
+      "sha256": "96C13636B923BE119D71A6BEBBB54E0BBCADC241497D31A11F8C8D6B31A7F8CA",
+      "byte_length": 9981
+    },
+    {
+      "path": "docs/kernel/governance/40a_constitution_v2_issue_status_synchronization_post_execution_evidence_recovery_assessment_v1.json",
+      "sha256": "740D9F8D447FAEC9846F67DD5CE75DFC0F94E035941BB036064C706E785284DE",
+      "byte_length": 6494
+    },
+    {
+      "path": "docs/kernel/governance/40b_constitution_v2_post_execution_evidence_discovery_inventory_v1.md",
+      "sha256": "698691D2FB97BAEADB283EB40E39911F6E55658F3C101A0BA56EF977DB7C4534",
+      "byte_length": 2770
+    },
+    {
+      "path": "docs/kernel/governance/40c_constitution_v2_post_execution_evidence_qualification_matrix_v1.md",
+      "sha256": "A78F402D06FAC3F961BC2AC3AC1A5C5ED72E23A575896C1AE8B0F655E5140C78",
+      "byte_length": 3149
+    },
+    {
+      "path": "docs/kernel/governance/40d_constitution_v2_recovered_historical_preimage_evidence_identity_report_v1.json",
+      "sha256": "C665D2A29B4715B87DBCA05C86D24722E91188938001740FEBAFCF3A97CAC00A",
+      "byte_length": 3295
+    },
+    {
+      "path": "docs/kernel/governance/40e_constitution_v2_issue_status_verification_recovery_path_determination_v1.json",
+      "sha256": "FFDCE4CAD332549354708726EA9ED31B1DD53982F69E71AF2F6061B9FD24B6D4",
+      "byte_length": 2005
+    },
+    {
+      "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+      "byte_length": 23722
+    },
+    {
+      "path": "C:\\Users\\Admin\\.codex\\attachments\\5f164fef-9ecb-4c9e-bb1f-653736437bf1\\pasted-text.txt",
+      "sha256": "A1801B1B5B34AA90E50344568E8BA314ED3FAABDC5C8453DA2FEE9E0296D3893",
+      "byte_length": 20015,
+      "role": "TASK_41_SPECIFICATION"
+    }
+  ],
+  "git_objects": [
+    {
+      "object_id": "2f617624d30b5ab84cf85a9a4aabe74ee10543a3",
+      "object_type": "blob",
+      "raw_payload_sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+      "raw_payload_byte_length": 23764
+    },
+    {
+      "object_id": "88bf090fdff14f630ae1405e9a92fd9c0ed1d821",
+      "object_type": "tree",
+      "raw_payload_sha256": "667BEA88CAF2B735CF395BC714584122F747957D057FB33D4BB3A4C83BD39A15",
+      "raw_payload_byte_length": 476
+    }
+  ],
+  "counts": {
+    "task_41_artifacts_hashed_excluding_manifest": 9,
+    "source_file_artifacts_hashed": 42,
+    "git_objects_verified": 2
+  },
+  "canonical_sha256_before_task_41_artifact_creation": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "canonical_sha256_at_manifest_creation": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "prior_artifacts_modified": false,
+  "canonical_modified": false,
+  "gate_state": "CLOSED",
+  "retry_authorized": false,
+  "primary_outcome": "VERIFICATION_SATISFIED"
+}

@@ -1,0 +1,216 @@
+# Moon Constitution Issues v1
+
+## 1. Document Control
+
+| Field | Value |
+| --- | --- |
+| Title | Moon Constitution Issues v1 |
+| Document ID | MOON-CONST-ISSUES-001 |
+| Version | 1.0 |
+| Status | DRAFT FOR FOUNDER TRIAGE |
+| Phase | Phase 0 - Constitutional Foundation |
+| Source review | `docs/kernel/reviews/01_constitution_ratification_review_v1.md` |
+| Constitution version reviewed | Moon Continuity Kernel Constitution v1 |
+| Constitution source | `docs/kernel/01_continuity_kernel_constitution_v1.md` |
+| Owner | Moon Architecture |
+| Decision authority | Founder |
+| Created date | 2026-07-15 |
+| Last updated date | 2026-07-15 |
+
+## 2. Purpose
+
+This register records constitutional ambiguities and potential tensions identified by independent review. It preserves the reasoning behind future amendments, prevents silent constitutional edits, separates issue identification from issue resolution, and provides traceability from review finding through amendment and Founder ratification.
+
+**This document does not amend the Constitution.** It does not ratify the Constitution, create Amendment 001, or settle downstream Language, Ontology, Canonical Model, Lifecycle, Primitive Specification, Acceptance Specification, architecture, or implementation details.
+
+The source review found the Constitution conceptually viable and recommended **ACCEPT WITH AMENDMENTS**. It found three amendment-requiring ambiguities, zero actual invariant conflicts, and two major potential tensions. `BORDERLINE` therefore means that targeted clarification is required before final ratification; it does not mean that the constitutional structure has been rejected.
+
+## 3. Status Model
+
+| Status | Meaning |
+| --- | --- |
+| IDENTIFIED | A reviewer has recorded evidence of a constitutional question. No decision to act has been made. |
+| TRIAGE REQUIRED | The issue is sufficiently supported for Founder disposition, but constitutional action has not been authorized. |
+| ACCEPTED | The Founder has decided that the issue requires constitutional action or an explicit constitutional deferral. |
+| REJECTED | The Founder has decided that the claimed ambiguity or tension does not require action. |
+| DEFERRED | The Founder has retained the issue for later decision without authorizing a current amendment. |
+| RESOLVED | A ratified amendment or explicit disposition has supplied the accepted resolution. |
+| CLOSED | The resolution has been incorporated into the authoritative Constitution, or the rejected/deferred disposition has been formally recorded with no further current action. |
+
+Identification does not authorize amendment. Acceptance authorizes a proposal, not a constitutional change. An amendment proposes the minimal resolution. Founder ratification confirms whether that resolution is valid. Closure occurs only after the authoritative constitutional record or formal disposition reflects the decision.
+
+## 4. Interpretation of Review Evidence
+
+No proven constitutional contradiction was found. The two major potential tensions arise under specific conditions and are mapped into the three issues below:
+
+| Review finding | Classification in this register | Mapping |
+| --- | --- | --- |
+| Fresh Start versus Situation identity | Major potential tension, not actual conflict | `CONST-ISSUE-003` |
+| Outcome versus a reopened Situation | Major potential tension, not actual conflict | `CONST-ISSUE-002`, with reopening mechanics explicitly deferred |
+
+Different implementations could resolve these tensions differently while each appears faithful to the current text. Constitutional clarification is required to establish the governing boundary; downstream specifications should still own structural and operational detail.
+
+Other review observations remain later Phase 0 work unless they reveal a constitutional contradiction: Promise scope and breach; inferred classification; conflicting Evidence and provenance authority; Return Point cardinality; and detailed reopening lifecycle semantics. They do not create additional amendment requirements in this register.
+
+## 5. Issue Summary
+
+| Issue ID | Short title | Issue class | Severity | Current status | Affected constitutional section | Required action | Target resolution |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| CONST-ISSUE-001 | Situation qualification boundary | Definition ambiguity | Major | TRIAGE REQUIRED | Sections 4, 7.1, 9, and 21 | Founder triage; if accepted, clarify the minimum constitutional qualification and defer structural tests | Amendment 001, Change A |
+| CONST-ISSUE-002 | Intentional inactivity boundary | Lifecycle ambiguity | Major | TRIAGE REQUIRED | Sections 3, 7.3, 7.7, 9, 11, 15, and 19 | Founder triage; if accepted, distinguish Outcome from Waiting, Attention, pause, and chosen discontinuity | Amendment 001, Change B |
+| CONST-ISSUE-003 | Authorized discontinuity precedence | Trust boundary ambiguity | Critical | TRIAGE REQUIRED | Sections 3, 9, 11, 12, 15, and 19 | Founder triage; if accepted, establish precedence between authorized discontinuity and identity/preservation duties | Amendment 001, Change C |
+
+Exactly three issues require Founder triage for possible amendment. None is marked `ACCEPTED` because no explicit Founder issue decision is present in the source material.
+
+## 6. Detailed Issue Records
+
+### CONST-ISSUE-001 - Situation Qualification Boundary
+
+| Field | Record |
+| --- | --- |
+| Issue ID | CONST-ISSUE-001 |
+| Title | Situation Qualification Boundary |
+| Issue class | Definition ambiguity; secondary tag: Scope boundary ambiguity |
+| Source finding | Review sections 1, 2.1, 2.3, 8, 13.2, and 14 identify the absence of a minimum test separating a Situation from ambient context, retained information, or a transient concern. |
+| Affected section or clauses | Constitution section 4, especially the definition and root-object explanation; section 7.1; invariant 9.1 on Situation identity; section 21 acceptance language. |
+| Current constitutional language | “A Situation is a context with the potential to require future understanding, continuation, resumption, attention, commitment, or conclusion.” |
+| Ambiguity or tension | Interpretation A: any context with possible future relevance can qualify as a Situation. Interpretation B: a context qualifies only when there is a coherent continuity claim whose identity or meaning may need protection across separation. The text does not choose a minimum boundary. |
+| Why it matters | The interpretations produce materially different Kernel scope. Interpretation A can make bookmarks, isolated facts, passing thoughts, or retained objects Situations by default. Interpretation B requires a reason they need continuity and may instead treat some material as Evidence, metadata, or ambient context. |
+| Failure mode if unresolved | Language, Ontology, Packs, Surfaces, and QA may classify the same material differently. The Kernel may become an indiscriminate container, or a later implementation may invent an eligibility rule and accidentally turn it into constitutional precedent. |
+| Boundary of the issue | This issue asks what minimum continuity claim makes a context constitutionally eligible to be a Situation. It does not prescribe a field, score, workflow, storage record, required Primitive set, or technical identity mechanism. |
+| What this issue does not decide | It does not decide Situation cardinality, containment, duration, relationship types, database identity, creation UI, or lifecycle transitions. |
+| Required constitutional clarification | State a minimal qualification that is broad enough to remain domain-independent but prevents possible future relevance alone from making every retained item a Situation. State that operational recognition criteria belong downstream. |
+| Possible resolution direction | Clarify that a Situation is a context for which continuity of identity or meaning across a meaningful separation may be needed, and that retained material without such a continuity claim does not become a Situation merely because it may be useful later. Exact canonical wording belongs to the amendment task. |
+| Downstream documents affected | Continuity Language; Ontology; Canonical Model; Situation Primitive Specification; Kernel Acceptance Specification. |
+| Proposed amendment mapping | Amendment 001, Change A: one definition clarification plus one explicit deferral boundary. |
+| Current status | TRIAGE REQUIRED |
+| Founder decision |  |
+| Resolution evidence |  |
+| Closure condition | A Founder-ratified amendment establishes the minimum constitutional boundary and downstream ownership, and the authoritative Constitution incorporates it; or the Founder rejects/defer-dispositions the issue with rationale. |
+
+**Constitutional question.** The Constitution itself should define the minimum meaning boundary because downstream layers are forbidden to redefine Situation. Continuity Language may standardize terms, Ontology may define relationships, the Canonical Model may define representation, and the Acceptance Specification may provide objective examples. Those documents must not invent the constitutional qualification independently.
+
+**Minimality constraint.** Preserve Situation as Moon's root, domain-independent conceptual object and preserve all current non-equivalence statements. Change only the qualification boundary and its explicit downstream deferral.
+
+### CONST-ISSUE-002 - Outcome, Waiting, Attention, and Intentional Inactivity
+
+| Field | Record |
+| --- | --- |
+| Issue ID | CONST-ISSUE-002 |
+| Title | Outcome, Waiting, Attention, and Intentional Inactivity Boundary |
+| Issue class | Lifecycle ambiguity; secondary tags: Definition ambiguity, Invariant tension |
+| Source finding | Review sections 1, 2.3, 3, 4.2, 8, 13.2, and 14 find that “intentionally inactive” can overlap with voluntary Waiting, Attention management, pause, abandonment, leaving alone, and chosen discontinuity. The reopened-Outcome question is a major potential tension, not a proven conflict. |
+| Affected section or clauses | Constitution section 3 on Attention and Outcome activities; sections 7.3 and 7.7; invariants 9.3, 9.7, and 9.13; principles 11.15 and 11.16; trust clauses 15.1, 15.2, 15.5, and 15.8; deferred question 19 on lifecycle versus attention changes. |
+| Current constitutional language | Outcome is “the way a Situation reaches a concluded or intentionally inactive disposition”; later examples include “abandonment” and “deliberate leaving-alone.” |
+| Ambiguity or tension | Interpretation A: any deliberate inactivity, including a pause or leave-alone attention choice, may express Outcome. Interpretation B: Outcome requires a deliberate disposition of the Situation, while temporary pause, voluntary Waiting, and present Attention choices do not conclude it. Reopening then raises a related but deferred question about same, related, or successor Situation identity. |
+| Why it matters | The interpretations produce materially different classifications, lifecycle assumptions, and trust behavior. A person choosing not to attend to something could be represented as having concluded it, while another conforming system could preserve it as open or Waiting. |
+| Failure mode if unresolved | Surfaces may silently turn inactivity into Outcome, voluntary delay into Waiting, or leave-alone behavior into a lifecycle transition. QA cannot objectively distinguish a truthful disposition from temporary non-attention. Reopening behavior may be settled by implementation accident. |
+| Boundary of the issue | This issue requires constitutional distinctions among obstruction, present awareness, temporary voluntary pause, deliberate disposition, and authorized discontinuity. It does not require a transition graph or exhaustive Outcome categories. |
+| What this issue does not decide | It does not decide status values, state-machine transitions, reopening mechanics, whether a reopened Outcome is the same or successor Situation, UI zones, required timestamps, or cardinality. |
+| Required constitutional clarification | Clarify that inactivity alone is not Outcome; identify the minimum semantic difference between temporary obstruction or attention choice and a deliberate disposition. Explicitly defer transition and reopening mechanics to Ontology and Situation Lifecycle. |
+| Possible resolution direction | Preserve Outcome as honest conclusion or deliberate disposition, while stating that pausing, leaving current Attention, or waiting by choice does not by itself establish Outcome. A later Lifecycle specification can determine transitions and reopening identity under that boundary. |
+| Downstream documents affected | Continuity Language; Ontology; Situation Lifecycle; Waiting and Outcome Primitive Specifications; Continuity Invariants Specification; Kernel Acceptance Specification. |
+| Proposed amendment mapping | Amendment 001, Change B: one definition boundary, one non-inference rule or normative example, and one explicit lifecycle deferral. |
+| Current status | TRIAGE REQUIRED |
+| Founder decision |  |
+| Resolution evidence |  |
+| Closure condition | A Founder-ratified amendment makes Outcome distinguishable from inactivity, Waiting, and Attention without prematurely defining lifecycle mechanics, and the authoritative Constitution incorporates it; or the Founder records another formal disposition. |
+
+**Constitutional question.** The Constitution must define the semantic distinction because Waiting, Attention, and Outcome are constitutional meanings or activities that downstream layers may not redefine. Ontology and Situation Lifecycle should decide identity, transition, and reopening mechanics. Primitive Specifications and Acceptance Specification should make the distinction operationally testable.
+
+**Conflict calibration.** No clause proves that a Situation must simultaneously be Outcome and not Outcome under identical conditions. The text creates a potential interpretive tension because different classifications are allowed by the current boundary. This register does not state that the invariants conflict.
+
+**Minimality constraint.** Preserve honest non-completion, legitimate abandonment, non-coercive Attention, and the Waiting/Outcome distinction. Do not introduce new Primitives or a lifecycle model.
+
+### CONST-ISSUE-003 - Trust Precedence for Authorized Discontinuity
+
+| Field | Record |
+| --- | --- |
+| Issue ID | CONST-ISSUE-003 |
+| Title | Trust Precedence for Fresh Start, Present Only, Light Continuity, and No Old Pull |
+| Issue class | Trust boundary ambiguity; secondary tags: Invariant tension, Authority ambiguity |
+| Source finding | Review sections 1, 2.3, 4.2, 11, 13.2, and 14 identify missing precedence when Situation identity and preservation meet a person's legitimate choice for fresh start, present-only use, light continuity, forgetting, or no-old-pull. The review classifies this as a major potential tension, not an actual contradiction. |
+| Affected section or clauses | Constitution definition of Continuity in section 3; invariants 9.1, 9.11, and 9.15; principles 11.8 through 11.10; decision question 12.13; trust clauses 15.1, 15.2, 15.6, 15.9, and the closing trust rule; deferred question 19 on expiry, deletion, forgetting, and fresh starts. |
+| Current constitutional language | “A Situation must remain identifiable as the Situation itself,” while “Fresh-start, present-only, light-continuity, and no-old-pull preferences may be essential to dignity and safety.” |
+| Ambiguity or tension | Interpretation A: identity and preservation remain unconditional duties, while discontinuity preferences control only what a Surface displays. Interpretation B: authorized discontinuity may limit retention, retrieval, and reintroduction themselves. Interpretation C: the preference can end one continuity context while preserving a restricted identity record. The Constitution recognizes legitimacy but does not set authority or precedence. |
+| Why it matters | The interpretations produce materially different trust behavior. A system may retain and later reintroduce material a person intended to leave behind, or another system may erase continuity whose preservation the person expected. Both could claim constitutional fidelity under the current text. |
+| Failure mode if unresolved | Identity may become coercive retention; fresh-start language may become merely cosmetic; Surfaces and implementations may invent inconsistent consent, forgetting, expiry, or no-old-pull rules; QA cannot determine whether old material is being faithfully preserved or improperly reintroduced. |
+| Boundary of the issue | This issue asks which constitutional authority governs when continuity support and an authorized discontinuity choice point in opposite directions. It does not define deletion mechanics, retention periods, consent UI, authentication, storage architecture, or legal compliance. |
+| What this issue does not decide | It does not decide technical erasure, recoverability, backups, expiry schedules, account ownership, cross-device behavior, or the representation of consent and provenance. |
+| Required constitutional clarification | Establish that identity and preservation duties operate within continuity the person has authorized, and state whether authorized discontinuity can limit retention, retrieval, and reintroduction without constituting Continuity failure. Explicitly assign operational mechanisms downstream. |
+| Possible resolution direction | Add a narrow precedence clause making human agency, consent, dignity, and authorized continuity boundaries controlling when they conflict with optional preservation or reintroduction. Preserve truthful disclosure about what can and cannot be forgotten. |
+| Downstream documents affected | Continuity Language; Ontology; Canonical Model; Continuity Invariants Specification; Situation Lifecycle; relevant Primitive Specifications; Kernel Acceptance Specification; later architecture. |
+| Proposed amendment mapping | Amendment 001, Change C: one trust-precedence clause and one explicit operational deferral. |
+| Current status | TRIAGE REQUIRED |
+| Founder decision |  |
+| Resolution evidence |  |
+| Closure condition | A Founder-ratified amendment establishes constitutional precedence and downstream ownership without promising unsupported erasure, and the authoritative Constitution incorporates it; or the Founder records another formal disposition. |
+
+**Constitutional question.** The Constitution must decide the normative precedence because downstream layers cannot independently choose whether consent and dignity constrain Continuity. Continuity Language can standardize boundary terms; Ontology, Canonical Model, Lifecycle, Invariants, and Acceptance Specification can define representation, effects, and tests; architecture can implement only the ratified rule.
+
+**Conflict calibration.** No direct contradiction currently commands both unconditional retention and unconditional deletion. The potential tension arises because identity is binding while authorized discontinuity is legitimate but operationally and normatively under-specified.
+
+**Minimality constraint.** Preserve Situation identity, faithful preservation, honest local truth, reversibility where practical, agency, consent, and dignity. Add only the precedence and explicit deferral needed to prevent coercive interpretation.
+
+## 7. Amendment Mapping and Minimality
+
+If all three issues are accepted, the preferred resolution is one narrowly scoped **Moon Constitution Amendment 001 v1** containing three independently reviewable atomic changes:
+
+| Issue | Proposed amendment unit | Smallest likely constitutional change | Must remain unchanged |
+| --- | --- | --- | --- |
+| CONST-ISSUE-001 | Amendment 001, Change A | One definition clarification and one explicit downstream boundary | Situation remains the root, domain-independent object; existing non-equivalence rules remain. |
+| CONST-ISSUE-002 | Amendment 001, Change B | One semantic distinction, one non-inference rule or normative example, and one lifecycle deferral | Seven-Primitive set, honest non-completion, non-coercive Attention, and detailed lifecycle deferral remain. |
+| CONST-ISSUE-003 | Amendment 001, Change C | One trust-precedence clause and one operational deferral | Identity fidelity, preservation fidelity, agency, dignity, and honest technical limits remain. |
+
+The three changes are related because they bound when Continuity begins, how intentional inactivity is classified, and when authorized discontinuity limits Continuity. Keeping them in one amendment preserves a single ratification context while allowing each change to be accepted, rejected, or revised independently.
+
+**Amendments must be minimal.** An amendment should alter only the clauses required to resolve accepted issues. Unrelated wording, terminology, structure, or philosophy must remain unchanged. No full-document rewrite is permitted unless the Founder explicitly rejects the current constitutional structure.
+
+The amendment must not define database schema, TypeScript interfaces, cardinality implementation, storage format, API contracts, UI interaction, Today Board behavior, Pack-specific fields, domain workflow, test fixtures, or migration logic.
+
+## 8. Downstream Ownership
+
+| Question type | Owning downstream layer |
+| --- | --- |
+| Canonical terms and substitutions | Continuity Language |
+| Primitive relationships and conceptual structure | Ontology |
+| Cardinality and canonical structural representation | Canonical Model |
+| State transitions and reopening rules | Situation Lifecycle |
+| Primitive-specific operational rules | Primitive Specifications |
+| Testable behavioral criteria and normative examples | Kernel Acceptance Specification |
+| Technical realization | Architecture and Implementation |
+
+An accepted issue may require the Constitution to define a conceptual boundary, normative principle, precedence rule, trust boundary, or explicit deferral. It must not use constitutional amendment to pre-empt the owner of operational detail.
+
+## 9. Founder Triage
+
+Available decisions for each issue are:
+
+- `ACCEPT`: the issue requires constitutional action or explicit constitutional deferral.
+- `REJECT`: the issue does not require constitutional action.
+- `DEFER`: retain the issue for a later decision without current amendment authority.
+- `REQUEST CLARIFICATION`: return the issue for more evidence or narrower framing.
+- `MERGE WITH ANOTHER ISSUE`: combine disposition with another issue while preserving source traceability.
+
+No Founder decision is assumed by this register.
+
+| Issue ID | Founder decision | Decision rationale | Target amendment | Decision date |
+| --- | --- | --- | --- | --- |
+| CONST-ISSUE-001 |  |  | Amendment 001, Change A |  |
+| CONST-ISSUE-002 |  |  | Amendment 001, Change B |  |
+| CONST-ISSUE-003 |  |  | Amendment 001, Change C |  |
+
+After triage, accepted issues may proceed to a minimal amendment proposal. Rejected or deferred issues must retain their rationale. No issue becomes `RESOLVED` until ratified evidence exists, and no accepted constitutional change becomes `CLOSED` until the authoritative Constitution or formal disposition record reflects it.
+
+## 10. Register Acceptance Check
+
+This register is ready for Founder triage when a future amendment task can answer, for each issue:
+
+1. Which exact issue is being resolved?
+2. Why is constitutional change required?
+3. Which clause should change?
+4. What is the smallest acceptable change?
+5. What must remain unchanged?
+6. How will the issue be considered resolved?
+
+The register does not authorize an answer. It establishes the evidence, boundaries, and governance path needed for that decision.

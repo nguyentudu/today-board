@@ -1,0 +1,199 @@
+{
+  "execution_id": "CONST-V2-VERIFY-META-SYNC-ATOMIC-EXECUTION-001",
+  "version": "v1",
+  "status": "ATOMIC_EXECUTION_COMPLETE",
+  "execution_timestamp": "2026-07-18T00:20:49.6874693+07:00",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_version": "3.14.4",
+  "prior_attempts": {
+    "aborted_before_commit": true,
+    "operations_committed": "0/2",
+    "constitution_modified": false,
+    "classification": "IMPLEMENTATION_LEVEL_ABORTS"
+  },
+  "authority": {
+    "founder_approval": {
+      "path": "docs/kernel/governance/24_constitution_v2_founder_exact_verification_status_metadata_sync_approval_v1.md",
+      "sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B",
+      "identity_matched": true
+    },
+    "manifest": {
+      "path": "docs/kernel/governance/25_constitution_v2_verification_status_metadata_sync_execution_manifest_v1.json",
+      "sha256": "7B20DC1B2E0D41B56EC2E5B7189733D36A808931753E7B31ADD9745DA35E2791",
+      "byte_length": 6654,
+      "identity_matched": true,
+      "duplicate_json_keys": 0,
+      "unknown_executable_fields": 0
+    },
+    "independent_verification": {
+      "path": "docs/kernel/governance/26_constitution_v2_verification_status_metadata_sync_independent_manifest_verification_v1.md",
+      "sha256": "9939AAE83127C45180CBB90381041F5B7D805723D473E0B7C53A7F4315643BA1"
+    },
+    "machine_independent_verification": {
+      "path": "docs/kernel/governance/26a_constitution_v2_verification_status_metadata_sync_independent_manifest_verification_v1.json",
+      "sha256": "A27E789F0A4BEAB4CCCE46EEB673A7625392577850ED169E95E652425330DDAB",
+      "duplicate_json_keys": 0,
+      "manifest_independently_verified": true,
+      "execution_gate": "OPEN",
+      "atomic_synchronization_authorized": "AUTHORIZED_FOR_SEPARATE_EXECUTION_TASK",
+      "mutation_performed": false
+    }
+  },
+  "source": {
+    "path": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+    "required_preexecution_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+    "first_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+    "second_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+    "last_moment_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+    "byte_equality": true,
+    "identity_stable": true,
+    "byte_length": 61071,
+    "encoding": "UTF-8",
+    "bom_present": false,
+    "crlf_count": 0,
+    "lf_count": 674,
+    "final_newline": true
+  },
+  "manifest_scope": {
+    "authorized_package": "SYNC-PACKAGE-AA",
+    "required_operations": 2,
+    "operations_represented": "2/2",
+    "operation_ids_unique": "2/2",
+    "unauthorized_executable_alternatives": 0,
+    "subset_execution_allowed": false,
+    "atomic_execution_required": true,
+    "failure_behavior": "APPLY_ZERO_OPERATIONS",
+    "operation_order": [
+      "VERIFY-META-SYNC-OP-002",
+      "VERIFY-META-SYNC-OP-001"
+    ],
+    "source_range_overlaps": 0,
+    "source_range_conflicts": 0
+  },
+  "operations": [
+    {
+      "operation_id": "VERIFY-META-SYNC-OP-001",
+      "selected_option_id": "VERIFY-META-SYNC-001-A",
+      "byte_range": [153, 185],
+      "exact_range_matched": true,
+      "preimage_matched": true,
+      "preimage_sha256_matched": true,
+      "anchor_matched": true,
+      "anchor_occurrence_count": 1
+    },
+    {
+      "operation_id": "VERIFY-META-SYNC-OP-002",
+      "selected_option_id": "VERIFY-META-SYNC-002-A",
+      "byte_range": [338, 392],
+      "exact_range_matched": true,
+      "preimage_matched": true,
+      "preimage_sha256_matched": true,
+      "anchor_matched": true,
+      "anchor_occurrence_count": 1
+    }
+  ],
+  "in_memory_result": {
+    "operations_attempted": 2,
+    "operations_applied": 2,
+    "operations_skipped": 0,
+    "preimage_mismatches": 0,
+    "source_byte_length": 61071,
+    "result_byte_length": 61065,
+    "total_byte_delta": -6,
+    "expected_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "observed_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "identity_matched": true
+  },
+  "frozen_payload": {
+    "expected_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "source_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "candidate_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "persisted_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "source_occurrence_count": 1,
+    "candidate_occurrence_count": 1,
+    "operation_overlaps": 0,
+    "unchanged": true
+  },
+  "diff_audit": {
+    "authorized_logical_operations": 2,
+    "missing_authorized_operations": 0,
+    "unauthorized_logical_operations": 0,
+    "unauthorized_changed_byte_ranges": 0,
+    "unauthorized_whitespace_changes": 0,
+    "unauthorized_unicode_changes": 0,
+    "unauthorized_line_ending_changes": 0,
+    "renderer": "Python difflib.unified_diff with three context lines",
+    "rendered_diff_hunks": 1,
+    "unauthorized_rendered_diff_hunks": 0
+  },
+  "governance_boundaries": {
+    "candidate_posture_preserved": true,
+    "constitutional_meaning_changed": false,
+    "normative_force_changed": false,
+    "issue_resolution_implied": false,
+    "issue_closure_implied": false,
+    "ratification_implied": false,
+    "official_status_implied": false,
+    "constitution_v1_supersession_implied": false
+  },
+  "binary_temporary_file": {
+    "path": "docs/kernel/.07_continuity_kernel_constitution_v2.md.sync.tmp",
+    "write_method": "open_xb_buffering_0_raw_bytes_full_write_loop",
+    "o_binary_available": true,
+    "o_binary_used": false,
+    "file_fsync_completed": true,
+    "directory_fsync_completed": "NOT_APPLICABLE_WINDOWS",
+    "write_completed": true,
+    "byte_length": 61065,
+    "sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "equals_in_memory_candidate": true,
+    "bom_present": false,
+    "crlf_count": 0,
+    "lf_count": 674,
+    "first_differing_byte": "NONE"
+  },
+  "commit": {
+    "last_moment_source_identity_matched": true,
+    "replacement_method": "os.replace",
+    "atomic_replacement_attempted": true,
+    "atomic_replacement_completed": true,
+    "operations_committed": "2/2",
+    "mutation_attempted": true,
+    "mutation_committed": true
+  },
+  "persisted_observation": {
+    "byte_length": 61065,
+    "sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "identity_matched": true,
+    "equals_temporary_bytes": true,
+    "equals_in_memory_candidate": true,
+    "encoding": "UTF-8",
+    "bom_present": false,
+    "crlf_count": 0,
+    "lf_count": 674,
+    "final_newline": true,
+    "temporary_mutation_file_remaining": false
+  },
+  "artifact_mutations": {
+    "constitution_v1": false,
+    "constitution_v2": true,
+    "amendment_001": false,
+    "founder_approval": false,
+    "manifest": false,
+    "independent_verification_records": false,
+    "issue_artifacts": false,
+    "application_code": false
+  },
+  "result": {
+    "binary_safe_rerun": true,
+    "atomic_execution_completed": true,
+    "mutation_attempted": true,
+    "mutation_committed": true,
+    "operations_committed": "2/2",
+    "current_constitution_sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "independent_persisted_verification": "PENDING",
+    "recommended_next_task": "Moon Constitution v2 Verification-Status Metadata Synchronization Independent Persisted Result Verification v1",
+    "verdict": "PASS — ATOMIC METADATA SYNCHRONIZATION EXECUTED"
+  },
+  "artifact_identity_publication": "Raw final execution-artifact SHA-256 identities are published in the completion report after atomic materialization."
+}

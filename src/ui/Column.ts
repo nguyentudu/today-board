@@ -1,4 +1,7 @@
-import type { Board } from "../domain/board";
+import type { Board, CardEditDraft } from "../domain/board";
+import type { EvidenceKind, EvidenceRole } from "../domain/card";
+import type { LifecycleTransitionConfirmation } from "../domain/lifecycle";
+import { compareReentryPriority } from "../domain/reentryPriority";
 import type { BoardState } from "../domain/state";
 import { Card } from "./Card";
 import type { Language } from "./i18n";
@@ -8,18 +11,24 @@ interface ColumnProps {
   board: Board;
   state: BoardState;
   language: Language;
-  onRename: (cardId: string, title: string) => void;
-  onMove: (cardId: string, state: BoardState) => void;
-  onNote: (cardId: string, note: string) => void;
-  onContextSnapshot: (cardId: string, contextSnapshot: string) => void;
-  onWhyStillOpen: (cardId: string, whyStillOpen: string) => void;
-  onIfYouReturn: (cardId: string, ifYouReturn: string) => void;
-  onRichLinks: (cardId: string, richLinks: string[]) => void;
+  onTransition: (
+    cardId: string,
+    draft: CardEditDraft,
+    state: BoardState,
+    confirmations: LifecycleTransitionConfirmation[],
+  ) => boolean;
+  onSaveDraft: (cardId: string, draft: CardEditDraft) => boolean;
+  onEvidenceRole: (
+    cardId: string,
+    evidence: {
+      id: string;
+      kind: EvidenceKind;
+      role: EvidenceRole;
+    },
+  ) => void;
   onImageRefs: (cardId: string, imageRefs: string[]) => void;
   onAudioRefs: (cardId: string, audioRefs: string[]) => void;
   onFileRefs: (cardId: string, fileRefs: Board["cards"][number]["fileRefs"]) => void;
-  onBookmarkReason: (cardId: string, bookmarkReason: string) => void;
-  onTags: (cardId: string, tags: string[]) => void;
   onHide: (cardId: string) => void;
 }
 
@@ -39,10 +48,20 @@ export function Column(props: ColumnProps): HTMLElement {
 
   header.append(title, description);
 
+  if (props.state === "continue") {
+    const priorityNote = document.createElement("p");
+    priorityNote.className = "reentry-priority-note";
+    priorityNote.textContent = text.reentryPriorityNote;
+    header.append(priorityNote);
+  }
+
   const list = document.createElement("div");
   list.className = "card-list";
 
   const cards = props.board.cards.filter((card) => card.state === props.state && !card.hidden);
+  if (props.state === "continue") {
+    cards.sort(compareReentryPriority);
+  }
 
   if (cards.length === 0) {
     const empty = document.createElement("p");
@@ -55,18 +74,12 @@ export function Column(props: ColumnProps): HTMLElement {
         Card({
           card,
           language: props.language,
-          onRename: props.onRename,
-          onMove: props.onMove,
-          onNote: props.onNote,
-          onContextSnapshot: props.onContextSnapshot,
-          onWhyStillOpen: props.onWhyStillOpen,
-          onIfYouReturn: props.onIfYouReturn,
-          onRichLinks: props.onRichLinks,
+          onTransition: props.onTransition,
+          onSaveDraft: props.onSaveDraft,
+          onEvidenceRole: props.onEvidenceRole,
           onImageRefs: props.onImageRefs,
           onAudioRefs: props.onAudioRefs,
           onFileRefs: props.onFileRefs,
-          onBookmarkReason: props.onBookmarkReason,
-          onTags: props.onTags,
           onHide: props.onHide,
         }),
       );

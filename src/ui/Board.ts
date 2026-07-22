@@ -1,12 +1,10 @@
 import {
   addCard,
+  applyCardEditDraft,
+  applyCardEditDraftAndTransition,
   hideCard,
-  moveCard,
-  renameCard,
-  updateCardNote,
-  updateCardReentryNotes,
+  updateCardEvidenceRole,
   updateCardRichContext,
-  updateCardTags,
   type Board as BoardModel,
 } from "../domain/board";
 import {
@@ -77,7 +75,7 @@ export function Board({
 
   const languageToggle = document.createElement("div");
   languageToggle.className = "language-toggle";
-  languageToggle.setAttribute("aria-label", "Language");
+  languageToggle.setAttribute("aria-label", text.languageLabel);
 
   for (const option of ["vi", "en"] as const) {
     const button = document.createElement("button");
@@ -152,23 +150,16 @@ export function Board({
     try {
       const imported = await readImportedBoard(file);
       onImportFileSelected(file.name);
-      commit(imported);
-      importInput.value = "";
+      if (commit(imported)) {
+        importInput.value = "";
+        dismissObsoleteFocus();
+      }
     } finally {
       delete document.documentElement.dataset.pwaBusy;
     }
   });
 
-  controls.append(
-    languageToggle,
-    newCardInput,
-    addButton,
-    quickCaptureButton,
-    exportButton,
-    importButton,
-    importInput,
-    selectedFile,
-  );
+  controls.append(languageToggle, newCardInput, addButton, quickCaptureButton);
   top.append(headingGroup, controls);
 
   const localNote = document.createElement("p");
@@ -180,9 +171,29 @@ export function Board({
   const retrievalView = createRetrievalSurface(board, language, renderColumns);
   const retrievalSurface = retrievalView.element;
   const storagePanel = createStoragePanel(board, language, storageMessage, (nextBoard) => commit(nextBoard));
+  const dataPanel = document.createElement("details");
+  dataPanel.className = "data-device-panel";
+  const dataSummary = document.createElement("summary");
+  dataSummary.textContent = text.dataOnDevice;
+  dataSummary.setAttribute("aria-expanded", "false");
+  const dataDescription = document.createElement("p");
+  dataDescription.className = "data-device-description";
+  dataDescription.textContent = text.dataOnDeviceHelper;
+  const dataActions = document.createElement("div");
+  dataActions.className = "data-device-actions";
+  dataActions.append(exportButton, importButton, importInput, selectedFile);
+  dataPanel.append(dataSummary, dataDescription, dataActions, storagePanel);
+  dataPanel.addEventListener("toggle", () => {
+    dataSummary.setAttribute("aria-expanded", String(dataPanel.open));
+    if (!dataPanel.open && dataPanel.contains(document.activeElement)) {
+      dismissObsoleteFocus();
+    }
+  });
 
   function commit(nextBoard: BoardModel): boolean {
     if (!trySaveBoard(nextBoard)) {
+      dataPanel.open = true;
+      dataSummary.setAttribute("aria-expanded", "true");
       storageMessage.textContent = `${text.storageNotEnough} ${text.cardNotSaved} ${text.storageAdvice}`;
       return false;
     }
@@ -208,25 +219,17 @@ export function Board({
           board: visibleBoard,
           state,
           language,
-          onRename: (cardId: string, nextTitle: string) => commit(renameCard(board, cardId, nextTitle)),
-          onMove: (cardId: string, nextState: BoardState) => commit(moveCard(board, cardId, nextState)),
-          onNote: (cardId: string, note: string) => commit(updateCardNote(board, cardId, note)),
-          onContextSnapshot: (cardId: string, contextSnapshot: string) =>
-            commit(updateCardReentryNotes(board, cardId, { contextSnapshot })),
-          onWhyStillOpen: (cardId: string, whyStillOpen: string) =>
-            commit(updateCardReentryNotes(board, cardId, { whyStillOpen })),
-          onIfYouReturn: (cardId: string, ifYouReturn: string) =>
-            commit(updateCardReentryNotes(board, cardId, { ifYouReturn })),
-          onRichLinks: (cardId: string, richLinks: string[]) =>
-            commit(updateCardRichContext(board, cardId, { richLinks })),
+          onTransition: (cardId, draft, nextState, confirmations) => {
+            const result = applyCardEditDraftAndTransition(board, cardId, draft, nextState, confirmations);
+            return result.applied ? commit(result.board) : false;
+          },
+          onSaveDraft: (cardId, draft) => commit(applyCardEditDraft(board, cardId, draft)),
+          onEvidenceRole: (cardId: string, evidence) => commit(updateCardEvidenceRole(board, cardId, evidence)),
           onImageRefs: (cardId: string, imageRefs: string[]) =>
             commit(updateCardRichContext(board, cardId, { imageRefs })),
           onAudioRefs: (cardId: string, audioRefs: string[]) =>
             commit(updateCardRichContext(board, cardId, { audioRefs })),
           onFileRefs: (cardId: string, fileRefs) => commit(updateCardRichContext(board, cardId, { fileRefs })),
-          onBookmarkReason: (cardId: string, bookmarkReason: string) =>
-            commit(updateCardRichContext(board, cardId, { bookmarkReason })),
-          onTags: (cardId: string, tags: string[]) => commit(updateCardTags(board, cardId, tags)),
           onHide: (cardId: string) => commit(hideCard(board, cardId)),
         }),
       );
@@ -258,10 +261,16 @@ export function Board({
 
   testNotes.append(testNotesTitle, testNotesList);
 
-  shell.append(top, localNote, retrievalSurface, storagePanel, columns, testNotes);
+  shell.append(top, localNote, dataPanel, retrievalSurface, columns, testNotes);
   setupSearchKeyboardDismissal(shell, retrievalView.searchInput, retrievalView.isComposing);
 
   return shell;
+}
+
+function dismissObsoleteFocus(): void {
+  if (document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
 }
 
 interface RetrievalSurfaceView {

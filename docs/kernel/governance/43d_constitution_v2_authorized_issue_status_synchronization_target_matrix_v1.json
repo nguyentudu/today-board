@@ -1,0 +1,77 @@
+{
+  "task_id": 43,
+  "artifact": "AUTHORIZED_ISSUE_STATUS_SYNCHRONIZATION_TARGET_MATRIX",
+  "canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+  "canonical_source_sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+  "canonical_source_byte_length": 23722,
+  "schema_extension_authorized": false,
+  "authorized_executor": "TASK_44_ONLY",
+  "issues": [
+    {
+      "issue_id": "CONST-ISSUE-001",
+      "classification": "AUTHORIZED_FOR_SYNCHRONIZATION",
+      "source_task_38_mutations": ["CONST-ISSUE-001 overview current status", "CONST-ISSUE-001 detailed-record current status"],
+      "task_41_verification_evidence": "Task 41 report SHA-256 07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6; VERIFICATION_SATISFIED; mutation 1/6 and 2/6 verified.",
+      "canonical_resolution_criterion": "A Founder-ratified amendment establishes the minimum constitutional boundary and downstream ownership, and the authoritative Constitution incorporates it; or the Founder rejects/defer-dispositions the issue with rationale.",
+      "resolution_criterion_satisfied": true,
+      "protected_status_assertions": [
+        {"field_id":"ISSUE-001-STATUS-OVERVIEW","field_path":"Issue Summary > CONST-ISSUE-001 > Current status","observed_value":"RESOLVED","required_value":"RESOLVED","mutation_authorized":false},
+        {"field_id":"ISSUE-001-STATUS-DETAIL","field_path":"Detailed Issue Records > CONST-ISSUE-001 > Current status","observed_value":"RESOLVED","required_value":"RESOLVED","mutation_authorized":false}
+      ],
+      "authorized_targets": [
+        {"target_id":"AUTH-43-TARGET-001","field_path":"Detailed Issue Records > CONST-ISSUE-001 > Founder decision","current_value":"","target_value":"ACCEPT"},
+        {"target_id":"AUTH-43-TARGET-002","field_path":"Detailed Issue Records > CONST-ISSUE-001 > Resolution evidence","current_value":"","target_value":"The Situation qualification boundary is supplied by Founder-approved Amendment 001 Change A and independently verified 6/6 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\". Independent persisted-result verification recovery is satisfied by Task 41 report SHA-256 \"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6\"."},
+        {"target_id":"AUTH-43-TARGET-003","field_path":"Founder Triage Packet > CONST-ISSUE-001 > Founder decision","current_value":"","target_value":"ACCEPT"},
+        {"target_id":"AUTH-43-TARGET-004","field_path":"Founder Triage Packet > CONST-ISSUE-001 > Decision rationale","current_value":"","target_value":"The Situation qualification boundary is supplied by Founder-approved Amendment 001 Change A and independently verified 6/6 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\". Independent persisted-result verification recovery is satisfied by Task 41 report SHA-256 \"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6\"."},
+        {"target_id":"AUTH-43-TARGET-005","field_path":"Founder Triage Packet > CONST-ISSUE-001 > Decision date","current_value":"","target_value":"2026-07-19"}
+      ]
+    },
+    {
+      "issue_id": "CONST-ISSUE-002",
+      "classification": "AUTHORIZED_FOR_SYNCHRONIZATION",
+      "source_task_38_mutations": ["CONST-ISSUE-002 overview current status", "CONST-ISSUE-002 detailed-record current status"],
+      "task_41_verification_evidence": "Task 41 report SHA-256 07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6; VERIFICATION_SATISFIED; mutation 3/6 and 4/6 verified.",
+      "canonical_resolution_criterion": "A Founder-ratified amendment makes Outcome distinguishable from inactivity, Waiting, and Attention without prematurely defining lifecycle mechanics, and the authoritative Constitution incorporates it; or the Founder records another formal disposition.",
+      "resolution_criterion_satisfied": true,
+      "protected_status_assertions": [
+        {"field_id":"ISSUE-002-STATUS-OVERVIEW","field_path":"Issue Summary > CONST-ISSUE-002 > Current status","observed_value":"RESOLVED","required_value":"RESOLVED","mutation_authorized":false},
+        {"field_id":"ISSUE-002-STATUS-DETAIL","field_path":"Detailed Issue Records > CONST-ISSUE-002 > Current status","observed_value":"RESOLVED","required_value":"RESOLVED","mutation_authorized":false}
+      ],
+      "authorized_targets": [
+        {"target_id":"AUTH-43-TARGET-006","field_path":"Detailed Issue Records > CONST-ISSUE-002 > Founder decision","current_value":"","target_value":"ACCEPT"},
+        {"target_id":"AUTH-43-TARGET-007","field_path":"Detailed Issue Records > CONST-ISSUE-002 > Resolution evidence","current_value":"","target_value":"The intentional-inactivity boundary is supplied by Founder-approved Amendment 001 Change B and independently verified 6/6 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\". Independent persisted-result verification recovery is satisfied by Task 41 report SHA-256 \"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6\"."},
+        {"target_id":"AUTH-43-TARGET-008","field_path":"Founder Triage Packet > CONST-ISSUE-002 > Founder decision","current_value":"","target_value":"ACCEPT"},
+        {"target_id":"AUTH-43-TARGET-009","field_path":"Founder Triage Packet > CONST-ISSUE-002 > Decision rationale","current_value":"","target_value":"The intentional-inactivity boundary is supplied by Founder-approved Amendment 001 Change B and independently verified 6/6 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\". Independent persisted-result verification recovery is satisfied by Task 41 report SHA-256 \"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6\"."},
+        {"target_id":"AUTH-43-TARGET-010","field_path":"Founder Triage Packet > CONST-ISSUE-002 > Decision date","current_value":"","target_value":"2026-07-19"}
+      ]
+    },
+    {
+      "issue_id": "CONST-ISSUE-003",
+      "classification": "AUTHORIZED_FOR_SYNCHRONIZATION",
+      "source_task_38_mutations": ["CONST-ISSUE-003 overview current status", "CONST-ISSUE-003 detailed-record current status"],
+      "task_41_verification_evidence": "Task 41 report SHA-256 07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6; VERIFICATION_SATISFIED; mutation 5/6 and 6/6 verified.",
+      "canonical_resolution_criterion": "A Founder-ratified amendment establishes constitutional precedence and downstream ownership without promising unsupported erasure, and the authoritative Constitution incorporates it; or the Founder records another formal disposition.",
+      "resolution_criterion_satisfied": true,
+      "protected_status_assertions": [
+        {"field_id":"ISSUE-003-STATUS-OVERVIEW","field_path":"Issue Summary > CONST-ISSUE-003 > Current status","observed_value":"RESOLVED","required_value":"RESOLVED","mutation_authorized":false},
+        {"field_id":"ISSUE-003-STATUS-DETAIL","field_path":"Detailed Issue Records > CONST-ISSUE-003 > Current status","observed_value":"RESOLVED","required_value":"RESOLVED","mutation_authorized":false}
+      ],
+      "authorized_targets": [
+        {"target_id":"AUTH-43-TARGET-011","field_path":"Detailed Issue Records > CONST-ISSUE-003 > Founder decision","current_value":"","target_value":"ACCEPT"},
+        {"target_id":"AUTH-43-TARGET-012","field_path":"Detailed Issue Records > CONST-ISSUE-003 > Resolution evidence","current_value":"","target_value":"The authorized-discontinuity precedence is supplied by Founder-approved Amendment 001 Change C and independently verified 7/7 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\"; \"I3-AC-07\" is satisfied through the independently verified and closed \"STRUCT-003\" chain. Independent persisted-result verification recovery is satisfied by Task 41 report SHA-256 \"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6\"."},
+        {"target_id":"AUTH-43-TARGET-013","field_path":"Founder Triage Packet > CONST-ISSUE-003 > Founder decision","current_value":"","target_value":"ACCEPT"},
+        {"target_id":"AUTH-43-TARGET-014","field_path":"Founder Triage Packet > CONST-ISSUE-003 > Decision rationale","current_value":"","target_value":"The authorized-discontinuity precedence is supplied by Founder-approved Amendment 001 Change C and independently verified 7/7 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\"; \"I3-AC-07\" is satisfied through the independently verified and closed \"STRUCT-003\" chain. Independent persisted-result verification recovery is satisfied by Task 41 report SHA-256 \"07C9F16FA94212EC5D68035DA5D94D67F5ECB4996FCFF19DD7EBB1A1606648F6\"."},
+        {"target_id":"AUTH-43-TARGET-015","field_path":"Founder Triage Packet > CONST-ISSUE-003 > Decision date","current_value":"","target_value":"2026-07-19"}
+      ]
+    }
+  ],
+  "totals": {
+    "issues_examined": 3,
+    "issues_authorized_for_synchronization": 3,
+    "authorized_existing_field_mutations": 15,
+    "protected_status_assertions": 6,
+    "schema_extensions": 0,
+    "closure_mutations": 0,
+    "unrelated_fields_authorized": 0
+  }
+}

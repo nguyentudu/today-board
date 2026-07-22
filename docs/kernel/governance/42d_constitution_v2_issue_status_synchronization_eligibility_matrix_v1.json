@@ -1,0 +1,60 @@
+{
+  "task_id": 42,
+  "artifact": "ISSUE_STATUS_SYNCHRONIZATION_ELIGIBILITY_MATRIX",
+  "issues": [
+    {
+      "issue_id": "CONST-ISSUE-001",
+      "canonical_overview_status": "RESOLVED",
+      "canonical_detailed_status": "RESOLVED",
+      "verification_related_status_field": "ABSENT",
+      "task_41_resolution_conditions_verified": true,
+      "current_status_synchronization": "ALREADY_SYNCHRONIZED",
+      "governance_effectiveness_synchronization": "NOT_AUTHORIZED",
+      "authority_permits_new_mutation": false,
+      "exact_permitted_target_state": "UNDEFINED_FOR_TASK_42",
+      "closure_authorized": false,
+      "determination": "NOT_AUTHORIZED",
+      "reason": "Current RESOLVED bytes are already present, but no authority permits Task 42 to add or mutate a governance-effectiveness representation."
+    },
+    {
+      "issue_id": "CONST-ISSUE-002",
+      "canonical_overview_status": "RESOLVED",
+      "canonical_detailed_status": "RESOLVED",
+      "verification_related_status_field": "ABSENT",
+      "task_41_resolution_conditions_verified": true,
+      "current_status_synchronization": "ALREADY_SYNCHRONIZED",
+      "governance_effectiveness_synchronization": "NOT_AUTHORIZED",
+      "authority_permits_new_mutation": false,
+      "exact_permitted_target_state": "UNDEFINED_FOR_TASK_42",
+      "closure_authorized": false,
+      "determination": "NOT_AUTHORIZED",
+      "reason": "Current RESOLVED bytes are already present, but no authority permits Task 42 to add or mutate a governance-effectiveness representation."
+    },
+    {
+      "issue_id": "CONST-ISSUE-003",
+      "canonical_overview_status": "RESOLVED",
+      "canonical_detailed_status": "RESOLVED",
+      "verification_related_status_field": "ABSENT",
+      "task_41_resolution_conditions_verified": true,
+      "current_status_synchronization": "ALREADY_SYNCHRONIZED",
+      "governance_effectiveness_synchronization": "NOT_AUTHORIZED",
+      "authority_permits_new_mutation": false,
+      "exact_permitted_target_state": "UNDEFINED_FOR_TASK_42",
+      "closure_authorized": false,
+      "determination": "NOT_AUTHORIZED",
+      "reason": "Current RESOLVED bytes are already present, but no authority permits Task 42 to add or mutate a governance-effectiveness representation."
+    }
+  ],
+  "totals": {
+    "issues": 3,
+    "sync_applicable": 0,
+    "already_current_status_synchronized": 3,
+    "not_authorized": 3,
+    "resolution_criteria_not_met": 0,
+    "target_state_ambiguous_or_unrepresented": 3,
+    "issue_not_found": 0
+  },
+  "governance_effective_resolved_before": 0,
+  "governance_effective_resolved_after": 0,
+  "verdict": "NO_PER_ISSUE_GOVERNANCE_EFFECTIVENESS_MUTATION_AUTHORIZED"
+}

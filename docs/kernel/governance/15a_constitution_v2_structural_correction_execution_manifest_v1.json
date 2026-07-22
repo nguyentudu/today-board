@@ -1,0 +1,184 @@
+{
+  "manifest_id": "CONST-V2-STRUCTURAL-CORRECTION-POSTIMAGE-MANIFEST-001",
+  "version": "v1",
+  "status": "BLOCKED",
+  "target_file": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+  "expected_source_sha256": "BF8F80F38C217E2E39F9D50A862B8314E5ECDBDFD99D91B873350E43F76279F5",
+  "encoding": "UTF-8",
+  "bom": false,
+  "line_endings": "LF",
+  "frozen_payload": {
+    "change_id": "AMEND-001-C",
+    "manifest_entry_id": "AMEND-001-MANIFEST-C",
+    "expected_sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "start_byte": 37625,
+    "end_byte": 38502,
+    "expected_occurrence_count": 1
+  },
+  "work_items": [
+    {
+      "work_item_id": "STRUCT-WORK-001",
+      "finding_id": "CONST-V2-STRUCT-001",
+      "operations": [
+        {
+          "operation_id": "STRUCT-OP-001",
+          "section": "Document control",
+          "anchor": "exact line 3",
+          "line_start": 3,
+          "line_end": 3,
+          "start_byte": 42,
+          "end_byte": 122,
+          "preimage": "Status: Amendment 001 incorporated — pending post-incorporation verification  ",
+          "postimage": null,
+          "postimage_uniquely_determined": false,
+          "authority_sources": [
+            "docs/kernel/reviews/05_constitution_structural_integrity_verification_v1.md",
+            "docs/kernel/governance/10_constitution_v2_structural_correction_work_package_v1.md"
+          ],
+          "exact_result_authority_mapped": false,
+          "frozen_payload_overlap": "NONE",
+          "identity_preserved": null,
+          "semantic_scope_preserved": null,
+          "normative_force_preserved": null,
+          "execution_authorized": false,
+          "blocking_reason": "Exact complete metadata postimage is not authorized; PASS and COMPLETED are both permitted."
+        },
+        {
+          "operation_id": "STRUCT-OP-002",
+          "section": "Document control",
+          "anchor": "exact line 5",
+          "line_start": 5,
+          "line_end": 5,
+          "start_byte": 160,
+          "end_byte": 262,
+          "preimage": "Version posture: Constitution v2 incorporates Amendment 001; pending post-incorporation verification  ",
+          "postimage": null,
+          "postimage_uniquely_determined": false,
+          "authority_sources": [
+            "docs/kernel/reviews/05_constitution_structural_integrity_verification_v1.md",
+            "docs/kernel/governance/10_constitution_v2_structural_correction_work_package_v1.md"
+          ],
+          "exact_result_authority_mapped": false,
+          "frozen_payload_overlap": "NONE",
+          "identity_preserved": null,
+          "semantic_scope_preserved": null,
+          "normative_force_preserved": null,
+          "execution_authorized": false,
+          "blocking_reason": "Exact complete structural-verification metadata postimage is not authorized."
+        }
+      ]
+    },
+    {
+      "work_item_id": "STRUCT-WORK-002",
+      "finding_id": "CONST-V2-STRUCT-002",
+      "operations": [
+        {
+          "operation_id": "STRUCT-OP-003",
+          "section": "Document control",
+          "anchor": "document-control block; exact insertion or replacement point unresolved",
+          "line_start": null,
+          "line_end": null,
+          "start_byte": null,
+          "end_byte": null,
+          "preimage": null,
+          "postimage": null,
+          "postimage_uniquely_determined": false,
+          "authority_sources": [
+            "docs/kernel/reviews/05_constitution_structural_integrity_verification_v1.md",
+            "docs/kernel/governance/10_constitution_v2_structural_correction_work_package_v1.md"
+          ],
+          "exact_result_authority_mapped": false,
+          "frozen_payload_overlap": "NONE_BY_BOUNDARY_RANGE_UNRESOLVED",
+          "identity_preserved": null,
+          "semantic_scope_preserved": null,
+          "normative_force_preserved": null,
+          "execution_authorized": false,
+          "blocking_reason": "Exact candidate-status fields, ordering, placement, whitespace, and postimage are not authorized."
+        }
+      ]
+    },
+    {
+      "work_item_id": "STRUCT-WORK-003",
+      "finding_id": "CONST-V2-STRUCT-003",
+      "operations": [
+        {
+          "operation_id": "STRUCT-OP-004",
+          "section": "15. Ethical and Trust Boundaries",
+          "anchor": "line 413 exact occurrence 1",
+          "line_start": 413,
+          "line_end": 413,
+          "start_byte": 37399,
+          "end_byte": 37410,
+          "preimage": "Fresh-start",
+          "postimage": "Fresh Start",
+          "postimage_uniquely_determined": true,
+          "authority_sources": [
+            "docs/kernel/governance/13_constitution_canonical_term_payload_route_determination_v1.md"
+          ],
+          "exact_result_authority_mapped": true,
+          "frozen_payload_overlap": "NONE",
+          "identity_preserved": true,
+          "semantic_scope_preserved": true,
+          "normative_force_preserved": true,
+          "execution_authorized": true
+        },
+        {
+          "operation_id": "STRUCT-OP-005",
+          "section": "15. Ethical and Trust Boundaries",
+          "anchor": "line 413 exact occurrence 2",
+          "line_start": 413,
+          "line_end": 413,
+          "start_byte": 37412,
+          "end_byte": 37424,
+          "preimage": "present-only",
+          "postimage": "Present Only",
+          "postimage_uniquely_determined": true,
+          "authority_sources": [
+            "docs/kernel/governance/13_constitution_canonical_term_payload_route_determination_v1.md"
+          ],
+          "exact_result_authority_mapped": true,
+          "frozen_payload_overlap": "NONE",
+          "identity_preserved": true,
+          "semantic_scope_preserved": true,
+          "normative_force_preserved": true,
+          "execution_authorized": true
+        },
+        {
+          "operation_id": "STRUCT-OP-006",
+          "section": "15. Ethical and Trust Boundaries",
+          "anchor": "line 413 exact occurrence 3",
+          "line_start": 413,
+          "line_end": 413,
+          "start_byte": 37448,
+          "end_byte": 37459,
+          "preimage": "no-old-pull",
+          "postimage": "No Old Pull",
+          "postimage_uniquely_determined": true,
+          "authority_sources": [
+            "docs/kernel/governance/13_constitution_canonical_term_payload_route_determination_v1.md"
+          ],
+          "exact_result_authority_mapped": true,
+          "frozen_payload_overlap": "NONE",
+          "identity_preserved": true,
+          "semantic_scope_preserved": true,
+          "normative_force_preserved": true,
+          "execution_authorized": true
+        }
+      ]
+    }
+  ],
+  "expected_logical_operation_count": 6,
+  "expected_rendered_diff_hunk_count": null,
+  "expected_unauthorized_diff_hunk_count": 0,
+  "atomic_execution_required": true,
+  "subset_execution_allowed": false,
+  "failure_behavior": "APPLY_0_OPERATIONS",
+  "required_operation_count": 6,
+  "authorized_operation_count": 3,
+  "execution_authorized": false,
+  "unresolved_operation_ids": [
+    "STRUCT-OP-001",
+    "STRUCT-OP-002",
+    "STRUCT-OP-003"
+  ]
+}

@@ -1,0 +1,229 @@
+{
+  "task": "Moon Constitution v2 Founder Issue-Resolution Authority Decision Recording v1",
+  "version": "v1",
+  "decision_date": "2026-07-19",
+  "founder_verdict": "APPROVE RECOMMENDED BUNDLE",
+  "input_artifacts": [
+    "docs/kernel/07_continuity_kernel_constitution_v2.md",
+    "docs/kernel/governance/30_constitution_v2_issue_resolution_verification_v1.md",
+    "docs/kernel/governance/30a_constitution_v2_issue_resolution_verification_v1.json",
+    "docs/kernel/governance/30b_constitution_v2_issue_resolution_verification_matrix_v1.md",
+    "docs/kernel/governance/30c_constitution_v2_issue_resolution_counter_evidence_audit_v1.md",
+    "docs/kernel/governance/01_constitution_issues_v1.md",
+    "docs/kernel/governance/03_constitution_founder_issue_disposition_v1.md",
+    "docs/kernel/governance/29_constitution_v2_structural_findings_issue_mapping_determination_v1.md",
+    "docs/kernel/governance/29a_constitution_v2_structural_findings_issue_mapping_determination_v1.json"
+  ],
+  "input_identities": {
+    "persisted_constitution": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "issue_resolution_verification": "5EE881A6B6FFF99CC1AD52B3010EEC2DBC517EA853AE16211D7EC953C7AA3D70",
+    "machine_readable_verification": "B8EF7604966181772D78F8956BC46265DB5B7A0811F09441A6B9D3C9A6D75CD9",
+    "criterion_matrix": "FF9415A897A0857C1EAA35A8648006D6DCF90EB0DC3FEFFBC5E59F07F878DDAA",
+    "counter_evidence_audit": "F7A94D24478A3D40B38B187A8B3DD80B25E64476B533F26A973C48B7D7D8F16C",
+    "canonical_issue_register": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+    "founder_issue_disposition": "6350713273D3F41020152EAE49ED13B832F108E55C9349856F2161AFEB824FBA",
+    "finding_issue_mapping": "DD83F95B8C60C34C597B7A864E7F76C741FF39A008F0BBDAEB4D9CE7C3B401B1",
+    "machine_readable_mapping": "07919AA71BF3BFC11E1E56177D92AD0B2522137FBF0B8360E666BFCC4F9334A0"
+  },
+  "persisted_constitution_identity": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+  "covered_issues": [
+    "CONST-ISSUE-001",
+    "CONST-ISSUE-002",
+    "CONST-ISSUE-003"
+  ],
+  "decisions": [
+    {
+      "issue_id": "CONST-ISSUE-001",
+      "decision": "RESOLVE",
+      "closure_authorized": false,
+      "resolution_semantics": "RESOLVED_NOT_CLOSED",
+      "target_canonical_status": "RESOLVED",
+      "effective_point": "EFFECTIVE_ON_INDEPENDENT_PERSISTED_VERIFICATION",
+      "history_treatment": "REPLACE_CURRENT_PRESERVE_PROVENANCE",
+      "exact_resolution_wording": "The Situation qualification boundary is supplied by Founder-approved Amendment 001 Change A and independently verified 6/6 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\".",
+      "exact_resolution_wording_byte_length": 227,
+      "exact_resolution_wording_sha256": "F52892D75B8CD86D374831F966EA82E0BF634834AE82B3E24093B05E440AEE1F",
+      "exact_closure_wording": "Issue closure is not authorized by this decision.",
+      "exact_closure_wording_byte_length": 49,
+      "exact_closure_wording_sha256": "90E3D05CF76B379572D742978E49B96297981A6A11727B59938D8CDE0035766A",
+      "logical_fields_authorized": [
+        "current issue status",
+        "Founder resolution decision",
+        "resolution evidence",
+        "corresponding Founder decision field",
+        "corresponding Founder rationale field",
+        "corresponding Founder decision-date field"
+      ],
+      "logical_fields_protected": [
+        "all fields not included in a later exact approved package"
+      ],
+      "ratification_effect": {
+        "ratification_blocker_removed": "NOT_YET_DETERMINED",
+        "ratification_readiness_established": false,
+        "constitution_v2_ratified": false,
+        "constitution_v2_official": false,
+        "constitution_v1_superseded": false
+      },
+      "current_effective_state": "OPEN — AUTHORIZED FOR FUTURE RESOLUTION SYNCHRONIZATION"
+    },
+    {
+      "issue_id": "CONST-ISSUE-002",
+      "decision": "RESOLVE",
+      "closure_authorized": false,
+      "resolution_semantics": "RESOLVED_NOT_CLOSED",
+      "target_canonical_status": "RESOLVED",
+      "effective_point": "EFFECTIVE_ON_INDEPENDENT_PERSISTED_VERIFICATION",
+      "history_treatment": "REPLACE_CURRENT_PRESERVE_PROVENANCE",
+      "exact_resolution_wording": "The intentional-inactivity boundary is supplied by Founder-approved Amendment 001 Change B and independently verified 6/6 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\".",
+      "exact_resolution_wording_byte_length": 226,
+      "exact_resolution_wording_sha256": "A01C860EC44B21CBD9D41DB3FE8FE0FA606F53AACF5114190F90ABAA330E6A38",
+      "exact_closure_wording": "Issue closure is not authorized by this decision.",
+      "exact_closure_wording_byte_length": 49,
+      "exact_closure_wording_sha256": "90E3D05CF76B379572D742978E49B96297981A6A11727B59938D8CDE0035766A",
+      "logical_fields_authorized": [
+        "current issue status",
+        "Founder resolution decision",
+        "resolution evidence",
+        "corresponding Founder decision field",
+        "corresponding Founder rationale field",
+        "corresponding Founder decision-date field"
+      ],
+      "logical_fields_protected": [
+        "all fields not included in a later exact approved package"
+      ],
+      "ratification_effect": {
+        "ratification_blocker_removed": "NOT_YET_DETERMINED",
+        "ratification_readiness_established": false,
+        "constitution_v2_ratified": false,
+        "constitution_v2_official": false,
+        "constitution_v1_superseded": false
+      },
+      "current_effective_state": "OPEN — AUTHORIZED FOR FUTURE RESOLUTION SYNCHRONIZATION"
+    },
+    {
+      "issue_id": "CONST-ISSUE-003",
+      "decision": "RESOLVE",
+      "closure_authorized": false,
+      "resolution_semantics": "RESOLVED_NOT_CLOSED",
+      "target_canonical_status": "RESOLVED",
+      "effective_point": "EFFECTIVE_ON_INDEPENDENT_PERSISTED_VERIFICATION",
+      "history_treatment": "REPLACE_CURRENT_PRESERVE_PROVENANCE",
+      "exact_resolution_wording": "The authorized-discontinuity precedence is supplied by Founder-approved Amendment 001 Change C and independently verified 7/7 in Constitution v2 candidate SHA-256 \"9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C\"; \"I3-AC-07\" is satisfied through the independently verified and closed \"STRUCT-003\" chain.",
+      "exact_resolution_wording_byte_length": 320,
+      "exact_resolution_wording_sha256": "9A6391B44B342A4BB975E024117A0EA51E41DA9A03BE9E1438321C2A768D1A2B",
+      "exact_closure_wording": "Issue closure is not authorized by this decision.",
+      "exact_closure_wording_byte_length": 49,
+      "exact_closure_wording_sha256": "90E3D05CF76B379572D742978E49B96297981A6A11727B59938D8CDE0035766A",
+      "logical_fields_authorized": [
+        "current issue status",
+        "Founder resolution decision",
+        "resolution evidence",
+        "corresponding Founder decision field",
+        "corresponding Founder rationale field",
+        "corresponding Founder decision-date field"
+      ],
+      "logical_fields_protected": [
+        "all fields not included in a later exact approved package"
+      ],
+      "ratification_effect": {
+        "ratification_blocker_removed": "NOT_YET_DETERMINED",
+        "ratification_readiness_established": false,
+        "constitution_v2_ratified": false,
+        "constitution_v2_official": false,
+        "constitution_v1_superseded": false
+      },
+      "structural_criterion": "I3-AC-07",
+      "structural_criterion_verified": true,
+      "non_structural_criteria_verified": "6/6",
+      "current_effective_state": "OPEN — AUTHORIZED FOR FUTURE RESOLUTION SYNCHRONIZATION"
+    }
+  ],
+  "resolution_semantics": {
+    "authorized_transition": "RESOLVED_NOT_CLOSED",
+    "exact_state_distinction": "\"RESOLVED\" and \"CLOSED\" are separate governance states for this decision.",
+    "exact_transition_statement": "This authorization permits transition to \"RESOLVED_NOT_CLOSED\" only.",
+    "exact_non_inference_statement": "No closure may be inferred.",
+    "resolved_and_closed_are_separate": true,
+    "closure_may_be_inferred": false,
+    "resolution_authority_granted_now": true,
+    "resolution_effective_now": false
+  },
+  "effective_point": {
+    "value": "EFFECTIVE_ON_INDEPENDENT_PERSISTED_VERIFICATION",
+    "meaning": "The resolution becomes the effective persisted issue state only after a separately authorized exact-byte canonical-register synchronization completes and its persisted result independently passes verification."
+  },
+  "history_treatment": {
+    "value": "REPLACE_CURRENT_PRESERVE_PROVENANCE",
+    "preserve": [
+      "TRIAGE REQUIRED",
+      "ACCEPT FOR AMENDMENT",
+      "OPEN",
+      "resolution-verification PASS",
+      "Founder resolution decision"
+    ],
+    "destructive_history_removal_authorized": false
+  },
+  "logical_synchronization_scope": {
+    "logical_authority_only": true,
+    "executable_authority": false,
+    "field_classes": [
+      "current issue status",
+      "Founder resolution decision",
+      "resolution evidence",
+      "corresponding Founder decision field",
+      "corresponding Founder rationale field",
+      "corresponding Founder decision-date field"
+    ],
+    "later_packet_must_define": [
+      "exact repository path",
+      "exact issue record",
+      "exact field name",
+      "exact current value",
+      "exact preimage bytes",
+      "exact postimage bytes",
+      "exact authorized wording",
+      "exact operation ordering",
+      "exact resulting file identity"
+    ],
+    "executor_may_infer_fields": false,
+    "executor_may_select_wording": false
+  },
+  "explicit_exclusions": [
+    "issue closure",
+    "Constitution v2 ratification",
+    "official-status declaration",
+    "Constitution v1 supersession",
+    "modification of Constitution v1",
+    "modification of Constitution v2",
+    "modification of structural-finding statuses",
+    "modification of Amendment evidence",
+    "canonical-register mutation before exact-byte approval",
+    "execution-manifest creation by this task",
+    "atomic register synchronization by this task",
+    "any field not included in a later exact approved package",
+    "any wording not included in a later exact approved package"
+  ],
+  "governance_boundaries": {
+    "covered_issue_count": 3,
+    "wildcard_issue_authority": false,
+    "future_issues_included": false,
+    "issues_authorized_for_resolution": "3/3",
+    "issues_authorized_for_closure": "0/3",
+    "issues_currently_effective_as_resolved": "0/3",
+    "canonical_register_modified": false,
+    "canonical_register_mutation_authorized": false,
+    "issue_statuses_modified": false,
+    "constitution_v1_modified": false,
+    "constitution_v2_modified": false,
+    "structural_findings_modified": false,
+    "amendment_evidence_modified": false,
+    "ratification_readiness": "NOT REVIEWED",
+    "constitution_v2_ratified": false,
+    "constitution_v2_official": false,
+    "constitution_v1_superseded": false,
+    "execution_manifest_authorized_by_this_task": false,
+    "atomic_synchronization_authorized_by_this_task": false
+  },
+  "recommended_next_task": "Moon Constitution v2 Exact Issue-Status Synchronization Decision Packet v1",
+  "verdict": "PASS — FOUNDER ISSUE-RESOLUTION AUTHORITY DECISION RECORDED"
+}

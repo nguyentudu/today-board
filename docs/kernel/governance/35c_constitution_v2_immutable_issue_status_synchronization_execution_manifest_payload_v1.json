@@ -1,0 +1,460 @@
+{
+  "canonical_manifest_payload": {
+    "manifest_id": "CONST-V2-ISSUE-STATUS-SYNC-EXECUTION-MANIFEST-001",
+    "task": 35,
+    "manifest_version": 1,
+    "created_on": "2026-07-19",
+    "manifest_created": true,
+    "manifest_immutable": true,
+    "governance_posture": "FAIL_CLOSED",
+    "authority_chain": {
+      "sequence": [
+        31,
+        32,
+        33,
+        34,
+        35
+      ],
+      "artifacts": {
+        "task_31_human": {
+          "path": "docs/kernel/governance/31_constitution_v2_founder_issue_resolution_authority_decision_v1.md",
+          "sha256": "F67029620D7C9CAF93E1098AFCF10C7063E631C271A86DA07688A2C683DE7B37"
+        },
+        "task_31_machine": {
+          "path": "docs/kernel/governance/31a_constitution_v2_founder_issue_resolution_authority_decision_v1.json",
+          "sha256": "BA06E7655651BA175300195CF46D2B8C90EEF73EE529475BC4952BDECDF91FD8"
+        },
+        "task_31_matrix": {
+          "path": "docs/kernel/governance/31b_constitution_v2_founder_issue_resolution_decision_matrix_v1.md",
+          "sha256": "3874D1BD6DD539AACA61EC7B8AC71205BCE7487941137FABC5FE5860A6770DCE"
+        },
+        "task_32_human": {
+          "path": "docs/kernel/governance/32_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.md",
+          "sha256": "2A5E81DBF34079DCDD03CCDC413CE68F49AA6E434DF8E5FACF507A91F98C087D"
+        },
+        "task_32_machine": {
+          "path": "docs/kernel/governance/32a_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_v1.json",
+          "sha256": "A0332CB0D6EB59B3C1BDF51BE857A8B7042C3762ADF46050A589D207B9303A2A"
+        },
+        "task_32_matrix": {
+          "path": "docs/kernel/governance/32b_constitution_v2_founder_current_issue_status_field_scope_authority_clarification_matrix_v1.md",
+          "sha256": "DAD150765A3208F09F931F484F8D51DE13A63941632E0867C2B1F5EC929FA711"
+        },
+        "task_33_human": {
+          "path": "docs/kernel/governance/33_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.md",
+          "sha256": "F9A01E4083183BA91812A17FE0671452407733E94DC47E2A4C9656A2FB77F61D"
+        },
+        "task_33_machine": {
+          "path": "docs/kernel/governance/33a_constitution_v2_exact_issue_status_synchronization_decision_packet_v1.json",
+          "sha256": "55AAD7598BD661AB0480423634B1AD51948AAE78D418C9425ECD02DFAD010C70"
+        },
+        "task_33_matrix": {
+          "path": "docs/kernel/governance/33b_constitution_v2_exact_issue_status_synchronization_operation_matrix_v1.md",
+          "sha256": "AADE4C5C0F2F3F43D16594A9CEDDBB6D4AFAA27695027085CF28A983BBF991D4"
+        },
+        "task_33_frozen_artifact": {
+          "path": "docs/kernel/governance/33c_constitution_v2_exact_issue_status_synchronization_frozen_approval_payload_v1.json",
+          "sha256": "1E711922212FB0AA824E00C080A156827BB6DB55E946BF0EB0A53786EE8C9068"
+        },
+        "task_34_human": {
+          "path": "docs/kernel/governance/34_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.md",
+          "sha256": "C2082404492C4CD040DA500A5918DCE2DCA7A1875EF1D51A8B403759916219DE"
+        },
+        "task_34_machine": {
+          "path": "docs/kernel/governance/34a_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_v1.json",
+          "sha256": "2E5E31A7269AEBC4D93555F230B3AA7F5820C989D2D0290287DF8CD933384FAB"
+        },
+        "task_34_matrix": {
+          "path": "docs/kernel/governance/34b_constitution_v2_founder_exact_byte_approval_of_task_33_frozen_issue_status_synchronization_payload_matrix_v1.md",
+          "sha256": "49A9835DB313B625117200BEE186597E928BB5A3AFF350ECB4FE301980E66A61"
+        }
+      },
+      "task_33_canonical_frozen_payload_sha256": "73F54918847D7A63E695753E86D3AF17B2A1A98EC2A2FFD884CFFA65C3D1D0D4",
+      "no_authority_inferred_beyond_chain": true
+    },
+    "task_34_approval_bound": true,
+    "task_33_packet_bound": true,
+    "canonical_source": {
+      "path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "sha256": "7658039D3F80442E8964077062A65CAB56D208CFD1EDAC5B3E7CEB41BF50ACB6",
+      "byte_length": 23764,
+      "encoding": "UTF-8",
+      "bom": false,
+      "line_endings": "LF",
+      "crlf_count": 0,
+      "final_newline": true,
+      "bound": true,
+      "mismatch_verdict": "BLOCKED ? APPROVED CANONICAL SOURCE IDENTITY MISMATCH",
+      "rebase_authorized": false,
+      "regeneration_authorized": false,
+      "best_effort_adaptation_authorized": false
+    },
+    "candidate": {
+      "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+      "byte_length": 23722,
+      "byte_length_delta": -42,
+      "encoding": "UTF-8",
+      "bom": false,
+      "line_endings": "LF",
+      "crlf_count": 0,
+      "final_newline": true,
+      "bound": true,
+      "semantic_equivalence_sufficient": false,
+      "mismatch_verdict": "BLOCKED ? RECONSTRUCTED CANDIDATE IDENTITY MISMATCH"
+    },
+    "operations": [
+      {
+        "operation_id": "ISSUE-SYNC-OP-001",
+        "issue_id": "CONST-ISSUE-001",
+        "representation": "overview",
+        "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "source_bytes_hex": "545249414745205245515549524544",
+        "target_bytes_hex": "5245534F4C564544",
+        "source_byte_start": 4368,
+        "source_byte_end_exclusive": 4383,
+        "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "preimage_occurrence_count": 1,
+        "issue_boundary_assertion": "canonical overview row for CONST-ISSUE-001; current-status token on source line 59",
+        "context_before": "| CONST-ISSUE-001 | Situation qualification boundary | Definition ambiguity | Major | ",
+        "context_after": " | Sections 4, 7.1, 9, and 21 | Founder triage; if accepted, clarify the minimum constitutional qualification and defer structural tests | Amendment 001, Change A |\n",
+        "allowed_changed_source_byte_range": [
+          4368,
+          4383
+        ],
+        "expected_byte_delta": -7,
+        "operation_authorized": true
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-002",
+        "issue_id": "CONST-ISSUE-001",
+        "representation": "detailed_record",
+        "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "source_bytes_hex": "545249414745205245515549524544",
+        "target_bytes_hex": "5245534F4C564544",
+        "source_byte_start": 8428,
+        "source_byte_end_exclusive": 8443,
+        "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "preimage_occurrence_count": 1,
+        "issue_boundary_assertion": "unique detailed record headed by ### CONST-ISSUE-001 -; current-status token on source line 86",
+        "context_before": "| Current status | ",
+        "context_after": " |\n",
+        "allowed_changed_source_byte_range": [
+          8428,
+          8443
+        ],
+        "expected_byte_delta": -7,
+        "operation_authorized": true
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-003",
+        "issue_id": "CONST-ISSUE-002",
+        "representation": "overview",
+        "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "source_bytes_hex": "545249414745205245515549524544",
+        "target_bytes_hex": "5245534F4C564544",
+        "source_byte_start": 4632,
+        "source_byte_end_exclusive": 4647,
+        "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "preimage_occurrence_count": 1,
+        "issue_boundary_assertion": "canonical overview row for CONST-ISSUE-002; current-status token on source line 60",
+        "context_before": "| CONST-ISSUE-002 | Intentional inactivity boundary | Lifecycle ambiguity | Major | ",
+        "context_after": " | Sections 3, 7.3, 7.7, 9, 11, 15, and 19 | Founder triage; if accepted, distinguish Outcome from Waiting, Attention, pause, and chosen discontinuity | Amendment 001, Change B |\n",
+        "allowed_changed_source_byte_range": [
+          4632,
+          4647
+        ],
+        "expected_byte_delta": -7,
+        "operation_authorized": true
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-004",
+        "issue_id": "CONST-ISSUE-002",
+        "representation": "detailed_record",
+        "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "source_bytes_hex": "545249414745205245515549524544",
+        "target_bytes_hex": "5245534F4C564544",
+        "source_byte_start": 13050,
+        "source_byte_end_exclusive": 13065,
+        "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "preimage_occurrence_count": 1,
+        "issue_boundary_assertion": "unique detailed record headed by ### CONST-ISSUE-002 -; current-status token on source line 114",
+        "context_before": "| Current status | ",
+        "context_after": " |\n",
+        "allowed_changed_source_byte_range": [
+          13050,
+          13065
+        ],
+        "expected_byte_delta": -7,
+        "operation_authorized": true
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-005",
+        "issue_id": "CONST-ISSUE-003",
+        "representation": "overview",
+        "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "source_bytes_hex": "545249414745205245515549524544",
+        "target_bytes_hex": "5245534F4C564544",
+        "source_byte_start": 4922,
+        "source_byte_end_exclusive": 4937,
+        "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "preimage_occurrence_count": 1,
+        "issue_boundary_assertion": "canonical overview row for CONST-ISSUE-003; current-status token on source line 61",
+        "context_before": "| CONST-ISSUE-003 | Authorized discontinuity precedence | Trust boundary ambiguity | Critical | ",
+        "context_after": " | Sections 3, 9, 11, 12, 15, and 19 | Founder triage; if accepted, establish precedence between authorized discontinuity and identity/preservation duties | Amendment 001, Change C |\n",
+        "allowed_changed_source_byte_range": [
+          4922,
+          4937
+        ],
+        "expected_byte_delta": -7,
+        "operation_authorized": true
+      },
+      {
+        "operation_id": "ISSUE-SYNC-OP-006",
+        "issue_id": "CONST-ISSUE-003",
+        "representation": "detailed_record",
+        "source_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+        "source_value": "TRIAGE REQUIRED",
+        "target_value": "RESOLVED",
+        "source_bytes_hex": "545249414745205245515549524544",
+        "target_bytes_hex": "5245534F4C564544",
+        "source_byte_start": 18144,
+        "source_byte_end_exclusive": 18159,
+        "preimage_sha256": "BF07B452D72301266B7FDA55A97FB1AA1D983F38FD2DC5E1039DCD0D040F8BAC",
+        "postimage_sha256": "FEA6A67847171C973B34C545182D8458DED3489E4DE7E1C332096AD805770C81",
+        "preimage_occurrence_count": 1,
+        "issue_boundary_assertion": "unique detailed record headed by ### CONST-ISSUE-003 -; current-status token on source line 144",
+        "context_before": "| Current status | ",
+        "context_after": " |\n",
+        "allowed_changed_source_byte_range": [
+          18144,
+          18159
+        ],
+        "expected_byte_delta": -7,
+        "operation_authorized": true
+      }
+    ],
+    "exact_operations_bound": 6,
+    "covered_issues": 3,
+    "authorized_representations": 6,
+    "operation_order": {
+      "basis": "descending original-source byte offsets",
+      "ordered_operation_ids": [
+        "ISSUE-SYNC-OP-006",
+        "ISSUE-SYNC-OP-004",
+        "ISSUE-SYNC-OP-002",
+        "ISSUE-SYNC-OP-005",
+        "ISSUE-SYNC-OP-003",
+        "ISSUE-SYNC-OP-001"
+      ],
+      "offsets_reference_original_preimage": true,
+      "overlap_count": 0,
+      "collision_count": 0,
+      "deterministic": true
+    },
+    "atomicity_model": "ALL-OR-ZERO",
+    "subset_execution_authorized": false,
+    "partial_execution_authorized": false,
+    "additional_operations_authorized": false,
+    "missing_operations_authorized": false,
+    "regenerated_operations_authorized": false,
+    "pre_execution_verification": {
+      "required": true,
+      "checks": [
+        "Task 35 manifest artifact identity equals its published immutable identity",
+        "Task 36 independent manifest-verification authority is present and PASS",
+        "Task 34 artifact identities match",
+        "Task 33 artifact identities match",
+        "Frozen canonical payload identity matches",
+        "Canonical source path matches",
+        "Canonical source SHA-256 matches",
+        "Canonical source byte length is 23764",
+        "Canonical source is valid UTF-8",
+        "Canonical source has no BOM",
+        "Canonical source uses LF-only line endings",
+        "Canonical source CRLF count is zero",
+        "Exact operation count is six",
+        "Operation identifiers are unique",
+        "Original-source mutation ranges do not overlap",
+        "Each operation source slice equals its exact preimage bytes",
+        "Each issue-bound preimage occurrence count is exactly one",
+        "Each operation remains within its authorized issue boundary",
+        "Reconstructed candidate identity and invariants match",
+        "A separate execution-gate authorization artifact binds this manifest, Task 36, source, candidate, execution task, and any required invocation identity"
+      ],
+      "failure_behavior": "STOP_BEFORE_CANONICAL_MUTATION"
+    },
+    "candidate_reconstruction": {
+      "required": true,
+      "method": "Read verified canonical bytes once; verify all original-range preimages; apply the six manifest operations in declared descending original-range order to an in-memory byte array; verify exact candidate identity before any disk replacement.",
+      "direct_canonical_write_during_reconstruction": false,
+      "alternate_field_search_authorized": false,
+      "input_repair_authorized": false,
+      "normalization_authorized": false,
+      "semantic_recompilation_authorized": false,
+      "alternate_candidate_authorized": false,
+      "required_checks": {
+        "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+        "byte_length": 23722,
+        "utf8_valid": true,
+        "bom": false,
+        "crlf_count": 0,
+        "unexplained_byte_differences": 0,
+        "authorized_operations": "6/6"
+      }
+    },
+    "temporary_file": {
+      "required": true,
+      "path": "docs/kernel/governance/.01_constitution_issues_v1.md.issue-status-sync.tmp",
+      "same_filesystem_as_canonical": true,
+      "creation_mode": "EXCLUSIVE_CREATE_BINARY",
+      "existing_path_behavior": "BLOCK",
+      "reuse_authorized": false,
+      "content": "exact reconstructed candidate bytes only",
+      "canonical_by_existence": false,
+      "readback_required": true
+    },
+    "durability": {
+      "file_durability_required": true,
+      "file_sequence": [
+        "write complete candidate bytes",
+        "flush userspace buffers",
+        "request platform-appropriate file fsync",
+        "close",
+        "reopen",
+        "read complete temporary bytes",
+        "verify SHA-256, byte length, UTF-8, BOM, and line endings"
+      ],
+      "silent_downgrade_authorized": false,
+      "unsupported_file_durability_behavior": "BLOCK_EXECUTION",
+      "directory_durability_required": true,
+      "directory_path": "docs/kernel/governance",
+      "directory_sync_timing": "after atomic replacement",
+      "unsupported_directory_durability_behavior": "DO_NOT_CLAIM_PERSISTED_EXECUTION_SUCCESS"
+    },
+    "atomic_replacement": {
+      "required": true,
+      "model": "SINGLE_ATOMIC_REPLACEMENT",
+      "source_temp_path": "docs/kernel/governance/.01_constitution_issues_v1.md.issue-status-sync.tmp",
+      "target_canonical_path": "docs/kernel/governance/01_constitution_issues_v1.md",
+      "same_filesystem_required": true,
+      "compare_and_swap_source_recheck_required": true,
+      "in_place_editing_authorized": false,
+      "multiple_canonical_writes_authorized": false,
+      "append_and_repair_authorized": false,
+      "fallback_non_atomic_write_authorized": false
+    },
+    "post_write_verification": {
+      "required": true,
+      "independent_persisted_result_verification_required": true,
+      "canonical_reread_required": true,
+      "expected": {
+        "sha256": "01EC4CAE937D512B3BC8554ADEEEB0251ACC1A8C10F433FFE8E395648DC59886",
+        "byte_length": 23722,
+        "encoding": "UTF-8",
+        "bom": false,
+        "line_endings": "LF",
+        "crlf_count": 0,
+        "authorized_representations_resolved": "6/6",
+        "authorized_representations_triage_required": 0,
+        "issues_closed": 0,
+        "unauthorized_status_changes": 0,
+        "unexplained_byte_differences": 0
+      },
+      "write_call_success_alone_sufficient": false
+    },
+    "failure_model": {
+      "before_replacement": [
+        "remove or quarantine only the known task temporary file under separately safe cleanup rules",
+        "leave canonical register unchanged",
+        "report zero canonical mutation",
+        "do not preserve execution-success state"
+      ],
+      "during_replacement": "Use only a proven same-filesystem atomic replacement primitive; no in-place fallback.",
+      "after_replacement_before_verification": "MUTATION MAY HAVE OCCURRED ? PERSISTED RESULT NOT YET VERIFIED",
+      "automatic_rollback_authorized": false,
+      "evidence_preservation_required": true,
+      "separate_recovery_authority_required": true
+    },
+    "rollback_posture": {
+      "partial_subset_repair_authorized": false,
+      "inferred_reverse_operations_authorized": false,
+      "unverified_backup_reconstruction_authorized": false,
+      "changed_source_reversion_authorized": false,
+      "silent_rollback_authorized": false
+    },
+    "semantics": {
+      "resolution_semantics": "RESOLVED_NOT_CLOSED",
+      "closure_authorized": false,
+      "issue_archival_authorized": false,
+      "issue_deletion_authorized": false,
+      "schema_extension_authorized": false,
+      "executor_selected_fields_authorized": false,
+      "executor_selected_wording_authorized": false,
+      "future_issues_included": false,
+      "wildcard_issue_authority_present": false
+    },
+    "effective_point": {
+      "value": "EFFECTIVE_ON_INDEPENDENT_PERSISTED_VERIFICATION",
+      "atomic_replacement_alone_effective": false,
+      "required_sequence": [
+        35,
+        36,
+        "SEPARATE_EXECUTION_GATE_AUTHORITY",
+        37,
+        38
+      ],
+      "governance_effective_resolved_issues_before_task_38_pass": 0
+    },
+    "execution_gate": {
+      "state": "CLOSED",
+      "opened_by_task_35": false,
+      "separate_gate_decision_required": true,
+      "required_bindings": [
+        "Task 35 manifest artifact identity",
+        "Task 36 verification identity",
+        "canonical source identity",
+        "candidate identity",
+        "exact execution task",
+        "allowed execution time or invocation identity if required"
+      ]
+    },
+    "independent_manifest_verification_required": true,
+    "canonical_write_model": "SINGLE_ATOMIC_REPLACEMENT",
+    "in_place_editing_authorized": false,
+    "temporary_candidate_verification_required": true,
+    "file_durability_required": true,
+    "directory_durability_required": true,
+    "post_write_reread_required": true,
+    "persisted_hash_verification_required": true,
+    "canonical_modified": false,
+    "issue_statuses_modified": false,
+    "execution_manifest_created": true,
+    "execution_gate_opened": false,
+    "governance_effective_resolved_issues": 0,
+    "recommended_next_task": 36,
+    "recommended_next_task_name": "Moon Constitution v2 Independent Issue-Status Synchronization Execution-Manifest Verification v1 ? Task 36",
+    "verdict": "PASS ? IMMUTABLE ISSUE-STATUS SYNCHRONIZATION EXECUTION MANIFEST CREATED; INDEPENDENT VERIFICATION REQUIRED; EXECUTION GATE CLOSED"
+  },
+  "canonical_manifest_payload_canonicalization": {
+    "encoding": "UTF-8",
+    "serialization": "JSON sorted keys, compact separators, ensure_ascii=false",
+    "final_newline": false,
+    "hashed_scope": "canonical_manifest_payload object only"
+  },
+  "canonical_manifest_payload_sha256": "D65395FB7185F7091C158E11B9FFE969AD373DAA70F8D2F41388194E1D46D0A1"
+}

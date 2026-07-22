@@ -1,0 +1,147 @@
+{
+  "manifest_id": "CONST-V2-VERIFY-META-SYNC-EXEC-MANIFEST-001",
+  "version": "v1",
+  "status": "IMMUTABLE_EXECUTION_MANIFEST",
+  "manifest_format": {
+    "manifest_encoding": "UTF-8",
+    "manifest_bom": false,
+    "manifest_line_endings": "LF",
+    "manifest_serialization": "stable object-key ordering, two-space indentation",
+    "manifest_final_newline": true
+  },
+  "source": {
+    "path": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+    "sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+    "byte_length": 61071,
+    "encoding": "UTF-8",
+    "bom": false,
+    "line_endings": "LF"
+  },
+  "authority": {
+    "founder_approval_path": "docs/kernel/governance/24_constitution_v2_founder_exact_verification_status_metadata_sync_approval_v1.md",
+    "founder_approval_sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B",
+    "decision_packet_path": "docs/kernel/governance/23_constitution_v2_founder_exact_verification_status_metadata_sync_decision_packet_v1.md",
+    "decision_packet_sha256": "19D6F287418140C5188653FBF577DE6899EC6F8502685C543ED17122A8E00F73",
+    "machine_decision_packet_path": "docs/kernel/governance/23a_constitution_v2_founder_exact_verification_status_metadata_sync_decision_packet_v1.json",
+    "machine_decision_packet_sha256": "E3D59518FE9587BA398BC6120241FA75731720327BB7BB80EA5A19E1F4D55D31",
+    "technical_source_path": "docs/kernel/governance/22a_constitution_v2_verification_status_metadata_sync_operations_v1.json",
+    "technical_source_sha256": "356A8CE946DFCE45393D7B70137478F8C1B86AED5CAB0D9095D42CECBAC0E3A5",
+    "selected_package": "SYNC-PACKAGE-AA",
+    "exact_result_authority": "COMPLETE_2_OF_2"
+  },
+  "execution": {
+    "required_operations": 2,
+    "subset_execution_allowed": false,
+    "atomic_execution_required": true,
+    "failure_behavior": "APPLY_ZERO_OPERATIONS",
+    "execution_authorized": false,
+    "execution_gate": "CLOSED_PENDING_INDEPENDENT_MANIFEST_VERIFICATION",
+    "order_basis": "original_source_byte_ranges",
+    "offset_shift_strategy": "descending_byte_range_application",
+    "range_overlap": 0,
+    "operation_order": [
+      "VERIFY-META-SYNC-OP-002",
+      "VERIFY-META-SYNC-OP-001"
+    ],
+    "operations": [
+      {
+        "operation_id": "VERIFY-META-SYNC-OP-002",
+        "source_file": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+        "source_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+        "byte_range": [
+          338,
+          392
+        ],
+        "character_range": [
+          334,
+          388
+        ],
+        "line_range": [
+          5,
+          5
+        ],
+        "column_range": [
+          114,
+          168
+        ],
+        "anchor": "Version posture: Constitution v2 remains a candidate; Amendment 001 incorporated; structural correction applied; independent structural correction verification pending  ",
+        "anchor_sha256": "624E3B2F4711C98EBA6248F232E6139B777ED109D90E49801AEAD06525B17B80",
+        "anchor_occurrence_count": 1,
+        "exact_preimage": "independent structural correction verification pending",
+        "exact_preimage_json_escaped": "independent structural correction verification pending",
+        "preimage_sha256": "2932C8F53F52BC6CE60340303E33A7CBBC043A463C29B171BC7701467DB3B6B9",
+        "preimage_byte_length": 54,
+        "selected_option_id": "VERIFY-META-SYNC-002-A",
+        "exact_postimage": "independent structural correction verification PASS",
+        "exact_postimage_json_escaped": "independent structural correction verification PASS",
+        "postimage_sha256": "162B008A7143A6AD926CDD409800C705FED2DDA44330385F6C7E90BA2370B4DF",
+        "postimage_byte_length": 51,
+        "byte_delta": -3,
+        "frozen_payload_overlap": "NONE",
+        "authority_source": "docs/kernel/governance/24_constitution_v2_founder_exact_verification_status_metadata_sync_approval_v1.md",
+        "authority_sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B"
+      },
+      {
+        "operation_id": "VERIFY-META-SYNC-OP-001",
+        "source_file": "docs/kernel/07_continuity_kernel_constitution_v2.md",
+        "source_sha256": "7707FAC9379160C78FA6D97A53D851A61EC8F4CF02F7E7FBE67E8EA11DA6E079",
+        "byte_range": [
+          153,
+          185
+        ],
+        "character_range": [
+          149,
+          181
+        ],
+        "line_range": [
+          3,
+          3
+        ],
+        "column_range": [
+          108,
+          140
+        ],
+        "anchor": "Status: Amendment 001 incorporated — post-incorporation verification PASS; structural correction applied — pending independent verification  ",
+        "anchor_sha256": "4E3598E108A7868C73E8E868660CAD3783FC0B6F4D0937E68CFD395146F420D3",
+        "anchor_occurrence_count": 1,
+        "exact_preimage": "pending independent verification",
+        "exact_preimage_json_escaped": "pending independent verification",
+        "preimage_sha256": "8DB2CB1EF36A02EE1A2E89F5C1D8AD8CA75CEB18438B004649A22E5BA1ECB6F8",
+        "preimage_byte_length": 32,
+        "selected_option_id": "VERIFY-META-SYNC-001-A",
+        "exact_postimage": "independent verification PASS",
+        "exact_postimage_json_escaped": "independent verification PASS",
+        "postimage_sha256": "12307FB5804F9C046825C7B6696F955CC1C7AE03DB8663AD5BB1D43147A43741",
+        "postimage_byte_length": 29,
+        "byte_delta": -3,
+        "frozen_payload_overlap": "NONE",
+        "authority_source": "docs/kernel/governance/24_constitution_v2_founder_exact_verification_status_metadata_sync_approval_v1.md",
+        "authority_sha256": "A797BFF4BBFFD70E00832025E55D133E946A3EBA5871D789AF1D755477B77C5B"
+      }
+    ]
+  },
+  "expected_result": {
+    "sha256": "9A935EF28DD21FBAA3A1B27CC0A626B6F719653DB9D3DAB51617FA394D516F7C",
+    "byte_length": 61065,
+    "total_byte_delta": -6
+  },
+  "frozen_payload": {
+    "sha256": "E6EE9BD4FD488FE6AE36B1009A6305F37E46205EAF2B81257B8132906E4D7957",
+    "byte_length": 877,
+    "overlap_allowed": false,
+    "expected_unchanged": true
+  },
+  "governance_boundaries": {
+    "constitution_mutation_authorized_by_manifest_creation": false,
+    "constitutional_meaning_change_authorized": false,
+    "normative_force_change_authorized": false,
+    "finding_reopening_authorized": false,
+    "finding_reclosure_authorized": false,
+    "issue_resolution_authorized": false,
+    "issue_closure_authorized": false,
+    "ratification_authorized": false,
+    "official_status_authorized": false,
+    "constitution_v1_supersession_authorized": false,
+    "amendment_wording_change_authorized": false
+  }
+}
