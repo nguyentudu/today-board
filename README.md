@@ -19,14 +19,21 @@ Help me return without rebuilding my world.
 
 ## What It Does
 
-- Create cards.
-- Rename cards.
-- Move cards between Continue, Pause, Finished, and Leave Alone.
-- Add and edit a tiny note.
-- Hide cards.
-- Save locally for continuity.
-- Export JSON for portability.
-- Import JSON from a previous board export.
+- Capture Situations and persist them locally on the user's device.
+- Move Situations through Continue, Pause, Finished, and Leave Alone with
+  explicit lifecycle semantics.
+- Record Waiting context, a Return Point, and the next Action or Trigger.
+- Track a Promise, its counterparty and due date, and its explicit status.
+- Record an Outcome while preserving closure and reopening history.
+- Attach links, images, audio, and files, then assign evidence roles without
+  duplicating stored media.
+- Open assigned re-entry evidence directly from the Situation that needs it.
+- Search and filter Situations by their saved continuity context.
+- Edit through progressive sections with independent draft continuity,
+  explicit Save and Cancel, and guarded state transitions.
+- Export and import the board as JSON while preserving accepted semantics.
+- Install and run as an offline-capable, local-first PWA with explicit update
+  activation and edit-session protection.
 
 ## Run Locally
 
@@ -112,11 +119,12 @@ The board saves in the browser on the user's device through local storage. It ex
 
 There is no cloud account, remote database, or cross-device sync. Users can keep a copy outside Moon with Export JSON.
 
-## Forbidden Scope
+## V1 Frozen Scope
 
-Do not add:
+The accepted v1 intentionally excludes:
 
 - AI
+- voice features
 - account
 - backend
 - database
@@ -124,13 +132,17 @@ Do not add:
 - tracking
 - notification
 - sync
-- team
-- payment
+- collaboration
+- marketplace
+- payments
 - Railway backend
 
 Local storage is allowed only for product continuity. No tracking, analytics, telemetry, or remote calls are included.
 
 No cloud. No account. No tracking.
+
+These boundaries describe the accepted v1 release. They do not permanently
+prohibit separately governed work in a future version.
 
 ## Static Deploy
 
