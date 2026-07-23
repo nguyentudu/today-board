@@ -26,6 +26,7 @@
     "test:ux-closure": "node scripts/verify-ux-closure.mjs",
     "test:voice-capability": "node scripts/verify-voice-capability.mjs",
     "test:voice-engine-probe": "node scripts/verify-voice-engine-probe.mjs",
+    "test:voice-quality": "node scripts/verify-voice-quality.mjs",
     "smoke:voice-wasm-browser": "node scripts/smoke-voice-wasm-browser.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },

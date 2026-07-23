@@ -14,12 +14,13 @@ if (!app) {
 }
 
 const root = app;
-const BUILD_ID = "2026.07.23-c";
+const BUILD_ID = "2026.07.23-d";
 const statusRegion = document.createElement("div");
 statusRegion.className = "app-status-region";
 statusRegion.setAttribute("aria-label", "Application status");
 const voiceProbeMode = isVoiceCapabilityProbeMode();
 const voiceEngineProbeMode = isVoiceEngineProbeMode();
+const voiceQualityProbeMode = isVoiceQualityProbeMode();
 let board: BoardModel | undefined;
 let selectedImportFileName = "";
 let language: Language = "vi";
@@ -35,7 +36,7 @@ let viewLoadSequence = 0;
 window.__TODAY_BOARD_BUILD_ID__ = BUILD_ID;
 renderBuildMarker();
 
-if (!voiceProbeMode && !voiceEngineProbeMode) {
+if (!voiceProbeMode && !voiceEngineProbeMode && !voiceQualityProbeMode) {
   board = loadBoard();
   if (!isQuickCaptureMode()) {
     board = applySharedLink(board);
@@ -53,6 +54,39 @@ function render(nextBoard?: BoardModel): void {
   destroyActiveView = undefined;
   renderNetworkStatus();
   renderUpdateMessage();
+
+  if (voiceQualityProbeMode) {
+    const request = ++viewLoadSequence;
+    const loading = document.createElement("p");
+    loading.className = "voice-engine-loading";
+    loading.setAttribute("role", "status");
+    loading.textContent = language === "vi" ? "Đang mở ma trận chất lượng Voice..." : "Opening the Voice quality matrix...";
+    root.replaceChildren(statusRegion, loading);
+    void import("./ui/VoiceQualityProbe")
+      .then(({ VoiceQualityProbe }) => {
+        if (request !== viewLoadSequence) {
+          return;
+        }
+        const probe = VoiceQualityProbe({
+          language,
+          onLanguageChange: (nextLanguage: Language) => {
+            language = nextLanguage;
+            render();
+          },
+        });
+        destroyActiveView = probe.destroy;
+        root.replaceChildren(statusRegion, probe.element);
+      })
+      .catch(() => {
+        if (request === viewLoadSequence) {
+          loading.textContent =
+            language === "vi"
+              ? "Không thể mở ma trận chất lượng Voice trên thiết bị này."
+              : "The Voice quality matrix could not be opened on this device.";
+        }
+      });
+    return;
+  }
 
   if (voiceEngineProbeMode) {
     const request = ++viewLoadSequence;
@@ -252,6 +286,10 @@ function isVoiceEngineProbeMode(): boolean {
   return new URLSearchParams(window.location.search).get("voice-engine-probe") === "1";
 }
 
+function isVoiceQualityProbeMode(): boolean {
+  return new URLSearchParams(window.location.search).get("voice-quality-probe") === "1";
+}
+
 function getShareParam(name: "title" | "text" | "url"): string {
   return new URLSearchParams(window.location.search).get(name)?.trim() ?? "";
 }
@@ -386,6 +424,12 @@ function renderUpdateMessage(): void {
 }
 
 function getUpdateBlockReason(): string | null {
+  if (document.documentElement.dataset.voiceQualityBusy === "true") {
+    return language === "vi"
+      ? "Ma trận chất lượng Voice đang ghi âm hoặc xử lý. Hãy dừng hoặc đợi hoàn tất trước khi tải lại."
+      : "The Voice quality matrix is recording or processing. Stop it or wait before reloading.";
+  }
+
   if (document.documentElement.dataset.voiceEngineBusy === "true") {
     return language === "vi"
       ? "Bộ máy Voice cục bộ đang ghi âm hoặc xử lý. Hãy dừng hoặc đợi hoàn tất trước khi tải lại."

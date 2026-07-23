@@ -79,7 +79,7 @@ assert(
   app.includes('get("voice-engine-probe") === "1"')
     && app.includes('import("./ui/VoiceEngineProbe")')
     && !app.includes('import { VoiceEngineProbe }')
-    && app.includes("if (!voiceProbeMode && !voiceEngineProbeMode)")
+    && app.includes("if (!voiceProbeMode && !voiceEngineProbeMode && !voiceQualityProbeMode)")
     && !app.includes("voiceEngine.worker"),
 );
 assert(
@@ -293,7 +293,7 @@ assert(
 );
 assert(
   "app and service-worker identities move together",
-  app.includes('BUILD_ID = "2026.07.23-c"') && sw.includes('CACHE_VERSION = "2026-07-23-c"'),
+  app.includes('BUILD_ID = "2026.07.23-d"') && sw.includes('CACHE_VERSION = "2026-07-23-d"'),
 );
 
 if (failures.length > 0) {

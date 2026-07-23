@@ -99,7 +99,7 @@ assert(
     && appSource.includes("if (voiceProbeMode)")
     && !boardSource.includes("VoiceCapabilityProbe"),
 );
-const probeGuard = "if (!voiceProbeMode && !voiceEngineProbeMode)";
+const probeGuard = "if (!voiceProbeMode && !voiceEngineProbeMode && !voiceQualityProbeMode)";
 const probeModeSetup = appSource.slice(appSource.indexOf(probeGuard), appSource.indexOf("setupNetworkStatus()"));
 assert(
   "probe mode performs no board load mutation or storage write",
@@ -182,7 +182,7 @@ assert(
 );
 assert(
   "app and service-worker identities move together",
-  appSource.includes('BUILD_ID = "2026.07.23-c"') && swSource.includes('CACHE_VERSION = "2026-07-23-c"'),
+  appSource.includes('BUILD_ID = "2026.07.23-d"') && swSource.includes('CACHE_VERSION = "2026-07-23-d"'),
 );
 
 if (failures.length > 0) {

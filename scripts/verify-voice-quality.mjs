@@ -1,0 +1,157 @@
+import { readFileSync } from "node:fs";
+import ts from "typescript";
+
+const app = readFileSync("src/app.ts", "utf8");
+const protocol = readFileSync("src/voice/voiceQualityProtocol.ts", "utf8");
+const worker = readFileSync("src/voice/voiceQuality.worker.ts", "utf8");
+const probe = readFileSync("src/ui/VoiceQualityProbe.ts", "utf8");
+const metrics = readFileSync("src/voice/voiceQualityMetrics.ts", "utf8");
+const audio = readFileSync("src/voice/voiceQualityAudio.ts", "utf8");
+const sw = readFileSync("public/sw.js", "utf8");
+const packageJson = JSON.parse(readFileSync("package.json", "utf8"));
+const failures = [];
+
+function assert(name, condition) {
+  if (condition) {
+    console.log(`PASS ${name}`);
+  } else {
+    failures.push(name);
+  }
+}
+
+function executable(source) {
+  const stripped = source
+    .replace(/import\s+type[\s\S]*?from\s+["'][^"']+["'];\s*/g, "")
+    .replace(/import[\s\S]*?from\s+["'][^"']+["'];\s*/g, "");
+  return ts.transpileModule(stripped, {
+    compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+}
+
+const pure = await import(
+  `data:text/javascript;base64,${Buffer.from(`${executable(audio)}\n${executable(metrics)}`).toString("base64")}`
+);
+
+assert(
+  "quality probe is hidden and unloaded by default",
+  app.includes('get("voice-quality-probe") === "1"')
+    && app.includes('import("./ui/VoiceQualityProbe")')
+    && !app.includes('from "./ui/VoiceQualityProbe"'),
+);
+assert(
+  "normal board skips board loading for all probes",
+  app.includes("!voiceProbeMode && !voiceEngineProbeMode && !voiceQualityProbeMode"),
+);
+assert(
+  "three exact candidates are bounded",
+  protocol.includes('"tiny-baseline"')
+    && protocol.includes('"tiny-improved"')
+    && protocol.includes('"base-improved"')
+    && protocol.includes("VOICE_QUALITY_CANDIDATE_ORDER")
+    && protocol.includes("81_294_262"),
+);
+assert(
+  "base model is exact multilingual Apache candidate under size cap",
+  protocol.includes('"onnx-community/whisper-base"')
+    && protocol.includes('"1846881b6b3a3024392c1eea3ad983695bc23925"')
+    && protocol.includes('"Apache-2.0"')
+    && protocol.includes("81_294_262")
+    && 81_294_262 <= 160 * 1024 * 1024,
+);
+assert(
+  "baseline preserves exact Android artifact configuration",
+  protocol.includes('"ff4177021cc41f7db950912b73ea4fdf7d01d8e7"')
+    && protocol.includes('"uint8"')
+    && protocol.includes('"disabled"')
+    && protocol.includes('"baseline"'),
+);
+assert(
+  "improved variants are explicit deterministic audio-prepared configurations",
+  protocol.includes('"normalized-trimmed"')
+    && protocol.match(/deterministicDecoding: true/g)?.length === 2
+    && worker.includes("do_sample: false")
+    && worker.includes("num_beams: 1")
+    && worker.includes("temperature: 0"),
+);
+assert(
+  "install is explicit and candidate switching does not cascade downloads",
+  probe.includes('installButton.addEventListener("click"')
+    && worker.includes("candidate(request.candidateId)")
+    && !worker.includes("for (const candidate"),
+);
+assert(
+  "fresh worker cache-only session precedes marker write",
+  probe.indexOf("await freshVerify(selectedId)") < probe.indexOf("await writeMarker(selected())")
+    && worker.includes("local_files_only: localFilesOnly")
+    && worker.includes("withRemoteNetworkBlocked"),
+);
+assert(
+  "candidate caches and cleanup are exact",
+  new Set([...protocol.matchAll(/cacheKey: "([^"]+)"/g)].map((match) => match[1])).size === 3
+    && worker.includes("isExactPinnedModelRequest")
+    && worker.includes("caches.delete(selected.cacheKey)"),
+);
+assert(
+  "ten fixed Vietnamese benchmarks cover continuity truth",
+  (metrics.match(/id: "/g) ?? []).length === 10
+    && metrics.includes('"person"')
+    && metrics.includes('"promise"')
+    && metrics.includes('"number"')
+    && metrics.includes('"deadline"')
+    && metrics.includes('"approval"'),
+);
+assert(
+  "reporting includes WER critical failures runtime and explicit verdicts",
+  metrics.includes("wordErrorRate")
+    && metrics.includes("criticalTokenFailures")
+    && metrics.includes("medianRtf")
+    && metrics.includes('"TECHNICAL FAIL"')
+    && metrics.includes('"PRODUCT VIABILITY PASS"')
+    && probe.includes("Download JSON report"),
+);
+assert(
+  "audio remains memory-only and board storage is untouched",
+  probe.includes("startMemoryAudioCapture")
+    && !probe.includes("localStorage")
+    && !probe.includes("saveBoard")
+    && !worker.includes("fetch(")
+    && !worker.includes("XMLHttpRequest"),
+);
+assert(
+  "busy and lifecycle cleanup protect PWA updates",
+  probe.includes("dataset.voiceQualityBusy")
+    && probe.includes('window.addEventListener("pagehide"')
+    && probe.includes("worker.terminate()")
+    && app.includes('dataset.voiceQualityBusy === "true"'),
+);
+
+const source = new Float32Array([0, 0, 0.01, 0.2, -0.4, 0.01, 0, 0]);
+const baseline = pure.prepareVoiceQualityAudio(source, "baseline");
+const improved = pure.prepareVoiceQualityAudio(source, "normalized-trimmed");
+assert("baseline audio remains numerically unchanged", [...baseline].every((value, index) => value === source[index]));
+assert(
+  "improved audio preparation is bounded and normalized without clipping",
+  improved.length > 0 && improved.length <= source.length && Math.max(...improved.map(Math.abs)) <= 0.920001,
+);
+assert("WER is transparent and exact matches score zero", pure.wordErrorRate("Xin chào", "Xin chào") === 0);
+assert(
+  "critical-token failures are surfaced",
+  pure.analyzeVoiceQualityResult(
+    "tiny-baseline",
+    pure.VOICE_QUALITY_UTTERANCES[0],
+    "Khách đang chờ.",
+    { backend: "wasm" },
+  ).criticalTokenFailures.length > 0,
+);
+assert(
+  "app and cache identities move together",
+  app.includes('BUILD_ID = "2026.07.23-d"') && sw.includes('CACHE_VERSION = "2026-07-23-d"'),
+);
+assert("bounded quality test is registered", packageJson.scripts["test:voice-quality"] === "node scripts/verify-voice-quality.mjs");
+
+if (failures.length > 0) {
+  for (const failure of failures) {
+    console.error(`FAIL ${failure}`);
+  }
+  process.exit(1);
+}
