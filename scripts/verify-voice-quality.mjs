@@ -85,6 +85,26 @@ assert(
     && worker.includes("local_files_only: localFilesOnly")
     && worker.includes("withRemoteNetworkBlocked"),
 );
+const installSection = worker.slice(worker.indexOf("async function install"), worker.indexOf("async function verify"));
+assert(
+  "install timing cannot populate cache-cold timing",
+  installSection.includes("downloadDurationMs")
+    && installSection.includes("installationSessionDurationMs")
+    && !installSection.includes("cacheColdLoadDurationMs"),
+);
+assert(
+  "first post-install benchmark uses a fresh cache-only pipeline",
+  probe.includes("await freshVerify(selectedId)")
+    && probe.includes("await replaceWorker()")
+    && worker.includes("await loadPipeline(selected, true)")
+    && worker.includes('runKind: wasLoaded ? "warm" : "cache-cold"'),
+);
+assert(
+  "subsequent prepared pipeline is classified warm",
+  worker.includes("loadedCandidateId === selected.id")
+    && worker.includes("metrics.warmLoadDurationMs")
+    && worker.includes("metrics.cacheColdLoadDurationMs"),
+);
 assert(
   "candidate caches and cleanup are exact",
   new Set([...protocol.matchAll(/cacheKey: "([^"]+)"/g)].map((match) => match[1])).size === 3
@@ -108,6 +128,20 @@ assert(
     && metrics.includes('"TECHNICAL FAIL"')
     && metrics.includes('"PRODUCT VIABILITY PASS"')
     && probe.includes("Download JSON report"),
+);
+assert(
+  "offline evidence and lifecycle ledgers are exported",
+  probe.includes("offlineEvidence:")
+    && probe.includes("lifecycleFailureLedger:")
+    && protocol.includes("freshCacheVerificationPassed")
+    && protocol.includes("offlineInferenceUtteranceId")
+    && protocol.includes("workerCrashes"),
+);
+assert(
+  "candidate benchmark reset is explicit",
+  probe.includes('resetButton.addEventListener("click"')
+    && probe.includes("resetCandidateBenchmark")
+    && probe.includes("emptyFailureLedger()"),
 );
 assert(
   "audio remains memory-only and board storage is untouched",
@@ -143,9 +177,64 @@ assert(
     { backend: "wasm" },
   ).criticalTokenFailures.length > 0,
 );
+const idealResults = pure.VOICE_QUALITY_UTTERANCES.map((utterance, index) => {
+  const result = pure.analyzeVoiceQualityResult(
+    "tiny-improved",
+    utterance,
+    utterance.expected,
+    {
+      backend: "wasm",
+      cacheColdLoadDurationMs: 1000,
+      warmLoadDurationMs: 100,
+      audioDurationMs: 1000,
+      transcriptionDurationMs: 500,
+      realTimeFactor: 0.5,
+      runKind: index === 0 ? "cache-cold" : "warm",
+    },
+  );
+  result.manualRating = "correct";
+  return result;
+});
+const fullOfflineEvidence = {
+  freshCacheVerificationPassed: true,
+  browserReportedOfflineAtColdLoad: true,
+  remoteFetchBlockedDuringCacheLoad: true,
+  offlineColdLoadPassed: true,
+  offlineInferencePassed: true,
+  offlineInferenceUtteranceId: pure.VOICE_QUALITY_UTTERANCES[0].id,
+};
+const zeroFailures = pure.emptyFailureLedger();
+const onlineOnlyAggregate = pure.aggregateVoiceQuality(
+  idealResults,
+  { ...fullOfflineEvidence, browserReportedOfflineAtColdLoad: false, offlineColdLoadPassed: false, offlineInferencePassed: false, offlineInferenceUtteranceId: null },
+  zeroFailures,
+);
+assert(
+  "online-only benchmark cannot produce Product Viability PASS",
+  onlineOnlyAggregate.verdict !== "PRODUCT VIABILITY PASS"
+    && onlineOnlyAggregate.missingAcceptanceGates.includes("BROWSER_REPORTED_OFFLINE_CACHE_COLD_LOAD_REQUIRED")
+    && onlineOnlyAggregate.missingAcceptanceGates.includes("BROWSER_REPORTED_OFFLINE_INFERENCE_REQUIRED"),
+);
+const offlineAggregate = pure.aggregateVoiceQuality(idealResults, fullOfflineEvidence, zeroFailures);
+assert(
+  "offline verification load and inference satisfy the additional gates",
+  offlineAggregate.verdict === "PRODUCT VIABILITY PASS"
+    && offlineAggregate.missingAcceptanceGates.length === 0,
+);
+const failedLifecycleAggregate = pure.aggregateVoiceQuality(
+  idealResults,
+  fullOfflineEvidence,
+  { ...zeroFailures, workerCrashes: 1 },
+);
+assert(
+  "lifecycle failure prevents Product Viability PASS",
+  failedLifecycleAggregate.verdict !== "PRODUCT VIABILITY PASS"
+    && failedLifecycleAggregate.lifecycleFailures === 1
+    && failedLifecycleAggregate.missingAcceptanceGates.includes("ZERO_LIFECYCLE_FAILURES_REQUIRED"),
+);
 assert(
   "app and cache identities move together",
-  app.includes('BUILD_ID = "2026.07.23-d"') && sw.includes('CACHE_VERSION = "2026-07-23-d"'),
+  app.includes('BUILD_ID = "2026.07.23-e"') && sw.includes('CACHE_VERSION = "2026-07-23-e"'),
 );
 assert("bounded quality test is registered", packageJson.scripts["test:voice-quality"] === "node scripts/verify-voice-quality.mjs");
 

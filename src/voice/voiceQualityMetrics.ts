@@ -1,4 +1,9 @@
-import type { VoiceQualityCandidateId, VoiceQualityMetrics } from "./voiceQualityProtocol";
+import type {
+  VoiceQualityCandidateId,
+  VoiceQualityFailureLedger,
+  VoiceQualityMetrics,
+  VoiceQualityOfflineEvidence,
+} from "./voiceQualityProtocol";
 
 export type VoiceQualityManualRating = "unrated" | "correct" | "meaning-preserved" | "unsafe-wrong";
 export type VoiceQualityVerdict =
@@ -47,6 +52,8 @@ export interface VoiceQualityAggregate {
   coldLoadMs: number | null;
   warmLoadMs: number | null;
   failures: number;
+  lifecycleFailures: number;
+  missingAcceptanceGates: string[];
   verdict: VoiceQualityVerdict;
 }
 
@@ -179,7 +186,11 @@ export function analyzeVoiceQualityResult(
   };
 }
 
-export function aggregateVoiceQuality(results: readonly VoiceQualityResult[]): VoiceQualityAggregate {
+export function aggregateVoiceQuality(
+  results: readonly VoiceQualityResult[],
+  offlineEvidence: VoiceQualityOfflineEvidence = emptyOfflineEvidence(),
+  failureLedger: VoiceQualityFailureLedger = emptyFailureLedger(),
+): VoiceQualityAggregate {
   const completed = results.filter((result) => !result.error);
   const rtfs = completed
     .map((result) => result.metrics.realTimeFactor)
@@ -192,8 +203,10 @@ export function aggregateVoiceQuality(results: readonly VoiceQualityResult[]): V
   const failures = results.filter((result) => Boolean(result.error)).length;
   const medianRtf = median(rtfs);
   const worstRtf = rtfs.length > 0 ? rtfs[rtfs.length - 1] : null;
-  const coldLoadMs = firstDuration(results, "coldLoadDurationMs");
+  const coldLoadMs = firstDuration(results, "cacheColdLoadDurationMs");
   const warmLoadMs = firstDuration(results, "warmLoadDurationMs");
+  const lifecycleFailures = totalLifecycleFailures(failureLedger);
+  const missingAcceptanceGates = acceptanceGateFailures(offlineEvidence, lifecycleFailures);
   const technicalPass =
     failures === 0
     && completed.length === 10
@@ -206,7 +219,8 @@ export function aggregateVoiceQuality(results: readonly VoiceQualityResult[]): V
     && meaningPreserved >= 8
     && criticalTokenFailures === 0
     && medianRtf <= 2
-    && worstRtf <= 3;
+    && worstRtf <= 3
+    && missingAcceptanceGates.length === 0;
   let verdict: VoiceQualityVerdict;
   if (failures > 0 || completed.length < 10 || coldLoadMs === null || warmLoadMs === null) {
     verdict = "TECHNICAL FAIL";
@@ -227,8 +241,62 @@ export function aggregateVoiceQuality(results: readonly VoiceQualityResult[]): V
     coldLoadMs,
     warmLoadMs,
     failures,
+    lifecycleFailures,
+    missingAcceptanceGates,
     verdict,
   };
+}
+
+export function emptyOfflineEvidence(): VoiceQualityOfflineEvidence {
+  return {
+    freshCacheVerificationPassed: false,
+    browserReportedOfflineAtColdLoad: false,
+    remoteFetchBlockedDuringCacheLoad: false,
+    offlineColdLoadPassed: false,
+    offlineInferencePassed: false,
+    offlineInferenceUtteranceId: null,
+  };
+}
+
+export function emptyFailureLedger(): VoiceQualityFailureLedger {
+  return {
+    installFailures: 0,
+    verificationFailures: 0,
+    prepareLoadFailures: 0,
+    transcriptionFailures: 0,
+    workerCrashes: 0,
+    cleanupFailures: 0,
+  };
+}
+
+export function totalLifecycleFailures(ledger: VoiceQualityFailureLedger): number {
+  return Object.values(ledger).reduce((sum, count) => sum + count, 0);
+}
+
+export function acceptanceGateFailures(
+  evidence: VoiceQualityOfflineEvidence,
+  lifecycleFailures: number,
+): string[] {
+  const missing: string[] = [];
+  if (!evidence.freshCacheVerificationPassed) {
+    missing.push("FRESH_CACHE_VERIFICATION_REQUIRED");
+  }
+  if (!evidence.browserReportedOfflineAtColdLoad) {
+    missing.push("BROWSER_REPORTED_OFFLINE_CACHE_COLD_LOAD_REQUIRED");
+  }
+  if (!evidence.remoteFetchBlockedDuringCacheLoad) {
+    missing.push("REMOTE_FETCH_BLOCK_DURING_CACHE_LOAD_REQUIRED");
+  }
+  if (!evidence.offlineColdLoadPassed) {
+    missing.push("OFFLINE_CACHE_COLD_LOAD_REQUIRED");
+  }
+  if (!evidence.offlineInferencePassed || !evidence.offlineInferenceUtteranceId) {
+    missing.push("BROWSER_REPORTED_OFFLINE_INFERENCE_REQUIRED");
+  }
+  if (lifecycleFailures !== 0) {
+    missing.push("ZERO_LIFECYCLE_FAILURES_REQUIRED");
+  }
+  return missing;
 }
 
 function categoryPreserved(
@@ -244,7 +312,7 @@ function categoryPreserved(
 
 function firstDuration(
   results: readonly VoiceQualityResult[],
-  field: "coldLoadDurationMs" | "warmLoadDurationMs",
+  field: "cacheColdLoadDurationMs" | "warmLoadDurationMs",
 ): number | null {
   return results.find((result) => typeof result.metrics[field] === "number")?.metrics[field] ?? null;
 }

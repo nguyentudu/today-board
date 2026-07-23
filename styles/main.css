@@ -1328,9 +1328,14 @@ textarea {
 }
 
 .voice-quality-aggregates article {
+  min-width: 0;
   border: 1px solid #d7d1c5;
   border-radius: 6px;
   padding: 0.75rem;
+}
+
+.voice-quality-aggregates p {
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 1100px) {

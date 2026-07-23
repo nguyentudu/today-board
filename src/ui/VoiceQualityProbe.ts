@@ -3,6 +3,8 @@ import { startMemoryAudioCapture, type MemoryAudioCapture } from "../voice/audio
 import {
   aggregateVoiceQuality,
   analyzeVoiceQualityResult,
+  emptyFailureLedger,
+  emptyOfflineEvidence,
   VOICE_QUALITY_UTTERANCES,
   type VoiceQualityManualRating,
   type VoiceQualityResult,
@@ -12,7 +14,9 @@ import {
   VOICE_QUALITY_CANDIDATES,
   type VoiceQualityCandidate,
   type VoiceQualityCandidateId,
+  type VoiceQualityFailureLedger,
   type VoiceQualityMetrics,
+  type VoiceQualityOfflineEvidence,
   type VoiceQualityRequest,
   type VoiceQualityResponse,
 } from "../voice/voiceQualityProtocol";
@@ -31,6 +35,12 @@ interface InstallationMarker {
   candidateId: VoiceQualityCandidateId;
   configurationIdentity: string;
   verifiedAt: string;
+}
+
+interface CandidateSession {
+  metrics: VoiceQualityMetrics;
+  offlineEvidence: VoiceQualityOfflineEvidence;
+  failures: VoiceQualityFailureLedger;
 }
 
 type VoiceQualityRequestPayload =
@@ -64,6 +74,7 @@ const copy = {
     stop: "Stop and transcribe",
     clear: "Clear this result",
     export: "Download JSON report",
+    reset: "Reset candidate benchmark",
     expected: "Speak exactly",
     results: "Results",
     aggregate: "Candidate aggregates",
@@ -81,6 +92,17 @@ const copy = {
     modelIdentity: "Pinned model identity",
     modelSize: "Expected download",
     cleanup: "Cleanup complete",
+    acceptanceMissing: "Missing acceptance evidence",
+    acceptanceComplete: "Acceptance evidence complete",
+    browserOfflineNote: "Offline is browser-reported state only, not independent airplane-mode proof.",
+    failureLedger: "Lifecycle failures",
+    yes: "yes",
+    no: "no",
+    browserOnline: "browser online",
+    browserOffline: "browser-reported offline",
+    freshVerification: "fresh verification",
+    remoteBlocked: "remote fetch blocked",
+    offlineInference: "offline inference",
   },
   vi: {
     internal: "Thử nghiệm nội bộ",
@@ -105,6 +127,7 @@ const copy = {
     stop: "Dừng và chép lời",
     clear: "Xóa kết quả này",
     export: "Tải báo cáo JSON",
+    reset: "Đặt lại kiểm chuẩn ứng viên",
     expected: "Đọc chính xác",
     results: "Kết quả",
     aggregate: "Tổng hợp theo ứng viên",
@@ -122,6 +145,17 @@ const copy = {
     modelIdentity: "Danh tính mô hình đã ghim",
     modelSize: "Dung lượng tải dự kiến",
     cleanup: "Đã dọn xong",
+    acceptanceMissing: "Thiếu bằng chứng chấp nhận",
+    acceptanceComplete: "Đã đủ bằng chứng chấp nhận",
+    browserOfflineNote: "Ngoại tuyến chỉ là trạng thái do trình duyệt báo cáo, không phải bằng chứng độc lập về chế độ máy bay.",
+    failureLedger: "Lỗi vòng đời",
+    yes: "có",
+    no: "không",
+    browserOnline: "trình duyệt trực tuyến",
+    browserOffline: "trình duyệt báo ngoại tuyến",
+    freshVerification: "xác minh mới",
+    remoteBlocked: "đã chặn tải từ xa",
+    offlineInference: "suy luận ngoại tuyến",
   },
 } as const;
 
@@ -136,7 +170,9 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
   let worker = createWorker();
   let requestSequence = 0;
   let destroyed = false;
-  let loadMetrics: VoiceQualityMetrics = { backend: "wasm" };
+  const candidateSessions = new Map<VoiceQualityCandidateId, CandidateSession>(
+    VOICE_QUALITY_CANDIDATE_ORDER.map((id) => [id, createCandidateSession()]),
+  );
   const pending = new Map<number, { resolve: (value: VoiceQualityResponse) => void; reject: (error: Error) => void }>();
   const results = new Map<string, VoiceQualityResult>();
 
@@ -223,7 +259,13 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
   const aggregates = document.createElement("div");
   aggregates.className = "voice-quality-aggregates";
   const exportButton = button(text.export, "quiet-button");
-  aggregateSection.append(aggregateHeading, aggregates, exportButton);
+  const resetButton = button(text.reset, "quiet-button");
+  const offlineNote = document.createElement("p");
+  offlineNote.textContent = text.browserOfflineNote;
+  const reportActions = document.createElement("div");
+  reportActions.className = "voice-quality-actions";
+  reportActions.append(resetButton, exportButton);
+  aggregateSection.append(aggregateHeading, offlineNote, aggregates, reportActions);
 
   const status = document.createElement("p");
   status.className = "voice-quality-status";
@@ -250,6 +292,7 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     render();
   });
   exportButton.addEventListener("click", downloadReport);
+  resetButton.addEventListener("click", () => void resetCandidateBenchmark());
   const navigationCleanup = () => void destroy();
   window.addEventListener("pagehide", navigationCleanup);
   window.addEventListener("popstate", navigationCleanup);
@@ -279,7 +322,6 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     setBusy(false);
     selectedId = id;
     installed = false;
-    loadMetrics = { backend: "wasm" };
     phase = "checking";
     render();
     await inspectSelected();
@@ -300,10 +342,13 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     render();
     try {
       await freshVerify(selectedId);
+      currentSession().offlineEvidence.freshCacheVerificationPassed = true;
+      await replaceWorker();
       installed = true;
       phase = "ready";
       statusMessage = text.installed;
     } catch {
+      currentSession().failures.verificationFailures += 1;
       installed = false;
       phase = "idle";
       statusMessage = text.incomplete;
@@ -322,20 +367,30 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     progress.value = 0;
     setBusy(true);
     render();
+    let installStage: "install" | "verify" = "install";
     try {
       const installedResponse = await request({ type: "install", candidateId: selectedId });
       if (installedResponse.type !== "installed") {
         throw new Error("INSTALL_RESPONSE_INVALID");
       }
-      loadMetrics = installedResponse.metrics;
+      currentSession().metrics = { ...currentSession().metrics, ...installedResponse.metrics };
+      await request({ type: "dispose" });
       statusMessage = text.verifying;
       render();
+      installStage = "verify";
       await freshVerify(selectedId);
+      currentSession().offlineEvidence.freshCacheVerificationPassed = true;
+      await replaceWorker();
       await writeMarker(selected());
       installed = true;
       phase = "ready";
       statusMessage = text.installed;
     } catch (error) {
+      if (installStage === "install") {
+        currentSession().failures.installFailures += 1;
+      } else {
+        currentSession().failures.verificationFailures += 1;
+      }
       installed = false;
       phase = "failure";
       statusMessage = `${text.failed}: ${errorMessage(error)}`;
@@ -371,12 +426,40 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
         ? `${text.cleanup}: ${response.deletedFiles} files${response.removedBytes === undefined ? "" : `, ${formatBytes(response.removedBytes)}`}.`
         : text.cleanup;
     } catch (error) {
+      currentSession().failures.cleanupFailures += 1;
       phase = "failure";
       statusMessage = `${text.failed}: ${errorMessage(error)}`;
     } finally {
       setBusy(false);
       render();
     }
+  }
+
+  async function resetCandidateBenchmark(): Promise<void> {
+    if (isBusy()) {
+      return;
+    }
+    await cancelCapture();
+    await replaceWorker();
+    for (const utterance of VOICE_QUALITY_UTTERANCES) {
+      results.delete(resultKey(selectedId, utterance.id));
+    }
+    const previousMetrics = currentSession().metrics;
+    candidateSessions.set(selectedId, {
+      metrics: {
+        backend: "wasm",
+        modelBytes: previousMetrics.modelBytes,
+        downloadDurationMs: previousMetrics.downloadDurationMs,
+        installationSessionDurationMs: previousMetrics.installationSessionDurationMs,
+      },
+      offlineEvidence: emptyOfflineEvidence(),
+      failures: emptyFailureLedger(),
+    });
+    installed = false;
+    phase = "checking";
+    statusMessage = text.marker;
+    render();
+    await inspectSelected();
   }
 
   async function startCapture(): Promise<void> {
@@ -388,15 +471,29 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     statusMessage = text.ready;
     render();
     try {
-      const prepared = await request({ type: "prepare", candidateId: selectedId });
+      const prepared = await request({
+        type: "prepare",
+        candidateId: selectedId,
+        browserReportedOnline: navigator.onLine,
+      });
       if (prepared.type !== "prepared") {
         throw new Error("PREPARE_RESPONSE_INVALID");
       }
-      loadMetrics = { ...loadMetrics, ...prepared.metrics };
+      currentSession().metrics = { ...currentSession().metrics, ...prepared.metrics };
+      if (prepared.metrics.runKind === "cache-cold") {
+        currentSession().offlineEvidence.browserReportedOfflineAtColdLoad =
+          prepared.browserReportedOfflineAtColdLoad;
+        currentSession().offlineEvidence.remoteFetchBlockedDuringCacheLoad =
+          prepared.remoteFetchBlockedDuringCacheLoad;
+        currentSession().offlineEvidence.offlineColdLoadPassed =
+          prepared.browserReportedOfflineAtColdLoad
+          && prepared.remoteFetchBlockedDuringCacheLoad;
+      }
       capture = await startMemoryAudioCapture(() => void stopAndTranscribe());
       phase = "recording";
       statusMessage = text.recording;
     } catch (error) {
+      currentSession().failures.prepareLoadFailures += 1;
       await cancelCapture();
       setBusy(false);
       phase = "failure";
@@ -415,22 +512,39 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     statusMessage = text.transcribing;
     render();
     const utterance = VOICE_QUALITY_UTTERANCES[utteranceIndex];
+    const browserReportedOnline = navigator.onLine;
     try {
       const audioDurationMs = activeCapture.durationMs();
       const audio = await activeCapture.stop();
-      const response = await request({ type: "transcribe", candidateId: selectedId, audio, audioDurationMs }, [audio.buffer]);
+      const response = await request({
+        type: "transcribe",
+        candidateId: selectedId,
+        audio,
+        audioDurationMs,
+        browserReportedOnline,
+      }, [audio.buffer]);
       if (response.type !== "transcribed") {
         throw new Error("TRANSCRIBE_RESPONSE_INVALID");
       }
+      if (!browserReportedOnline) {
+        currentSession().offlineEvidence.offlineInferencePassed = true;
+        currentSession().offlineEvidence.offlineInferenceUtteranceId = utterance.id;
+      }
       results.set(
         resultKey(selectedId, utterance.id),
-        analyzeVoiceQualityResult(selectedId, utterance, response.transcript, { ...loadMetrics, ...response.metrics }),
+        analyzeVoiceQualityResult(
+          selectedId,
+          utterance,
+          response.transcript,
+          { ...currentSession().metrics, ...response.metrics },
+        ),
       );
       phase = "ready";
       statusMessage = text.ready;
     } catch (error) {
+      currentSession().failures.transcriptionFailures += 1;
       results.set(resultKey(selectedId, utterance.id), {
-        ...analyzeVoiceQualityResult(selectedId, utterance, "", loadMetrics),
+        ...analyzeVoiceQualityResult(selectedId, utterance, "", currentSession().metrics),
         error: errorMessage(error),
       });
       phase = "failure";
@@ -462,7 +576,7 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     clearButton.disabled = !results.has(resultKey(selectedId, utterance.id));
     previousButton.disabled = phase === "recording" || phase === "transcribing";
     nextButton.disabled = previousButton.disabled;
-    exportButton.disabled = results.size === 0;
+    resetButton.disabled = busy;
     status.textContent = statusMessage;
     renderResults();
     renderAggregates();
@@ -517,7 +631,10 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
       appendCell(
         row,
         result
-          ? `${result.metrics.runKind ?? "—"} / ${result.metrics.backend} / ${result.metrics.modelBytes === undefined ? "—" : formatBytes(result.metrics.modelBytes)}`
+          ? `${result.metrics.runKind ?? "—"} / `
+            + `${browserState(result.metrics.browserReportedOnlineAtLoad, text)} / `
+            + `${browserState(result.metrics.browserReportedOnlineDuringInference, text)} / `
+            + `${result.metrics.backend} / ${result.metrics.modelBytes === undefined ? "—" : formatBytes(result.metrics.modelBytes)}`
           : "—",
       );
       const ratingCell = document.createElement("td");
@@ -553,7 +670,12 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     aggregates.replaceChildren();
     for (const id of VOICE_QUALITY_CANDIDATE_ORDER) {
       const candidateResults = [...results.values()].filter((result) => result.candidateId === id);
-      const aggregate = aggregateVoiceQuality(candidateResults);
+      const session = candidateSessions.get(id) ?? createCandidateSession();
+      const aggregate = aggregateVoiceQuality(
+        candidateResults,
+        session.offlineEvidence,
+        session.failures,
+      );
       const block = document.createElement("article");
       const heading = document.createElement("h3");
       heading.textContent = VOICE_QUALITY_CANDIDATES[id].label;
@@ -561,11 +683,25 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
       summary.textContent =
         `${aggregate.completed}/10 · WER≤0.10 ${aggregate.exactOrNearExact}/10 · `
         + `meaning ${aggregate.meaningPreserved}/10 · critical failures ${aggregate.criticalTokenFailures} · `
+        + `download ${formatMs(session.metrics.downloadDurationMs)} · install ${formatMs(session.metrics.installationSessionDurationMs)} · `
         + `median RTF ${formatNumber(aggregate.medianRtf)} · worst RTF ${formatNumber(aggregate.worstRtf)} · `
         + `cold ${formatMs(aggregate.coldLoadMs ?? undefined)} · warm ${formatMs(aggregate.warmLoadMs ?? undefined)} · `
-        + `failures ${aggregate.failures} · `
+        + `result failures ${aggregate.failures} · lifecycle failures ${aggregate.lifecycleFailures} · `
         + aggregate.verdict;
-      block.append(heading, summary);
+      const evidence = document.createElement("p");
+      evidence.textContent =
+        `${text.freshVerification}=${booleanLabel(session.offlineEvidence.freshCacheVerificationPassed, text)} · `
+        + `cache-cold=${session.metrics.cacheColdLoadDurationMs === undefined
+          ? text.unavailable
+          : browserState(session.metrics.browserReportedOnlineAtLoad, text)} · `
+        + `${text.remoteBlocked}=${booleanLabel(session.offlineEvidence.remoteFetchBlockedDuringCacheLoad, text)} · `
+        + `${text.offlineInference}=${session.offlineEvidence.offlineInferenceUtteranceId ?? text.no} · `
+        + (aggregate.missingAcceptanceGates.length === 0
+          ? text.acceptanceComplete
+          : `${text.acceptanceMissing}: ${aggregate.missingAcceptanceGates.join(", ")}`);
+      const failures = document.createElement("p");
+      failures.textContent = `${text.failureLedger}: ${formatFailureLedger(session.failures)}`;
+      block.append(heading, summary, evidence, failures);
       aggregates.append(block);
     }
   }
@@ -578,7 +714,14 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
       candidates: VOICE_QUALITY_CANDIDATE_ORDER.map((id) => ({
         ...VOICE_QUALITY_CANDIDATES[id],
         results: [...results.values()].filter((result) => result.candidateId === id),
-        aggregate: aggregateVoiceQuality([...results.values()].filter((result) => result.candidateId === id)),
+        runtimeMetrics: candidateSessions.get(id)?.metrics,
+        offlineEvidence: candidateSessions.get(id)?.offlineEvidence,
+        lifecycleFailureLedger: candidateSessions.get(id)?.failures,
+        aggregate: aggregateVoiceQuality(
+          [...results.values()].filter((result) => result.candidateId === id),
+          candidateSessions.get(id)?.offlineEvidence,
+          candidateSessions.get(id)?.failures,
+        ),
       })),
     };
     const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
@@ -617,6 +760,7 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
       waiter.reject(new Error(event.message || "VOICE_QUALITY_WORKER_CRASH"));
     }
     pending.clear();
+    currentSession().failures.workerCrashes += 1;
     void cancelCapture();
     setBusy(false);
     phase = "failure";
@@ -624,7 +768,7 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     if (crashedDuringSample) {
       const utterance = VOICE_QUALITY_UTTERANCES[utteranceIndex];
       results.set(resultKey(selectedId, utterance.id), {
-        ...analyzeVoiceQualityResult(selectedId, utterance, "", loadMetrics),
+        ...analyzeVoiceQualityResult(selectedId, utterance, "", currentSession().metrics),
         error: event.message || "VOICE_QUALITY_WORKER_CRASH",
       });
     }
@@ -691,6 +835,16 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
     return VOICE_QUALITY_CANDIDATES[selectedId];
   }
 
+  function currentSession(): CandidateSession {
+    const session = candidateSessions.get(selectedId);
+    if (!session) {
+      const created = createCandidateSession();
+      candidateSessions.set(selectedId, created);
+      return created;
+    }
+    return session;
+  }
+
   function isBusy(): boolean {
     return phase === "checking"
       || phase === "installing"
@@ -702,6 +856,14 @@ export function VoiceQualityProbe({ language, onLanguageChange }: VoiceQualityPr
   function setBusy(value: boolean): void {
     document.documentElement.dataset.voiceQualityBusy = String(value);
   }
+}
+
+function createCandidateSession(): CandidateSession {
+  return {
+    metrics: { backend: "wasm" },
+    offlineEvidence: emptyOfflineEvidence(),
+    failures: emptyFailureLedger(),
+  };
 }
 
 async function readMarker(candidate: VoiceQualityCandidate): Promise<InstallationMarker | undefined> {
@@ -781,6 +943,28 @@ function formatMs(value: number | undefined): string {
 
 function formatPreservation(value: boolean | null): string {
   return value === null ? "n/a" : value ? "PASS" : "FAIL";
+}
+
+function formatFailureLedger(ledger: VoiceQualityFailureLedger): string {
+  return [
+    `install=${ledger.installFailures}`,
+    `verification=${ledger.verificationFailures}`,
+    `prepare/load=${ledger.prepareLoadFailures}`,
+    `transcription=${ledger.transcriptionFailures}`,
+    `worker crash=${ledger.workerCrashes}`,
+    `cleanup=${ledger.cleanupFailures}`,
+  ].join(", ");
+}
+
+function booleanLabel(value: boolean, text: { yes: string; no: string }): string {
+  return value ? text.yes : text.no;
+}
+
+function browserState(
+  value: boolean | undefined,
+  text: { browserOnline: string; browserOffline: string; unavailable: string },
+): string {
+  return value === undefined ? text.unavailable : value ? text.browserOnline : text.browserOffline;
 }
 
 function errorMessage(error: unknown): string {

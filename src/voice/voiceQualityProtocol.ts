@@ -92,25 +92,51 @@ export interface VoiceQualityMetrics {
   backend: "wasm";
   modelBytes?: number;
   downloadDurationMs?: number;
-  loadDurationMs?: number;
-  coldLoadDurationMs?: number;
+  installationSessionDurationMs?: number;
+  cacheColdLoadDurationMs?: number;
   warmLoadDurationMs?: number;
   audioDurationMs?: number;
   transcriptionDurationMs?: number;
   realTimeFactor?: number;
-  runKind?: VoiceQualityRunKind;
+  runKind?: "cache-cold" | "warm";
+  browserReportedOnlineAtLoad?: boolean;
+  browserReportedOnlineDuringInference?: boolean;
+}
+
+export interface VoiceQualityOfflineEvidence {
+  freshCacheVerificationPassed: boolean;
+  browserReportedOfflineAtColdLoad: boolean;
+  remoteFetchBlockedDuringCacheLoad: boolean;
+  offlineColdLoadPassed: boolean;
+  offlineInferencePassed: boolean;
+  offlineInferenceUtteranceId: string | null;
+}
+
+export interface VoiceQualityFailureLedger {
+  installFailures: number;
+  verificationFailures: number;
+  prepareLoadFailures: number;
+  transcriptionFailures: number;
+  workerCrashes: number;
+  cleanupFailures: number;
 }
 
 export type VoiceQualityRequest =
   | { id: number; type: "install"; candidateId: VoiceQualityCandidateId }
   | { id: number; type: "verify"; candidateId: VoiceQualityCandidateId }
-  | { id: number; type: "prepare"; candidateId: VoiceQualityCandidateId }
+  | {
+      id: number;
+      type: "prepare";
+      candidateId: VoiceQualityCandidateId;
+      browserReportedOnline: boolean;
+    }
   | {
       id: number;
       type: "transcribe";
       candidateId: VoiceQualityCandidateId;
       audio: Float32Array;
       audioDurationMs: number;
+      browserReportedOnline: boolean;
     }
   | { id: number; type: "remove"; candidateId: VoiceQualityCandidateId }
   | { id: number; type: "dispose" };
@@ -119,7 +145,14 @@ export type VoiceQualityResponse =
   | { id: number; type: "progress"; loaded: number; total: number; files: number; file?: string }
   | { id: number; type: "installed"; candidateId: VoiceQualityCandidateId; metrics: VoiceQualityMetrics }
   | { id: number; type: "verified"; candidateId: VoiceQualityCandidateId; cachedFiles: number }
-  | { id: number; type: "prepared"; candidateId: VoiceQualityCandidateId; metrics: VoiceQualityMetrics }
+  | {
+      id: number;
+      type: "prepared";
+      candidateId: VoiceQualityCandidateId;
+      metrics: VoiceQualityMetrics;
+      remoteFetchBlockedDuringCacheLoad: true;
+      browserReportedOfflineAtColdLoad: boolean;
+    }
   | { id: number; type: "transcribed"; candidateId: VoiceQualityCandidateId; transcript: string; metrics: VoiceQualityMetrics }
   | { id: number; type: "removed"; candidateId: VoiceQualityCandidateId; deletedFiles: number; removedBytes?: number }
   | { id: number; type: "disposed" }

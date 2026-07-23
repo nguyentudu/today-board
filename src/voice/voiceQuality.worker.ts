@@ -38,7 +38,11 @@ async function handleRequest(request: VoiceQualityRequest): Promise<void> {
         await verify(request.id, candidate(request.candidateId));
         return;
       case "prepare":
-        await prepare(request.id, candidate(request.candidateId));
+        await prepare(
+          request.id,
+          candidate(request.candidateId),
+          request.browserReportedOnline,
+        );
         return;
       case "transcribe":
         await transcribe(
@@ -46,6 +50,7 @@ async function handleRequest(request: VoiceQualityRequest): Promise<void> {
           candidate(request.candidateId),
           request.audio,
           request.audioDurationMs,
+          request.browserReportedOnline,
         );
         return;
       case "remove":
@@ -68,6 +73,7 @@ async function handleRequest(request: VoiceQualityRequest): Promise<void> {
 
 async function install(id: number, selected: VoiceQualityCandidate): Promise<void> {
   const startedAt = performance.now();
+  let lastDownloadProgressAt = startedAt;
   const ledger = new ModelDownloadProgress();
   await loadPipeline(selected, false, (event: unknown) => {
     const info = event as { status?: string; loaded?: number; total?: number; file?: string };
@@ -75,6 +81,7 @@ async function install(id: number, selected: VoiceQualityCandidate): Promise<voi
       return;
     }
     const totals = ledger.update(info);
+    lastDownloadProgressAt = performance.now();
     post({
       id,
       type: "progress",
@@ -92,10 +99,8 @@ async function install(id: number, selected: VoiceQualityCandidate): Promise<voi
     metrics: {
       backend: "wasm",
       modelBytes: ledger.totals().loaded,
-      downloadDurationMs: duration,
-      loadDurationMs: duration,
-      coldLoadDurationMs: duration,
-      runKind: "cold",
+      downloadDurationMs: Math.max(0, lastDownloadProgressAt - startedAt),
+      installationSessionDurationMs: duration,
     },
   });
 }
@@ -116,21 +121,32 @@ async function verify(id: number, selected: VoiceQualityCandidate): Promise<void
   post({ id, type: "verified", candidateId: selected.id, cachedFiles: cacheStatus.files.length });
 }
 
-async function prepare(id: number, selected: VoiceQualityCandidate): Promise<void> {
+async function prepare(
+  id: number,
+  selected: VoiceQualityCandidate,
+  browserReportedOnline: boolean,
+): Promise<void> {
   const wasLoaded = loadedCandidateId === selected.id && Boolean(transcriber);
   const startedAt = performance.now();
   await loadPipeline(selected, true);
   const metrics: VoiceQualityMetrics = {
     backend: "wasm",
-    loadDurationMs: performance.now() - startedAt,
-    runKind: wasLoaded ? "warm" : "cold",
+    runKind: wasLoaded ? "warm" : "cache-cold",
+    browserReportedOnlineAtLoad: browserReportedOnline,
   };
   if (wasLoaded) {
-    metrics.warmLoadDurationMs = metrics.loadDurationMs;
+    metrics.warmLoadDurationMs = performance.now() - startedAt;
   } else {
-    metrics.coldLoadDurationMs = metrics.loadDurationMs;
+    metrics.cacheColdLoadDurationMs = performance.now() - startedAt;
   }
-  post({ id, type: "prepared", candidateId: selected.id, metrics });
+  post({
+    id,
+    type: "prepared",
+    candidateId: selected.id,
+    metrics,
+    remoteFetchBlockedDuringCacheLoad: true,
+    browserReportedOfflineAtColdLoad: !wasLoaded && !browserReportedOnline,
+  });
 }
 
 async function transcribe(
@@ -138,6 +154,7 @@ async function transcribe(
   selected: VoiceQualityCandidate,
   audio: Float32Array,
   audioDurationMs: number,
+  browserReportedOnline: boolean,
 ): Promise<void> {
   if (!transcriber || loadedCandidateId !== selected.id) {
     throw new Error("MODEL_NOT_PREPARED");
@@ -166,6 +183,7 @@ async function transcribe(
       audioDurationMs,
       transcriptionDurationMs,
       realTimeFactor: transcriptionDurationMs / audioDurationMs,
+      browserReportedOnlineDuringInference: browserReportedOnline,
     },
   });
 }
