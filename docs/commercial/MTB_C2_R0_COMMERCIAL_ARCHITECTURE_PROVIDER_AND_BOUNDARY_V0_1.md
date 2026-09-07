@@ -292,6 +292,10 @@ Rules:
   origin's localStorage. R1/R4 must give existing users an explicit export from
   the old origin and import into the new origin; no cross-origin data access or
   silent migration may be claimed.
+- R4 must parameterize install-readiness verification for the selected
+  deployment base. The commercial custom-domain root and the accepted GitHub
+  Pages `/today-board/` subpath are separate supported targets; changing one
+  must not erase verification coverage for the other.
 - No AI chat, marketplace, social feed, collaboration, calendar automation,
   engagement notification, Proof Commerce integration, or voice productization
   is inside Commercial v1.

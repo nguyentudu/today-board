@@ -95,6 +95,7 @@
         "src/legal/DataDeletion.ts",
         "docs/commercial/SUPPORT_RUNBOOK_V0_1.md",
         "docs/commercial/LAUNCH_COPY_V0_1.md",
+        "scripts/verify-install-readiness.mjs",
         "scripts/verify-launch-surface.mjs"
       ],
       "R5": [
