@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: v1.0.0
+          ref: bdf2853eb7087898352f804a02d38f251eb5268a
 
       - name: Setup Node
         uses: actions/setup-node@v4

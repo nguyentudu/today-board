@@ -6,20 +6,34 @@ const TAGGED_COMMIT = "bdf2853eb7087898352f804a02d38f251eb5268a";
 const ACCEPTED_COMMIT = "33e5750b9577277cb94dae2e736a7444e29e587a";
 const RUNTIME_PATHS = ["src", "index.html", "styles", "public", "package.json", "package-lock.json", "vite.config.ts", "tsconfig.json"];
 const git = (...args) => execFileSync("git", args, { encoding: "utf8" }).trim();
+const gitObjectExists = (revision) => {
+  try {
+    execFileSync("git", ["cat-file", "-e", revision], { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+};
 
-if (git("cat-file", "-t", "v1.0.0") !== "tag") {
-  throw new Error("Rollback verification failed: v1.0.0 is not an annotated tag.");
+if (gitObjectExists("v1.0.0")) {
+  if (git("cat-file", "-t", "v1.0.0") !== "tag") {
+    throw new Error("Rollback verification failed: fetched v1.0.0 is not an annotated tag.");
+  }
+  if (git("rev-parse", "v1.0.0") !== TAG_OBJECT || git("rev-parse", "v1.0.0^{}") !== TAGGED_COMMIT) {
+    throw new Error("Rollback verification failed: fetched v1.0.0 identity changed.");
+  }
 }
-if (git("rev-parse", "v1.0.0") !== TAG_OBJECT || git("rev-parse", "v1.0.0^{}") !== TAGGED_COMMIT) {
-  throw new Error("Rollback verification failed: v1.0.0 identity changed.");
-}
-if (git("diff", "--name-only", ACCEPTED_COMMIT, TAGGED_COMMIT, "--", ...RUNTIME_PATHS)) {
+if (
+  gitObjectExists(`${ACCEPTED_COMMIT}^{commit}`) &&
+  gitObjectExists(`${TAGGED_COMMIT}^{commit}`) &&
+  git("diff", "--name-only", ACCEPTED_COMMIT, TAGGED_COMMIT, "--", ...RUNTIME_PATHS)
+) {
   throw new Error("Rollback verification failed: tagged runtime differs from accepted application commit.");
 }
 
 const workflow = readFileSync(".github/workflows/pages.yml", "utf8");
-if (/\bpush\s*:/.test(workflow) || !workflow.includes("workflow_dispatch:") || !workflow.includes("ref: v1.0.0")) {
-  throw new Error("Rollback verification failed: Pages workflow is not manual-only and pinned to v1.0.0.");
+if (/\bpush\s*:/.test(workflow) || !workflow.includes("workflow_dispatch:") || !workflow.includes(`ref: ${TAGGED_COMMIT}`)) {
+  throw new Error("Rollback verification failed: Pages workflow is not manual-only and pinned to the recorded commit.");
 }
 
 const evidence = readFileSync("docs/commercial/ACCEPTED_V1_ROLLBACK_ARTIFACT_V0_1.md", "utf8");

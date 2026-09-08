@@ -14,22 +14,26 @@ Status: `R1 VERIFIED`
 | Service-worker cache identity | `2026-07-22-b` |
 
 The tagged commit changes no runtime application path relative to the accepted
-application commit. Recording both the tag-object and peeled commit SHAs makes
-tag movement detectable.
+application commit. The tag records provenance, but it is not the executable
+rollback pointer. When a clone includes the tag, the verifier checks both the
+tag-object and peeled commit SHAs so tag movement remains detectable.
 
 ## Deployment guard
 
-`.github/workflows/pages.yml` is manual-only and checks out `v1.0.0` explicitly.
-Pushes to `main` no longer deploy GitHub Pages. This prevents later commercial
-client commits from silently replacing the accepted rollback surface.
+`.github/workflows/pages.yml` is manual-only and checks out recorded commit
+`bdf2853eb7087898352f804a02d38f251eb5268a` directly. It never resolves the
+deployment target through a movable tag name. Pushes to `main` no longer deploy
+GitHub Pages. This prevents later commercial client commits from silently
+replacing the accepted rollback surface.
 
 Running the workflow is a deployment and still requires explicit Founder
 authority. This document and the workflow change do not trigger it.
 
 ## Recovery procedure
 
-1. Verify that `v1.0.0^{}` resolves to the tagged commit above and the tag object
-   SHA matches this record.
+1. Verify that the workflow checkout ref is the exact tagged commit above. If
+   the clone includes `v1.0.0`, also verify its tag-object and peeled commit SHAs
+   against this record.
 2. Verify the accepted build and all v1 tests locally from the tag.
 3. Obtain explicit Founder deployment authority.
 4. Manually dispatch `Deploy accepted v1 rollback`.
