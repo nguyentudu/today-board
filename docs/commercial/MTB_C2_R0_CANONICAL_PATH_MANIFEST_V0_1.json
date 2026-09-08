@@ -87,6 +87,7 @@
       ],
       "R4": [
         "README.md",
+        "package.json",
         "index.html",
         "public/manifest.webmanifest",
         "public/sw.js",
