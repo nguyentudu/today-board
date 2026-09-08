@@ -282,6 +282,10 @@ The exact allowed namespaces and initially planned paths are recorded in
 Rules:
 
 - R1–R5 receive separate bounded implementation authority.
+- Public-client and commercial-control-plane paths are authorized by their
+  explicit phase entries only. A shared bootstrap path may appear in more than
+  one phase when that phase is expected to modify it; the union of R2/R3/R5
+  control-plane paths never grants any one phase authority over the others.
 - Existing v1 domain semantics may be imported but not rewritten merely to
   accommodate commerce.
 - Commercial code must depend on domain contracts; domain code must not depend
