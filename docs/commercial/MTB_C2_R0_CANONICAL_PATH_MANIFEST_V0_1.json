@@ -57,6 +57,8 @@
         "package-lock.json",
         "src/app.ts",
         "src/ui/Board.ts",
+        "src/ui/Column.ts",
+        "src/ui/Card.ts",
         "src/ui/CardEditor.ts",
         "src/ui/QuickCapture.ts",
         "src/account/authClient.ts",
