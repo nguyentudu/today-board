@@ -33,8 +33,8 @@ engagement.
 - Moon Local is the only active entitlement.
 - Continuity Pro and Founding License are visibly marked preview-only.
 - Account, sync, and checkout controls are unavailable and fail-closed.
-- Optional continuity review is calculated locally without telemetry or a
-  productivity score.
+- Continuity Review is a non-functional Continuity Pro preview for Moon Local;
+  it does not calculate board data, emit telemetry, or assign a productivity score.
 - Trust and local-data promises are available in the application and under
   `docs/commercial/`.
 
