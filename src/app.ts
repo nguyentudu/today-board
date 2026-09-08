@@ -5,6 +5,7 @@ import { BOARD_STORAGE_WARNING_BYTES, estimateBoardSize, loadBoard, saveBoard, t
 import { Board as BoardView } from "./ui/Board";
 import type { Language } from "./ui/i18n";
 import { QuickCapture, type QuickCapturePayload, type QuickCaptureSaveResult } from "./ui/QuickCapture";
+import { installPaymentClientBoundary } from "./commercial/checkoutClient";
 
 const app = document.querySelector<HTMLDivElement>("#app");
 
@@ -28,6 +29,7 @@ let hasReloadedForUpdate = false;
 let networkStatusTimer: number | undefined;
 
 window.__TODAY_BOARD_BUILD_ID__ = BUILD_ID;
+installPaymentClientBoundary(document.documentElement);
 renderBuildMarker();
 
 if (!isQuickCaptureMode()) {

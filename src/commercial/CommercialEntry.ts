@@ -1,6 +1,8 @@
 import { COMMERCIAL_CATALOG } from "./catalog";
 import type { EntitlementSnapshot } from "./contracts";
 import type { Language } from "../ui/i18n";
+import { requestCheckout } from "./checkoutClient";
+import { CustomerPortal } from "./CustomerPortal";
 
 interface CommercialEntryProps {
   language: Language;
@@ -20,6 +22,8 @@ const commercialCopy = {
     accountCopy: "Đăng nhập và đồng bộ mã hóa chưa được kích hoạt. Moon không giả lập checkout hoặc quyền trả phí.",
     accountButton: "Tài khoản — chưa khả dụng",
     syncButton: "Đồng bộ — chưa khả dụng",
+    checkoutButton: "Thanh toán — chưa khả dụng",
+    portalButton: "Cổng khách hàng — chưa khả dụng",
     trustTitle: "Ranh giới tin cậy",
     trustItems: [
       "Nội dung board hiện chỉ nằm trong bộ nhớ trình duyệt trên thiết bị này.",
@@ -44,6 +48,8 @@ const commercialCopy = {
     accountCopy: "Sign-in and encrypted sync are not active. Moon does not simulate checkout or paid access.",
     accountButton: "Account — unavailable",
     syncButton: "Sync — unavailable",
+    checkoutButton: "Checkout — unavailable",
+    portalButton: "Customer portal — unavailable",
     trustTitle: "Trust boundary",
     trustItems: [
       "Board content currently stays in this browser's storage on this device.",
@@ -122,6 +128,8 @@ export function CommercialEntry({ language, entitlement }: CommercialEntryProps)
   accountActions.append(
     createUnavailableButton(text.accountButton, entitlement.accountEnabled),
     createUnavailableButton(text.syncButton, entitlement.syncEnabled),
+    createUnavailableButton(text.checkoutButton, requestCheckout().enabled),
+    CustomerPortal(text.portalButton),
   );
   account.append(accountTitle, accountCopy, accountActions);
 

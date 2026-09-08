@@ -1,5 +1,7 @@
 import type { CommercialPlan } from "./contracts";
 
+export const COMMERCIAL_CATALOG_MODE = "candidate_fixture_only" as const;
+
 export const COMMERCIAL_CATALOG: readonly CommercialPlan[] = Object.freeze([
   {
     id: "local_free",
