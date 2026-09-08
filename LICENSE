@@ -1,0 +1,58 @@
+Moon Today Board Proprietary License
+
+Copyright (c) 2026 nguyentudu. All rights reserved.
+
+This repository is publicly visible, but no open-source license is granted for
+the first-party Moon Today Board software, documentation, artwork, or other
+materials owned by nguyentudu (the "Moon Today Board Materials").
+
+Except as required by applicable law, permitted by applicable platform terms,
+or expressly authorized in writing by the copyright owner, you may not copy,
+modify, distribute, sublicense, sell, or create derivative works from the Moon
+Today Board Materials.
+
+THE MOON TODAY BOARD MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. TO THE
+MAXIMUM EXTENT PERMITTED BY LAW, THE COPYRIGHT OWNER WILL NOT BE LIABLE FOR ANY
+CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM OR RELATED TO THE MATERIALS OR
+THEIR USE.
+
+Third-party and previously licensed material
+--------------------------------------------
+
+This proprietary notice applies only to first-party material that the
+copyright owner has authority to license. It does not replace, restrict, or
+relicense any third-party dependency, third-party material, or material already
+subject to another license. Such material remains governed by its original
+license terms and copyright notices. Dependency identities and declared
+licenses are recorded in package.json, package-lock.json, and the license files
+distributed with the installed packages.
+
+The production build contains Vite's module-preload polyfill. That component
+remains available under the following MIT License and is not covered by the
+proprietary terms above:
+
+MIT License
+
+Copyright (c) 2019-present, VoidZero Inc. and Vite contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Trademark rights are addressed separately in TRADEMARKS.md.

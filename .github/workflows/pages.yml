@@ -1,8 +1,6 @@
-name: Deploy static test page
+name: Deploy accepted v1 rollback
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -20,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: bdf2853eb7087898352f804a02d38f251eb5268a
 
       - name: Setup Node
         uses: actions/setup-node@v4

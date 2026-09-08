@@ -18,7 +18,12 @@ import {
 } from "../domain/retrieval";
 import type { BoardState } from "../domain/state";
 import { BOARD_STATES } from "../domain/state";
+import { CommercialEntry } from "../commercial/CommercialEntry";
+import { getEntitlementSnapshot } from "../commercial/entitlementStore";
+import { ContinuityReview } from "../continuityReview/ContinuityReview";
 import { formatBytes } from "../media/localMedia";
+import { createFirstReturn, readFirstReturnState, writeFirstReturnState } from "../onboarding/firstReturn";
+import { Onboarding } from "../onboarding/Onboarding";
 import { cleanupHiddenCardMedia, getStorageDiagnostics } from "../storage/diagnostics";
 import { exportBoard, readImportedBoard } from "../storage/exportBoard";
 import { BOARD_STORAGE_WARNING_BYTES, trySaveBoard } from "../storage/localStore";
@@ -166,6 +171,29 @@ export function Board({
   localNote.className = "local-note";
   localNote.textContent = text.savedNote;
 
+  const onboarding = Onboarding({
+    language,
+    hasCards: board.cards.length > 0,
+    state: readFirstReturnState(),
+    onCreate: (input) => {
+      const result = createFirstReturn(board, input);
+      if (!result || !trySaveBoard(result.board)) {
+        return false;
+      }
+      writeFirstReturnState({ stage: "created", cardId: result.cardId });
+      onChange(result.board);
+      return true;
+    },
+  });
+
+  const entitlement = getEntitlementSnapshot();
+  const commercialEntry = CommercialEntry({ language, entitlement });
+  const continuityReview = ContinuityReview({
+    board,
+    language,
+    enabled: entitlement.continuityReviewEnabled,
+  });
+
   const columns = document.createElement("div");
   columns.className = "columns";
   const retrievalView = createRetrievalSurface(board, language, renderColumns);
@@ -261,7 +289,11 @@ export function Board({
 
   testNotes.append(testNotesTitle, testNotesList);
 
-  shell.append(top, localNote, dataPanel, retrievalSurface, columns, testNotes);
+  shell.append(top, localNote);
+  if (onboarding) {
+    shell.append(onboarding);
+  }
+  shell.append(commercialEntry, continuityReview, dataPanel, retrievalSurface, columns, testNotes);
   setupSearchKeyboardDismissal(shell, retrievalView.searchInput, retrievalView.isComposing);
 
   return shell;

@@ -2,6 +2,15 @@
 
 Today Board v1 is accepted as a complete local-first product baseline.
 
+Commercial UX R1 is implemented as a preview layer over that baseline. Moon
+Local remains free, on-device, offline-capable, and account-free. Paid plans,
+sign-in, sync, checkout, and remote storage are not active in R1.
+
+Copyright (c) 2026 nguyentudu. All rights reserved. This public repository is
+not open source. First-party material is governed by [LICENSE](LICENSE); Moon
+Today Board marks are addressed in [TRADEMARKS.md](TRADEMARKS.md). Third-party
+and previously licensed material retains its original license and ownership.
+
 Accepted repository commit: `33e5750b9577277cb94dae2e736a7444e29e587a`
 
 Accepted runtime identities:
@@ -16,6 +25,41 @@ Reduce the cost of returning without taking away agency.
 Product promise:
 
 Help me return without rebuilding my world.
+
+Commercial positioning: Moon is for founders and independent operators who
+return to interrupted work across multiple workstreams. It competes on
+continuity and Time To Context, not task volume, automated scheduling, or
+engagement.
+
+## R1 commercial preview
+
+- First-return onboarding asks only for a situation and a return point.
+- A sample can prefill the form without mutating the board.
+- Moon Local is the only active entitlement.
+- Continuity Pro and Founding License are visibly marked preview-only.
+- Account, sync, and checkout controls are unavailable and fail-closed.
+- Continuity Review is a non-functional Continuity Pro preview for Moon Local;
+  it does not calculate board data, emit telemetry, or assign a productivity score.
+- Trust and local-data promises are available in the application and under
+  `docs/commercial/`.
+
+Candidate pricing is documented in `docs/commercial/OFFER_V0_1.md`; it is not a
+live offer or adopted payment configuration.
+
+## Accepted v1 rollback
+
+Annotated tag `v1.0.0` resolves to the accepted v1 repository merge without any
+runtime-path difference from accepted application commit
+`33e5750b9577277cb94dae2e736a7444e29e587a`.
+
+The GitHub Pages workflow is manual-only and explicitly checks out accepted
+commit `bdf2853eb7087898352f804a02d38f251eb5268a`. The `v1.0.0` tag records
+provenance but is not the executable rollback pointer. Pushes to `main` no
+longer deploy automatically. Dispatching the rollback workflow remains a
+deployment and requires separate Founder authority.
+
+Exact identities and recovery steps are recorded in
+`docs/commercial/ACCEPTED_V1_ROLLBACK_ARTIFACT_V0_1.md`.
 
 ## What It Does
 
