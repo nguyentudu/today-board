@@ -17,6 +17,7 @@ export interface EntitlementSnapshot {
   accountEnabled: false;
   syncEnabled: false;
   checkoutEnabled: false;
+  continuityReviewEnabled: false;
 }
 
 export const LOCAL_FREE_ENTITLEMENT: EntitlementSnapshot = Object.freeze({
@@ -26,4 +27,5 @@ export const LOCAL_FREE_ENTITLEMENT: EntitlementSnapshot = Object.freeze({
   accountEnabled: false,
   syncEnabled: false,
   checkoutEnabled: false,
+  continuityReviewEnabled: false,
 });

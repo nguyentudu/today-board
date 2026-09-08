@@ -186,8 +186,13 @@ export function Board({
     },
   });
 
-  const commercialEntry = CommercialEntry({ language, entitlement: getEntitlementSnapshot() });
-  const continuityReview = ContinuityReview({ board, language });
+  const entitlement = getEntitlementSnapshot();
+  const commercialEntry = CommercialEntry({ language, entitlement });
+  const continuityReview = ContinuityReview({
+    board,
+    language,
+    enabled: entitlement.continuityReviewEnabled,
+  });
 
   const columns = document.createElement("div");
   columns.className = "columns";

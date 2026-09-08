@@ -13,6 +13,7 @@ for (const [label, condition] of [
   ["Board mounts onboarding", board.includes("Onboarding({")],
   ["Board mounts commercial entry", board.includes("CommercialEntry({")],
   ["Board mounts continuity review", board.includes("ContinuityReview({")],
+  ["Board passes explicit continuity entitlement", board.includes("enabled: entitlement.continuityReviewEnabled")],
   ["First flow requires title and return point", firstReturn.includes("!title || !returnPoint")],
   ["Onboarding offers a non-mutating sample", onboarding.includes("sampleTitle") && onboarding.includes("sampleReturn")],
   ["Onboarding is bilingual", onboarding.includes("vi:") && onboarding.includes("en:")],
@@ -20,6 +21,7 @@ for (const [label, condition] of [
   ["Commercial actions disclose unavailable state", commercial.includes("button.disabled = !enabled")],
   ["Commercial trust copy is bilingual", commercial.includes("trustItems") && commercial.includes("No analytics")],
   ["Review rejects productivity pressure", review.includes("no productivity score") && review.includes("không tạo thêm áp lực")],
+  ["Local review is a non-functional preview", review.indexOf("if (!enabled)") < review.indexOf("buildContinuityReview(board)") && review.includes('featureState = "preview-only"')],
   ["R1 surfaces are responsive", styles.includes(".commercial-plan-grid") && styles.includes(".continuity-metrics")],
 ]) {
   if (!condition) {

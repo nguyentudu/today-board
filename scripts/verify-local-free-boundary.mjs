@@ -21,7 +21,11 @@ for (const forbidden of ["fetch(", "XMLHttpRequest", "WebSocket", "sendBeacon", 
   }
 }
 
-if (!contracts.includes('accountRequired: false') || !contracts.includes('checkoutEnabled: false')) {
+if (
+  !contracts.includes('accountRequired: false') ||
+  !contracts.includes('checkoutEnabled: false') ||
+  !contracts.includes('continuityReviewEnabled: false')
+) {
   throw new Error("Local/free boundary verification failed: free contract is not fail-closed.");
 }
 if (!entitlement.includes("return LOCAL_FREE_ENTITLEMENT") || !entitlement.includes("return false")) {

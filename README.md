@@ -47,9 +47,11 @@ Annotated tag `v1.0.0` resolves to the accepted v1 repository merge without any
 runtime-path difference from accepted application commit
 `33e5750b9577277cb94dae2e736a7444e29e587a`.
 
-The GitHub Pages workflow is manual-only and explicitly checks out `v1.0.0`.
-Pushes to `main` no longer deploy automatically. Dispatching the rollback
-workflow remains a deployment and requires separate Founder authority.
+The GitHub Pages workflow is manual-only and explicitly checks out accepted
+commit `bdf2853eb7087898352f804a02d38f251eb5268a`. The `v1.0.0` tag records
+provenance but is not the executable rollback pointer. Pushes to `main` no
+longer deploy automatically. Dispatching the rollback workflow remains a
+deployment and requires separate Founder authority.
 
 Exact identities and recovery steps are recorded in
 `docs/commercial/ACCEPTED_V1_ROLLBACK_ARTIFACT_V0_1.md`.
