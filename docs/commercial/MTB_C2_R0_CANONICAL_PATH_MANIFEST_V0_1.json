@@ -77,7 +77,9 @@
         "scripts/verify-indexeddb-migration.mjs",
         "scripts/verify-sync-conflicts.mjs",
         "scripts/verify-sync-offline.mjs",
-        "scripts/verify-remote-deletion.mjs"
+        "scripts/verify-remote-deletion.mjs",
+        "scripts/verify-edit-session.mjs",
+        "scripts/verify-lifecycle-integrity.mjs"
       ],
       "R4": [
         "README.md",
@@ -96,6 +98,8 @@
         "docs/commercial/SUPPORT_RUNBOOK_V0_1.md",
         "docs/commercial/LAUNCH_COPY_V0_1.md",
         "scripts/verify-install-readiness.mjs",
+        "scripts/verify-lifecycle-integrity.mjs",
+        "scripts/verify-ux-closure.mjs",
         "scripts/verify-launch-surface.mjs"
       ],
       "R5": [
