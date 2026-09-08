@@ -6,6 +6,11 @@ Commercial UX R1 is implemented as a preview layer over that baseline. Moon
 Local remains free, on-device, offline-capable, and account-free. Paid plans,
 sign-in, sync, checkout, and remote storage are not active in R1.
 
+Copyright (c) 2026 nguyentudu. All rights reserved. This public repository is
+not open source. First-party material is governed by [LICENSE](LICENSE); Moon
+Today Board marks are addressed in [TRADEMARKS.md](TRADEMARKS.md). Third-party
+and previously licensed material retains its original license and ownership.
+
 Accepted repository commit: `33e5750b9577277cb94dae2e736a7444e29e587a`
 
 Accepted runtime identities:
