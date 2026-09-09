@@ -18,7 +18,12 @@ export function syntheticFixtureSession(accountId: string): AccountSession {
 }
 
 export function requireFixtureSession(session: AccountSession): string {
-  if (!session.authenticated || session.source !== "synthetic-fixture" || !session.accountId) {
+  if (
+    !session.authenticated ||
+    session.source !== "synthetic-fixture" ||
+    !session.accountId ||
+    !/^acct_fixture_[a-z0-9_-]+$/.test(session.accountId)
+  ) {
     throw new Error("An explicitly injected synthetic account session is required");
   }
   return session.accountId;

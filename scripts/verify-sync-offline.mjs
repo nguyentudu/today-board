@@ -21,6 +21,7 @@ try {
   await assert.rejects(() => validatingClient.pull("board"), /ownership mismatch/);
   assert.deepEqual(local, { updatedAt: "before-offline-attempt" }, "network failure must not mutate local state");
   assert.throws(() => sync.createInjectedFixtureSyncClient(sessions.DISABLED_ACCOUNT_SESSION, transport));
+  assert.throws(() => sync.createInjectedFixtureSyncClient({ authenticated: true, source: "synthetic-fixture", accountId: "acct_live_123" }, transport));
   const sources = await Promise.all([
     "src/account/authClient.ts",
     "src/account/session.ts",
