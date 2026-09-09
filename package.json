@@ -28,6 +28,11 @@
     "test:local-free-boundary": "node scripts/verify-local-free-boundary.mjs",
     "test:v1-rollback-artifact": "node scripts/verify-v1-rollback-artifact.mjs",
     "test:payment-client-boundary": "node scripts/verify-payment-client-boundary.mjs",
+    "test:encryption-boundary": "node scripts/verify-encryption-boundary.mjs",
+    "test:indexeddb-migration": "node scripts/verify-indexeddb-migration.mjs",
+    "test:sync-conflicts": "node scripts/verify-sync-conflicts.mjs",
+    "test:sync-offline": "node scripts/verify-sync-offline.mjs",
+    "test:remote-deletion": "node scripts/verify-remote-deletion.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {
