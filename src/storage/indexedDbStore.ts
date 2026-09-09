@@ -9,7 +9,7 @@ const MEDIA_STORE = "media";
 export interface MigrationCommitStore {
   readBoard(): Promise<Board | null>;
   readMigrationDigest(): Promise<string | null>;
-  commitMigratedBoard(board: Board, sourceDigest: string): Promise<void>;
+  commitMigratedBoard(board: Board, sourceDigest: string): Promise<"committed" | "already-committed" | "conflict">;
 }
 
 function requestResult<T>(request: IDBRequest<T>): Promise<T> {
@@ -55,12 +55,27 @@ export class IndexedDbBoardStore implements MigrationCommitStore {
     return typeof result === "string" ? result : null;
   }
 
-  async commitMigratedBoard(board: Board, sourceDigest: string): Promise<void> {
+  async commitMigratedBoard(
+    board: Board,
+    sourceDigest: string,
+  ): Promise<"committed" | "already-committed" | "conflict"> {
     const database = await this.#database;
     const transaction = database.transaction([BOARD_STORE, META_STORE], "readwrite");
-    transaction.objectStore(BOARD_STORE).put(structuredClone(board), "current");
-    transaction.objectStore(META_STORE).put(sourceDigest, "v1-source-digest");
+    const boardStore = transaction.objectStore(BOARD_STORE);
+    const metadataStore = transaction.objectStore(META_STORE);
+    const boardRequest = boardStore.get("current");
+    const digestRequest = metadataStore.get("v1-source-digest");
+    const [existingBoard, existingDigest] = await Promise.all([
+      requestResult(boardRequest), requestResult(digestRequest),
+    ]);
+    if (existingBoard !== undefined || existingDigest !== undefined) {
+      await transactionDone(transaction);
+      return existingBoard !== undefined && existingDigest === sourceDigest ? "already-committed" : "conflict";
+    }
+    boardStore.put(structuredClone(board), "current");
+    metadataStore.put(sourceDigest, "v1-source-digest");
     await transactionDone(transaction);
+    return "committed";
   }
 
   async saveBoard(board: Board): Promise<void> {

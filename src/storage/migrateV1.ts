@@ -26,15 +26,12 @@ export async function migrateV1LocalStorage(
   const raw = legacy.getItem(LEGACY_BOARD_KEY);
   if (raw === null) return { status: "nothing-to-migrate" };
   const sourceDigest = await sha256(raw);
-  const recordedDigest = await destination.readMigrationDigest();
-  if (recordedDigest === sourceDigest) {
-    return { status: "already-migrated", sourceDigest };
-  }
-  if (await destination.readBoard()) return { status: "recovery-conflict", sourceDigest };
 
   try {
     const board = sanitizeBoard(JSON.parse(raw));
-    await destination.commitMigratedBoard(board, sourceDigest);
+    const outcome = await destination.commitMigratedBoard(board, sourceDigest);
+    if (outcome === "already-committed") return { status: "already-migrated", sourceDigest };
+    if (outcome === "conflict") return { status: "recovery-conflict", sourceDigest };
     const persisted = await destination.readBoard();
     if (!persisted || JSON.stringify(persisted) !== JSON.stringify(board)) {
       throw new Error("Post-migration verification failed");

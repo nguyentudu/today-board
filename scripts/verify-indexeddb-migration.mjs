@@ -13,8 +13,12 @@ try {
     async readMigrationDigest() { return state.digest; },
     async commitMigratedBoard(board, digest) {
       if (state.fail) throw new Error("fixture transaction failed");
+      if (state.board !== null || state.digest !== null) {
+        return state.board !== null && state.digest === digest ? "already-committed" : "conflict";
+      }
       state.board = structuredClone(board);
       state.digest = digest;
+      return "committed";
     },
   };
   const first = await migration.migrateV1LocalStorage(legacy, destination);
