@@ -1,0 +1,46 @@
+{
+  "manifestVersion": "mtb-eos-r0-path-manifest-v0.1",
+  "baseline": {
+    "repository": "nguyentudu/today-board",
+    "branch": "main",
+    "commit": "b49d46642fe10629afe2bdf3471476b4a4b75b18"
+  },
+  "packet": {
+    "id": "MTB-EOS-R0",
+    "mutationMode": "contract-and-fixture-only",
+    "allowedPaths": [
+      "package.json",
+      "src/economicObjects/contracts.ts",
+      "src/economicObjects/fixtures.ts",
+      "scripts/verify-economic-object-contract.mjs",
+      "docs/economic-objects/MTB_EOS_R0_CROSS_SYSTEM_ECONOMIC_OBJECT_CONTRACT_V0_1.md",
+      "docs/economic-objects/MTB_EOS_R0_REPOSITORY_FIT_MAP_V0_1.md",
+      "docs/economic-objects/MTB_EOS_R0_CANONICAL_PATH_MANIFEST_V0_1.json",
+      "docs/economic-objects/MTB_EOS_R0_COMPLETION_REPORT_V0_1.md"
+    ]
+  },
+  "runtimeWiringAuthorized": false,
+  "fixtureCount": 5,
+  "externalMutationsAuthorized": false,
+  "excludedCapabilities": [
+    "application-ui",
+    "board-or-card-schema-change",
+    "persistence-or-export-change",
+    "proof-commerce-connection",
+    "game-seed-connection",
+    "founder-runtime-execution",
+    "payment",
+    "entitlement",
+    "marketplace",
+    "sale",
+    "license-issuance",
+    "transfer",
+    "account",
+    "sync",
+    "network-request",
+    "credential",
+    "deployment",
+    "user-data"
+  ],
+  "nextGate": "MTB-EOS-R1 fixture-only attention surface requires separate Founder authority after independent R0 verification"
+}
