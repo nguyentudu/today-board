@@ -12,44 +12,55 @@ export type TransferabilityState =
   | "unknown";
 export type AttentionState = "blocked" | "actionable" | "opportunity" | "watch" | "no_action";
 export type ActionTargetSystem = "today_board" | "proof_commerce" | "game_seed" | "founder_runtime";
+export const ECONOMIC_OBJECT_ACTION_KINDS = Object.freeze([
+  "approve_game_use",
+  "resolve_dependency_rights",
+  "verify_transfer_conditions",
+  "stop_transfer_review",
+  "classify_and_collect_evidence",
+] as const);
+export type EconomicObjectActionKind = (typeof ECONOMIC_OBJECT_ACTION_KINDS)[number];
 
 export interface EconomicObjectAttentionProjection {
-  projectionVersion: typeof ECONOMIC_OBJECT_PROJECTION_VERSION;
-  object: {
-    domain: EconomicObjectDomain;
-    objectId: string;
-    versionId: string;
-    title: string;
+  readonly projectionVersion: typeof ECONOMIC_OBJECT_PROJECTION_VERSION;
+  readonly object: {
+    readonly domain: EconomicObjectDomain;
+    readonly objectId: string;
+    readonly versionId: string;
+    readonly title: string;
   };
-  source: {
-    system: ProjectionSourceSystem;
-    sourceVersion: string;
-    observedAt: string;
+  readonly source: {
+    readonly system: ProjectionSourceSystem;
+    readonly sourceVersion: string;
+    readonly observedAt: string;
   };
-  proof: {
-    state: ProofState;
-    evidenceRefs: readonly string[];
+  readonly proof: {
+    readonly state: ProofState;
+    readonly evidenceRefs: readonly string[];
   };
-  rights: {
-    state: RightsState;
+  readonly rights: {
+    readonly state: RightsState;
   };
-  transferability: {
-    state: TransferabilityState;
+  readonly transferability: {
+    readonly state: TransferabilityState;
   };
-  attention: {
-    state: AttentionState;
-    whyNow: string;
-    blockers: readonly string[];
+  readonly attention: {
+    readonly state: AttentionState;
+    readonly whyNow: string;
+    readonly blockers: readonly string[];
   };
-  nextAction: {
-    kind: string;
-    label: string;
-    targetSystem: ActionTargetSystem;
-    founderApprovalRequired: boolean;
+  readonly nextAction: {
+    readonly kind: EconomicObjectActionKind;
+    readonly label: string;
+    readonly targetSystem: ActionTargetSystem;
+    readonly founderApprovalRequired: boolean;
   };
 }
 
 export function isFailClosedProjection(projection: EconomicObjectAttentionProjection): boolean {
+  const hasRequiredEvidence =
+    projection.proof.state !== "verified" ||
+    projection.proof.evidenceRefs.some((reference) => reference.trim().length > 0);
   const unresolvedTruth =
     projection.proof.state !== "verified" ||
     projection.rights.state === "conditional" ||
@@ -59,10 +70,29 @@ export function isFailClosedProjection(projection: EconomicObjectAttentionProjec
     projection.transferability.state === "unknown" ||
     projection.transferability.state === "non_transferable";
 
-  return !unresolvedTruth || (
-    projection.attention.state === "blocked" &&
-    projection.attention.blockers.length > 0 &&
-    projection.nextAction.targetSystem === "proof_commerce" &&
-    projection.nextAction.founderApprovalRequired
+  if (!hasRequiredEvidence || !isEconomicObjectActionKind(projection.nextAction.kind)) {
+    return false;
+  }
+
+  const actionIsFounderAuthorizedProposal = projection.nextAction.founderApprovalRequired;
+  if (unresolvedTruth) {
+    return (
+      projection.attention.state === "blocked" &&
+      projection.attention.blockers.length > 0 &&
+      projection.nextAction.targetSystem === "proof_commerce" &&
+      projection.nextAction.kind !== "approve_game_use" &&
+      actionIsFounderAuthorizedProposal
+    );
+  }
+
+  return (
+    projection.nextAction.kind === "approve_game_use" &&
+    projection.nextAction.targetSystem === "game_seed" &&
+    (projection.transferability.state === "license_only" || projection.transferability.state === "transferable") &&
+    actionIsFounderAuthorizedProposal
   );
+}
+
+export function isEconomicObjectActionKind(value: unknown): value is EconomicObjectActionKind {
+  return typeof value === "string" && ECONOMIC_OBJECT_ACTION_KINDS.some((kind) => kind === value);
 }

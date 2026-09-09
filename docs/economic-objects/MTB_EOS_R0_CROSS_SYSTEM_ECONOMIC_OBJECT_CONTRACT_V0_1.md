@@ -1,6 +1,6 @@
 # MTB-EOS-R0 — Cross-System Economic Object Contract v0.1
 
-Status: `IMPLEMENTED LOCALLY — R0 CONTRACT ONLY — R1 SURFACE NOT AUTHORIZED`
+Status: `R0.2 REMEDIATED LOCALLY — INDEPENDENT RE-VERIFICATION REQUIRED — R1 SURFACE NOT AUTHORIZED`
 
 Baseline: `nguyentudu/today-board main@b49d46642fe10629afe2bdf3471476b4a4b75b18`
 
@@ -38,6 +38,16 @@ It keeps these axes separate:
 
 These states must not be collapsed into one score. A verified identity does not imply transferable rights. Account access does not imply ownership. `license_only` must not be presented as transfer authority.
 
+The v0.1 next-action vocabulary is a closed allowlist:
+
+- `approve_game_use`
+- `resolve_dependency_rights`
+- `verify_transfer_conditions`
+- `stop_transfer_review`
+- `classify_and_collect_evidence`
+
+Transfer, sale, checkout, license issuance, and publication are not action kinds in this contract. Unknown strings are rejected at runtime rather than treated as future authority. The allowlist itself is frozen at runtime.
+
 ## 4. Fail-closed rules
 
 When proof, rights, or transferability is unknown or restricted:
@@ -47,6 +57,8 @@ When proof, rights, or transferability is unknown or restricted:
 3. The next action routes to Proof Commerce.
 4. Founder approval is required.
 5. No sell, transfer, checkout, entitlement, or publication action is exposed.
+
+A `verified` proof state also requires at least one non-empty evidence reference. Founder approval remains necessary but cannot cure missing proof or create transfer authority.
 
 R0 treats a platform account marked `non_transferable` as blocked. It does not infer that a platform-dependent account is an owned asset.
 
@@ -62,6 +74,8 @@ The canonical fixtures are in `src/economicObjects/fixtures.ts`:
 
 All evidence references are synthetic identifiers. No user data, provider account, credential, remote request, marketplace listing, or real rights claim is created.
 
+The fixture graph is deeply frozen at runtime. TypeScript readonly fields and runtime immutability both protect deterministic fixture behavior.
+
 ## 6. R0 acceptance
 
 R0 passes when:
@@ -71,6 +85,10 @@ R0 passes when:
 - every fixture uses the contract version and fixture source version;
 - unknown and non-transferable objects fail closed;
 - the license-only object cannot propose transfer;
+- partial, unverified, unknown, conditional, unresolved, and non-transferable states reject unsafe actions;
+- verified proof without evidence identity is rejected;
+- transfer, sale, checkout, license issuance, publication, and unknown action kinds are rejected;
+- fixture objects and every nested object/array are frozen;
 - no network primitive or credential field enters the contract lane;
 - application runtime, Board v1, Card, persistence, import/export, commerce, and payment code remain unchanged;
 - R1 is explicitly left closed.
@@ -81,11 +99,22 @@ Run:
 npm run test:economic-object-contract
 ```
 
-## 7. Rollback
+## 7. R0.2 remediation
+
+R0.2 addresses the four findings from MTB-EOS-R0.1:
+
+1. `license_only` now rejects a transfer action.
+2. Unresolved truth rejects a transfer action even when the blocked envelope otherwise appears valid.
+3. `verified` now requires evidence identity.
+4. Canonical fixtures are deeply immutable.
+
+The verifier exercises each rule with independent adversarial projections rather than checking only the five canonical examples.
+
+## 8. Rollback
 
 Delete only the paths listed in `MTB_EOS_R0_CANONICAL_PATH_MANIFEST_V0_1.json` and remove the new package script. No application data or external system is changed.
 
-## 8. Next authority gate
+## 9. Next authority gate
 
 After independent verification of this R0 packet, the next bounded command is:
 

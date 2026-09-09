@@ -2,7 +2,7 @@
 
 ## Verdict
 
-`IMPLEMENTATION PASS — INDEPENDENT VERIFICATION PENDING`
+`R0.2 REMEDIATION IMPLEMENTATION PASS — INDEPENDENT RE-VERIFICATION PENDING`
 
 ## Identity
 
@@ -10,6 +10,8 @@
 - Baseline branch: `main`
 - Baseline commit: `b49d46642fe10629afe2bdf3471476b4a4b75b18`
 - Implementation branch: `codex/mtb-eos-r0-contract-fit`
+- R0 candidate commit: `533cb0223aa7b137451b544e84b05854dd76c984`
+- R0.2 remediation branch: `codex/mtb-eos-r0-2-contract-guard-remediation`
 - Scope: contract, five fixtures, repository fit map, path manifest, and verifier only
 
 ## Implemented result
@@ -21,6 +23,15 @@
 - Preserved `license_only` as distinct from ownership transfer.
 - Kept every action as a Founder-approved proposal routed to its owning system.
 - Kept the contract isolated from the application runtime and all remote systems.
+
+R0.2 additionally:
+
+- replaces free-form next-action kinds with an exact runtime-checked allowlist;
+- rejects transfer, sale, checkout, license issuance, publication, and unknown action kinds;
+- rejects transfer actions for license-only or unresolved truth;
+- requires evidence identity for verified proof;
+- deeply freezes the complete fixture graph;
+- adds adversarial regression cases for all four R0.1 findings.
 
 ## Verification evidence
 
@@ -43,6 +54,10 @@ The R0 verifier proves:
 - no network primitive or credential field;
 - no application runtime wiring;
 - no dependency on Situation or commercial subscription models.
+- license-only and unresolved transfer-action rejection;
+- verified-without-evidence rejection;
+- deep fixture immutability;
+- exact next-action allowlist enforcement.
 
 ## Non-mutations
 
@@ -56,7 +71,7 @@ R0 did not change:
 
 ## Remaining gate
 
-R0 has implementation evidence but has not received independent verification. R1 remains closed.
+R0.2 has remediation evidence but has not received fresh independent verification. R1 remains closed.
 
 The next authority request, only after independent verification, is:
 

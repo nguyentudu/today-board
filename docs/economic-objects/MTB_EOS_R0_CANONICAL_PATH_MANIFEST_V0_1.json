@@ -19,6 +19,25 @@
       "docs/economic-objects/MTB_EOS_R0_COMPLETION_REPORT_V0_1.md"
     ]
   },
+  "remediation": {
+    "id": "MTB-EOS-R0.2",
+    "parentCommit": "533cb0223aa7b137451b544e84b05854dd76c984",
+    "mutationMode": "contract-guard-remediation-only",
+    "allowedPaths": [
+      "src/economicObjects/contracts.ts",
+      "src/economicObjects/fixtures.ts",
+      "scripts/verify-economic-object-contract.mjs",
+      "docs/economic-objects/MTB_EOS_R0_CROSS_SYSTEM_ECONOMIC_OBJECT_CONTRACT_V0_1.md",
+      "docs/economic-objects/MTB_EOS_R0_COMPLETION_REPORT_V0_1.md",
+      "docs/economic-objects/MTB_EOS_R0_CANONICAL_PATH_MANIFEST_V0_1.json"
+    ],
+    "resolvedFindings": [
+      "license-only-transfer-action",
+      "unresolved-transfer-action",
+      "verified-without-evidence",
+      "shallow-fixture-freeze"
+    ]
+  },
   "runtimeWiringAuthorized": false,
   "fixtureCount": 5,
   "externalMutationsAuthorized": false,

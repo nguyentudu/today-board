@@ -9,7 +9,7 @@ const FIXTURE_SOURCE = {
   observedAt: "2026-09-09T00:00:00.000Z",
 } as const;
 
-export const ECONOMIC_OBJECT_FIXTURES: readonly EconomicObjectAttentionProjection[] = Object.freeze([
+const fixtureDefinitions: EconomicObjectAttentionProjection[] = [
   {
     projectionVersion: ECONOMIC_OBJECT_PROJECTION_VERSION,
     object: {
@@ -130,4 +130,17 @@ export const ECONOMIC_OBJECT_FIXTURES: readonly EconomicObjectAttentionProjectio
       founderApprovalRequired: true,
     },
   },
-]);
+];
+
+export const ECONOMIC_OBJECT_FIXTURES: readonly EconomicObjectAttentionProjection[] = deepFreeze(fixtureDefinitions);
+
+function deepFreeze<T>(value: T): Readonly<T> {
+  if (value !== null && typeof value === "object" && !Object.isFrozen(value)) {
+    for (const nested of Object.values(value)) {
+      deepFreeze(nested);
+    }
+    Object.freeze(value);
+  }
+
+  return value;
+}
