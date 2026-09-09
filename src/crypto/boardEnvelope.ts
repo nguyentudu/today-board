@@ -49,14 +49,15 @@ export async function encryptBoardEnvelope(
   key: CryptoKey,
   identity: BoardEnvelopeIdentity,
 ): Promise<EncryptedBoardEnvelope> {
+  const identitySnapshot = Object.freeze({ ...identity });
   const nonce = crypto.getRandomValues(new Uint8Array(12));
   const ciphertext = await crypto.subtle.encrypt(
-    { name: "AES-GCM", iv: bytesToArrayBuffer(nonce), additionalData: envelopeAssociatedData(identity) },
+    { name: "AES-GCM", iv: bytesToArrayBuffer(nonce), additionalData: envelopeAssociatedData(identitySnapshot) },
     key,
     encoder.encode(JSON.stringify(value)),
   );
   return Object.freeze({
-    ...identity,
+    ...identitySnapshot,
     algorithm: "AES-GCM" as const,
     nonce: bytesToBase64(nonce),
     ciphertext: bytesToBase64(new Uint8Array(ciphertext)),

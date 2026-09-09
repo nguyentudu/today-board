@@ -20,6 +20,12 @@ try {
   assert.deepEqual(await envelopes.decryptBoardEnvelope(encrypted, restored, identity), board);
   await assert.rejects(() => recovery.importRecoveryKit(kit, "incorrect-recovery-code-long-enough"));
   await assert.rejects(() => recovery.importRecoveryKit({ ...kit, kdf: "unsupported" }, code), /Unsupported recovery kit/);
+  const mutableIdentity = { ...identity, versionId: "snapshot-v1" };
+  const pendingEnvelope = envelopes.encryptBoardEnvelope(board, key, mutableIdentity);
+  mutableIdentity.versionId = "mutated-v2";
+  const snapshotEnvelope = await pendingEnvelope;
+  assert.equal(snapshotEnvelope.versionId, "snapshot-v1");
+  assert.deepEqual(await envelopes.decryptBoardEnvelope(snapshotEnvelope, key, { ...identity, versionId: "snapshot-v1" }), board);
   console.log("Encryption boundary verification passed.");
 } finally {
   await vite.close();
