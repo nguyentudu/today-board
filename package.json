@@ -27,6 +27,7 @@
     "test:commercial-ux": "node scripts/verify-commercial-ux.mjs",
     "test:local-free-boundary": "node scripts/verify-local-free-boundary.mjs",
     "test:v1-rollback-artifact": "node scripts/verify-v1-rollback-artifact.mjs",
+    "test:payment-client-boundary": "node scripts/verify-payment-client-boundary.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {
