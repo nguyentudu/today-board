@@ -3,7 +3,11 @@ import type { SyncConflict, SyncVersion } from "./contracts";
 export type ConflictChoice = "keep-local" | "keep-remote" | "fork";
 
 export function detectSyncConflict(local: SyncVersion, remote: SyncVersion): SyncConflict | null {
-  if (local.versionId === remote.versionId || local.baseVersionId === remote.versionId) return null;
+  if (
+    local.versionId === remote.versionId ||
+    local.baseVersionId === remote.versionId ||
+    remote.baseVersionId === local.versionId
+  ) return null;
   return Object.freeze({
     kind: "divergent_versions" as const,
     localVersionId: local.versionId,

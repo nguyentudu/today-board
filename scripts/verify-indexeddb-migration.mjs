@@ -22,10 +22,16 @@ try {
   assert.equal(legacy.value, raw, "legacy rollback source must remain untouched");
   assert.equal((await migration.migrateV1LocalStorage(legacy, destination)).status, "already-migrated");
   const prior = structuredClone(state.board);
-  state.digest = null;
-  state.fail = true;
-  assert.equal((await migration.migrateV1LocalStorage(legacy, destination)).status, "failed");
-  assert.deepEqual(state.board, prior, "failed migration must not replace the verified board");
+  legacy.value = JSON.stringify({ version: 1, updatedAt: "2025-01-01T00:00:00.000Z", cards: [] });
+  assert.equal((await migration.migrateV1LocalStorage(legacy, destination)).status, "recovery-conflict");
+  assert.deepEqual(state.board, prior, "changed legacy rollback data must not replace the authoritative board");
+  const failingState = { board: null, digest: null };
+  const failingDestination = {
+    async readBoard() { return failingState.board; },
+    async readMigrationDigest() { return failingState.digest; },
+    async commitMigratedBoard() { throw new Error("fixture transaction failed"); },
+  };
+  assert.equal((await migration.migrateV1LocalStorage({ ...legacy, value: raw }, failingDestination)).status, "failed");
   const source = await readFile("src/storage/migrateV1.ts", "utf8");
   assert.ok(!source.includes("removeItem"));
   assert.ok(!/\b(?:fetch|XMLHttpRequest|WebSocket|sendBeacon)\s*\(/.test(source));

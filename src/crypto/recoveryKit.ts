@@ -52,7 +52,7 @@ export async function createRecoveryKit(contentKey: CryptoKey, recoveryCode: str
 }
 
 export async function importRecoveryKit(kit: RecoveryKit, recoveryCode: string): Promise<CryptoKey> {
-  if (kit.format !== "moon-recovery-kit-v1" || kit.iterations !== 310_000) {
+  if (kit.format !== "moon-recovery-kit-v1" || kit.kdf !== "PBKDF2-SHA-256" || kit.iterations !== 310_000) {
     throw new Error("Unsupported recovery kit");
   }
   const wrappingKey = await recoveryWrappingKey(

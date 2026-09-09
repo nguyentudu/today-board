@@ -40,7 +40,17 @@ export function createInjectedFixtureSyncClient(session: AccountSession, transpo
       return transport.push(structuredClone(version));
     },
     async pull(objectId: string) {
-      return transport.pull(accountId, objectId);
+      const version = await transport.pull(accountId, objectId);
+      if (!version) return null;
+      if (version.accountId !== accountId || version.objectId !== objectId) {
+        throw new Error("Pulled sync object ownership mismatch");
+      }
+      if (
+        version.envelope.accountId !== version.accountId ||
+        version.envelope.objectId !== version.objectId ||
+        version.envelope.versionId !== version.versionId
+      ) throw new Error("Pulled sync envelope identity mismatch");
+      return structuredClone(version);
     },
   };
 }

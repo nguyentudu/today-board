@@ -19,6 +19,7 @@ try {
   const restored = await recovery.importRecoveryKit(kit, code);
   assert.deepEqual(await envelopes.decryptBoardEnvelope(encrypted, restored, identity), board);
   await assert.rejects(() => recovery.importRecoveryKit(kit, "incorrect-recovery-code-long-enough"));
+  await assert.rejects(() => recovery.importRecoveryKit({ ...kit, kdf: "unsupported" }, code), /Unsupported recovery kit/);
   console.log("Encryption boundary verification passed.");
 } finally {
   await vite.close();

@@ -10,6 +10,7 @@ export interface LegacyStorageReader {
 export type MigrationResult =
   | { status: "nothing-to-migrate" }
   | { status: "already-migrated"; sourceDigest: string }
+  | { status: "recovery-conflict"; sourceDigest: string }
   | { status: "migrated"; sourceDigest: string }
   | { status: "failed"; reason: string };
 
@@ -25,9 +26,11 @@ export async function migrateV1LocalStorage(
   const raw = legacy.getItem(LEGACY_BOARD_KEY);
   if (raw === null) return { status: "nothing-to-migrate" };
   const sourceDigest = await sha256(raw);
-  if (await destination.readMigrationDigest() === sourceDigest) {
+  const recordedDigest = await destination.readMigrationDigest();
+  if (recordedDigest === sourceDigest) {
     return { status: "already-migrated", sourceDigest };
   }
+  if (await destination.readBoard()) return { status: "recovery-conflict", sourceDigest };
 
   try {
     const board = sanitizeBoard(JSON.parse(raw));

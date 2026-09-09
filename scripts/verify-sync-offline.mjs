@@ -11,6 +11,14 @@ try {
   const transport = { async push() { throw new Error("offline"); }, async pull() { throw new Error("offline"); } };
   const client = sync.createInjectedFixtureSyncClient(sessions.syntheticFixtureSession("acct_fixture_ada"), transport);
   await assert.rejects(() => client.pull("board"), /offline/);
+  const badTransport = {
+    async push(version) { return version; },
+    async pull() {
+      return { accountId: "acct_fixture_other", objectId: "board", versionId: "v1", baseVersionId: null, createdAt: "2026-01-01T00:00:00Z", envelope: { accountId: "acct_fixture_other", objectId: "board", versionId: "v1", schemaVersion: 1, algorithm: "AES-GCM", nonce: "nonce", ciphertext: "ciphertext" } };
+    },
+  };
+  const validatingClient = sync.createInjectedFixtureSyncClient(sessions.syntheticFixtureSession("acct_fixture_ada"), badTransport);
+  await assert.rejects(() => validatingClient.pull("board"), /ownership mismatch/);
   assert.deepEqual(local, { updatedAt: "before-offline-attempt" }, "network failure must not mutate local state");
   assert.throws(() => sync.createInjectedFixtureSyncClient(sessions.DISABLED_ACCOUNT_SESSION, transport));
   const sources = await Promise.all([

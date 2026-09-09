@@ -13,6 +13,10 @@ try {
   assert.equal(conflicts.resolveSyncConflict(conflict, "keep-local").selectedVersionId, "local-v2");
   assert.equal(conflicts.resolveSyncConflict(conflict, "keep-remote").selectedVersionId, "remote-v2");
   assert.equal(conflicts.resolveSyncConflict(conflict, "fork").selectedVersionId, null);
+  const ancestor = { ...remote, versionId: "v1", baseVersionId: null, envelope: { ...envelope, versionId: "v1" } };
+  const descendant = { ...remote, versionId: "v2", baseVersionId: "v1", envelope: { ...envelope, versionId: "v2" } };
+  assert.equal(conflicts.detectSyncConflict(ancestor, descendant), null);
+  assert.equal(conflicts.detectSyncConflict(descendant, ancestor), null);
   console.log("Sync conflict verification passed.");
 } finally {
   await vite.close();
