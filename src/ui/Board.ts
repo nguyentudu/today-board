@@ -21,6 +21,8 @@ import { BOARD_STATES } from "../domain/state";
 import { CommercialEntry } from "../commercial/CommercialEntry";
 import { getEntitlementSnapshot } from "../commercial/entitlementStore";
 import { ContinuityReview } from "../continuityReview/ContinuityReview";
+import { EconomicObjectAttentionSurface } from "../economicObjects/EconomicObjectAttentionSurface";
+import { ECONOMIC_OBJECT_FIXTURES } from "../economicObjects/fixtures";
 import { formatBytes } from "../media/localMedia";
 import { createFirstReturn, readFirstReturnState, writeFirstReturnState } from "../onboarding/firstReturn";
 import { Onboarding } from "../onboarding/Onboarding";
@@ -193,6 +195,10 @@ export function Board({
     language,
     enabled: entitlement.continuityReviewEnabled,
   });
+  const economicObjectSurface = EconomicObjectAttentionSurface({
+    projections: ECONOMIC_OBJECT_FIXTURES,
+    language,
+  });
 
   const columns = document.createElement("div");
   columns.className = "columns";
@@ -293,7 +299,7 @@ export function Board({
   if (onboarding) {
     shell.append(onboarding);
   }
-  shell.append(commercialEntry, continuityReview, dataPanel, retrievalSurface, columns, testNotes);
+  shell.append(commercialEntry, continuityReview, economicObjectSurface, dataPanel, retrievalSurface, columns, testNotes);
   setupSearchKeyboardDismissal(shell, retrievalView.searchInput, retrievalView.isComposing);
 
   return shell;
