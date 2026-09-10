@@ -186,7 +186,8 @@ textarea {
 
 .first-return-onboarding,
 .commercial-entry,
-.continuity-review {
+.continuity-review,
+.economic-object-surface {
   margin: 0 0 1rem;
   border: 1px solid #d8d2c4;
   border-radius: 10px;
@@ -201,7 +202,8 @@ textarea {
 
 .first-return-onboarding h2,
 .commercial-entry h2,
-.continuity-review h2 {
+.continuity-review h2,
+.economic-object-surface h2 {
   margin: 0;
   color: #30352d;
   font-size: 1.15rem;
@@ -397,6 +399,204 @@ textarea {
 .continuity-review-prompt {
   border-left: 3px solid #a9b6a2;
   padding-left: 0.65rem;
+}
+
+.economic-object-surface {
+  display: grid;
+  gap: 1rem;
+  border-color: #b9b3a4;
+  background: linear-gradient(135deg, rgba(242, 239, 230, 0.92), rgba(255, 253, 248, 0.96));
+}
+
+.economic-object-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.economic-object-eyebrow {
+  margin: 0 0 0.35rem;
+  color: #675523;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.economic-object-helper {
+  max-width: 52rem;
+  margin: 0.45rem 0 0;
+  color: #626057;
+  line-height: 1.45;
+}
+
+.economic-object-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(5rem, 1fr));
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.economic-object-summary > div {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 5rem;
+  border: 1px solid #d4cdbd;
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 0.55rem;
+}
+
+.economic-object-summary dt {
+  color: #6b685f;
+  font-size: 0.75rem;
+}
+
+.economic-object-summary dd {
+  order: -1;
+  margin: 0;
+  color: #30352d;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.economic-object-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.economic-object-card {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  border: 1px solid #d8d2c4;
+  border-left: 4px solid #9b978d;
+  border-radius: 8px;
+  background: #fffdf8;
+  padding: 0.85rem;
+}
+
+.economic-object-card.attention-blocked {
+  border-left-color: #a86152;
+}
+
+.economic-object-card.attention-actionable {
+  border-left-color: #718767;
+}
+
+.economic-object-card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+.economic-object-card h3,
+.economic-object-card h4,
+.economic-object-card p,
+.economic-object-card ul {
+  margin: 0;
+}
+
+.economic-object-card h3 {
+  margin-top: 0.15rem;
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+}
+
+.economic-object-card h4 {
+  color: #4f4d45;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.economic-object-domain,
+.economic-object-version,
+.economic-object-next-meta {
+  color: #747168;
+  font-size: 0.76rem;
+}
+
+.economic-object-attention {
+  border-radius: 999px;
+  background: #efede6;
+  color: #56564d;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.25rem 0.45rem;
+  white-space: nowrap;
+}
+
+.economic-object-attention.attention-blocked {
+  background: #f5e4df;
+  color: #743f35;
+}
+
+.economic-object-attention.attention-actionable {
+  background: #e4eee0;
+  color: #3e5737;
+}
+
+.economic-object-states {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.economic-object-states > div {
+  min-width: 0;
+  border: 1px solid #e0dacd;
+  border-radius: 6px;
+  background: #f8f5ee;
+  padding: 0.5rem;
+}
+
+.economic-object-states dt {
+  color: #747168;
+  font-size: 0.7rem;
+}
+
+.economic-object-states dd {
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+  color: #3f403a;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.economic-object-why,
+.economic-object-blockers,
+.economic-object-next {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.economic-object-why p,
+.economic-object-blockers li,
+.economic-object-next p {
+  color: #5f5d55;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.economic-object-blockers ul {
+  display: grid;
+  gap: 0.2rem;
+  padding-left: 1.1rem;
+}
+
+.economic-object-next {
+  border-top: 1px solid #e0dacd;
+  padding-top: 0.65rem;
+}
+
+.economic-object-next > p:first-of-type {
+  color: #343730;
+  font-weight: 700;
 }
 
 .data-device-panel {
@@ -1299,8 +1499,23 @@ textarea {
   .retrieval-controls,
   .first-return-form,
   .commercial-plan-grid,
-  .continuity-metrics {
+  .continuity-metrics,
+  .economic-object-heading,
+  .economic-object-list {
     grid-template-columns: 1fr;
+  }
+
+  .economic-object-summary,
+  .economic-object-states {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .economic-object-card-header {
+    grid-template-columns: 1fr;
+  }
+
+  .economic-object-attention {
+    width: fit-content;
   }
 
   .retrieval-surface {

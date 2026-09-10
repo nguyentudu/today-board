@@ -1,0 +1,30 @@
+{
+  "workPackage": "MTB-EOS-R1",
+  "title": "Fixture-only Economic Object attention surface",
+  "anchorCommit": "6964636b516d14580a65dfd70702c7cda0385e72",
+  "mutationMode": "fixture-only-read-only-attention-surface",
+  "paths": [
+    "docs/economic-objects/MTB_EOS_R1_CANONICAL_PATH_MANIFEST_V0_1.json",
+    "docs/economic-objects/MTB_EOS_R1_COMPLETION_REPORT_V0_1.md",
+    "docs/economic-objects/MTB_EOS_R1_FIXTURE_ATTENTION_SURFACE_V0_1.md",
+    "package.json",
+    "scripts/verify-economic-object-contract.mjs",
+    "scripts/verify-economic-object-surface.mjs",
+    "src/economicObjects/EconomicObjectAttentionSurface.ts",
+    "src/ui/Board.ts",
+    "styles/main.css"
+  ],
+  "immutableInputs": [
+    "src/economicObjects/contracts.ts",
+    "src/economicObjects/fixtures.ts"
+  ],
+  "fixtureCount": 5,
+  "projectionVersion": "economic-object-attention-v0.1",
+  "persistenceAuthorized": false,
+  "proofCommerceConnectionAuthorized": false,
+  "paymentOrEntitlementAuthorized": false,
+  "marketplaceOrTransferAuthorized": false,
+  "deploymentAuthorized": false,
+  "situationSemanticMutationAuthorized": false,
+  "independentVerificationRequired": true
+}

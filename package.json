@@ -29,6 +29,7 @@
     "test:v1-rollback-artifact": "node scripts/verify-v1-rollback-artifact.mjs",
     "test:payment-client-boundary": "node scripts/verify-payment-client-boundary.mjs",
     "test:economic-object-contract": "node scripts/verify-economic-object-contract.mjs",
+    "test:economic-object-surface": "node scripts/verify-economic-object-surface.mjs",
     "status": "node -e \"console.log('Scripts: npm run dev, npm run start, npm run build, npm run preview. Local test: open the Vite URL shown in the terminal.')\""
   },
   "devDependencies": {

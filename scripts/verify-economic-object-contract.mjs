@@ -4,7 +4,7 @@ import { createServer } from "vite";
 
 const contractSource = readFileSync("src/economicObjects/contracts.ts", "utf8");
 const fixtureSource = readFileSync("src/economicObjects/fixtures.ts", "utf8");
-const runtimeSources = [
+const protectedRuntimeSources = [
   "src/app.ts",
   "src/domain/card.ts",
   "src/domain/board.ts",
@@ -125,7 +125,10 @@ for (const prohibited of ["transfer", "sell", "checkout", "issue_license", "publ
 
 assert.ok(!/\b(?:fetch|XMLHttpRequest|WebSocket|sendBeacon)\s*\(/.test(`${contractSource}\n${fixtureSource}`));
 assert.ok(!/(api[_-]?key|signing[_-]?secret|authorization:\s*bearer)/i.test(`${contractSource}\n${fixtureSource}`));
-assert.ok(!runtimeSources.includes("economicObjects"), "R0 contract must not be wired into the application runtime");
+assert.ok(
+  !protectedRuntimeSources.includes("economicObjects"),
+  "Economic Objects must not enter app orchestration, Situation semantics, or persistence",
+);
 assert.ok(!contractSource.includes('from "../commercial/'), "economic object truth must not depend on commerce");
 assert.ok(!contractSource.includes('from "../domain/'), "economic object truth must not rewrite Situation semantics");
 
