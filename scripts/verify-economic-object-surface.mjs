@@ -277,22 +277,60 @@ assert.ok(appSource.includes("applyDocumentLanguage(language)"), "Application re
 assert.ok(!appSource.includes("document.documentElement.lang = language"), "Document language behavior must not bypass its executable guard");
 assert.ok(!/\b(?:fetch|XMLHttpRequest|WebSocket|sendBeacon|localStorage|sessionStorage|indexedDB)\b/.test(documentLanguageSource), "Document language helper must remain display-only");
 
-const observedLanguageTransitions = [];
-const languageRoot = {
-  current: "",
-  set lang(value) {
-    this.current = value;
-    observedLanguageTransitions.push(value);
-  },
-  get lang() {
-    return this.current;
-  },
-};
-documentLanguageModule.applyDocumentLanguage("en", languageRoot);
-assert.equal(languageRoot.lang, "en", "Document language helper must apply EN");
-documentLanguageModule.applyDocumentLanguage("vi", languageRoot);
-assert.equal(languageRoot.lang, "vi", "Document language helper must apply VI");
-assert.deepEqual(observedLanguageTransitions, ["en", "vi"], "Document language transition VI ↔ EN must execute in order");
+const injectedLanguageRoot = { lang: "vi" };
+documentLanguageModule.applyDocumentLanguage("en", injectedLanguageRoot);
+assert.equal(injectedLanguageRoot.lang, "en", "Injected language root must remain supported");
+
+function verifyDefaultDocumentLanguageTransitions(applyLanguage) {
+  const observedTransitions = [];
+  const defaultRoot = {
+    current: "",
+    set lang(value) {
+      this.current = value;
+      observedTransitions.push(value);
+    },
+    get lang() {
+      return this.current;
+    },
+  };
+  globalThis.document = { documentElement: defaultRoot };
+  try {
+    applyLanguage("en");
+    assert.equal(defaultRoot.lang, "en", "Default document root must apply EN");
+    applyLanguage("vi");
+    assert.equal(defaultRoot.lang, "vi", "Default document root must apply VI after EN");
+    applyLanguage("en");
+    assert.equal(defaultRoot.lang, "en", "Default document root must apply EN after VI");
+    assert.deepEqual(
+      observedTransitions,
+      ["en", "vi", "en"],
+      "Default document language path must execute the complete EN → VI → EN transition",
+    );
+  } finally {
+    if (originalDocument === undefined) {
+      delete globalThis.document;
+    } else {
+      globalThis.document = originalDocument;
+    }
+  }
+  return observedTransitions;
+}
+
+verifyDefaultDocumentLanguageTransitions(documentLanguageModule.applyDocumentLanguage);
+assert.throws(
+  () => verifyDefaultDocumentLanguageTransitions((language, root = document.documentElement) => {
+    if (root.lang === "vi" && language === "en") return;
+    root.lang = language;
+  }),
+  "Language guard must reject a missing VI → EN reverse transition",
+);
+assert.throws(
+  () => verifyDefaultDocumentLanguageTransitions((language, root = document.documentElement) => {
+    if (root === document.documentElement) return;
+    root.lang = language;
+  }),
+  "Language guard must reject a default document root bypass",
+);
 assert.ok(surfaceSource.includes('surface.dataset.source = "fixture"'), "Surface must disclose fixture provenance");
 assert.ok(surfaceSource.includes("No live rights claim") && surfaceSource.includes("Không có xác nhận quyền thực tế"), "Surface must disclose its synthetic, non-live boundary in both languages");
 assert.ok(surfaceSource.includes("Founder approval required") && surfaceSource.includes("Cần Founder phê duyệt"), "Surface must preserve Founder authority in both languages");

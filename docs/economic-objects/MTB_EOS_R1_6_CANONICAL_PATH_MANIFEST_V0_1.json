@@ -1,0 +1,29 @@
+{
+  "workPackage": "MTB-EOS-R1.6",
+  "title": "Document Language Guard Remediation",
+  "parentCommit": "cdc56d932807b5182a03cbf363f5b24fdc9692a1",
+  "mutationMode": "verification-only-document-language-guard-remediation",
+  "resolvedFindings": [
+    "reverse-vi-to-en-transition-not-executed",
+    "default-document-element-path-not-executed"
+  ],
+  "paths": [
+    "docs/economic-objects/MTB_EOS_R1_6_CANONICAL_PATH_MANIFEST_V0_1.json",
+    "docs/economic-objects/MTB_EOS_R1_6_DOCUMENT_LANGUAGE_GUARD_REMEDIATION_REPORT_V0_1.md",
+    "scripts/verify-economic-object-surface.mjs"
+  ],
+  "immutableInputs": [
+    "src/economicObjects/contracts.ts",
+    "src/economicObjects/fixtures.ts",
+    "src/economicObjects/EconomicObjectAttentionSurface.ts",
+    "src/app.ts",
+    "src/ui/documentLanguage.ts"
+  ],
+  "productAuthorityExpanded": false,
+  "persistenceAuthorized": false,
+  "proofCommerceConnectionAuthorized": false,
+  "paymentOrEntitlementAuthorized": false,
+  "marketplaceOrTransferAuthorized": false,
+  "deploymentAuthorized": false,
+  "freshIndependentReverificationRequired": true
+}
