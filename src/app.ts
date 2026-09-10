@@ -3,6 +3,7 @@ import { addCard, updateCardNote, updateCardReentryNotes, updateCardRichContext 
 import { formatBytes } from "./media/localMedia";
 import { BOARD_STORAGE_WARNING_BYTES, estimateBoardSize, loadBoard, saveBoard, trySaveBoard } from "./storage/localStore";
 import { Board as BoardView } from "./ui/Board";
+import { applyDocumentLanguage } from "./ui/documentLanguage";
 import type { Language } from "./ui/i18n";
 import { QuickCapture, type QuickCapturePayload, type QuickCaptureSaveResult } from "./ui/QuickCapture";
 import { installPaymentClientBoundary } from "./commercial/checkoutClient";
@@ -41,7 +42,7 @@ registerServiceWorker();
 
 function render(nextBoard: BoardModel = board): void {
   board = nextBoard;
-  document.documentElement.lang = language;
+  applyDocumentLanguage(language);
   renderNetworkStatus();
   renderUpdateMessage();
 

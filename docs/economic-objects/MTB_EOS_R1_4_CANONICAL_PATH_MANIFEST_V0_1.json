@@ -1,0 +1,29 @@
+{
+  "workPackage": "MTB-EOS-R1.4",
+  "title": "Verification Guard Remediation",
+  "parentCommit": "6b87ed91e01430e900b0e3f2d58500b502f31308",
+  "mutationMode": "verification-guard-remediation-only",
+  "resolvedFinding": "insufficient-state-and-document-language-regression-sensitivity",
+  "paths": [
+    "docs/economic-objects/MTB_EOS_R1_4_CANONICAL_PATH_MANIFEST_V0_1.json",
+    "docs/economic-objects/MTB_EOS_R1_4_VERIFICATION_GUARD_REMEDIATION_REPORT_V0_1.md",
+    "scripts/verify-economic-object-surface.mjs",
+    "src/app.ts",
+    "src/ui/documentLanguage.ts"
+  ],
+  "immutableInputs": [
+    "src/economicObjects/contracts.ts",
+    "src/economicObjects/fixtures.ts",
+    "src/economicObjects/EconomicObjectAttentionSurface.ts"
+  ],
+  "fixtureCount": 5,
+  "projectionVersion": "economic-object-attention-v0.1",
+  "productAuthorityExpanded": false,
+  "persistenceAuthorized": false,
+  "proofCommerceConnectionAuthorized": false,
+  "paymentOrEntitlementAuthorized": false,
+  "marketplaceOrTransferAuthorized": false,
+  "deploymentAuthorized": false,
+  "situationSemanticMutationAuthorized": false,
+  "freshIndependentReverificationRequired": true
+}
