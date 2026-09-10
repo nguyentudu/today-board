@@ -41,6 +41,7 @@ registerServiceWorker();
 
 function render(nextBoard: BoardModel = board): void {
   board = nextBoard;
+  document.documentElement.lang = language;
   renderNetworkStatus();
   renderUpdateMessage();
 

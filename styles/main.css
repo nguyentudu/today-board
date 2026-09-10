@@ -514,10 +514,18 @@ textarea {
 }
 
 .economic-object-domain,
+.economic-object-id,
 .economic-object-version,
 .economic-object-next-meta {
   color: #747168;
   font-size: 0.76rem;
+}
+
+.economic-object-id {
+  margin-top: 0.25rem !important;
+  overflow-wrap: anywhere;
+  color: #56564d;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
 
 .economic-object-attention {

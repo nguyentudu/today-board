@@ -1,0 +1,32 @@
+{
+  "workPackage": "MTB-EOS-R1.2",
+  "title": "Surface Contract Remediation",
+  "parentCommit": "e5abb61ead3cfe09cfdf7c26a74e08388e3fd94b",
+  "mutationMode": "finding-scoped-surface-remediation-only",
+  "resolvedFindings": [
+    "incomplete-vietnamese-rendering-and-document-language",
+    "canonical-object-id-not-visible",
+    "source-string-verifier-without-rendered-dom-evidence"
+  ],
+  "paths": [
+    "docs/economic-objects/MTB_EOS_R1_2_CANONICAL_PATH_MANIFEST_V0_1.json",
+    "docs/economic-objects/MTB_EOS_R1_2_SURFACE_CONTRACT_REMEDIATION_REPORT_V0_1.md",
+    "scripts/verify-economic-object-surface.mjs",
+    "src/app.ts",
+    "src/economicObjects/EconomicObjectAttentionSurface.ts",
+    "styles/main.css"
+  ],
+  "immutableInputs": [
+    "src/economicObjects/contracts.ts",
+    "src/economicObjects/fixtures.ts"
+  ],
+  "fixtureCount": 5,
+  "projectionVersion": "economic-object-attention-v0.1",
+  "persistenceAuthorized": false,
+  "proofCommerceConnectionAuthorized": false,
+  "paymentOrEntitlementAuthorized": false,
+  "marketplaceOrTransferAuthorized": false,
+  "deploymentAuthorized": false,
+  "situationSemanticMutationAuthorized": false,
+  "independentReverificationRequired": true
+}
